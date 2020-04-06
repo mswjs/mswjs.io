@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500,600&display=swap');
+
+html {
+  font-family: Inter, sans-serif;
+  line-height: 1.6;
+}
+
+code {
+  font-family: Menlo, monospace;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}

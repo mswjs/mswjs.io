@@ -5,20 +5,28 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@svgr/webpack": "^5.3.1",
+    "atomic-layout": "^0.15.0",
     "gatsby": "^2.20.12",
     "gatsby-image": "^2.3.1",
     "gatsby-plugin-manifest": "^2.3.3",
     "gatsby-plugin-offline": "^3.1.2",
     "gatsby-plugin-react-helmet": "^3.2.1",
     "gatsby-plugin-sharp": "^2.5.3",
+    "gatsby-plugin-svgr": "^2.0.2",
+    "gatsby-plugin-typescript": "^2.3.1",
     "gatsby-source-filesystem": "^2.2.2",
     "gatsby-transformer-sharp": "^2.4.3",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
+    "react-cdx": "^0.1.2",
     "react-dom": "^16.12.0",
-    "react-helmet": "^5.2.1"
+    "react-helmet": "^5.2.1",
+    "react-icons": "^3.9.0",
+    "styled-components": "^5.0.1"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.0.1",
     "prettier": "^1.19.1"
   },
   "keywords": [
