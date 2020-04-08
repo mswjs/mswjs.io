@@ -9,9 +9,11 @@ export const Button = styled.button<ButtonProps>`
 
   border: 0;
   border-radius: 3px;
+  color: var(--color-gray-dark);
   cursor: pointer;
   font-weight: 500;
   transition: box-shadow 0.1s ease;
+  text-decoration: none;
 
   &:focus {
     outline: 0;
@@ -24,7 +26,7 @@ export const Button = styled.button<ButtonProps>`
           background-color: ${({ theme }) => theme.colors.primary};
         `
       : css`
-          background-color: #f9e4d4;
+          background-color: ${({ theme }) => theme.colors.grayDim};
         `}
 `
 

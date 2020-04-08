@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital@0;2&display=swap');
+
+html {
+  font-family: Inter, sans-serif;
+  line-height: 1.7;
+}
+
+body {
+  color: var(--color-gray);
+}
+
+code,
+pre {
+  font-family: 'Source Code Pro', Menlo, monospace;
+  font-weight: 500;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-gray-dark);
+  line-height: 1.2;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+h1,
+h2 {
+  letter-spacing: -0.5px;
+}
+
+h3 {
+  letter-spacing: -0.25px;
+}
+
+h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+}

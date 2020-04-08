@@ -487,9 +487,6 @@ dt {
 th {
   font-weight: bold;
 }
-li {
-  margin-bottom: calc(1.45rem / 2);
-}
 ol li {
   padding-left: 0;
 }
@@ -599,5 +596,3 @@ pre tt:after {
     font-size: 100%;
   }
 }
-
-@import "./custom.css";

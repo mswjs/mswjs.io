@@ -6,8 +6,17 @@ import { Link } from 'gatsby'
 import { Grid } from './Grid'
 
 const StyledFooter = styled.footer`
-  background-color: #f9e4d4;
+  background-color: ${({ theme }) => theme.colors.grayDark};
+  color: ${({ theme }) => theme.colors.grayLight};
   font-size: 0.95rem;
+
+  a {
+    color: #fff;
+  }
+
+  h4 {
+    color: var(--color-gray-light);
+  }
 `
 
 export const Footer: React.FC = () => {
@@ -15,20 +24,22 @@ export const Footer: React.FC = () => {
     <StyledFooter>
       <Composition as={Grid} templateCols="repeat(3, 1fr)" paddingVertical={64}>
         <div>
-          <p>
-            Made with love by <a href="#">kettanaito</a>.
-          </p>
+          <p>Mock Service Worker is released under the MIT license.</p>
         </div>
         <div>
           <h4>Documentation</h4>
           <ul>
             <li>
-              <Link to="/docs/getting-started">
-                <strong>Getting started</strong>
-              </Link>
+              <Link to="/docs/getting-started">Getting started</Link>
             </li>
             <li>
-              <Link to="/docs/">Mocking REST API</Link>
+              <Link to="/docs/api">API</Link>
+            </li>
+            <li>
+              <Link to="/docs/tutorials">Tutorials</Link>
+            </li>
+            <li>
+              <Link to="/docs/recipes">Recipes</Link>
             </li>
           </ul>
         </div>
