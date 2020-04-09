@@ -1,0 +1,33 @@
+---
+title: Response resolver
+---
+
+**Response resolver** is a function that accepts a matched outgoing request and returns a mocked response.
+
+## Type definition
+
+> TODO Add the ref to ts
+
+## Parameters
+
+Response resolver function accepts the following parameters:
+
+- [`request`](/docs/basics/response-resolver/request)
+- [`response`](/docs/basics/response-resolver/response)
+- [`context`](/docs/basics/response-resolver/context)
+
+## Examples
+
+```js
+export const mockUserData = (req, res, ctx) => {
+  const { usedId } = req.params
+
+  return res(
+    ctx.json({
+      firstName: 'John',
+      lastName: 'Maverick',
+      age: 38,
+    }),
+  )
+}
+```

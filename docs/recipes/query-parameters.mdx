@@ -1,0 +1,63 @@
+---
+title: Query parameters
+---
+
+Query parameters and hash are ignored during the request path matching. In order to access a query parameter you would have to use the `query` propery on the [`request`](/docs/basics/response-resolver/request) object.
+
+## Examples
+
+### Accessing query parameter
+
+```js
+import { composeMocks, rest } from 'msw'
+
+const { start } = composeMocks(
+  rest.get('/products', (req, res, ctx) => {
+    const productId = req.query.get('id')
+
+    return res(
+      ctx.json({
+        productId,
+      }),
+    )
+  }),
+)
+
+start()
+```
+
+> Keep in mind that `req.query` is not an Object, but a [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) interface.
+
+Using the mock definition above, if we perform the following request,
+
+```js
+fetch('/products?id=123')
+```
+
+the result of calling `req.query.get('id')` would equal to `"123"`, which is the value of the `id` URL query parameter of the request.
+
+### Multiple parameters
+
+It's possible to have multiple query parameters with the same name in a URL. In order to access the list of their values use the `req.query.getAll()` function:
+
+```js
+import { composeMocks, rest } from 'msw'
+
+const { start } = composeMocks(
+  rest.get('/products', (req, res, ctx) => {
+    // Performing a "/products?id=1&id=2&id=3" request
+    // would return the list of [1, 2, 3] as `productIds`.
+    const productIds = req.query.getAll('id')
+
+    return res(
+      ctx.json({
+        mocked: true,
+      }),
+    )
+  }),
+)
+
+start()
+```
+
+> Read more in the [`URLSearchParams.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) specification.

@@ -18,6 +18,15 @@ const GlobalStyle = createGlobalStyle`
         })
         .join(';')}
   }
+
+  a,
+  button {
+    &:focus {
+      outline: 0;
+      box-shadow: 0 0 0 5px ${({ theme }) =>
+        theme.utils.alpha(theme.colors.primary, 0.5)};
+    }
+  }
 `
 
 const Layout: React.FC = ({ children }) => {
@@ -25,10 +34,8 @@ const Layout: React.FC = ({ children }) => {
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Header />
-      <div>
-        <main>{children}</main>
-        <Footer />
-      </div>
+      <main>{children}</main>
+      <Footer />
     </ThemeProvider>
   )
 }

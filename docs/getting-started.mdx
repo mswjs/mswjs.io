@@ -1,0 +1,137 @@
+---
+title: Getting started
+---
+
+## Install
+
+```bash
+$ npm install msw --save-dev
+```
+
+> Alternatively, you can add Mock Service Worker [using a CDN](/docs/recipes/usage-with-cdn).
+
+## Configure
+
+Run the following command in your project's root directory:
+
+```bash
+$ npx msw init <PUBLIC_DIR>
+```
+
+Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's public directory (for example, `npx msw init ./public`).
+
+### Where is my "public" directory?
+
+A public directory is usually a root directory server by your server (i.e. `./build`, `./public`, or `./dest`). This directory is often committed to Git, and so **should be the Mock Service Worker**.
+
+#### Common public directories
+
+Below you can find a list of public directories in most popular JavaScript project generators.
+
+| Project name                                     | Public directory |
+| ------------------------------------------------ | ---------------- |
+| [Create React App](https://create-react-app.dev) | `./public`       |
+| [GatsbyJS](https://www.gatsbyjs.org)             | `./public`       |
+| [NextJS](https://nextjs.org)                     | `./static`       |
+
+> Not sure what is your public directory? Reach out to the maintainers of the development stack that you are using, they should be able to help.
+
+## Define mocks
+
+Start by create a mockind definition file:
+
+```bash
+$ touch src/mocks.js
+```
+
+```js
+// src/mocks.js
+import { composeMocks, rest } from 'msw'
+
+// Configure mocking routes
+const { start } = composeMocks(
+  rest.get('https://api.github.com/repos/:owner/:repo', (req, res, ctx) => {
+    // Access request's params
+    const { owner, repo } = req.params
+
+    return res(
+      // Set custom status
+      ctx.status(200),
+
+      // Set headers
+      ctx.set({ 'X-Header': 'Mocked value' }),
+
+      // Delay the response
+      ctx.delay(1000),
+
+      // send JSON response body
+      ctx.json({
+        name: 'mocked-name',
+        owner,
+        repo,
+      }),
+    )
+  }),
+)
+
+/* Start the Service Worker */
+start()
+```
+
+The structure of your mocks is up to you: modularize, abstract, reuse.
+
+## Integrate
+
+Mocking is a development-only procedure. It's recommended to include your mocking module (i.e. `src/mocks.js`) into your application's entry during the build.
+
+### Using webpack
+
+```js
+// webpack.config.js
+const __DEV__ = process.env.NODE_ENV === 'development'
+
+module.exports = {
+  entry: [
+    // Conditionally include mocks in development
+    __DEV__ && 'src/mocks.js',
+
+    // Include your application's entry
+    'src/index.js',
+  ].filter(Boolean),
+
+  // The rest of your webpack config...
+}
+```
+
+### Using conditional require
+
+```js
+// src/index.js
+if (process.env.NODE_ENV === 'development') {
+  require('./mocks')
+}
+```
+
+## Update on reload
+
+Service Workers are designed as a caching tool. However, we don't want our mocking definitions to be cached since that would result into out-of-date logic during development. It's highly recommended to enable "Update on reload" functionality in your browser. This will force Service Worker to update on each page reload, ensuring the latest logic is applied. See the browser-specific instructions on how to do that below.
+
+> Read more about the [Service Worker lifecycle](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle).
+
+### Chrome
+
+- DevTools > Application > Service Workers
+
+> TODO: ADD the image here
+
+## Verify
+
+Upon successful completion of this tutorial you should see the following message in your browser's console:
+
+> TODO Add the message image
+
+Try performing a request to the mocked route to see the mocking in action:
+
+```js
+fetch('https://api.github.com/repos/octocat/octocat')
+```

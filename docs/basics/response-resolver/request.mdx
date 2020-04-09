@@ -1,0 +1,52 @@
+---
+title: request
+---
+
+**Request** is an object that stores the information about a matched request.
+
+Unlike a NodeJS `Request`, the request object in MSW is a _partial_ request representation. This is because not all the data can be transferred between a worker and a client processes.
+
+## Properties
+
+Request object has different properties depending on the [Request handler](/docs/basics/request-handler) that is being used.
+
+### REST
+
+| Property name    | Type                     | Description |
+| ---------------- | ------------------------ | ----------- |
+| `url`            | `string`                 | ...         |
+| `method`         | `abc`                    | ...         |
+| `headers`        | `abc`                    | ...         |
+| `params`         | `Record<string, string>` | ...         |
+| `body`           | `abc`                    | ...         |
+| `bodyUsed`       | `abc`                    | ...         |
+| `cache`          | `abc`                    | ...         |
+| `mode`           | `abc`                    | ...         |
+| `credentials`    | `abc`                    | ...         |
+| `redirect`       | `abc`                    | ...         |
+| `referrer`       | `abc`                    | ...         |
+| `referrerPolicy` | `abc`                    | ...         |
+| `integrity`      | `abc`                    | ...         |
+| `destination`    | `abc`                    | ...         |
+
+### GraphQL
+
+| Property name | Type                     | Description                  |
+| ------------- | ------------------------ | ---------------------------- |
+| `url`         | `string`                 | ...                          |
+| `variables`   | `Record<string, string>` | Query or mutation variables. |
+
+## Usage
+
+Access the request object as the first argument of a [Response resolver](/docs/basics/response-resolver) function.
+
+```js
+import { composeMocks, rest } from 'msw'
+
+composeMocks(
+  rest.post('/user/:userId/articles', (req, res, ctx) => {
+    const { userId } = req.params
+    return res(ctx.text(userId))
+  }),
+)
+```

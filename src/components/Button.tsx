@@ -16,8 +16,9 @@ export const Button = styled.button<ButtonProps>`
   text-decoration: none;
 
   &:focus {
-    outline: 0;
-    box-shadow: 0 0 0 5px red;
+    outline-color: red;
+    /* box-shadow: 0 0 0 5px
+      ${({ theme }) => theme.utils.alpha(theme.colors.primary, 0.5)}; */
   }
 
   ${({ variant }) =>

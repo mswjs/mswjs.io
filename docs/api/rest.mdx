@@ -1,0 +1,52 @@
+---
+title: rest
+---
+
+The `rest` namepsace is designed for a more convenient handling of REST API requests. It contains a set of utility functions for easier mocking of requests that follow REST API specification.
+
+## Methods
+
+Each method in this namespace corresponds to a REST API request method.
+
+- `rest.get()`
+- `rest.post()`
+- `rest.put()`
+- `rest.patch()`
+- `rest.delete()`
+- `rest.options()`
+
+Using a method under this namespace automatically creates a request handler that matches any requests with the respective REST API method. Additionally, such request handler accepts a request URL as the first parameter to narrow the match.
+
+```js
+import { rest } from 'msw'
+
+// Match all "POST" requests to the given path
+rest.post('/author/:authorId/:postId', responseResolver)
+```
+
+Example usage above would match the following requests:
+
+- `POST /author/1/2`
+- `POST /author/123-abc/456-def`
+
+## Examples
+
+```js
+import { composeMocks, rest } from 'msw'
+
+const { start } = composeMocks(
+  rest.get('/users/:userId', (req, res, ctx) => {
+    const { userId } = req.params
+
+    return res(
+      ctx.json({
+        id: userId,
+        firstName: 'John',
+        lastName: 'Maverick',
+      }),
+    )
+  }),
+)
+
+start()
+```

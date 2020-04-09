@@ -1,0 +1,31 @@
+---
+title: Usage with CDN
+---
+
+You can include MSW via a CDN that can serve NPM packages. In this recipe we are going to look on the setup of using this library via CDN.
+
+## Include the package
+
+Pick a suitable CND that can serve NPM modules and include the respective script in your page. You can find a few example using popular CDN below.
+
+### unpkg
+
+```html
+<script src="https://unpkg.com/msw/lib/index.js"></script>
+```
+
+### jsDelivr
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/msw/lib/index.js"></script>
+```
+
+## Place the Service Worker
+
+It's recommended you use the `npx msw init` command to copy the `mockServiceWorker.js` file into your public directory:
+
+```bash
+$ npx msw init <PUBLIC_DIR>
+```
+
+**In case you cannot perform this action**, manually copy the `mockServiceWorker.js` file from the latest state of the repository into your public directory:

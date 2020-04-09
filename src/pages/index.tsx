@@ -7,7 +7,7 @@ import { Grid } from '../components/Grid'
 import { Button } from '../components/Button'
 import SEO from '../components/seo'
 import { TextLead } from '../components/TextLead'
-import { Divider } from '../components/Divider'
+import { DividerPattern } from '../components/DividerPattern'
 
 import HeroIllustration from '../images/hero-illustration.png'
 import { Highlights } from '../sections/Highlights'
@@ -38,7 +38,7 @@ const HomePage = () => (
               gap={10}
               marginTop={16}
             >
-              <Button as={Link} to="/docs" variant="primary">
+              <Button as={Link} to="/docs/getting-started" variant="primary">
                 Getting started
               </Button>
               <Button as="a" href="https://github.com/open-draft/msw">
@@ -52,12 +52,11 @@ const HomePage = () => (
         </Composition>
       </Grid>
     </Box>
-    <Divider />
+    <DividerPattern />
 
     <Features />
     <Highlights />
     <GettingStarted />
-    <Divider />
     <WhenToUse />
     <DesignedToScale />
   </Layout>

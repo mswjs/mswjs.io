@@ -1,0 +1,29 @@
+---
+title: Request handler
+---
+
+**Request handler** is a function that determines whether an outgoing request should be mocked, and specifies its mocked response.
+
+Request handler function returns an Object with the following properties:
+
+| Property name   | Type                              | Description                                                                                                           |
+| --------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `mask`          | `string`                          | Request URL path used to extract path parameters from the URL.                                                        |
+| `predicate`     | `(req: MockedRequest) => boolean` | Predicate function that determines whether a request should be mocked using the given request handler.                |
+| `resolver`      | (req, res, ctx) => MockedResponse | [Response resolver](/docs/basics/response-resolver) function that returns the mocked response.                        |
+| `defineContext` | ...                               | Custom context definition function. Determines which [Context utilities](TODO) are available in this request handler. |
+
+## Type definition
+
+> TODO Add the ref to ts
+
+## Standard handlers
+
+Mock Service Worker exposes a set of standard request handlers for your convenience. It's recommende to use those, as they are sufficient in most use cases.
+
+**See the list of the standard request handlers below:**
+
+- [rest](/docs/api/rest)
+- [graphql](/docs/api/graphql)
+
+> You can always create a [Custom request handler](/docs/recipes/custom-request-handler) when the standard ones are not enough.

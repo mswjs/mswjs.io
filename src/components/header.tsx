@@ -19,6 +19,10 @@ const StyledHeader = styled.header`
     &:hover {
       color: #fff;
     }
+
+    &[aria-current='page'] {
+      color: #fff;
+    }
   }
 `
 

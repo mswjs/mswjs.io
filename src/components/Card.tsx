@@ -33,6 +33,10 @@ export const Card = styled(Box)<CardProps>`
         0 1.3px 2.1px rgba(0, 0, 0, 0.012), 0 2.5px 4px rgba(0, 0, 0, 0.015),
         0 4.5px 7.1px rgba(0, 0, 0, 0.018), 0 8.4px 13.4px rgba(0, 0, 0, 0.022),
         0 20px 32px rgba(0, 0, 0, 0.03);
+
+      a {
+        color: var(--color-secondary);
+      }
     `}
     
   ${({ variant }) =>
@@ -41,6 +45,14 @@ export const Card = styled(Box)<CardProps>`
       border: 2px solid #fff;
       color: inherit;
     `};
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `
 
 Card.defaultProps = {

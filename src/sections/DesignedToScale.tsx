@@ -100,13 +100,13 @@ export const DesignedToScale = () => {
               stroke="#8BB637"
               logo={DiNodejsSmall}
               iconSize={52}
-              url="/docs/tutorials"
+              url="/docs/tutorials/mocking-rest-api"
               title="REST API"
             />
             <ApiCard
               stripeColor="#D147A7"
               logo={GraphQLLogo}
-              url="/docs/tutorials"
+              url="/docs/tutorials/mocking-graphql-api"
               title="GraphQL"
             />
             <ApiCard

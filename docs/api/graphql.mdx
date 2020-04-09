@@ -1,0 +1,104 @@
+---
+title: graphql
+---
+
+The `graphql` namespace is designed for handling GraphQL operations. It contains a set of useful methods for mocking GraphQL requests.
+
+## Methods
+
+Each method in this namespace represents a GraphQL _operation kind_:
+
+- `graphql.query()`
+- `graphql.mutation()`
+
+> Please note that subscriptions are not currently supported.
+
+Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](TODO) as the second.
+
+```js
+import { graphql } from 'msw'
+
+graphql.query('QueryName', responseResolver)
+graphql.mutation('MutationName', responseResolver)
+```
+
+## Examples
+
+### Basic query/mutation
+
+```js
+import { composeMocks, graphql } from 'msw'
+
+const { start } = composeMocks(
+  graphql.query('GetUserDetail', (req, res, ctx) => {
+    return res(
+      ctx.data({
+        user: {
+          firstName: 'John',
+          lastName: 'Maverick',
+        },
+      }),
+    )
+  }),
+)
+
+start()
+```
+
+### Accessing variables
+
+The variables of a query/mutation can be accessed in the `req.variables` object.
+
+```js
+import { composeMocks, graphql } from 'msw'
+
+const { start } = composeMocks(
+  graphql.mutation('DeletePost', (req, res, ctx) => {
+    // The post ID to delete
+    const { postId } = req.variables
+
+    return res(ctx.data([{ id: 2 }, { id: 3 }]))
+  }),
+)
+
+start()
+```
+
+### Usage with TypeScript
+
+```ts
+import { composeMocks, graphql } from 'msw'
+
+// Provide the manually written GraphQL types
+// or use the one generated for you (i.e. with "graphql-codegen").
+interface GetUserDetailQuery {
+  user {
+    firstName: string
+    lastName: string
+  }
+}
+
+interface GetUserDetailQueryVariables {
+  userId: string
+}
+
+const { start } = composeMocks(
+  graphql.query<GetUserDetailQuery, GetUserDetailVariables>(
+    'GetUserDetail',
+    (req, res, ctx) => {
+      const { userId } = req.variables
+
+      return res(
+        ctx.data({
+          user: {
+            firstName: 'John',
+            lastName: 'Maverick'
+          }
+        })
+      )
+    })
+  )
+)
+
+start()
+```

@@ -1,0 +1,42 @@
+---
+title: Custom response transformer
+---
+
+## Example
+
+Let's create a custom response transformer that would set a `Content-Type: application/hal+json` on the mocked response.
+
+```js
+// src/mocks/transformers/halJson.js
+export const halJson = (body) => {
+  return (res) => {
+    res.headers.set('Content-Type', 'application/hal+json')
+    res.body = JSON.stringify(body)
+
+    // Do not forget to return the mocked response
+    return res
+  }
+}
+```
+
+As the next step, let's use our custom `halJson()` response transformer in the mock definition:
+
+```js
+// src/mocks/index.js
+import { composeMocks, rest } from 'msw'
+import { halJson } from './transformers/halJson'
+
+const { start } = composeMocks(
+  rest.get('/users', (req, res, ctx) => {
+    return res(
+      ctx.status(301),
+      halJson({
+        firstName: 'John',
+        lastName: 'Maverick',
+      }),
+    )
+  }),
+)
+
+start()
+```

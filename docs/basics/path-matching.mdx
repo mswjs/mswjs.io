@@ -1,0 +1,73 @@
+---
+title: Path matching
+---
+
+In order to determine which outgoing requests should be mocked, MSW performs request path matching. It's a process when an actual request is compared to the request handlers you've defined when called `composeMocks()` function.
+
+> Path matching is relevant only when mocking a REST API. In case of GraphQL, the predicate is defined by the _operation name_. Learn more about how Mock Service Worker matches GraphQL requests in the [GraphQL API section](/docs/api/graphql).
+
+By default, an outgoing request will be mocked if there is a corresponding request handler that:
+
+- Has the same method;
+- Has a matching URL.
+
+## URL matching
+
+It is possible to perform a request's URL matching in three ways:
+
+- Exact URL string;
+- Path;
+- RegExp.
+
+> URL query parameters and hash **are ignored** when matching request URL. It's recommended to omit them when specifying URL or paths in request handlers.
+
+## Exacy URL string
+
+Using an exact URL string for the request handler path would match all requests which URL equals to that string.
+
+```js
+import { rest } from 'msw'
+
+rest.post('https://api.backend.com/users', responseResolver)
+```
+
+> Only the POST request to `https://api.backend.dev/users` would match this request handler.
+
+## Path
+
+Similar to how route paths are declared in Express, MSW supports path format for request handlers. Using path allows you to have wildcards and parameters in your URL.
+
+### Patch with wildcard
+
+```js
+import { rest } from 'msw'
+
+rest.get('/users/*', responseResolver)
+```
+
+### Path with parameters
+
+To add a parameter to your request path use the `:paramName` format.
+
+```js
+import { rest } from 'msw'
+
+rest.post('https://api.backend.dev/user/:userId', (req, res, ctx) => {
+  const { userId } = req.params
+  // resolve the response...
+})
+```
+
+You can then access the declared parameters in the `req.params` object. For example, if the application performs a POST request to `https://api.backend.dev/user/abc-123`, then `req.params.userId` would equal to `"abc-123"`.
+
+## RegExp
+
+When provided a regular expression, MSW would only mock the requests which URL matches that regular expression. Unmatched requests would be performed as-is.
+
+```js
+import { rest } from 'msw'
+
+rest.delete(/\/posts\//, responseResolver)
+```
+
+Performing a DELETE request to `http://localhost:8080/posts/` will match this request handler. The hostname of the URL matters not in this case, as this regular expression matches a portion of the URL.

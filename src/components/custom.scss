@@ -24,11 +24,20 @@ h1,
 h2,
 h3,
 h4 {
+  margin-bottom: 0.5em;
   color: var(--color-gray-dark);
   line-height: 1.2;
 
+  &:first-child {
+    margin-top: 0 !important;
+  }
+
   &:last-child {
     margin-bottom: 0;
+  }
+
+  & + pre {
+    margin-top: 0 !important;
   }
 }
 
@@ -42,8 +51,34 @@ h3 {
 }
 
 h4 {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   font-weight: 500;
+}
+
+hr {
+  margin: 0;
+  border: 0;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+.prism-code {
+  margin: 2rem 0;
+}
+
+#docs-page {
+  h1,
+  h2,
+  h3 {
+    margin-top: 1.5em;
+  }
+
+  h2 {
+    padding-top: 1.5em;
+    border-top: 1px solid var(--color-gray-dim);
+  }
 }
