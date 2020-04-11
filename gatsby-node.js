@@ -1,5 +1,4 @@
 const path = require('path')
-const R = require('ramda')
 const { createFilePath } = require('gatsby-source-filesystem')
 
 const DOCS_BASE_PATH = 'docs'
@@ -43,12 +42,18 @@ const createNavTree = (edges) => {
     title: node.frontmatter.title,
     displayName: node.frontmatter.displayName,
     pathChunks: getRelativePagePath(node.fileAbsolutePath).split('/'),
+    filename: path.basename(node.fileAbsolutePath),
   }))
 
   function getRecursiveTree(pages) {
     return pages.reduce((tree, page) => {
-      const { pathChunks, url, title, displayName } = page
+      let { pathChunks, filename, url, title, displayName } = page
       const resolvedTitle = displayName || title
+
+      // Remove the last node in the path chunks for root pages
+      if (/^(index|readme)\.mdx?$/i.test(filename)) {
+        pathChunks = pathChunks.slice(0, -1)
+      }
 
       if (pathChunks.length === 0) {
         return tree.concat({
@@ -146,8 +151,10 @@ exports.createPages = ({ actions, graphql }) => {
 
     const navTree = createNavTree(edges)
 
-    console.log(JSON.stringify(navTree, null, 2))
-
+    /**
+     * @TODO This order is wrong. It puts the items not in the list
+     * first before ordered items.
+     */
     const sortedNavTree = navTree.sort(
       (a, b) =>
         NAV_TREE_ORDER.indexOf(a.title) - NAV_TREE_ORDER.indexOf(b.title),
