@@ -3,6 +3,7 @@ import { Composition } from 'atomic-layout'
 import styled from 'styled-components'
 import { Grid } from '../components/Grid'
 import { CheckistItem } from '../components/ChecklistItem'
+import { Accent } from '../components/Accent'
 
 const Container = styled.div`
   background-image: linear-gradient(
@@ -29,7 +30,7 @@ export const Highlights = () => {
             <h2>
               Convincing titles.
               <br />
-              Are not easy to write.
+              Are <Accent>not easy</Accent> to write.
             </h2>
           </div>
           <Composition as={UnstyledUl} gap={12} templateColsMd="repeat(2, 1fr)">

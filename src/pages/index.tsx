@@ -15,6 +15,10 @@ import { GettingStarted } from '../sections/GettingStarted'
 import { Features } from '../sections/Features'
 import { WhenToUse } from '../sections/WhenToUse'
 import { DesignedToScale } from '../sections/DesignedToScale'
+import { StartUsing } from '../sections/StartUsing'
+import { Testing } from '../sections/Testing'
+import { IncrementalDevelopment } from '../sections/IncrementalDevelopment'
+import { Debugging } from '../sections/Debugging'
 
 const HomePage = () => (
   <Layout>
@@ -27,7 +31,10 @@ const HomePage = () => (
           gap={64}
         >
           <div>
-            <h1>API mocking done right</h1>
+            <h1>
+              Client-side API mocking <br />
+              of the next generation
+            </h1>
             <TextLead>
               Seamless mocking by intercepting production requests. No servers,
               no conditional URL, not a single change to the existing codebase.
@@ -56,9 +63,15 @@ const HomePage = () => (
 
     <Features />
     <Highlights />
+
+    <Testing />
+    <IncrementalDevelopment />
+    <Debugging />
+
     <GettingStarted />
     <WhenToUse />
     <DesignedToScale />
+    <StartUsing />
   </Layout>
 )
 

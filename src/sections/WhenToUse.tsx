@@ -54,27 +54,10 @@ export const WhenToUse = () => {
           marginTop={64}
         >
           <UsageItem
-            icon={IoIosCheckmarkCircleOutline}
-            title="Testing"
-            description={`Test what matters: your code. No stubs, no conditional URL, no servers.`}
-          />
-          <UsageItem
-            icon={IoIosGitMerge}
-            title="Incremental development"
-            description={`Agree on the routes or queries, and kick off the frontend
-          development the same day. Simply disable the mocking once the backend is ready.`}
-          />
-          <UsageItem
             icon={IoIosPeople}
             title="Workshops & tutorials"
             description={`Let your students focus on the topic, while using a reliable
           "backend" implementation that is never down and behaves the same across different OS.`}
-          />
-          <UsageItem
-            icon={IoIosBug}
-            title="Debugging"
-            description={`Got an issue? Mock the very response that crashes your app. No more
-          hours "just trying to get it right".`}
           />
           <UsageItem
             icon={IoIosRocket}
