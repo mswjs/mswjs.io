@@ -49,7 +49,17 @@ Request handler can return a mask property that describes a request path mask. I
 
 It is possible to provide a custom context to your request handler. To do so, provide an optional `defineContext` property of your request handler. That property must be a function that returns the map of custom context utilities to be provided under the `ctx` argument of the response resolver.
 
-> TODO Add examples
+```js
+// TODO
+
+const f = () => {
+  return {
+    defineContext() {
+      //
+    },
+  }
+}
+```
 
 Read more on how to create custom context utilities in the respective section of the documentation:
 

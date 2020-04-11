@@ -12,15 +12,14 @@ It's also possible to create a [Custom response transformer](/docs/recipes/custo
 
 ## Mocked response
 
-Effectively, a call to the `res()` function creates a mocked response object. Each response transformer it accepts acts like a functional chain that modifies that mocked response object.
+A call to the `res()` function creates a mocked response object. Each response transformer the `res()` function accepts modifies that mocked response and passes it to the next response transformer.
 
 ### Properties
-
-> TODO List which properties `res` has.
 
 | Property name | Type                                                                          | Description                                                   |
 | ------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | `status`      | `number`                                                                      | Mocked response HTTP status code.                             |
+| `statusText`  | `string`                                                                      | HTTP status text of the current status code.                  |
 | `body`        | `string`                                                                      | Stringified body of the response.                             |
 | `headers`     | [`Headers`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/Headers) | Mocked response HTTP headers.                                 |
 | `delay`       | `number`                                                                      | Delay duration (ms) before responding with a mocked response. |

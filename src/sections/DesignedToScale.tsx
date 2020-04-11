@@ -114,7 +114,7 @@ export const DesignedToScale = () => {
               stripeColor="#fff"
               stroke="#fff"
               logo={IoIosApps}
-              url="/docs/tutorials"
+              url="/docs/recipes/custom-request-handler"
               title="Custom API"
             />
           </Composition>

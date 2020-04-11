@@ -15,6 +15,7 @@ const MenuSection = styled.section`
 
     &[aria-current='page'] {
       color: var(--color-secondary);
+      font-weight: 600;
     }
   }
 `
@@ -77,7 +78,9 @@ const renderTreeItem = (items: MenuTree[], isRoot?: boolean) => {
       <PageListItem key={url || index} isRootSection={isRootSection}>
         {url ? <Link to={url}>{Title}</Link> : Title}
         {children && (
-          <PagesList nested>{renderTreeItem(children, false)}</PagesList>
+          <PagesList nested={!isRootSection}>
+            {renderTreeItem(children, false)}
+          </PagesList>
         )}
       </PageListItem>
     )

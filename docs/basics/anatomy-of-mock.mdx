@@ -1,0 +1,40 @@
+---
+title: Anatomy of mock
+---
+
+Before starting with Mock Service Worker it is great to get a high-level picture of the parts that would make your workflow with the library. Below we are going to look at the example of a mock definition using MSW, and go through each part ...
+
+## Overview
+
+Here is an example of a mock definition file:
+
+```js
+// src/mocks.js
+import { composeMocks, rest } from 'msw'
+
+const { start } = composeMocks(
+  rest.get('/users', (req, res, ctx) => {
+    // ...
+  }),
+)
+
+start()
+```
+
+```js
+import { composeMocks, rest } from 'msw'
+```
+
+```js lineStartNumber=3
+const { start } = composeMocks(...)
+```
+
+```js lineStartNumber=4
+rest.get('/users', (req, res, ctx) => {
+```
+
+```js
+start()
+```
+
+Last, but not least, there is a call of `start()` function that registers and activates a Service Worker.

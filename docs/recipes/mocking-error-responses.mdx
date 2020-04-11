@@ -4,7 +4,11 @@ title: Mocking error responses
 
 When it comes to mocking an error response it's recommended to **compose a valid response** using `res()` composition chain, rather than throwing an exception inside a request handler. This is mainly to distinguish between _internal_ and _intended_ exceptions.
 
-> Exception originating from a request handler is gracefully handled as a 500 response from the Service Worker, but it's highly recommended **to resolve it, as it indicates an error in your code**.
+<Hint mode="warning">
+  Exception originating from a request handler is gracefully handled as a 500
+  response from the Service Worker, but it's highly recommended{' '}
+  <strong>to resolve it, as it indicates an error in your code</strong>.
+</Hint>
 
 By treating an error response as an actual response, and not an exception, you respect the standard and ensure your client code receives and handles a valid error response.
 

@@ -22,7 +22,7 @@ Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's p
 
 ### Where is my "public" directory?
 
-A public directory is usually a root directory server by your server (i.e. `./build`, `./public`, or `./dest`). This directory is often committed to Git, and so **should be the Mock Service Worker**.
+A public directory is usually a root directory server by your server (i.e. `./build`, `./public`, or `./dist`). This directory is often committed to Git, and so **should be the Mock Service Worker**.
 
 #### Common public directories
 
@@ -34,7 +34,10 @@ Below you can find a list of public directories in most popular JavaScript proje
 | [GatsbyJS](https://www.gatsbyjs.org)             | `./public`       |
 | [NextJS](https://nextjs.org)                     | `./static`       |
 
-> Not sure what is your public directory? Reach out to the maintainers of the development stack that you are using, they should be able to help.
+<Hint>
+  Not sure where is your public directory? Reach out to the maintainers of the
+  development stack that you are using, they should be able to help.
+</Hint>
 
 ## Define mocks
 
@@ -78,11 +81,13 @@ const { start } = composeMocks(
 start()
 ```
 
-The structure of your mocks is up to you: modularize, abstract, reuse.
+<Hint>
+  The structure of your mocks is up to you: modularize, abstract, reuse.
+</Hint>
 
 ## Integrate
 
-Mocking is a development-only procedure. It's recommended to include your mocking module (i.e. `src/mocks.js`) into your application's entry during the build.
+Mocking is a development-only procedure. It's recommended to include your mocking definition module (`src/mocks.js`) into your application's entry conditionally during the build.
 
 ### Using webpack
 
@@ -98,12 +103,31 @@ module.exports = {
     // Include your application's entry
     'src/index.js',
   ].filter(Boolean),
-
   // The rest of your webpack config...
 }
 ```
 
+### Using Rollup
+
+```js
+// rollup.config.js
+const __DEV__ = process.env.NODE_ENV === 'development'
+
+export default {
+  input: [
+    // Conditionally include mocks in development
+    __DEV__ && 'src/mocks.js',
+
+    // Include your application's entry
+    'src/main.js',
+  ].filter(Boolean),
+  // The rest of your Rollup config...
+}
+```
+
 ### Using conditional require
+
+In case you are not sure about how to modify your building configuration, you can always provision a conditional import statement in your application's code:
 
 ```js
 // src/index.js
@@ -112,9 +136,15 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
+<Hint mode="warning">
+  Note that we <strong>do not recommend</strong> including Mock Service Worker
+  in production environment. Doing so may lead to a distorted experience of your
+  customers.
+</Hint>
+
 ## Update on reload
 
-Service Workers are designed as a caching tool. However, we don't want our mocking definitions to be cached since that would result into out-of-date logic during development. It's highly recommended to enable "Update on reload" functionality in your browser. This will force Service Worker to update on each page reload, ensuring the latest logic is applied. See the browser-specific instructions on how to do that below.
+Service Workers are designed as a caching tool. However, we don't want our mocking definitions to be cached during development, since that would result into outdated mocks. It's highly recommended to enable "Update on reload" functionality in your browser. This will force Service Worker to update on each page reload, ensuring the latest logic is applied. See the browser-specific instructions on how to do that below.
 
 > Read more about the [Service Worker lifecycle](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle).
 

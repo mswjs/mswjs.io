@@ -6,11 +6,11 @@ Mock Service Worker comes with a first-class support for working with a GraphQL 
 
 ## GraphQL client
 
-This tutorial assumes you have a GraphQL client (Apollo, urql, etc.) installed and configured in your application. You may not necessarily have a GraphQL server yet, and working with MSW does not require you to have one either. A GraphQL client is required in order for your application to properly dispatch GraphQL queries, response to which we are going to mock.
+This tutorial assumes you have a GraphQL client (Apollo, urql, etc.) installed and configured in your application. You may not necessarily have a GraphQL server yet, and working with MSW does not require you to have one either. A GraphQL client is required in order for your application to properly dispatch GraphQL queries, responses to which we are going to mock.
 
 ### Which GraphQL clients are supported?
 
-All GraphQL client that comply with the [GraphQL operations specification](TODO) are supported. As long as the client dispatches requests having the following interface it will be supported:
+All GraphQL client that comply with the [GraphQL operations specification](TODO) are supported. As long as the client dispatches requests having the following interface, it will be supported:
 
 ```ts
 interface GraphQLRequest {
@@ -19,16 +19,21 @@ interface GraphQLRequest {
 }
 ```
 
-> Some GraphQL clients append extra information to the request payload. Additional properties do not affect the mocking procedure, and you can access them in the response resolvers.
+<Hint>
+  Some GraphQL clients append extra information to the request's payload.
+  Additional properties do not affect the mocking procedure, and you can still
+  access them in the response resolvers.
+</Hint>
 
 ## Imports
 
-After the MSW library is installed, let's create a mocks.js module where our mocking definitions would be stored. We would have to import two things from the library:
+After the MSW library is installed, let's create a `mocks.js` file where our mocking definitions would be stored. We would have to import two things from the library:
 
 - `composeMocks()`, a function that describes which operations to mock;
 - `graphql`, a namespace that contains utilities for mocking GraphQL API.
 
 ```js
+// src/mocks.js
 import { composeMocks, graphql } from 'msw'
 ```
 
@@ -37,26 +42,30 @@ import { composeMocks, graphql } from 'msw'
 Now let's define which GraphQL operations should be mocked. In order to target an operation, use `graphql.query()` or `graphql.mutation()` methods to mock a query or a mutation, respectively. We will start by calling those functions and providing the names of the operations we want to mock.
 
 ```js
+// src/mocks.js
+import { composeMocks, graphql } from 'msw'
+
 composeMocks(
   graphql.query('GetUserDetail', null),
-  graphql.mutation('Logout', null),
+  graphql.mutation('Login', null),
 )
 ```
 
 In the code above we have created two **request handlers**:
 
-- `graphql.query()`, handles the `GetUserDetail` query;
-- `graphql.mutation()`, handles the `Logout` mutation.
+- `graphql.query()`, that handles a query with the name `GetUserDetail`;
+- `graphql.mutation()`, that handles the `Login` mutation.
 
-> You might have noticed that we are not specifying any GraphQL endpoint. MSW intercepts all requests and looks up the mentioned queries/mutations in them, so you don't have to bind the mocking to a specific server endpoint.
+> You might have noticed that we are not specifying any GraphQL endpoints. MSW intercepts all requests and looks up the specified queries/mutations in them, so you don't have to bind the mocking to a specific server endpoint.
 
-You can read about how to work with GraphQL request handlers in more detail below.
-
-> TODO
+<Hint>
+  Read the API specification on <a href="/docs/api/graphql">graphql</a> request
+  handlers to get more familiar.
+</Hint>
 
 ## Response resolvers
 
-After we define which GraphQL operations should be mocked we have to describe the mocked response. To do so, we must pass the second argument to our `graphql.query()` and `graphql.mutation()` functions. That argument is a [Response resolver](/docs/basics/response-resolver) function that determines the mocked response.
+After we have defined which GraphQL operations should be mocked, we have to describe their mocked responses. To do so, we must pass the second argument to our `graphql.query()` and `graphql.mutation()` functions. That argument is a [Response resolver](/docs/basics/response-resolver) function that determines the mocked response.
 
 A response resolver function accepts three arguments:
 
@@ -67,7 +76,18 @@ A response resolver function accepts three arguments:
 Let's add response resolvers to our existing code:
 
 ```js
+// src/mocks.js
+import { composeMocks, graphql } from 'msw'
+
 composeMocks(
+  /**
+   * query GetUserDetail {
+   *   user {
+   *     firstName
+   *     lastName
+   *   }
+   * }
+   */
   graphql.query('GetUserDetail', (req, res, ctx) => {
     return res(
       ctx.data({
@@ -79,11 +99,20 @@ composeMocks(
     )
   }),
 
-  graphql.mutation('Logout', (req, res, ctx) => {
+  /**
+   * mutation Login($username: String!) {
+   *   user {
+   *     firstName
+   *   }
+   * }
+   */
+  graphql.mutation('Login', (req, res, ctx) => {
+    const { username } = req.variables
+
     return res(
       ctx.errors([
         {
-          message: 'This is a mocked error!',
+          message: `User "${username} does not exist"`,
           locations: [
             {
               line: 1,
@@ -104,12 +133,13 @@ With the above declaration our `GetUserDetail` query would return the user data,
 The result of calling the `composeMocks()` function is a public API object that contains the `start()` function. We need to call that function in order for MSW to start the Service Worker responsible for intercepting requests and mocking their responses.
 
 ```js
+// src/mocks.js
 import { composeMocks, graphql } from 'msw'
 
 const { start } = composeMocks(
   // Our request handlers declared previously
   graphql.query('GetUserDetail', ...),
-  graphql.mutation('Logout', ...)
+  graphql.mutation('Login', ...)
 )
 
 // Calling the "start" function registers the Service Worker
@@ -127,10 +157,16 @@ With the Service Worker active and running, dispatch a GraphQL operation that wo
 Here's an example of how to perform a `GetUserDetail` query using Apollo client:
 
 ```js
+// src/App.js
 import { gql } from 'graphql-tag'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
+
+// Include the mock definition file
+if (process.env.NODE_ENV === 'development') {
+  require('./mocks')
+}
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
@@ -156,7 +192,10 @@ client.query({
 })
 ```
 
-> The way to perform GraphQL operations depends on the GraphQL client. Please follow the respective instructions of the client you are using.
+<Hint>
+  The way to perform GraphQL operations depends on the GraphQL client. Please
+  follow the respective instructions of the client you are using.
+</Hint>
 
 Open your DevTools in your browser and go to the "Network" tab. There you find the dispatched request and notice that the response has a `200 OK (from ServiceWorker)` status text.
 

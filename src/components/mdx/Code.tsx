@@ -6,12 +6,15 @@ export const Code: React.FC<{
   children: string
   language: string
   className?: string
-}> = ({ children, language, className }) => {
+  lineStartNumber?: string
+}> = ({ children, language, className, lineStartNumber }) => {
   return (
     <ReactCdxCode
       code={children}
       language={language || (className && className.replace('language-', ''))}
       theme={CodeTheme}
+      showLineNumbers={true}
+      lineNumberStart={lineStartNumber && parseFloat(lineStartNumber)}
     />
   )
 }

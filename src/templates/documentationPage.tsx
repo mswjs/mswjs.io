@@ -12,12 +12,16 @@ import { TableOfContents } from '../components/mdx/TableOfContents'
 import { Blockquote } from '../components/mdx/Blockquote'
 import { Menu } from '../components/mdx/Menu'
 import { Breadcrumbs } from '../components/mdx/Breadcrumbs'
+import { GitHubRepo } from '../components/mdx/GitHubRepo'
+import { Hint } from '../components/mdx/Hint'
 
 const components = {
   a: MdxLink,
   pre: ({ children }) => <>{children}</>,
   code: MdxCode,
   blockquote: Blockquote,
+  GitHubRepo,
+  Hint,
 }
 
 const DocumentationPage = ({ data, pageContext }) => {

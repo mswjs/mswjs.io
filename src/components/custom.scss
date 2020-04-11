@@ -66,6 +66,14 @@ a {
   color: var(--color-primary);
 }
 
+tt,
+code {
+  display: inline-block;
+  padding: 0 0.2em;
+  background-color: hsla(50, 100%, 70%, 0.2);
+  font-size: 1em;
+}
+
 .prism-code {
   margin: 2rem 0;
 }

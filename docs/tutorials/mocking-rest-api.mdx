@@ -4,21 +4,25 @@ title: Mocking REST API
 
 import { PageLink } from '../../src/components/mdx/PageLink'
 
-This tutorial is going to take you through the process of mocking a REST API using Mock Service Worker. **It assumes you have completed the [Getting started](/docs/getting-started) tutorial**, and have the `msw` package installed in your project.
+This tutorial is going to take you through the process of mocking a REST API using Mock Service Worker. **It assumes you have completed the [Getting started](/docs/getting-started) tutorial**, and have the `msw` package installed in your project. It also assumes the basic knowledge of working with a REST API, such as understanding REST methods and HTTP status codes.
 
 ## Imports
 
-Let's start by creating a mocking definition file called `mocks.js` and import two essential functions from the `msw` package:
+Let's open our project and create a mocking definition file called `mocks.js`. In that file we are going to write our mocking logic.
+
+```bash
+$ touch src/mocks.js
+```
+
+Next, import two essential functions from the `msw` package:
 
 ```js
 // src/mocks.js
 import { composeMocks, rest } from 'msw'
 ```
 
-- `composeMocks()`, a function that describes which operations to mock;
+- `composeMocks()`, a function that composes a list of [request handlers](/docs/basics/request-handler);
 - `rest`, a namespace that contains utility functions for mocking a REST API.
-
-> List of pages here
 
 <PageLink slug="/getting-started" />
 
@@ -84,12 +88,18 @@ composeMocks(
 
 Let's analyze what's happening in this code example step by step.
 
-First, let's start with the `rest.get()` request handler. Its response resolver returns the call to the `res` function, which describes how to mock the response. In our case we pass two calls to context utilities as the arguments to that `res` function call:
+First, let's start with the `rest.get('/users')` request handler. Its response resolver returns the call to the `res` function, which describes how to mock the response. In our case we pass two calls to context utilities as the arguments to that `res` function call:
 
-- `ctx.status(403)`, to return a response with the status code 403;
+- `ctx.status(403)`, to return the response with the status code 403;
 - `ctx.json([...])`, to return an "application/json" type body containing two mocked objects that represent users.
 
-Now let's focus on the `rest.put()` handler. Similar to the previous one, we return the call to the res function, but this time we delay the response by 2s (`ctx.delay(2000)`), return the 200 OK status code (`ctx.status(200)`), and a JSON body with a mocked `error` property. Effectively, we are mocking a server error when attempting to create a new post while being unauthorized.
+Now, focusing on the `rest.put('/posts/:postId')` handler, we can notice a similar chain of response transformers:
+
+- `ctx.delay(2000)`, to delay the response by 2000 miliseconds;
+- `ctx.status(403)`, to return the "403 Not Authorized" status code;
+- `ctx.json()`, to return a JSON payload containing an error.
+
+Effectively, we are mocking a server error when attempting to create a new post while being unauthorized.
 
 ## Running Service Worker
 
@@ -110,3 +120,12 @@ start()
 ```
 
 Upon refreshing the page, you should see the confirmation message in the browser's console of your application. Any requests matching the defined request handlers are now mocked.
+
+## Verify & inspect
+
+Perform one of the requests defined in the `mocks.js` and see the mocked response:
+
+```js
+fetch('/users')
+fetch('/posts/abc-123', { method: 'PUT' })
+```
