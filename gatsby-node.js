@@ -2,10 +2,11 @@ const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 
 const DOCS_BASE_PATH = 'docs'
-const NAV_TREE_ORDER = ['api', 'tutorials', 'basics', 'recipes']
+const ORDER_PREFIX_EXP = /(?<=\/)(\d+?)-/g
 
 const unslugify = (slug) => {
   return slug
+    .replace(/^(\d+?)-/g, '')
     .replace(/^([a-z])/, (_, letter) => letter.toUpperCase())
     .replace(/-([a-zA-Z])/g, (_, letter) => {
       return ` ${letter.toUpperCase()}`
@@ -123,7 +124,7 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
-      allMdx {
+      allMdx(sort: { order: ASC, fields: [fileAbsolutePath] }) {
         edges {
           node {
             id
@@ -151,15 +152,6 @@ exports.createPages = ({ actions, graphql }) => {
 
     const navTree = createNavTree(edges)
 
-    /**
-     * @TODO This order is wrong. It puts the items not in the list
-     * first before ordered items.
-     */
-    const sortedNavTree = navTree.sort(
-      (a, b) =>
-        NAV_TREE_ORDER.indexOf(a.title) - NAV_TREE_ORDER.indexOf(b.title),
-    )
-
     edges.forEach(({ node }) => {
       createPage({
         path: node.fields.url,
@@ -167,7 +159,7 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           postId: node.id,
           breadcrumbs: getDocumentBreadcrumbs(node),
-          navTree: sortedNavTree,
+          navTree,
         },
       })
     })
@@ -185,18 +177,18 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       trailingSlash: false,
     })
 
-    console.log({ node })
+    const postSlugWithoutOrder = postSlug.replace(ORDER_PREFIX_EXP, '')
 
     createNodeField({
       node,
       name: 'slug',
-      value: postSlug,
+      value: postSlugWithoutOrder,
     })
 
     createNodeField({
       node,
       name: 'url',
-      value: `/${DOCS_BASE_PATH}/${postSlug}`.replace(/\/+/g, '/'),
+      value: `/${DOCS_BASE_PATH}/${postSlugWithoutOrder}`.replace(/\/+/g, '/'),
     })
   }
 }
