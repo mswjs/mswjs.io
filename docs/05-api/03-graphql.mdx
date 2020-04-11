@@ -54,7 +54,6 @@ import { composeMocks, graphql } from 'msw'
 
 const { start } = composeMocks(
   graphql.mutation('DeletePost', (req, res, ctx) => {
-    // The post ID to delete
     const { postId } = req.variables
 
     return res(ctx.data([{ id: 2 }, { id: 3 }]))
@@ -69,8 +68,8 @@ start()
 ```ts
 import { composeMocks, graphql } from 'msw'
 
-// Provide the manually written GraphQL types
-// or use the one generated for you (i.e. with "graphql-codegen").
+// Provide manually written types or use the generated ones
+// (i.e. when using "graphql-codegen" package).
 interface GetUserDetailQuery {
   user {
     firstName: string
@@ -82,23 +81,50 @@ interface GetUserDetailQueryVariables {
   userId: string
 }
 
+interface LoginMutation {
+  user {
+    firstName
+  }
+}
+
+interface LoginMutationVariables {
+  username: string
+  password: string
+}
+
 const { start } = composeMocks(
   graphql.query<GetUserDetailQuery, GetUserDetailVariables>(
     'GetUserDetail',
     (req, res, ctx) => {
+      // Get auto-completion of variables
       const { userId } = req.variables
 
       return res(
         ctx.data({
+          // And auto-completion of the expected response structure
           user: {
             firstName: 'John',
             lastName: 'Maverick'
           }
         })
       )
+    }),
+
+    graphql.mutation<LoginMutation, LoginMutationVariables>('Login', (req, res, ctx) => {
+      // Get auto-completion of variables
+      const { username, password } = req.variables
+
+      return res.data({
+        // And auto-completion of the expected response structure
+        user: {
+          firstName: 'John'
+        }
+      })
     })
   )
 )
 
 start()
 ```
+
+In case you write your GraphQL implementation schema-first, it's recommended you use TypeScript type generators to get the types for your queries. We recommend using [GraphQL Code Generator](https://graphql-code-generator.com/) for that purpose.

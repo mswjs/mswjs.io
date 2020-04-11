@@ -4,16 +4,20 @@ import { Composition, Box } from 'atomic-layout'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { MDXProvider } from '@mdx-js/react'
 
-import Layout from '../components/layout'
-import Seo from '../components/seo'
-import { Link as MdxLink } from '../components/mdx/Link'
-import { Code as MdxCode } from '../components/mdx/code'
-import { TableOfContents } from '../components/mdx/TableOfContents'
-import { Blockquote } from '../components/mdx/Blockquote'
-import { Menu } from '../components/mdx/Menu'
-import { Breadcrumbs } from '../components/mdx/Breadcrumbs'
-import { GitHubRepo } from '../components/mdx/GitHubRepo'
-import { Hint } from '../components/mdx/Hint'
+import Layout from '../../components/layout'
+import Seo from '../../components/seo'
+
+/* Documentation components */
+import { Menu } from './components/Menu'
+import { Breadcrumbs } from './components/Breadcrumbs'
+import { TableOfContents } from './components/TableOfContents'
+
+/* Markdown components */
+import { Link as MdxLink } from '../../components/mdx/Link'
+import { Code as MdxCode } from '../../components/mdx/code'
+import { Blockquote } from '../../components/mdx/Blockquote'
+import { GitHubRepo } from '../../components/mdx/GitHubRepo'
+import { Hint } from '../../components/mdx/Hint'
 
 const components = {
   a: MdxLink,

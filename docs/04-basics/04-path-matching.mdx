@@ -35,7 +35,7 @@ import { rest } from 'msw'
 rest.post('https://api.backend.com/users', responseResolver)
 ```
 
-> Only the POST request to `https://api.backend.dev/users` would match this request handler.
+> Only `POST https://api.backend.dev/users` requests would match this request handler.
 
 ## Path
 
@@ -62,7 +62,7 @@ rest.post('https://api.backend.dev/user/:userId', (req, res, ctx) => {
 })
 ```
 
-You can then access the declared parameters in the `req.params` object. For example, if the application performs a POST request to `https://api.backend.dev/user/abc-123`, then `req.params.userId` would equal to `"abc-123"`.
+You can then access the declared parameters in the `req.params` object. For example, if the application performs a `POST https://api.backend.dev/user/abc-123` request, then `req.params.userId` would equal to `"abc-123"`.
 
 ## RegExp
 
@@ -74,4 +74,4 @@ import { rest } from 'msw'
 rest.delete(/\/posts\//, responseResolver)
 ```
 
-Performing a DELETE request to `http://localhost:8080/posts/` will match this request handler. The hostname of the URL matters not in this case, as this regular expression matches a portion of the URL.
+Performing a `DELETE http://localhost:8080/posts/` request will match this request handler. The hostname of the URL matters not in this case, as this regular expression matches a portion of the URL.

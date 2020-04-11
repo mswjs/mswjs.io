@@ -2,6 +2,10 @@ const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 
 const DOCS_BASE_PATH = 'docs'
+const DOCS_TEMPLATE_PATH = path.resolve(
+  __dirname,
+  './src/templates/docs/singlePage.tsx',
+)
 const ORDER_PREFIX_EXP = /(?<=\/)(\d+?)-/g
 
 const unslugify = (slug) => {
@@ -26,7 +30,7 @@ const getDocumentBreadcrumbs = (node) => {
   const breadcrumbs = pathChunks.map((filePath) => {
     return {
       title: unslugify(filePath),
-      url: '#',
+      url: node.fields.url,
     }
   })
 
@@ -117,10 +121,6 @@ const createNavTree = (edges) => {
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
-  const singlePageTemplate = path.resolve(
-    __dirname,
-    './src/templates/documentationPage.tsx',
-  )
 
   return graphql(`
     {
@@ -155,7 +155,7 @@ exports.createPages = ({ actions, graphql }) => {
     edges.forEach(({ node }) => {
       createPage({
         path: node.fields.url,
-        component: singlePageTemplate,
+        component: DOCS_TEMPLATE_PATH,
         context: {
           postId: node.id,
           breadcrumbs: getDocumentBreadcrumbs(node),

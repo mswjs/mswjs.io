@@ -2,9 +2,22 @@
 title: Custom request handler
 ---
 
+<Hint mode="warning">
+  This page assumes a profound understanding of the library and is{' '}
+  <strong>not recommended for beginners</strong>. Before you learn how to write
+  a custom API wrapper you should understand the underlying concepts first.
+</Hint>
+
 You can create a custom Request handler that would be closer to your application's logic, if necessary.
 
 > TODO It'd be nice to have a scenario for a custom request handler. For example, a request handler that processes outgoing traffic only from a specific React component.
+
+## Pre-requisites
+
+Understanding of the following concepts is required before you continue with writing your custom request handler:
+
+- [Request handler](/docs/basics/request-handler)
+- [Response resolver](/docs/basics/response-resolver)
 
 ## Definition
 
@@ -21,7 +34,13 @@ Request handler itself is an Object that contains the following properties:
 - `resolver`
 - `defineContext`
 
-> You can read about what each of those properties represent on the Request handler page.
+### Mask
+
+### Predicate
+
+### Resolver
+
+### Define context
 
 The mocking schema you define via calling `composeMocks()`, in fact, keeps a list of such request handler objects and matches all requests against their `predicate` functions. If you take a look at the existing request handlers, you may notice that they are rather functions, not objects:
 
@@ -50,15 +69,30 @@ Request handler can return a mask property that describes a request path mask. I
 It is possible to provide a custom context to your request handler. To do so, provide an optional `defineContext` property of your request handler. That property must be a function that returns the map of custom context utilities to be provided under the `ctx` argument of the response resolver.
 
 ```js
+// src/mocks/handlers.js
 // TODO
+import { halJson } from './transformers/halJson'
 
 const f = () => {
   return {
     defineContext() {
-      //
+      halJson,
     },
   }
 }
+```
+
+```js
+// src/mocks/index.js
+import { composeMocks } from 'msw'
+import { f } from './handlers'
+
+const { start } = composeMocks(
+  f('???', (req, res, ctx) => {
+    // TODO Would be nice to use a meaningful util
+    ctx.halJson()
+  }),
+)
 ```
 
 Read more on how to create custom context utilities in the respective section of the documentation:

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box } from 'atomic-layout'
 import { IoIosList as ListIcon } from 'react-icons/io'
-import theme from '../../theme'
+import theme from '../../../theme'
 
 const Container = styled.div`
   padding: 4rem 0 0;
