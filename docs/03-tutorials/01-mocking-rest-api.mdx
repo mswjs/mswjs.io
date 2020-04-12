@@ -2,8 +2,6 @@
 title: Mocking REST API
 ---
 
-import { PageLink } from '../../src/components/mdx/PageLink'
-
 This tutorial is going to take you through the process of mocking a REST API using Mock Service Worker. **It assumes you have completed the [Getting started](/docs/getting-started) tutorial**, and have the `msw` package installed in your project. It also assumes the basic knowledge of working with a REST API, such as understanding REST methods and HTTP status codes.
 
 ## Imports
@@ -24,8 +22,6 @@ import { composeMocks, rest } from 'msw'
 - `composeMocks()`, a function that composes a list of [request handlers](/docs/basics/request-handler);
 - `rest`, a namespace that contains utility functions for mocking a REST API.
 
-<PageLink slug="/getting-started" />
-
 ## Declaration
 
 As the next step, let's tell MSW which endpoints we would like to mock. To do that, call the `composeMocks` function and provide the relevant REST API methods calls from the `rest` namespace to it.
@@ -40,7 +36,7 @@ composeMocks(
 )
 ```
 
-In the example above we have specified two request handlers:
+In the example above we have specified two **request handlers**:
 
 - `/users`. As this stars with the slash ("/"), only those requests fired from the same origin will match this route. For example, if your application was running at `http://localhost:8080`, then the request to `http://localhost:8080/users` would match, while `https://github.com/users` would not.
 

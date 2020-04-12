@@ -2,18 +2,18 @@
 title: graphql
 ---
 
-The `graphql` namespace is designed for handling GraphQL operations. It contains a set of useful methods for mocking GraphQL requests.
+The `graphql` namespace is designed for handling GraphQL operations. It contains a set of [Request handlers](/docs/basics/request-handler) for mocking GraphQL requests.
 
 ## Methods
 
-Each method in this namespace represents a GraphQL _operation kind_:
+Each method in this namespace represents a GraphQL operation kind:
 
 - `graphql.query()`
 - `graphql.mutation()`
 
 <Hint>Please note that GraphQL subscriptions are not currently supported.</Hint>
 
-Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](TODO) as the second.
+Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](/docs/basics/response-resolver) as the second.
 
 ```js
 import { graphql } from 'msw'

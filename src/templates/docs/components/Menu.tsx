@@ -9,6 +9,16 @@ const MenuSection = styled.section`
   font-size: 0.9rem;
   font-weight: 500;
 
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 50vw;
+    background-color: inherit;
+  }
+
   a {
     color: var(--color-gray);
     text-decoration: none;
@@ -18,6 +28,12 @@ const MenuSection = styled.section`
       font-weight: 600;
     }
   }
+`
+
+const MenuSticky = styled.div`
+  position: sticky;
+  top: 0;
+  padding-top: 1rem;
 `
 
 const PagesList = styled.ul<{ nested?: boolean }>`
@@ -102,8 +118,8 @@ export const Menu: React.FC<MenuProps> = ({ tree }) => {
   console.log(tree)
 
   return (
-    <Box as={MenuSection} paddingVertical={48} paddingRight={32}>
-      <Box width={224} marginLeft="auto">
+    <Box as={MenuSection} paddingVertical={32} paddingRight={32}>
+      <Box as={MenuSticky}>
         <PagesList>{renderTreeItem(tree, true)}</PagesList>
       </Box>
     </Box>

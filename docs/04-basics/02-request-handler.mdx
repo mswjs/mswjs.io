@@ -6,6 +6,19 @@ title: Request handler
 
 Request handler function returns an Object with the following properties:
 
+```ts
+interface RequestHandler {
+  mask?: string
+  predicate: (req: MockedRequest) => boolean
+  resolver: (
+    req: MockedRequest,
+    res: ResponseComposition,
+    ctx: Context,
+  ) => MockedResponse
+  defineContext?: (req: MockedRequest) => Record<string, any>
+}
+```
+
 | Property name   | Type                              | Description                                                                                                           |
 | --------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `mask`          | `string`                          | Request URL path used to extract path parameters from the URL.                                                        |

@@ -2,13 +2,13 @@
 title: response
 ---
 
-Unlike the `Response` object in NodeJS, the `res` argument in Mock Service Worker is **a function that composes the mocked response**.
+**Response** is a function that composes a mocked response object.
+
+Unlike the `Response` object in NodeJS, the `res` argument in Mock Service Worker is used to create a functional composition chain that passes a newly created mocked response object from one [Response transformer](/docs/basics/response-transformer) to another, eventually returning a ready mocked response to the Service Worker.
 
 The `res` function accepts a list of response transformers that modify the mocked `Response` instance. You can use a set of standard response transformers:
 
 > TODO Link to context?
-
-It's also possible to create a [Custom response transformer](/docs/recipes/custom-response-transformer) to satisfy your needs.
 
 ## Mocked response
 

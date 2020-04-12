@@ -2,4 +2,6 @@
 title: context
 ---
 
-`context` argument of a [Response resolver](/docs/basics/response-resolver) ...
+`context` argument of a [Response resolver](/docs/basics/response-resolver) that contains an arbitrary utility functions and data.
+
+Context is defined in a [Request handler](/docs/basics/request-handler), so it's specific to a request handler type that is being used. For example, using a `rest` request handlers will expose context utilities useful for working with RESTful API, while in case of `graphql` request handlers their context would include GraphQL-specific utilities.

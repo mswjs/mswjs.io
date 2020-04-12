@@ -18,6 +18,7 @@ import { Code as MdxCode } from '../../components/mdx/code'
 import { Blockquote } from '../../components/mdx/Blockquote'
 import { GitHubRepo } from '../../components/mdx/GitHubRepo'
 import { Hint } from '../../components/mdx/Hint'
+import { Grid } from '../../components/Grid'
 
 const components = {
   a: MdxLink,
@@ -34,21 +35,23 @@ const DocumentationPage = ({ data, pageContext }) => {
   return (
     <Layout>
       <Seo title={page.frontmatter.title} />
-      <Composition templateCols="minmax(224px, 20vw) 1fr 224px" gap={64}>
-        <Menu tree={pageContext.navTree} />
-        <Box paddingVertical={48}>
-          <Breadcrumbs items={pageContext.breadcrumbs} />
-          <Box as="article" id="docs-page">
-            <h1>{page.frontmatter.title}</h1>
-            <MDXProvider components={components}>
-              <MDXRenderer>{page.body}</MDXRenderer>
-            </MDXProvider>
+      <Grid>
+        <Composition templateCols="260px 1fr 224px" gap={64}>
+          <Menu tree={pageContext.navTree} />
+          <Box paddingVertical={48}>
+            <Breadcrumbs items={pageContext.breadcrumbs} />
+            <Box as="article" id="docs-page">
+              <h1>{page.frontmatter.title}</h1>
+              <MDXProvider components={components}>
+                <MDXRenderer>{page.body}</MDXRenderer>
+              </MDXProvider>
+            </Box>
           </Box>
-        </Box>
-        {page.tableOfContents?.items && (
-          <TableOfContents items={page.tableOfContents.items} />
-        )}
-      </Composition>
+          {page.tableOfContents?.items && (
+            <TableOfContents items={page.tableOfContents.items} />
+          )}
+        </Composition>
+      </Grid>
     </Layout>
   )
 }
