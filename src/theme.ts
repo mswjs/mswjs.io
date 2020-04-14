@@ -1,12 +1,13 @@
 export default {
   colors: {
-    primary: 'hsl(27, 100%, 63%)',
-    secondary: 'hsl(200, 75%, 50%)',
-    grayDim: 'hsl(200, 16%, 92%)',
-    grayLight: 'hsl(200, 16%, 80%)',
-    gray: 'hsl(200, 12%, 24%)',
-    grayDark: 'hsl(200, 12%, 16%)',
+    primary: 'hsl(27, 84%, 60%)',
+    secondary: 'hsl(210, 75%, 50%)',
+    grayDim: 'hsl(210, 20%, 97%)',
+    grayLight: 'hsl(210, 16%, 80%)',
+    gray: 'hsl(210, 9%, 46%)',
+    grayDark: 'hsl(210, 18%, 24%)',
 
+    black: 'hsl(220, 25%, 20%)',
     danger: 'hsl(0, 90%, 60%)',
   },
   utils: {

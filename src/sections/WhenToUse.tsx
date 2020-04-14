@@ -13,6 +13,7 @@ import {
   IoIosRocket,
 } from 'react-icons/io'
 import theme from '../theme'
+import { Text } from '../components/Text'
 
 interface UsageItemProps {
   title: string
@@ -31,7 +32,7 @@ const UsageItem: React.FC<UsageItemProps> = ({
       <Box as="h3" marginTop={32}>
         {title}
       </Box>
-      <p>{description}</p>
+      <Text color="gray">{description}</Text>
     </Box>
   )
 }

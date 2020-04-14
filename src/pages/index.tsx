@@ -2,10 +2,11 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { Composition, Box } from 'atomic-layout'
 
+import SEO from '../components/seo'
 import Layout from '../components/layout'
 import { Grid } from '../components/Grid'
 import { Button } from '../components/Button'
-import SEO from '../components/seo'
+import { Heading } from '../components/Heading'
 import { TextLead } from '../components/TextLead'
 import { DividerPattern } from '../components/DividerPattern'
 
@@ -31,21 +32,26 @@ const HomePage = () => (
           gap={64}
         >
           <div>
-            <h1>
+            <Heading level={1} hero>
               Client-side API mocking <br />
               of the next generation
-            </h1>
+            </Heading>
             <TextLead>
-              Seamless mocking by intercepting production requests. No servers,
-              no conditional URL, not a single change to the existing codebase.
+              Mock by intercepting production requests. No more servers,
+              conditional URL, and changes to the existing codebase.
             </TextLead>
             <Composition
               inline
               templateCols="repeat(2, auto)"
               gap={10}
-              marginTop={16}
+              marginTop={24}
             >
-              <Button as={Link} to="/docs/getting-started" variant="primary">
+              <Button
+                as={Link}
+                to="/docs/getting-started"
+                variant="primary"
+                hero
+              >
                 Getting started
               </Button>
               <Button as="a" href="https://github.com/open-draft/msw">

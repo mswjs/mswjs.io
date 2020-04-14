@@ -1,6 +1,6 @@
 import React from 'react'
 import { Code as ReactCdxCode } from 'react-cdx'
-import CodeTheme from 'prism-react-renderer/themes/nightOwlLight'
+import CodeTheme from 'prism-react-renderer/themes/nightOwl'
 
 export const Code: React.FC<{
   children: string

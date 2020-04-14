@@ -5,7 +5,7 @@ import { IoIosList as ListIcon } from 'react-icons/io'
 import theme from '../../../theme'
 
 const Container = styled.div`
-  padding: 4rem 0 0;
+  padding: 2rem 0 0;
   position: sticky;
   top: 0;
 `
@@ -39,7 +39,7 @@ interface TableOfContentsProps {
 
 export const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   return (
-    <aside>
+    <Box as="aside" paddingTop={16}>
       <Container>
         <Box as="h4" flex alignItems="center">
           <Box as={ListIcon} fill={theme.colors.grayLight} marginRight={6} />
@@ -53,6 +53,6 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
           ))}
         </StyledList>
       </Container>
-    </aside>
+    </Box>
   )
 }

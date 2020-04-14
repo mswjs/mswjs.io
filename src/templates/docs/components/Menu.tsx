@@ -6,6 +6,8 @@ import { Box } from 'atomic-layout'
 const MenuSection = styled.section`
   position: relative;
   background-color: var(--color-gray-dim);
+  border-right: 1px solid
+    ${({ theme }) => theme.utils.alpha(theme.colors.grayLight, 0.3)};
   font-size: 0.9rem;
   font-weight: 500;
 
@@ -21,7 +23,7 @@ const MenuSection = styled.section`
 
   a {
     display: block;
-    color: var(--color-gray);
+    color: var(--color-gray-dark);
     text-decoration: none;
 
     &[aria-current='page'] {
@@ -34,13 +36,14 @@ const MenuSection = styled.section`
 const MenuSticky = styled.div`
   position: sticky;
   top: 0;
-  padding-top: 1rem;
+  padding-top: 2rem;
 `
 
 const PagesList = styled.ul<{ nested?: boolean }>`
   margin: 0;
   padding: 0;
   list-style: none;
+
   ${({ nested }) =>
     nested &&
     `
@@ -119,7 +122,7 @@ export const Menu: React.FC<MenuProps> = ({ tree }) => {
   console.log(tree)
 
   return (
-    <Box as={MenuSection} paddingVertical={32} paddingRight={32}>
+    <Box as={MenuSection} paddingVertical={16} paddingRight={32}>
       <Box as={MenuSticky}>
         <PagesList>{renderTreeItem(tree, true)}</PagesList>
       </Box>

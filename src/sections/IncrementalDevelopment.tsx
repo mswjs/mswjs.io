@@ -4,6 +4,7 @@ import { Composition, Box } from 'atomic-layout'
 import { Grid } from '../components/Grid'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
+import { Text } from '../components/Text'
 
 export const IncrementalDevelopment = () => {
   return (
@@ -27,12 +28,12 @@ export const IncrementalDevelopment = () => {
           <TextLead>
             Modern solution for <Accent>competitive development.</Accent>
           </TextLead>
-          <p>
+          <Text color="gray">
             Present a fully functioning application or kick off the next
             successful startup without having a single backend code. RESTful API
             today, or GraphQL tomorrow? Experiment, combine, and find what suits
             your project best before committing to the ecosystem.
-          </p>
+          </Text>
         </div>
       </Composition>
     </Grid>

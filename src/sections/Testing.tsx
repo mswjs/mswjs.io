@@ -4,6 +4,7 @@ import { Composition } from 'atomic-layout'
 import { Grid } from '../components/Grid'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
+import { Text } from '../components/Text'
 
 export const Testing = () => {
   return (
@@ -15,6 +16,9 @@ export const Testing = () => {
         gap={32}
         paddingVertical={64}
         paddingVerticalMd={100}
+        maxWidth="100%"
+        width="80%"
+        marginHorizontal="auto"
       >
         <div>
           <p>Some image</p>
@@ -22,13 +26,13 @@ export const Testing = () => {
         <div>
           <h2>Perfect for testing at any level</h2>
           <TextLead>
-            Write test suites that <Accent>do not smell</Accent>.
+            Write test suites that <Accent>don't smell</Accent>.
           </TextLead>
-          <ul>
-            <li>Target any state of the API</li>
-            <li>Keep your tests ABSOLUTELY clean</li>
-            <li>Delay responses to simulate slow connection speed</li>
-          </ul>
+          <Text color="gray">
+            Target any state of your API, while keeping the test suits slim and
+            clean. A single imported module that declaratively mocks given
+            request routes, nothing more.
+          </Text>
         </div>
       </Composition>
     </Grid>

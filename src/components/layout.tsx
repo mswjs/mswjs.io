@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
   html {
     ${({ theme }) =>
       Object.keys(theme.colors)
-        .map(colorName => {
+        .map((colorName) => {
           return `--color-${colorName
             .replace(/([A-Z])/, '-$1')
             .toLowerCase()}: ${theme.colors[colorName]}`
@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
   button {
     &:focus {
       outline: 0;
-      box-shadow: 0 0 0 5px ${({ theme }) =>
+      box-shadow: 0 0 0 4px ${({ theme }) =>
         theme.utils.alpha(theme.colors.primary, 0.5)};
     }
   }
