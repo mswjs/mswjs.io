@@ -20,6 +20,7 @@ const MenuSection = styled.section`
   }
 
   a {
+    display: block;
     color: var(--color-gray);
     text-decoration: none;
 
