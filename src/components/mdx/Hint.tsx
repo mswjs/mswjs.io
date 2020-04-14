@@ -24,7 +24,7 @@ export const Hint = styled.div<HintProps>`
     }
   }}
 
-  margin: 1rem 0;
+  margin: 2rem 0;
   padding: 1rem;
   padding-left: 1.4rem;
   background-color: var(--bg-color);
