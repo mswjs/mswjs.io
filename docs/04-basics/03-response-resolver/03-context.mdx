@@ -2,6 +2,39 @@
 title: context
 ---
 
-`context` argument of a [Response resolver](/docs/basics/response-resolver) that contains an arbitrary utility functions and data.
+`context` argument of a [Response resolver](/docs/basics/response-resolver) contains response transformers.
 
-Context is defined in a [Request handler](/docs/basics/request-handler), so it's specific to a request handler type that is being used. For example, using a `rest` request handlers will expose context utilities useful for working with RESTful API, while in case of `graphql` request handlers their context would include GraphQL-specific utilities.
+Context is defined by the [Request handler](/docs/basics/request-handler) that is being used. For example, you cannot access the `ctx.data()` method when using `rest.*` request handlers, because it's specific to `graphql` request handlers.
+
+## Standard context
+
+Below you can find the list of response transformers available by default in the `ctx` argument for standard request handlers (`rest`/`graphql`).
+
+### Common
+
+| Method        | Description                                             |
+| ------------- | ------------------------------------------------------- |
+| `ctx.fetch()` | Performs a regular `fetch()` that bypasses any mocking. |
+| `ctx.delay()` | Delays the response by the given duration (in ms)       |
+
+### REST API
+
+| Method         | Description                                                |
+| -------------- | ---------------------------------------------------------- |
+| `ctx.status()` | Sets a given HTTP status code on the mocked response.      |
+| `ctx.set()`    | Sets one or multiple headers on the mocked response.       |
+| `ctx.body()`   | Sets a raw body on the mocked response.                    |
+| `ctx.text()`   | Provides a `text/plain` body of the mockedresponse.        |
+| `ctx.json()`   | Provides a `application/json` body of the mocked response. |
+| `ctx.xml()`    | Provides a `text/xml` body of the response.                |
+
+### GraphQL
+
+| Method        | Description                                                    |
+| ------------- | -------------------------------------------------------------- |
+| `ctx.data()`  | Returns a data payload as the response to a GraphQL operation. |
+| `ctx.error()` | Returns a GraphQL error object.                                |
+
+## Custom context
+
+It is possible to define a custom context when creating a [Custom request handler](/docs/advanced/custom-request-handler). Please follow the instructions in that recipe for more details.

@@ -2,7 +2,11 @@
 title: Query parameters
 ---
 
-Query parameters and hash are ignored during the request path matching. In order to access a query parameter you would have to use the `query` propery on the [`request`](/docs/basics/response-resolver/request) object.
+In order to access a query parameter of the intercepted request, use the `query` propery on the [`request`](/docs/basics/response-resolver/request) object. The value of that property is a [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) instance that contains all query parameters.
+
+<Hint mode="warning">
+  Query parameters and hashes are ignored when matching a request URL.
+</Hint>
 
 ## Examples
 
@@ -26,19 +30,25 @@ const { start } = composeMocks(
 start()
 ```
 
-> Keep in mind that `req.query` is not an Object, but a [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) instance.
-
-Using the mock definition above, if we perform the following request,
+Using the mock definition above, if we performed the following request,
 
 ```js
 fetch('/products?id=123')
 ```
 
-the result of calling `req.query.get('id')` would equal to `"123"`, which is the value of the `id` URL query parameter of the request.
+we would get the response:
+
+```json
+{
+  "productId": "123"
+}
+```
+
+> Where `"123"` is the value of `req.query.get('id')` parsed from the request URL.
 
 ### Multiple parameters
 
-It's possible to have multiple query parameters with the same name in a URL. In order to access the list of their values use the `req.query.getAll()` function:
+It's possible to have multiple query parameters with the same name in a URL. In order to access the list of their values use the `req.query.getAll()` method:
 
 ```js
 import { composeMocks, rest } from 'msw'
@@ -51,13 +61,27 @@ const { start } = composeMocks(
 
     return res(
       ctx.json({
-        mocked: true,
+        productIds,
       }),
     )
   }),
 )
 
 start()
+```
+
+In this case, the following request,
+
+```js
+fetch('/products?id=1&id=2&id=3')
+```
+
+would return the next mocked response:
+
+```json
+{
+  "productIds": ["1", "2", "3"]
+}
 ```
 
 > Read more in the [`URLSearchParams.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) specification.

@@ -2,11 +2,11 @@
 title: rest
 ---
 
-The `rest` namepsace is designed for a more convenient handling of REST API requests. It contains a set of utility functions for easier mocking of requests that follow REST API specification.
+The `rest` namepsace contains a set of [Request handlers](/docs/basics/request-handler) designed for convenient mocking of REST API requests.
 
 ## Methods
 
-Each method in this namespace corresponds to a REST API request method.
+Each method in this namespace represents a REST API request method:
 
 - `rest.get()`
 - `rest.post()`
@@ -58,5 +58,11 @@ start()
 ```ts
 import { composeMocks, rest } from 'msw'
 
-// TODO
+const { start } = composeMocks(
+  rest.get(),
+
+  rest.post(),
+)
+
+start()
 ```

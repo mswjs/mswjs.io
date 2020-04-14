@@ -4,11 +4,46 @@ title: Response transformer
 
 **Response transformer** is a function that accepts a mocked response and returns a mocked response.
 
-<Hint>
-  Whenever you find the default response transformers insufficient, consider
-  creating a{' '}
-  <a href="/docs/advanced/custom-response-transformer">
-    Custom response transformer
-  </a>{' '}
-  to suit your needs.
+When working with Mock Service Worker you don't have to write a custom response transformer, since the library ships with an extensive set of utilities that are enough to work with the supported API types. Please treat this page as **primarily educational**.
+
+## Example
+
+For illustrational purposes let's create a simple response transformer:
+
+```js
+// src/mocks/redirectStatus.js
+export function redirectStatus(res) {
+  res.status = 301
+  return res
+}
+```
+
+The transformer above would always set the HTTP status code of the given response to `301`.
+
+We can use this transformer by providing it to the `res()` function during the mocked response resolution:
+
+```js
+// src/mocks/index.js
+import { redirectStatus } from './redirectStatus'
+
+composeMocks(
+  rest.get('/user', (req, res, ctx) => {
+    return res(redirectStatus)
+  }),
+)
+```
+
+Of course, setting a hard-coded status code is rarely what you want. Mock Service Worker provides a set of standard transformers that accept dynamic values (like `ctx.status(301)`). It's highly recommended to use them in your daily workflow.
+
+## Standards transformers
+
+Please see the list of standard response transformers available in the [`ctx`](/docs/basics/response-resolver/context#standard-context) argument of a response resolver.
+
+<Hint mode="varning">
+  Some response transformers are specific to the type of the API you are mocking
+  (REST API or GraphQL), any may not be available otherwise.
 </Hint>
+
+## Custom transformer
+
+It is possible to create a [Custom response transformer](/docs/advanced/custom-response-transformer) for better integration with your application's logic. Please refer to the mentioned recipe page for more details.

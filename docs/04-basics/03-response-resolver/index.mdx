@@ -12,22 +12,65 @@ title: Response resolver
 
 Response resolver function accepts the following parameters:
 
-- [`request`](/docs/basics/response-resolver/request)
-- [`response`](/docs/basics/response-resolver/response)
-- [`context`](/docs/basics/response-resolver/context)
+| Parameter name                                        | Description                                                |
+| ----------------------------------------------------- | ---------------------------------------------------------- |
+| [`request`](/docs/basics/response-resolver/request)   | Information about the intercepted request.                 |
+| [`response`](/docs/basics/response-resolver/response) | Function to compose the mocked response.                   |
+| [`context`](/docs/basics/response-resolver/context)   | Context utilities specific to the current request handler. |
 
 ## Examples
 
-```js
-export const mockUserData = (req, res, ctx) => {
-  const { usedId } = req.params
+### Basic
 
+The basic workflow implies that you pass a response resolver function to a request handler.
+
+```js
+// src/mocks.js
+import { composeMocks, rest } from 'msw'
+
+const { start } = composeMocks(
+  rest.get(
+    '/user',
+    // The function below is a response resolver
+    (req, res, ctx) => {
+      return res(
+        ctx.json({
+          firstName: 'John',
+          age: 38,
+        }),
+      )
+    },
+  ),
+)
+
+start()
+```
+
+### Reusable resolver
+
+Since response resolver is a plain function, you can create a single resolver and reuse it for multiple request handlers.
+
+```js
+// src/mocks/resolvers/mockUser.js
+export const mockUser = (req, res, ctx) => {
   return res(
     ctx.json({
       firstName: 'John',
-      lastName: 'Maverick',
       age: 38,
     }),
   )
 }
+```
+
+```js
+// src/mocks/index.js
+import { composeMocks, rest } from 'msw'
+import { mockUser } from './resolvers/mockUser'
+
+const { start } = composeMocks(
+  rest.get('/user', mockUser)
+  rest.get('/me', mockUser)
+)
+
+start()
 ```

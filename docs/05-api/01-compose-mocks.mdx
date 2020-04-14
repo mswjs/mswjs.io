@@ -2,7 +2,7 @@
 title: composeMocks()
 ---
 
-A function that composes the given request handlers into a single mocking schema. Any intercepted request is matched against that schema and the first successful match is used to mock the request.
+A function that composes given request handlers into a single mocking schema. Any outgoing request is matched against that schema and the first successful match is used to handle the mocked response.
 
 ## Type Definition
 
@@ -30,7 +30,9 @@ type SchemaAPI = {
 ```js
 import { composeMocks, rest } from 'msw'
 
+// Compose the mock definition
 const { start } = composeMocks(
+  // Provide request handlers
   rest.get('*/user/:userId', (req, res, ctx) => {
     return res(
       ctx.json({
@@ -44,9 +46,3 @@ const { start } = composeMocks(
 // Start the Mock Service Worker
 start()
 ```
-
-> Example above uses the standard `rest` namespace forREST API handling. You can, however, create your custom request handlers.
-
-You can provide a custom Service Worker URL as an argument to the start() function. Please see this recipe for more detailed instructions:
-
-> TODO

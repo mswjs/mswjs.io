@@ -2,13 +2,13 @@
 title: Response patching
 ---
 
-**Response patching** is a mocking technique when a mocked response is based on the actual response.
+**Response patching** is a technique when a mocked response is based on the actual response. This technique may be useful when working with an existing API with an intention to augment it for various purposes (i.e., experimenting or debugging).
 
-This technique may be useful when working with an existing API with an intention to augment it for various purposes (for example, experimenting or debugging).
+Performing a response patching with Mock Service Worker is a question of getting an actial response inside the respons resolver. There is a dedicated utility called `ctx.fetch()` designed for that purpose. Using `ctx.fetch()` allows to perform requests that are **bypassed by any request handlers**.
 
-To perform a response patching using Mock Service Worker you would have to use the `ctx.fetch()` utility that allows to perform a request that **bypasses any mocking definitions**.
+## Example
 
-Certain scenarios may require to handle a request by retrieving its actual response. To do so, you would have to perform an actual request to the mocked URL in the response resolver using the `ctx.fetch()` utility function. By providing the `req` argument of the [Response resolver](/docs/basics/response-resolver) function to the `ctx.fetch()` call we effectively perform an original request.
+Below is an example of response patching in a handler that mocks a user detail request from GitHub API.
 
 ```js
 import { composeMocks, rest } from 'msw'
