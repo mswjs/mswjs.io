@@ -2,7 +2,7 @@
 title: Mocking GraphQL API
 ---
 
-Mock Service Worker comes with a first-class support for mocking a GraphQL API. **This tutorials assumes you have completed the [Getting started](/docs/getting-started) tutorial**, and have the `msw` package installed in your project.
+Mock Service Worker comes with a first-class support for mocking a GraphQL API. This tutorials assumes you have completed the [Getting started](/docs/getting-started) tutorial, and have the `msw` package installed in your project.
 
 ## GraphQL client
 
@@ -10,7 +10,7 @@ This tutorial assumes you have a GraphQL client (Apollo, urql, etc.) installed a
 
 ### Which GraphQL clients are supported?
 
-All GraphQL client that comply with the [GraphQL operations specification](TODO) are supported. As long as the client dispatches requests having the following interface, it will be supported:
+Any GraphQL client that complies with the [GraphQL operations specification](TODO) is supported. As long as the client dispatches requests with the following signature:
 
 ```ts
 interface GraphQLRequest {

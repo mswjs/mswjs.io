@@ -2,19 +2,19 @@
 title: Getting started
 ---
 
-This page will take you through the minimal setup you need to get started with Mock Service Worker. **It assumes you have got a NodeJS-based project bootstrapped and running**.
+This page will take you through the setup you need to get started with Mock Service Worker. It assumes you have got a JavaScript project ready and running.
 
 ## Install
+
+First, install the `msw` package into your application:
 
 ```bash
 $ npm install msw --save-dev
 ```
 
-> Alternatively, you can add Mock Service Worker [using a CDN](/docs/recipes/usage-with-cdn).
-
 ## Configure
 
-Run the following command in your project's root directory:
+As the next step, place the Service Worker file in your project's public directory. To do so, run the following command:
 
 ```bash
 $ npx msw init <PUBLIC_DIR>
@@ -43,11 +43,13 @@ Below you can find a list of public directories in most popular JavaScript proje
 
 ## Define mocks
 
-Start by create a mockind definition file:
+Create a `mocks.js` file where we the mocking logic will be described.
 
 ```bash
 $ touch src/mocks.js
 ```
+
+We will fill it with the next content:
 
 ```js
 // src/mocks.js
@@ -83,13 +85,17 @@ const { start } = composeMocks(
 start()
 ```
 
-<Hint>
-  The structure of your mocks is up to you: modularize, abstract, reuse.
-</Hint>
+> Explore each mock definition line in more detail on the [Mock overview](/docs/basics/mock-overview) page.
 
 ## Integrate
 
-Mocking is a development-only procedure. It's recommended to include your mocking definition module (`src/mocks.js`) into your application's entry conditionally during the build.
+In order for the `mocks.js` file to be executed on runtime, you have to import the module into your application. Since mocking is a development-only procedure, it's highly recommended that you include the mocking definition file conditionally during the build. Please see the build configuration examples below for more details.
+
+<Hint mode="warning">
+  Note that we <strong>do not recommend</strong> including Mock Service Worker
+  in production environment. Doing so may lead to a distorted experience for
+  your customers.
+</Hint>
 
 ### Using webpack
 
@@ -127,7 +133,7 @@ export default {
 }
 ```
 
-### Using conditional require
+### Using conditional import
 
 In case you are not sure about how to modify your building configuration, you can always provision a conditional import statement in your application's code:
 
@@ -138,21 +144,20 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-<Hint mode="warning">
-  Note that we <strong>do not recommend</strong> including Mock Service Worker
-  in production environment. Doing so may lead to a distorted experience of your
-  customers.
-</Hint>
-
 ## Update on reload
 
-Service Workers are designed as a caching tool. However, we don't want our mocking definitions to be cached during development, since that would result into outdated mocks. It's highly recommended to enable "Update on reload" functionality in your browser. This will force Service Worker to update on each page reload, ensuring the latest logic is applied. See the browser-specific instructions on how to do that below.
+Service Worker is designed as a caching tool. However, we don't want our mocking definitions to be cached during development, since that would result into outdated mocks.
+
+It's highly recommended to enable "Update on reload" setting of Service Workers functionality in your browser. This will force Service Worker to update on each page reload, ensuring the latest logic is applied. See the browser-specific instructions on how to do that below.
 
 > Read more about the [Service Worker lifecycle](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle).
 
 ### Chrome
 
-- DevTools > Application > Service Workers
+1. Open your Chrome development tools.
+1. Navigate to the "**Application**" tab in the dev tools.
+1. Open the "**Service Workers**" section on the navigation menu on the left.
+1. Check the "**Update on reload**" checkbox.
 
 > TODO: ADD the image here
 
