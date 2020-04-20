@@ -51,9 +51,8 @@ h3 {
 }
 
 h4 {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
+  margin: 1.5em 0 0.5em;
+  font-size: 1.15rem;
   font-weight: 500;
 }
 
@@ -64,6 +63,9 @@ hr {
 
 a {
   color: var(--color-primary);
+}
+.no-wrap {
+  white-space: nowrap;
 }
 
 tt,

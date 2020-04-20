@@ -12,17 +12,36 @@ const StyledFooter = styled.footer`
 
   a {
     color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    margin: 0;
+    list-style: none;
   }
 
   h4 {
+    margin-bottom: 1rem;
     color: var(--color-gray-light);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
   }
 `
 
 export const Footer: React.FC = () => {
   return (
     <StyledFooter>
-      <Composition as={Grid} templateCols="repeat(3, 1fr)" paddingVertical={64}>
+      <Composition
+        as={Grid}
+        templateCols="repeat(3, 1fr)"
+        gap={64}
+        paddingVertical={64}
+      >
         <div>
           <p>Mock Service Worker is released under the MIT license.</p>
         </div>

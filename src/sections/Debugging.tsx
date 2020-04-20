@@ -23,7 +23,7 @@ export const Debugging = () => {
           <p>Some image</p>
         </div>
         <div>
-          <h2>Irreplaceable tool in your debugging arsenal</h2>
+          <h2>Your next favorite debugging tool</h2>
           <TextLead>
             Mock the <Accent>very response</Accent> that crashes your app.
           </TextLead>

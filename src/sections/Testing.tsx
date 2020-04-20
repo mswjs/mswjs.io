@@ -2,9 +2,11 @@ import React from 'react'
 import { Composition } from 'atomic-layout'
 
 import { Grid } from '../components/Grid'
-import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
 import { Text } from '../components/Text'
+import { TextLead } from '../components/TextLead'
+import { TextSmall } from '../components/TextSmall'
+import { Code } from '../components/mdx/Code'
 
 export const Testing = () => {
   return (
@@ -21,7 +23,26 @@ export const Testing = () => {
         marginHorizontal="auto"
       >
         <div>
-          <p>Some image</p>
+          <Code hero language="javascript" showLineNumbers={false}>{`
+// test/login/not-found.mock.js
+composeMocks(
+  rest.post('/login', (req, res, ctx) => {
+    const { username } = req.body
+
+    return res(
+      ctx.status(403),
+      ctx.json([
+        {
+          error: \`User "\${username}" not found\`
+        }
+      ])
+    )
+  })
+)
+  `}</Code>
+          <TextSmall align="center" color="gray">
+            Mocking an error response to <code>POST /login</code> request.
+          </TextSmall>
         </div>
         <div>
           <h2>Perfect for testing at any level</h2>

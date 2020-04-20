@@ -3,12 +3,18 @@ import theme from '../theme'
 
 interface TextProps {
   color?: keyof typeof theme.colors | 'inherit'
+  align?: 'start' | 'center' | 'end'
 }
 
 export const Text = styled.p<TextProps>`
-  ${({ color }) =>
+  ${({ color, theme }) =>
     color &&
     css`
-      color: ${color};
+      color: ${theme.colors[color]};
+    `}
+  ${({ align }) =>
+    align &&
+    css`
+      text-align: ${align};
     `}
 `

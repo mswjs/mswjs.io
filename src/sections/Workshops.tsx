@@ -10,7 +10,7 @@ import {
   ObliqueSectionContent,
 } from '../components/ObliqueSection'
 
-export const IncrementalDevelopment = () => {
+export const Workshops = () => {
   return (
     <ObliqueSection>
       <ObliqueSectionContent>
@@ -30,15 +30,16 @@ export const IncrementalDevelopment = () => {
               <p>Some image</p>
             </Box>
             <div>
-              <h2>Develop incrementally</h2>
+              <h2>Workshops & tutorials</h2>
               <TextLead>
-                Modern solution for <Accent>competitive development</Accent>.
+                API for your next tutorial{' '}
+                <Accent>in a matter of minutes</Accent>.
               </TextLead>
               <Text color="gray">
-                Present a fully functioning application or kick off the next
-                successful startup without having any backend at all. RESTful
-                API today, or GraphQL tomorrow? Experiment, combine, and find
-                what suits your project best before committing to the ecosystem.
+                Let your students <em>and</em> yourself focus on the topic,
+                while <span class="no-wrap">Mock Service Worker</span> provides
+                a reliable API substitution that you don't even have to run, and
+                that behaves the same between different OS.
               </Text>
             </div>
           </Composition>

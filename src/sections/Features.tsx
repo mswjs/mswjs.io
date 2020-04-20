@@ -30,14 +30,14 @@ export const Features = () => {
         templateColsLg="repeat(3, 1fr)"
         gap={32}
         paddingVertical={64}
-        paddingVerticalMd={100}
+        paddingVerticalMd={120}
       >
         <Section>
           <FeatureLetter>01</FeatureLetter>
           <h3>Seamless</h3>
           <Text color="gray">
             Forget about stubs and hacks that make your code smell. Leverage a
-            dedicated layer of interception to keep your tests clean and shiny.
+            dedicated layer of interception to keep your code clean and shiny.
           </Text>
         </Section>
         <Section>

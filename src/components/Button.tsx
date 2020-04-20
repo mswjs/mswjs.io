@@ -10,8 +10,7 @@ export const Button = styled.button<ButtonProps>`
   ${({ hero }) =>
     hero &&
     css`
-      padding-left: 2rem;
-      padding-right: 2rem;
+      min-width: 200px;
     `}
   display: inline-block;
 
@@ -20,23 +19,19 @@ export const Button = styled.button<ButtonProps>`
   color: var(--color-gray-dark);
   cursor: pointer;
   font-weight: 600;
+  text-align: center;
   text-decoration: none;
-
-  &:focus {
-    outline-color: red;
-    /* box-shadow: 0 0 0 5px
-      ${({ theme }) => theme.utils.alpha(theme.colors.primary, 0.5)}; */
-  }
+  user-select: none;
 
   ${({ variant }) =>
     variant === 'primary'
       ? css`
           background-color: ${({ theme }) => theme.colors.primary};
-          color: #fff;
+          color: ${({ theme }) => theme.colors.primaryDark};
         `
       : css`
           background-color: ${({ theme }) => theme.colors.grayDim};
-        `}
+        `};
 `
 
 Button.defaultProps = {

@@ -1,6 +1,7 @@
 export default {
   colors: {
-    primary: 'hsl(27, 84%, 60%)',
+    primary: 'hsl(28, 83%, 64%)',
+    primaryDark: 'hsl(28, 16%, 20%)',
     secondary: 'hsl(210, 75%, 50%)',
     grayDim: 'hsl(210, 20%, 97%)',
     grayLight: 'hsl(210, 16%, 80%)',

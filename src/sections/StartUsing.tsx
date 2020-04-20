@@ -16,11 +16,11 @@ export const StartUsing = () => {
         width={600}
         marginHorizontal="auto"
       >
-        <h2>Begin your journey</h2>
+        <h2>Begin your journey!</h2>
         <TextLead align="center">
-          Mock Service Worker works in any browser environment, be it your
-          application, a unit test, or an end-to-end scenario. Start with the
-          next level of API mocking today.
+          Mock Service Worker can be used in any browser environment, be it your
+          application, a unit test, or an end-to-end scenario. Bring your API
+          mocking to the next level today.
         </TextLead>
         <Box marginTop={32}>
           <Button variant="primary" hero as={Link} to="/docs/getting-started">

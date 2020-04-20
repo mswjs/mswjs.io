@@ -37,7 +37,7 @@ export const Highlights = () => {
             <CheckistItem>Full specification compliance</CheckistItem>
             <CheckistItem>Powerful functional syntax</CheckistItem>
             <CheckistItem>Standardized Service Worker API</CheckistItem>
-            <CheckistItem>Mock execution in the client context</CheckistItem>
+            <CheckistItem>Mocks execute client-side</CheckistItem>
             <CheckistItem>Support of REST API and GraphQL</CheckistItem>
             <CheckistItem>TypeScript support</CheckistItem>
           </Composition>

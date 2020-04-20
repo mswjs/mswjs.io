@@ -43,8 +43,8 @@ export const WhenToUse = () => {
       <Divider />
       <Box paddingVertical={64} paddingVerticalMd={100}>
         <Box flex flexDirection="column" alignItems="center">
-          <h2>When to use?</h2>
-          <TextLead>Just a few examples of when MSW shines</TextLead>
+          <h2>Don't stop there</h2>
+          <TextLead>A few more examples of when MSW shines</TextLead>
         </Box>
 
         <Composition

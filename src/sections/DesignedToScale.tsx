@@ -19,6 +19,19 @@ const Container = styled.section`
   color: #fff;
   z-index: 0;
 
+  @media screen and (prefers-reduced-motion: no-preference) {
+    animation: scrollBackground 120s linear infinite;
+
+    @keyframes scrollBackground {
+      0% {
+        background-position: 0 -100%;
+      }
+      100% {
+        background-position: 0 100%;
+      }
+    }
+  }
+
   h2 {
     color: inherit;
   }
