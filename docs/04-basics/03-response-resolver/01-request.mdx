@@ -2,45 +2,43 @@
 title: request
 ---
 
-**Request** is an object that stores the information about a matched request.
+Request is an object that stores the information about a matched request.
 
-Unlike a NodeJS `Request`, the request object in MSW is a _partial_ request representation. This is because due to the limitations on the data that can be transferred between a worker and a client processes.
+Unlike a NodeJS `Request`, the request object in Mock Service Worker is a _partial_ request representation. This is due to the limitations on the nature of the data that can be transferred between a Service Worker and a client processes.
 
 ## Properties
 
-Request object has different properties depending on the [Request handler](/docs/basics/request-handler) that is being used.
-
-### REST
-
-| Property name    | Type                     | Description |
-| ---------------- | ------------------------ | ----------- |
-| `url`            | `string`                 | ...         |
-| `method`         | `abc`                    | ...         |
-| `headers`        | `abc`                    | ...         |
-| `params`         | `Record<string, string>` | ...         |
-| `body`           | `abc`                    | ...         |
-| `bodyUsed`       | `abc`                    | ...         |
-| `cache`          | `abc`                    | ...         |
-| `mode`           | `abc`                    | ...         |
-| `credentials`    | `abc`                    | ...         |
-| `redirect`       | `abc`                    | ...         |
-| `referrer`       | `abc`                    | ...         |
-| `referrerPolicy` | `abc`                    | ...         |
-| `integrity`      | `abc`                    | ...         |
-| `destination`    | `abc`                    | ...         |
+| Property         | Type                                                                                                |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| `url`            | `string`                                                                                            |
+| `query`          | [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)               |
+| `body`           | `string`, `Record<string, any>`                                                                     |
+| `method`         | [`Request.method`](https://developer.mozilla.org/en-US/docs/Web/API/Request/method)                 |
+| `headers`        | [`Request.headers`](https://developer.mozilla.org/en-US/docs/Web/API/Request/headers)               |
+| `params`         | `Record<string, string>`                                                                            |
+| `bodyUsed`       | [`Request.bodyUsed`](https://developer.mozilla.org/en-US/docs/Web/API/Body/bodyUsed)                |
+| `cache`          | [`Request.cache`](https://developer.mozilla.org/en-US/docs/Web/API/Request/cache)                   |
+| `mode`           | [`Request.mode`](https://developer.mozilla.org/en-US/docs/Web/API/Request/mode)                     |
+| `credentials`    | [`Request.credentials`](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials)       |
+| `redirect`       | [`Request.redirect`](https://developer.mozilla.org/en-US/docs/Web/API/Request/redirect)             |
+| `referrer`       | [`Request.referrer`](https://developer.mozilla.org/en-US/docs/Web/API/Request/referrer)             |
+| `referrerPolicy` | [`Request.referrerPolicy`](https://developer.mozilla.org/en-US/docs/Web/API/Request/referrerPolicy) |
+| `integrity`      | [`Request.integrity`](https://developer.mozilla.org/en-US/docs/Web/API/Request/integrity)           |
+| `destination`    | [`Request.destination`](https://developer.mozilla.org/en-US/docs/Web/API/Request/destination)       |
 
 ### GraphQL
 
-| Property name | Type                     | Description                  |
-| ------------- | ------------------------ | ---------------------------- |
-| `url`         | `string`                 | ...                          |
-| `variables`   | `Record<string, string>` | Query or mutation variables. |
+When mocking a GraphQL API, the `req` object has the following extra properties:
+
+| Property    | Type                     |
+| ----------- | ------------------------ |
+| `variables` | `Record<string, string>` |
 
 ## Usage
 
-Access the request object as the first argument of a [Response resolver](/docs/basics/response-resolver) function.
+Access the request object as the first argument of a [response resolver](/docs/basics/response-resolver) function.
 
-```js
+```js showLineNumbers focusedLines=4,5
 import { composeMocks, rest } from 'msw'
 
 composeMocks(

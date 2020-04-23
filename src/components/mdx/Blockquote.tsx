@@ -4,6 +4,7 @@ export const Blockquote = styled.blockquote`
   margin-left: 0;
   padding: 1rem;
   padding-left: 1.5rem;
-  border-left: 2px solid var(--color-gray-light);
+  border-left: 3px solid var(--color-gray-light);
+  font-size: 90%;
   font-weight: 500;
 `

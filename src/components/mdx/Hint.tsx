@@ -28,7 +28,7 @@ export const Hint = styled.div<HintProps>`
   padding: 1rem;
   padding-left: 1.4rem;
   background-color: var(--bg-color);
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   border-left: 3px solid var(--border-color);
   font-size: 0.9rem;
   font-weight: 500;

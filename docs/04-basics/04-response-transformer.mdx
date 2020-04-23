@@ -2,15 +2,18 @@
 title: Response transformer
 ---
 
-**Response transformer** is a function that accepts a mocked response and returns a mocked response.
+**Response transformer** is a function that accepts a mocked response and returns a mocked response, applying arbitrary transformations.
 
-When working with Mock Service Worker you don't have to write a custom response transformer, since the library ships with an extensive set of utilities that are enough to work with the supported API types. Please treat this page as **primarily educational**.
+<Hint mode="warning">
+  This page is primarily educational, as the common workflow with Mock Service
+  Worker does not require you to write your own response transformers.
+</Hint>
 
 ## Example
 
 For illustrational purposes let's create a simple response transformer:
 
-```js
+```js showLineNumbers
 // src/mocks/redirectStatus.js
 export function redirectStatus(res) {
   res.status = 301
@@ -20,9 +23,9 @@ export function redirectStatus(res) {
 
 The transformer above would always set the HTTP status code of the given response to `301`.
 
-We can use this transformer by providing it to the `res()` function during the mocked response resolution:
+We can use this transformer by providing it as an argument to the `res()` function in a responsve resolver:
 
-```js
+```js showLineNumbers focusedLines=6
 // src/mocks/index.js
 import { redirectStatus } from './redirectStatus'
 
@@ -33,7 +36,7 @@ composeMocks(
 )
 ```
 
-Of course, setting a hard-coded status code is rarely what you want. Mock Service Worker provides a set of standard transformers that accept dynamic values (like `ctx.status(301)`). It's highly recommended to use them in your daily workflow.
+Of course, setting a fixed status code is rarely what you want. To parametrize this behavior, response transformers are often wrapped in hihg-order functions. In fact, this is how all of the standard-transformers are implemented (i.e. `ctx.status(301)`).
 
 ## Standards transformers
 
@@ -41,9 +44,6 @@ Please see the list of standard response transformers available in the [`ctx`](/
 
 <Hint mode="varning">
   Some response transformers are specific to the type of the API you are mocking
-  (REST API or GraphQL), any may not be available otherwise.
+  (REST API or GraphQL), any may not be available when working with a different
+  API type.
 </Hint>
-
-## Custom transformer
-
-It is possible to create a [Custom response transformer](/docs/advanced/custom-response-transformer) for better integration with your application's logic. Please refer to the mentioned recipe page for more details.

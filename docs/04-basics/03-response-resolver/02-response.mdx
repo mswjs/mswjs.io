@@ -2,17 +2,13 @@
 title: response
 ---
 
-**Response** is a function that composes a mocked response object.
+Response (`res`) is a function that composes a mocked response object.
 
-Unlike the `Response` object in NodeJS, the `res` argument in Mock Service Worker is used to create a functional composition chain that passes a newly created mocked response object from one [Response transformer](/docs/basics/response-transformer) to another, eventually returning a ready mocked response to the Service Worker.
-
-The `res` function accepts a list of response transformers that modify the mocked `Response` instance. You can use a set of standard response transformers:
-
-> TODO Link to context?
+Unlike the `Response` object in NodeJS, the `res` argument in Mock Service Worker is used to create and transform a mocked response. When called, it passes a created response from one [response transformer](/docs/basics/response-transformer) to another, eventually resolving to a mocked response used by the Service Worker.
 
 ## Mocked response
 
-A call to the `res()` function creates a mocked response object. Each response transformer the `res()` function accepts modifies that mocked response and passes it to the next response transformer.
+A call to the `res()` function creates a mocked response object. Each response transformer accepted by the `res()` function modifies that mocked response and passes it to the next response transformer, thus, creating a functional composition.
 
 ### Properties
 
@@ -28,7 +24,7 @@ A call to the `res()` function creates a mocked response object. Each response t
 
 ### Raw usage
 
-```js
+```js showLineNumbers
 rest.get('/users', (req, res) => {
   return res((res) => {
     res.status = 301
@@ -40,15 +36,10 @@ rest.get('/users', (req, res) => {
 
 ### Usage with standard response transformers
 
-The raw usage example above can be replaced by the usage of standard request transformers.
+The raw usage example above can be replaced by using standard response transformers.
 
-```js
+```js showLineNumbers
 rest.get('/users', (req, res, ctx) => {
   return res(ctx.status(301), ctx.set('Content-Type', 'application/json'))
 })
 ```
-
-Above you can see a call to the `res()` function that accepted two arguments:
-
-- a call to `ctx.status(301)`, that sets the `301` status on the mocked response;
-- a call to `cxt.set('Content-Type', 'application/json')`, that sets the respective header on the mocked response.

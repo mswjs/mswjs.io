@@ -11,22 +11,27 @@ Each method in this namespace represents a GraphQL operation kind:
 - `graphql.query()`
 - `graphql.mutation()`
 
-<Hint>Please note that GraphQL subscriptions are not currently supported.</Hint>
+<Hint>Subscriptions are not currently supported.</Hint>
 
-Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](/docs/basics/response-resolver) as the second.
+Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](/docs/basics/response-resolver) as the second to mock the respective operation.
 
-```js
-import { graphql } from 'msw'
+```js showLineNumbers
+import { composeMocks, graphql } from 'msw'
 
-graphql.query('QueryName', responseResolver)
-graphql.mutation('MutationName', responseResolver)
+composeMocks(
+  // Mock a query by name "GetUserDetail"
+  graphql.query('GetUserDetail', responseResolver),
+
+  // Mock a mutation by name "Login"
+  graphql.mutation('Login', responseResolver),
+)
 ```
 
 ## Examples
 
 ### Basic query/mutation
 
-```js
+```js showLineNumbers
 import { composeMocks, graphql } from 'msw'
 
 const { start } = composeMocks(
@@ -49,7 +54,7 @@ start()
 
 The variables of a query/mutation can be accessed in the `req.variables` object.
 
-```js
+```js showLineNumbers focusedLines=5
 import { composeMocks, graphql } from 'msw'
 
 const { start } = composeMocks(
@@ -65,7 +70,7 @@ start()
 
 ### Usage with TypeScript
 
-```ts
+```ts showLineNumbers
 import { composeMocks, graphql } from 'msw'
 
 // Provide manually written types or use the generated ones

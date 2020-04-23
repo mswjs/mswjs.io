@@ -16,7 +16,7 @@ The sequence diagram above represents the following steps:
 1. **Matching**. Client-side library finds a mock definition that handles the intercepted request. Upon match, it executes a [Response resolver](/docs/basics/response-resolver) function associated with that request, and signals a mocked response back to the Service Worker. If the intercepted request didn't match any defined request handlers, a "not found" event is signaled back.
 1. **Responding**. Service Worker responds with either a mocked response received from the client-side library, or with the original response, in case no mocks were found.
 
-## Is Mock Service Worker secure?
+## Is this library secure?
 
 Mock Service Worker library uses a [Service Worker API][service-worker-api] for requests interception. It is a standardized and well-secured implementation on a browser's side.
 

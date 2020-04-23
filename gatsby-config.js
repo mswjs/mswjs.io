@@ -20,6 +20,13 @@ module.exports = {
         path: `${__dirname}/docs/`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `docs-assets`,
+        path: `${__dirname}/docs/assets/`,
+      },
+    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
@@ -43,12 +50,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        rehypePlugins: [
-          require('rehype-slug')
-        ],
-        remarkPlugins: [
-          require('remark-validate-links')
-        ]
+        rehypePlugins: [require('rehype-slug')],
+        remarkPlugins: [require('remark-validate-links')],
       },
     },
   ],

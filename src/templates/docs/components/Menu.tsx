@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Box } from 'atomic-layout'
 
 const MenuSection = styled.section`
@@ -59,14 +59,24 @@ const PageListItem = styled.li<{ isRootSection: boolean }>`
   `}
 `
 
-const PageTitle = styled.span<{ isRootSection: boolean }>`
+const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
   display: flex;
   padding: 0.35rem 1rem;
   line-height: 1.4;
 
+  ${({ isRootSection }) =>
+    !isRootSection &&
+    css`
+      &:before {
+        content: '•';
+        color: var(--color-gray-light);
+        margin-right: 0.35em;
+      }
+    `}
+
   ${({ isRootSection, theme }) =>
     isRootSection &&
-    `
+    css`
       color: ${theme.colors.gray};
       font-size: 90%;
       font-weight: bold;
@@ -83,15 +93,25 @@ const PageTitle = styled.span<{ isRootSection: boolean }>`
         bottom: 0;
         margin: auto 0 auto 0.5rem;
       }
-`}
+    `}
+
+  ${({ isRootSection, hasChildren }) =>
+    !isRootSection &&
+    hasChildren &&
+    css`
+      color: red;
+    `}
 `
 
 const renderTreeItem = (items: MenuTree[], isRoot?: boolean) => {
   return items.map((page, index) => {
     const { displayName, url, items: children } = page
-    const isRootSection = isRoot && !!children
+    const hasChildren = !!children
+    const isRootSection = isRoot && hasChildren
     const Title = (
-      <PageTitle isRootSection={isRootSection}>{displayName}</PageTitle>
+      <PageTitle isRootSection={isRootSection} hasChildren={hasChildren}>
+        {displayName}
+      </PageTitle>
     )
 
     return (
@@ -119,8 +139,6 @@ interface MenuTree {
 }
 
 export const Menu: React.FC<MenuProps> = ({ tree }) => {
-  console.log(tree)
-
   return (
     <Box as={MenuSection} paddingVertical={16} paddingRight={32}>
       <Box as={MenuSticky}>

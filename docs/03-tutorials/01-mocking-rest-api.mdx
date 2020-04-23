@@ -6,102 +6,94 @@ This tutorial is going to take you through the process of mocking a REST API usi
 
 ## Imports
 
-Let's open our project and create a mocking definition file called `mocks.js`. In that file we are going to write our mocking logic.
+Create a new file that will contain our mocking logic. In this tutorial we are going to create a `mocks.js` file.
 
 ```bash
 $ touch src/mocks.js
 ```
 
-Next, import two essential functions from the `msw` package:
+Next, import the following pieces from the `msw` package:
 
 ```js
 // src/mocks.js
 import { composeMocks, rest } from 'msw'
 ```
+
+Briefly, this is what each of them is needed for:
 
 - `composeMocks()`, a function that composes a list of [request handlers](/docs/basics/request-handler);
 - `rest`, a namespace that contains utility functions for mocking a REST API.
 
-## Declaration
+## Mock definition
 
-As the next step, let's tell MSW which endpoints we would like to mock. To do that, call the `composeMocks` function and provide the relevant REST API methods calls from the `rest` namespace to it.
+Describe which endpoints to mock by providing respective calls of `rest[METHOD]` as the arguments to `composeMocks()` function.
 
-```js
+For example, to mock a `GET` request we would use `rest.get()`. This function call will accept a URL predicate as an argument, so any requests matching that predicate would be mocked.
+
+```js showLineNumbers focusedLines=4
 // src/mocks.js
 import { composeMocks, rest } from 'msw'
 
-composeMocks(
-  rest.get('/users', null),
-  rest.put('/posts/:postid'), null)
-)
+composeMocks(rest.get('/user/:userId', null))
 ```
 
-In the example above we have specified two **request handlers**:
+> Request URL predicate above uses a path parameter (`:userId`). It's a placeholder for a dynamic part of the URL. For example, given a `/user/abc-123` URL, the `userId` parameter would equal `"abc-123"`.
+>
+> Learn more about [Path matching](/docs/basics/path-matching).
 
-- `/users`. As this stars with the slash ("/"), only those requests fired from the same origin will match this route. For example, if your application was running at `http://localhost:8080`, then the request to `http://localhost:8080/users` would match, while `https://github.com/users` would not.
+In the code above we have defined what is called **a request handler** for any `GET` requests that match `/user/:userId` path. Similarly, you can call `rest.post()` to mock a `POST` request, etc.
 
-- `/posts/:postId`. Similar to the previous path, this one is tight to the current origin. In this one, however, we define the `postId` parameter that would be taken upon the URL match.
+> **TODO:** Reference `rest` namespace?
 
-## Response resolvers
+## Response resolver
 
-When we defined our request handlers (`rest.get()` and `rest.post()`) we left the second argument as null intentionally. Now we are going to provide it.
+Notice how our second argument to `rest.get()` function call is `null`. Let's change that.
 
-The second argument to a request handler function is a _response resolver_—a function that determines how to resolve a response. That response resolver function accepts three arguments:
+Provide a **response resolver** to the existing `rest.get()` handler. To do so, pass a new function as the second argument to that handler. This new resolver function accepts three arguments:
 
-- `req`, an information about the request that happened;
-- `res`, a functional utility to compose the next response;
-- `context`, a group of utilities to help you get the response you need.
+- `req`, an information about a matching request;
+- `res`, a functional utility to compose the mocked response;
+- `ctx`, a group of utilities to help you get the response you need.
 
-Declare two response resolvers for our previously defined mocking routes:
+Here's how we will resolve a mocked response:
 
-```js
+```js showLineNumbers focusedLines=6-15
 // src/mocks.js
 import { composeMocks, rest } from 'msw'
 
 composeMocks(
-  rest.get('/users', (req, res, ctx) => {
-    return res(
-      ctx.status(403),
-      ctx.json([
-        { firstName: 'John', lastName: 'Maverick' },
-        { firstName: 'Cathaline', lastName: 'McCoy' },
-      ]),
-    )
-  }),
-  rest.put('/posts/:postId', (req, res, ctx) => {
-    const { postId } = req.params
+  rest.get('/user/:userId', (req, res, ctx) => {
+    // Access the value of "userId" parameter
+    const { userId } = req.params
 
     return res(
-      ctx.delay(2000),
       ctx.status(200),
       ctx.json({
-        error: 'Unauthorized user',
+        id: userId,
+        firstName: 'John',
+        age: 32,
       }),
     )
   }),
 )
 ```
 
-Let's analyze what's happening in this code example step by step.
+Let's analyze what's happening in this code step by step.
 
 First, let's start with the `rest.get('/users')` request handler. Its response resolver returns the call to the `res` function, which describes how to mock the response. In our case we pass two calls to context utilities as the arguments to that `res` function call:
 
 - `ctx.status(403)`, to return the response with the status code 403;
 - `ctx.json([...])`, to return an "application/json" type body containing two mocked objects that represent users.
 
-Now, focusing on the `rest.put('/posts/:postId')` handler, we can notice a similar chain of response transformers:
-
-- `ctx.delay(2000)`, to delay the response by 2000 miliseconds;
-- `ctx.status(403)`, to return the "403 Not Authorized" status code;
-- `ctx.json()`, to return a JSON payload containing an error.
-
-Effectively, we are mocking a server error when attempting to create a new post while being unauthorized.
+> Response resolvers execute client-side. Reuse your application's logic, or include third-party libraries to supercharge your mocking!
 
 ## Running Service Worker
 
-Once we call the `composeMocks` function with the request handlers we need, it returns an object with the `start` function. We need to call that function in order for MSW to start the Service Worker responsible for response mocking.
+The result of calling the `composeMocks()` function is a public API object that contains the `start()` method. This method registers and activates the Service Worker responsible for requests interception and mocking.
 
-```js
+Call the `start()` function returned from the previous `composeMocks()` invocation.
+
+```js showLineNumbers focusedLines=4,11
 // src/mocks.js
 import { composeMocks, rest } from 'msw'
 
@@ -115,13 +107,12 @@ const { start } = composeMocks(
 start()
 ```
 
-Upon refreshing the page, you should see the confirmation message in the browser's console of your application. Any requests matching the defined request handlers are now mocked.
+Once you refresh the page, you will see the confirmation message in the browser's console. Any requests matching the defined request handlers are now mocked.
 
 ## Verify & inspect
 
-Perform one of the requests defined in the `mocks.js` and see the mocked response:
+Perform a request that matches our request handlers from `mocks.js` and see the observe the mocked response right in your browser's "Network" tab:
 
 ```js
-fetch('/users')
-fetch('/posts/abc-123', { method: 'PUT' })
+fetch('/user/abc-123')
 ```

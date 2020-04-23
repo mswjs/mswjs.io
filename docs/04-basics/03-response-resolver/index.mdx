@@ -2,11 +2,7 @@
 title: Response resolver
 ---
 
-**Response resolver** is a function that accepts a matched request and returns a mocked response.
-
-## Type definition
-
-<GitHubRepo url="https://github.com/open-draft/msw" />
+Response resolver is a function that accepts a matched request and returns a mocked response.
 
 ## Parameters
 
@@ -22,16 +18,17 @@ Response resolver function accepts the following parameters:
 
 ### Basic
 
-The basic workflow implies that you pass a response resolver function to a request handler.
+The basic workflow implies that you pass a response resolver function to a request handler. Response resolver must always return the call of the `res()` function.
 
-```js
+```js showLineNumbers focusedLines=7-15
 // src/mocks.js
 import { composeMocks, rest } from 'msw'
 
 const { start } = composeMocks(
   rest.get(
     '/user',
-    // The function below is a response resolver
+    // Example of a response resolver that returns
+    // a "Content-Type: application/json" response.
     (req, res, ctx) => {
       return res(
         ctx.json({
@@ -50,7 +47,7 @@ start()
 
 Since response resolver is a plain function, you can create a single resolver and reuse it for multiple request handlers.
 
-```js
+```js showLineNumbers
 // src/mocks/resolvers/mockUser.js
 export const mockUser = (req, res, ctx) => {
   return res(
@@ -62,7 +59,7 @@ export const mockUser = (req, res, ctx) => {
 }
 ```
 
-```js
+```js showLineNumbers
 // src/mocks/index.js
 import { composeMocks, rest } from 'msw'
 import { mockUser } from './resolvers/mockUser'

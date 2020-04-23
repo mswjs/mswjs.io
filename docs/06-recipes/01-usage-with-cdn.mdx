@@ -28,6 +28,19 @@ It's recommended you use the `npx msw init` command to copy the `mockServiceWork
 $ npx msw init <PUBLIC_DIR>
 ```
 
-**In case you cannot perform this action**, manually copy the `mockServiceWorker.js` file from the latest state of the repository into your public directory:
+**Only if you cannot perform this action**, include the `mockServiceWorker.js` file from the CDN. Here's an example of how to do that using `unpkg` CDN:
 
-> TODO Add GitHub link
+```js showLineNumbers
+// server.js
+import fetch from 'isomorphic-fetch'
+
+// Since the Service Worker file **cannot** be included on the page,
+// we need to serve it from our server.
+app.get('/mockServiceWorker.js', (req, res) => {
+  const worker = fetch(
+    'https://unpkg.com/msw/lib/mockServiceWorker.js',
+  ).then((res) => res.text())
+
+  return res.send(worker)
+})
+```

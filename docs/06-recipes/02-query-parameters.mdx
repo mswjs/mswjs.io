@@ -4,15 +4,11 @@ title: Query parameters
 
 In order to access a query parameter of the intercepted request, use the `query` propery on the [`request`](/docs/basics/response-resolver/request) object. The value of that property is a [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) instance that contains all query parameters.
 
-<Hint mode="warning">
-  Query parameters and hashes are ignored when matching a request URL.
-</Hint>
-
 ## Examples
 
-### Accessing query parameter
+### Single parameter
 
-```js
+```js showLineNumbers focusedLines=5
 import { composeMocks, rest } from 'msw'
 
 const { start } = composeMocks(
@@ -30,33 +26,31 @@ const { start } = composeMocks(
 start()
 ```
 
-Using the mock definition above, if we performed the following request,
-
-```js
-fetch('/products?id=123')
-```
-
-we would get the response:
-
-```json
+<ResponsePreview
+  request={{
+    method: 'GET',
+    url: '**/products**?id=123',
+  }}
+  response={{
+    body: `
 {
+  // Where '123' is the value of \`req.query.get('id')\`
+  // parsed from the request URL.
   "productId": "123"
 }
-```
-
-> Where `"123"` is the value of `req.query.get('id')` parsed from the request URL.
+    `,
+  }}
+/>
 
 ### Multiple parameters
 
-It's possible to have multiple query parameters with the same name in a URL. In order to access the list of their values use the `req.query.getAll()` method:
+Call `req.query.getAll()` method to access all values assigned to a parameter.
 
-```js
+```js showLineNumbers focusedLines=5
 import { composeMocks, rest } from 'msw'
 
 const { start } = composeMocks(
   rest.get('/products', (req, res, ctx) => {
-    // Performing a "/products?id=1&id=2&id=3" request
-    // would return the list of [1, 2, 3] as `productIds`.
     const productIds = req.query.getAll('id')
 
     return res(
@@ -70,18 +64,18 @@ const { start } = composeMocks(
 start()
 ```
 
-In this case, the following request,
+> Read more in the [`URLSearchParams.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) specification.
 
-```js
-fetch('/products?id=1&id=2&id=3')
-```
-
-would return the next mocked response:
-
-```json
+<ResponsePreview
+  request={{
+    method: 'GET',
+    url: '**/products**?id=1&id=2&id=3',
+  }}
+  response={{
+    body: `
 {
   "productIds": ["1", "2", "3"]
 }
-```
-
-> Read more in the [`URLSearchParams.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) specification.
+    `,
+  }}
+/>

@@ -41,7 +41,7 @@ import { composeMocks, graphql } from 'msw'
 
 Now let's define which GraphQL operations should be mocked. In order to target an operation, use `graphql.query()` or `graphql.mutation()` methods to mock a query or a mutation, respectively. We will start by calling those functions and providing the names of the operations we want to mock.
 
-```js
+```js showLineNumbers focusedLines=5,6
 // src/mocks.js
 import { composeMocks, graphql } from 'msw'
 
@@ -75,7 +75,7 @@ A response resolver function accepts three arguments:
 
 Let's add response resolvers to our existing code:
 
-```js
+```js showLineNumbers focusedLines=14-21,32-46
 // src/mocks.js
 import { composeMocks, graphql } from 'msw'
 
@@ -132,7 +132,7 @@ With the above declaration our `GetUserDetail` query would return the user data,
 
 The result of calling the `composeMocks()` function is a public API object that contains the `start()` function. We need to call that function in order for MSW to start the Service Worker responsible for intercepting requests and mocking their responses.
 
-```js
+```js showLineNumbers focusedLines=4,11
 // src/mocks.js
 import { composeMocks, graphql } from 'msw'
 

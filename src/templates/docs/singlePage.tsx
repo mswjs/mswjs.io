@@ -17,16 +17,30 @@ import { Link as MdxLink } from '../../components/mdx/Link'
 import { Code as MdxCode } from '../../components/mdx/code'
 import { Blockquote } from '../../components/mdx/Blockquote'
 import { GitHubRepo } from '../../components/mdx/GitHubRepo'
+import { PageLink } from '../../components/mdx/PageLink'
 import { Hint } from '../../components/mdx/Hint'
 import { Grid } from '../../components/Grid'
+import { Heading } from '../../components/mdx/Heading'
+import { ResponsePreview } from '../../components/mdx/ResponsePreview'
+import { PathMatchPreview } from '../../components/mdx/PathMatchPreview'
+
+const createHeading = (level: 1 | 2 | 3 | 4): React.FC => {
+  return (props) => <Heading level={level} {...props} />
+}
 
 const components = {
+  h1: createHeading(1),
+  h2: createHeading(2),
+  h3: createHeading(3),
   a: MdxLink,
   pre: ({ children }) => <>{children}</>,
   code: MdxCode,
   blockquote: Blockquote,
+  PageLink,
   GitHubRepo,
   Hint,
+  ResponsePreview,
+  PathMatchPreview,
 }
 
 const DocumentationPage = ({ data, pageContext }) => {

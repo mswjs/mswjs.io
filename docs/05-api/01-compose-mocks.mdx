@@ -1,39 +1,17 @@
 ---
-title: composeMocks()
+title: useMocks()
 ---
 
-A function that composes given request handlers into a single mocking schema. Any outgoing request is matched against that schema and the first successful match is used to handle the mocked response.
-
-## Type Definition
-
-```ts
-type ComposeMocks = (
-  ...requetsHandlers: RequestHandler[]
-): SchemaAPI
-
-type SchemaAPI = {
-  // Starts a Mock Service Worker
-  start: (
-    // A custom path to the Service Worker
-    serviceWorkerUrl?: string,
-    // Service Worker registration options
-    registrationOptions?: RegistrationOptions
-) => void
-
-  // Stop a running Mock Service Worker
-  stop: () => void
-}
-```
+A function that configures the mocking Service Worker instance.
 
 ## Examples
 
-```js
+```js showLineNumbers
 import { composeMocks, rest } from 'msw'
 
-// Compose the mock definition
 const { start } = composeMocks(
   // Provide request handlers
-  rest.get('*/user/:userId', (req, res, ctx) => {
+  rest.get('/user/:userId', (req, res, ctx) => {
     return res(
       ctx.json({
         firstName: 'John',
