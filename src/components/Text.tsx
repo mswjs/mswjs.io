@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components'
+import { Box } from 'atomic-layout'
+import { BoxProps } from '@atomic-layout/core'
 import theme from '../theme'
 
 interface TextProps {
@@ -6,7 +8,7 @@ interface TextProps {
   align?: 'start' | 'center' | 'end'
 }
 
-export const Text = styled.p<TextProps>`
+export const Text = styled(Box)<TextProps & BoxProps>`
   ${({ color, theme }) =>
     color &&
     css`
@@ -18,3 +20,7 @@ export const Text = styled.p<TextProps>`
       text-align: ${align};
     `}
 `
+
+Text.defaultProps = {
+  as: 'p',
+}

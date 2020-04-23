@@ -43,7 +43,7 @@ const Container = styled.section`
     top: 0;
     height: 100%;
     width: 100%;
-    background-color: hsla(200, 22%, 25%, 0.95);
+    background-color: hsla(200, 42%, 25%, 0.95);
     z-index: -1;
   }
 `
@@ -118,6 +118,7 @@ export const DesignedToScale = () => {
             />
             <ApiCard
               stripeColor="#D147A7"
+              stroke="#D147A7"
               logo={GraphQLLogo}
               url="/docs/tutorials/mocking-graphql-api"
               title="GraphQL"

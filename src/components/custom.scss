@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500,600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital@0;2&display=swap');
 
+@import 'animations.scss';
+
 html {
+  --font-family-mono: 'Source Code Pro', Menlo, monospace;
+  --border-radius: 3px;
+
   font-family: Inter, sans-serif;
   line-height: 1.7;
 }
@@ -12,7 +17,7 @@ body {
 
 code,
 pre {
-  font-family: 'Source Code Pro', Menlo, monospace;
+  font-family: var(--font-family-mono);
   font-weight: 500;
 }
 
@@ -23,10 +28,12 @@ p:last-child {
 h1,
 h2,
 h3,
-h4 {
-  margin-bottom: 0.5em;
+h4,
+h5 {
+  margin-bottom: 0.75em;
   color: var(--color-black);
   line-height: 1.2;
+  font-weight: 500;
 
   &:first-child {
     margin-top: 0 !important;
@@ -56,9 +63,14 @@ h4 {
   font-weight: 500;
 }
 
+h5 {
+  margin: 1em 0 0.6em;
+}
+
 hr {
-  margin: 0;
+  margin: 2rem 0;
   border: 0;
+  background-color: var(--color-gray-dim);
 }
 
 a {
@@ -71,24 +83,50 @@ a {
 tt,
 code {
   display: inline-block;
-  padding: 0 0.2em;
-  background-color: hsla(50, 100%, 70%, 0.2);
-  font-size: 1em;
+  padding: 0px 4px;
+  color: hsl(28, 69%, 46%);
+  background-color: hsla(28, 37%, 96%, 1);
+  font-size: 0.9em;
+  border-radius: 4px;
+}
+
+input {
+  padding: 0.5ch 1ch;
+
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--border-radius);
+  transition: box-shadow 0.1s linear, border-color 0.1s linear;
+
+  &:focus {
+    border-color: var(--color-primary);
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--color-primary-dim);
+  }
 }
 
 .prism-code {
   margin: 2rem 0;
+  font-size: 0.9rem !important;
+
+  .line-number-focused {
+    background-color: #fff;
+    box-shadow: inset 3px 0 0 var(--color-primary);
+  }
 }
 
 #docs-page {
   h1,
   h2,
   h3 {
-    margin-top: 1.5em;
+    margin-top: 2em;
   }
 
   h2 {
-    padding-top: 1.5em;
+    padding-top: 2em;
     border-top: 1px solid var(--color-gray-dim);
+  }
+
+  a {
+    color: var(--color-secondary);
   }
 }

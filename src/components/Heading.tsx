@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text } from './Text'
 import styled, { css } from 'styled-components'
+import { BoxProps } from '@atomic-layout/core'
 
 interface HeadingProps {
   level?: keyof typeof headingComponents
@@ -22,7 +23,7 @@ const StyledHeading = styled(Text)<HeadingProps>`
     `}
 `
 
-export const Heading: React.FC<HeadingProps> = ({
+export const Heading: React.FC<HeadingProps & BoxProps> = ({
   level,
   children,
   ...restProps

@@ -6,11 +6,7 @@ import { Code } from './Code'
 import { TextSmall } from '../TextSmall'
 import { Button } from '../Button'
 import { InteractiveArea } from '../InteractiveArea'
-
-const TextMono = styled.span`
-  font-family: var(--font-family-mono);
-  font-size: 90%;
-`
+import { TextMono } from '../TextMono'
 
 const RequestUrl = styled(TextMono)`
   strong {

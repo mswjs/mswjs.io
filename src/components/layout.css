@@ -560,7 +560,7 @@ td:last-child {
 }
 tt,
 code {
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   font-family: 'SFMono-Regular', Menlo, Consolas, 'Roboto Mono',
     'Droid Sans Mono', 'Liberation Mono', Courier, monospace;
   padding: 0;

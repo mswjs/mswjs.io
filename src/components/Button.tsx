@@ -2,17 +2,22 @@ import styled, { css } from 'styled-components'
 
 interface ButtonProps {
   hero?: boolean
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'ghost'
+  size?: 'default' | 'small'
 }
 
 export const Button = styled.button<ButtonProps>`
-  padding: 0.75rem 1.25rem;
+  --size-multiplier: ${({ size }) => (size === 'small' ? 0.4 : 1)};
+
+  padding: calc(0.75rem * var(--size-multiplier))
+    calc(1.25rem * var(--size-multiplier));
+
   ${({ hero }) =>
     hero &&
     css`
       min-width: 200px;
     `}
-  display: inline-block;
+  /* display: inline-block; */
 
   border: 0;
   border-radius: 6px;
@@ -23,15 +28,32 @@ export const Button = styled.button<ButtonProps>`
   text-decoration: none;
   user-select: none;
 
-  ${({ variant }) =>
-    variant === 'primary'
-      ? css`
+  ${({ variant }) => {
+    switch (variant) {
+      case 'primary': {
+        return css`
           background-color: ${({ theme }) => theme.colors.primary};
           color: ${({ theme }) => theme.colors.primaryDark};
         `
-      : css`
+      }
+
+      case 'secondary': {
+        return css`
           background-color: ${({ theme }) => theme.colors.grayDim};
-        `};
+        `
+      }
+
+      case 'ghost': {
+        return css``
+      }
+    }
+  }}
+
+  ${({ size }) =>
+    size === 'small' &&
+    css`
+      font-size: 80%;
+    `}
 `
 
 Button.defaultProps = {
