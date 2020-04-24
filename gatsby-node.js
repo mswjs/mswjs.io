@@ -124,7 +124,9 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
-      allMdx(sort: { order: ASC, fields: [fileAbsolutePath] }) {
+      allMdx(
+        sort: { order: ASC, fields: [frontmatter___order, fileAbsolutePath] }
+      ) {
         edges {
           node {
             id
@@ -188,7 +190,10 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     createNodeField({
       node,
       name: 'url',
-      value: `/${DOCS_BASE_PATH}/${postSlugWithoutOrder}`.replace(/\/+/g, '/'),
+      value: ['/', DOCS_BASE_PATH, '/', postSlugWithoutOrder]
+        .filter(Boolean)
+        .join('')
+        .replace(/\/+/g, '/'),
     })
   }
 }

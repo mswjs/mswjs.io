@@ -8,7 +8,6 @@ const MenuSection = styled.section`
   background-color: var(--color-gray-dim);
   border-right: 1px solid
     ${({ theme }) => theme.utils.alpha(theme.colors.grayLight, 0.3)};
-  font-size: 0.9rem;
   font-weight: 500;
 
   &:before {
@@ -36,10 +35,9 @@ const MenuSection = styled.section`
   }
 `
 
-const MenuSticky = styled.div`
+const MenuSticky = styled(Box)`
   position: sticky;
   top: 0;
-  padding-top: 2rem;
 `
 
 const PagesList = styled.ul<{ nested?: boolean }>`
@@ -75,7 +73,7 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
         content: '•';
         color: var(--color-gray-light);
         width: 1ch;
-        margin-right: 0.35em;
+        margin-right: 1ch;
       }
 
       [aria-current='page'] &:before {
@@ -87,7 +85,7 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
   ${({ isRootSection, theme }) =>
     isRootSection &&
     css`
-      color: ${theme.colors.gray};
+      color: ${theme.colors.grayDark};
       font-size: 90%;
       font-weight: bold;
       text-transform: uppercase;
@@ -96,7 +94,7 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
       &::after {
         content: '';
         height: 1px;
-        background-color: ${theme.colors.grayLighter};
+        background-color: ${theme.colors.grayLight};
         top: 0;
         width: 100%;
         right: 1rem;
@@ -151,7 +149,7 @@ interface MenuTree {
 export const Menu: React.FC<MenuProps> = ({ tree }) => {
   return (
     <Box as={MenuSection} paddingVertical={16} paddingRight={32}>
-      <Box as={MenuSticky}>
+      <Box as={MenuSticky} paddingVertical={32}>
         <PagesList>{renderTreeItem(tree, true)}</PagesList>
       </Box>
     </Box>

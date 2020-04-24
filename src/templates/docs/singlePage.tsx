@@ -50,7 +50,7 @@ const DocumentationPage = ({ data, pageContext }) => {
     <Layout>
       <Seo title={page.frontmatter.title} />
       <Grid>
-        <Composition templateCols="260px 1fr 224px" gap={64}>
+        <Composition templateCols="260px 1fr 185px" gap={64}>
           <Menu tree={pageContext.navTree} />
           <Box paddingVertical={48}>
             <Breadcrumbs items={pageContext.breadcrumbs} />

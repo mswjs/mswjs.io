@@ -4,6 +4,12 @@ import { Code } from './Code'
 import { Composition, Box } from 'atomic-layout'
 import { ErrorBoundary } from '../ErrorBoundary'
 import { InteractiveArea } from '../InteractiveArea'
+import styled from 'styled-components'
+
+const Input = styled.input`
+  font-family: var(--font-family-mono);
+  font-size: 90%;
+`
 
 interface Props {
   path?: string
@@ -41,7 +47,7 @@ export const PathMatchPreview: React.FC<Props> = ({
       <Composition templateCols="repeat(2, 1fr)" gap={16}>
         <Composition gap={4}>
           <label htmlFor="path">Path:</label>
-          <input
+          <Input
             id="path"
             name="path"
             value={path}
@@ -51,7 +57,7 @@ export const PathMatchPreview: React.FC<Props> = ({
         </Composition>
         <Composition gap={4}>
           <label htmlFor="path">Actual request URL:</label>
-          <input
+          <Input
             name="url"
             value={url}
             autoComplete="off"
