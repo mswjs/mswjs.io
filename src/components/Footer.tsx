@@ -4,6 +4,7 @@ import { Composition } from 'atomic-layout'
 import { Link } from 'gatsby'
 
 import { Grid } from './Grid'
+import { HeadingDiminished } from './HeadingDiminished'
 
 const StyledFooter = styled.footer`
   background-color: ${({ theme }) => theme.colors.grayDark};
@@ -27,9 +28,6 @@ const StyledFooter = styled.footer`
   h4 {
     margin-bottom: 1rem;
     color: var(--color-gray-light);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 4px;
   }
 `
 
@@ -46,7 +44,7 @@ export const Footer: React.FC = () => {
           <p>Mock Service Worker is released under the MIT license.</p>
         </div>
         <div>
-          <h4>Documentation</h4>
+          <HeadingDiminished>Documentation</HeadingDiminished>
           <ul>
             <li>
               <Link to="/docs/getting-started">Getting started</Link>
