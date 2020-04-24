@@ -17,7 +17,8 @@ const HeadingLink = styled.a`
   }
 
   &:hover {
-    text-decoration: dotted;
+    margin-bottom: -1px;
+    border-bottom: 1px dotted ${({ theme }) => theme.colors.grayLight};
 
     .icon {
       display: block;
@@ -32,7 +33,13 @@ export const Heading: React.FC<React.DetailedHTMLProps<
   const Component = `h${level}`
 
   const content = restProps.id ? (
-    <Box as={HeadingLink} href={`#${restProps.id}`} flex alignItems="center">
+    <Box
+      as={HeadingLink}
+      href={`#${restProps.id}`}
+      inline
+      flex
+      alignItems="center"
+    >
       <span>{children}</span>
       <Box as={IoIosLink} className="icon" size="0.75em" marginLeft={6} />
     </Box>

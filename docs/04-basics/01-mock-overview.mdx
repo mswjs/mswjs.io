@@ -6,7 +6,7 @@ This page is going to give you a general idea of what are the counterparts of a 
 
 Let's look at the example of a mock definition file:
 
-```js
+```js showLineNumbers
 // src/mocks.js
 import { composeMocks, rest } from 'msw'
 
@@ -35,9 +35,9 @@ In this file we are creating a request handler for `GET /users` request and retu
 
 Below we are going to analyze this example line-by-line and see what each part does, so you get a better understanding of the process and could write mocks that suit your needs the best.
 
-### Imports
+## Imports
 
-```js
+```js showLineNumbers
 import { composeMocks, rest } from 'msw'
 ```
 
@@ -46,21 +46,21 @@ Here you can see we have imported two functions:
 - `composeMocks()`, a function that composes given request handlers;
 - `rest`, a namespace for handling a REST API.
 
-### Composition
+## Composition
 
-```js lineStartNumber=3
+```js showLineNumbers lineStartNumber=3
 const { start } = composeMocks(...)
 ```
 
-### Request handlers
+## Request handlers
 
-```js lineStartNumber=4
+```js showLineNumbers lineStartNumber=4
 rest.get('/users', (req, res, ctx) => {
 ```
 
-### Response resolver
+## Response resolver
 
-```js lineStartNumber=6
+```js showLineNumbers lineStartNumber=6
 return res(
   ctx.status(200),
   ctx.json([
@@ -78,9 +78,9 @@ return res(
 
 In this part we are defining a _mocked response_ to our request. To do so, we are calling the `res()` function and provide a list of _response transformers_ as the arguments to it.
 
-### Starting Service Worker
+## Starting Service Worker
 
-```js lineStartNumber=22
+```js showLineNumbers lineStartNumber=22
 start()
 ```
 

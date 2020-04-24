@@ -2,41 +2,36 @@
 title: Request handler
 ---
 
-**Request handler** is a function that determines whether an outgoing request should be mocked, and specifies its mocked response.
+Request handler is a function that determines whether an outgoing request should be mocked, and specifies its mocked response.
 
-Request handler function returns an object with the following properties:
+Here's an example of a `GET` request handler:
 
-```ts
-interface RequestHandler {
-  mask?: string
-  predicate: (req: MockedRequest) => boolean
-  resolver: (
-    req: MockedRequest,
-    res: ResponseComposition,
-    ctx: Context,
-  ) => MockedResponse
-  defineContext?: (req: MockedRequest) => Record<string, any>
-}
+```js
+import { rest } from 'msw'
+
+// Matches any "GET /user" requests,
+// and responds using the `responseResolver` function.
+rest.get('/user', responseResolver)
 ```
-
-| Property name   | Type                              | Description                                                                                                           |
-| --------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `mask`          | `string`                          | Request URL path used to extract path parameters from the URL.                                                        |
-| `predicate`     | `(req: MockedRequest) => boolean` | Predicate function that determines whether a request should be mocked using the given request handler.                |
-| `resolver`      | (req, res, ctx) => MockedResponse | [Response resolver](/docs/basics/response-resolver) function that returns the mocked response.                        |
-| `defineContext` | ...                               | Custom context definition function. Determines which [Context utilities](TODO) are available in this request handler. |
-
-## Type definition
-
-> TODO Add the ref to ts
 
 ## Standard handlers
 
-Mock Service Worker exposes a set of standard request handlers for your convenience. It's recommende to use those, as they are sufficient in most use cases.
+Mock Service Worker ships with multiple ready-to-use request handlers for working with popular API types. For example, you would use the [`rest`](/docs/api/rest) handlers when mocking a REST API, and [`graphql`](/docs/api/graphql) request handlers for a GraphQL API.
 
-**See the list of the standard request handlers below:**
+### List of handlers
 
 - [rest](/docs/api/rest)
 - [graphql](/docs/api/graphql)
 
-> You can always create a [Custom request handler](/docs/recipes/custom-request-handler) when the standard ones are not enough.
+## Request matching
+
+Request handlers are responsible for requests matching—a process of deciding whether a request should be mocked. Depending on the handler's type, request matching is performed differently. For example, `rest` handlers lookup matching methods and URLs, while `graphql` parses a request query string and expects a matching operation name.
+
+<Hint>
+  Read more about which requests are being mocked in{' '}
+  <a href="/docs/basics/path-matching">Path matching</a>.
+</Hint>
+
+## Custom request handler
+
+Integrating mocking into complex applications may require more flexibility in the way requests are matched, or mocked. For that, Mock Service Worker exposes an API to create your [custom request handlers](/docs/advanced/custom-request-handler).

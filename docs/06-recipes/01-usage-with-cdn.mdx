@@ -2,11 +2,7 @@
 title: Usage with CDN
 ---
 
-You can include MSW via a CDN that can serve NPM packages. In this recipe we are going to look on the setup of using this library via CDN.
-
-## Include the package
-
-Pick a suitable CND that can serve NPM modules and include the respective script in your page. You can find a few example using popular CDN below.
+Pick a suitable CDN that can serve NPM modules and include the respective script in your page. See the examples of how to integrate Mock Service Worker using a few popular CDNs below.
 
 ### unpkg
 
@@ -22,25 +18,8 @@ Pick a suitable CND that can serve NPM modules and include the respective script
 
 ## Place the Service Worker
 
-It's recommended you use the `npx msw init` command to copy the `mockServiceWorker.js` file into your public directory:
+To copy the Service Worker into your public directory, use the `npx msw init` command:
 
 ```bash
 $ npx msw init <PUBLIC_DIR>
-```
-
-**Only if you cannot perform this action**, include the `mockServiceWorker.js` file from the CDN. Here's an example of how to do that using `unpkg` CDN:
-
-```js showLineNumbers
-// server.js
-import fetch from 'isomorphic-fetch'
-
-// Since the Service Worker file **cannot** be included on the page,
-// we need to serve it from our server.
-app.get('/mockServiceWorker.js', (req, res) => {
-  const worker = fetch(
-    'https://unpkg.com/msw/lib/mockServiceWorker.js',
-  ).then((res) => res.text())
-
-  return res.send(worker)
-})
 ```

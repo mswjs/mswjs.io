@@ -23,12 +23,15 @@ const MenuSection = styled.section`
 
   a {
     display: block;
-    color: var(--color-gray-dark);
+    color: var(--color-gray);
     text-decoration: none;
+
+    &:hover {
+      color: var(--color-black);
+    }
 
     &[aria-current='page'] {
       color: var(--color-secondary);
-      font-weight: 600;
     }
   }
 `
@@ -61,16 +64,23 @@ const PageListItem = styled.li<{ isRootSection: boolean }>`
 
 const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
   display: flex;
-  padding: 0.35rem 1rem;
+  padding: 0.5rem 1rem;
   line-height: 1.4;
 
   ${({ isRootSection }) =>
     !isRootSection &&
     css`
       &:before {
+        display: block;
         content: '•';
         color: var(--color-gray-light);
+        width: 1ch;
         margin-right: 0.35em;
+      }
+
+      [aria-current='page'] &:before {
+        color: var(--color-secondary);
+        content: '›';
       }
     `}
 
