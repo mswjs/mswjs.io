@@ -6,7 +6,7 @@ export default {
     secondary: 'hsl(210, 75%, 50%)',
     grayDim: 'hsl(210, 20%, 95%)',
     grayLight: 'hsl(210, 16%, 80%)',
-    gray: 'hsl(210, 9%, 46%)',
+    gray: 'hsl(210, 9%, 43%)',
     grayDark: 'hsl(210, 18%, 24%)',
 
     black: 'hsl(220, 25%, 20%)',
