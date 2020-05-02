@@ -1,26 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Composition } from 'atomic-layout'
+import {
+  AiTwotoneWarning,
+  AiTwotonePlayCircle,
+  AiTwotoneUpSquare,
+} from 'react-icons/ai'
 
 import { Grid } from '../components/Grid'
 import { Text } from '../components/Text'
-
-const FeatureLetter = styled.span`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: -1;
-
-  color: var(--color-gray-dim);
-  font-size: 5rem;
-  font-weight: 200;
-  line-height: 0;
-  user-select: none;
-  font-variant-numeric: tabular-nums;
-`
+import { Heading } from '../components/Heading'
 
 const Section = styled.section`
   position: relative;
+`
+
+const Block = styled.div`
+  display: inline-flex;
+  margin: 0.5ch 0.5ch 0 0;
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.secondary};
 `
 
 export const Features = () => {
@@ -28,33 +27,47 @@ export const Features = () => {
     <Grid>
       <Composition
         templateColsLg="repeat(3, 1fr)"
-        gap={32}
+        gap={64}
         paddingVertical={64}
-        paddingVerticalMd={120}
+        paddingVerticalLg={120}
       >
         <Section>
-          <FeatureLetter>01</FeatureLetter>
-          <h3>Seamless</h3>
+          <Heading level={3} flex alignItems="flex-start">
+            <Block>
+              <AiTwotonePlayCircle size={20} />
+            </Block>
+            Seamless
+          </Heading>
           <Text color="gray">
-            Forget about stubs and hacks that make your code smell. Leverage a
-            dedicated layer of interception to keep your code clean and shiny.
+            Dedicated layer of requests interception at your disposal. Keep your
+            application's code and tests clean and shiny: they know nothing
+            about mocking now.
           </Text>
         </Section>
         <Section>
-          <FeatureLetter>02</FeatureLetter>
-          <h3>Deviation-free</h3>
+          <Heading level={3} flex alignItems="flex-start">
+            <Block>
+              <AiTwotoneWarning size={20} />
+            </Block>
+            Deviation-free
+          </Heading>
           <Text color="gray">
-            Request the same production resources and test the behavior of your
-            app. Test what actually matters, leaving the mocking to MSW.
+            Request the same production resources and test the actual behavior
+            of your app. Augment an existing API, or design it as you go, when
+            there is none.
           </Text>
         </Section>
         <Section>
-          <FeatureLetter>03</FeatureLetter>
-          <h3>Familiar & Powerful</h3>
+          <Heading level={3} flex alignItems="flex-start">
+            <Block>
+              <AiTwotoneUpSquare size={20} />
+            </Block>
+            Familiar & Powerful
+          </Heading>
           <Text color="gray">
-            Use Express-like mocking route definition syntax to capture outgoing
-            requests. Parameters, wildcards, regular expressions—mocking has
-            never been easier.
+            Use Express-like routing syntax to match outgoing requests to mock.
+            Parameters, wildcards, regular expressions—mocking has never been
+            easier.
           </Text>
         </Section>
       </Composition>

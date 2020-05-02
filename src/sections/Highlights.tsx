@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Grid } from '../components/Grid'
 import { CheckistItem } from '../components/ChecklistItem'
 import { Accent } from '../components/Accent'
+import { Heading } from '../components/Heading'
 
 const Container = styled.div`
   background-image: linear-gradient(
@@ -27,11 +28,10 @@ export const Highlights = () => {
           gap={64}
         >
           <div>
-            <h2>
-              Convincing titles.
-              <br />
-              Are <Accent>not easy</Accent> to write.
-            </h2>
+            <Heading level={3}>
+              Why people <Accent>fall in love</Accent> with{' '}
+              <span className="no-wrap">Mock Service Worker</span>?
+            </Heading>
           </div>
           <Composition as={UnstyledUl} gap={12} templateColsMd="repeat(2, 1fr)">
             <CheckistItem>Full specification compliance</CheckistItem>

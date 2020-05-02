@@ -17,9 +17,9 @@ By treating an error response as an actual response, and not an exception, you r
 Here's an example on how to mock an error response for the login `POST` request:
 
 ```js showLineNumbers
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   rest.post('/login', (req, res, ctx) => {
     const { username } = req.body
 

@@ -250,7 +250,7 @@ export const IncrementalDevelopment = () => {
             justifyContent="space-between"
             width="100%"
           >
-            <FakeBrowser offsetX={-10} offsetY={-70} />
+            <FakeBrowser offsetX={-10} offsetY={-71} />
             <Browser
               showControls={false}
               showAddressBar={false}

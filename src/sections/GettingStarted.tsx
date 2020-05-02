@@ -22,7 +22,7 @@ export const GettingStarted = () => {
       >
         <div>
           <h3>Install</h3>
-          <Code code="$ npm install msw --save-dev" language="bash" />
+          <Code code="$ npm install msw" language="bash" />
         </div>
 
         <div>
@@ -40,9 +40,9 @@ export const GettingStarted = () => {
                 language: 'javascript',
                 code: `
 // src/mocks.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const worker = setupWorker(
   // Match a request by method, URL, path, or regular expression
   rest.get('https://api.github.com/users/:username', (req, res, ctx) => {
     const { username } = req.params
@@ -56,7 +56,7 @@ const { start } = composeMocks(
   })
 )
 
-start()
+worker.start()
           `,
               },
               {
@@ -65,9 +65,9 @@ start()
                 icon: GraphQLLogo,
                 code: `
 // src/mocks.js
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
-const { start } = composeMocks(
+const worker = setupWorker(
   graphql.query('GetUser', (req, res, ctx) => {
     const { username } = req.variables
 
@@ -82,7 +82,7 @@ const { start } = composeMocks(
   })
 )
 
-start()
+worker.start()
               `,
               },
             ]}

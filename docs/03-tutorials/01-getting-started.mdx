@@ -2,14 +2,14 @@
 title: Getting started
 ---
 
-This page will take you through the setup you need to get started with Mock Service Worker. It assumes you have got a JavaScript project ready and running.
+This tutorial will take you through the steps to get started with Mock Service Worker. It assumes you have got a JavaScript project ready and running.
 
 ## Install
 
-First, install the `msw` package into your application:
+Let's start by installing the `msw` package into our application:
 
 ```bash
-$ npm install msw --save-dev
+$ npm install msw
 ```
 
 ## Configure
@@ -22,24 +22,9 @@ $ npx msw init <PUBLIC_DIR>
 
 Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's public directory (for example, `npx msw init ./public`).
 
-### Where is my "public" directory?
+import PublicDirSnippet from '../snippets/public-dir.mdx'
 
-A public directory is usually a root directory server by your server (i.e. `./build`, `./public`, or `./dist`). This directory is often committed to Git, and so **should be the Mock Service Worker**.
-
-#### Common public directories
-
-Below you can find a list of public directories in most popular JavaScript project generators.
-
-| Project name                                     | Public directory |
-| ------------------------------------------------ | ---------------- |
-| [Create React App](https://create-react-app.dev) | `./public`       |
-| [GatsbyJS](https://www.gatsbyjs.org)             | `./public`       |
-| [NextJS](https://nextjs.org)                     | `./static`       |
-
-<Hint>
-  Not sure where is your public directory? Reach out to the maintainers of the
-  development stack that you are using, they should be able to help.
-</Hint>
+<PublicDirSnippet />
 
 ## Define mocks
 
@@ -53,10 +38,10 @@ We will fill it with the next content:
 
 ```js showLineNumbers
 // src/mocks.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
 // Configure mocking routes
-const { start } = composeMocks(
+const { start } = setupWorker(
   rest.get('https://api.github.com/repos/:owner/:repo', (req, res, ctx) => {
     // Access request's params
     const { owner, repo } = req.params

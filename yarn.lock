@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@atomic-layout/core@^0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@atomic-layout/core/-/core-0.13.0.tgz#bb90ac11ed92364a54184336d0cdc36a069a6623"
-  integrity sha512-DXN3/OCih7Qwjz5JFaB+GQXfDUa+IF+ospJY/hx9fKbycz2PXNHtOImk6l3DSWchnu6u7uod+LqiAdwp/sw9ng==
+"@atomic-layout/core@^0.14.1":
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/@atomic-layout/core/-/core-0.14.1.tgz#3d69be5f79775f11b8008f18bc603b04a2141ccd"
+  integrity sha512-o5nhk/1djuKzB20C2LSOuetTDytsbGg4c0UfxXkq1pqoaN3hKJcHPYF9nV+p6+P5CWqNBaaJddZ32OsFSppULQ==
 
 "@babel/code-frame@7.5.5":
   version "7.5.5"
@@ -2389,12 +2389,12 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-atomic-layout@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/atomic-layout/-/atomic-layout-0.15.0.tgz#16e581d5d41f151412ca58f9bd3d75b43bacbeaf"
-  integrity sha512-4rdkvZd66TUB+0aE5GpocF3YPCwtLgcmkbfbsqNeunJ4Sn9e2C7/+jGFbYp188WY898RAXP+HuCgE2Fw63r0kA==
+atomic-layout@^0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/atomic-layout/-/atomic-layout-0.16.1.tgz#55e7c8425e35ff65991ae141b868822673ee8ced"
+  integrity sha512-SkVdHaCQD0QhnSORN5k8XXKTSjke7mI1ex1bsGMRFPi5315jzYKwsqiBr6DDehnsTnBXkCdF9IW+AhrzOJoYuA==
   dependencies:
-    "@atomic-layout/core" "^0.13.0"
+    "@atomic-layout/core" "^0.14.1"
 
 auto-bind@^4.0.0:
   version "4.0.0"

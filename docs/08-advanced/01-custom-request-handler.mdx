@@ -42,7 +42,7 @@ Request handler itself is an object that contains the following properties:
 
 ### Define context
 
-The mocking schema you define via calling `composeMocks()`, in fact, keeps a list of such request handler objects and matches all requests against their `predicate` functions. If you take a look at the existing request handlers, you may notice that they are rather functions, not objects:
+The mocking schema you define via calling `setupWorker()`, in fact, keeps a list of such request handler objects and matches all requests against their `predicate` functions. If you take a look at the existing request handlers, you may notice that they are rather functions, not objects:
 
 ```js
 import { rest } from 'msw'
@@ -84,10 +84,10 @@ const f = () => {
 
 ```js
 // src/mocks/index.js
-import { composeMocks } from 'msw'
+import { setupWorker } from 'msw'
 import { f } from './handlers'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   f('???', (req, res, ctx) => {
     // TODO Would be nice to use a meaningful util
     ctx.halJson()

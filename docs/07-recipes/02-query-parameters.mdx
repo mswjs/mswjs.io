@@ -9,9 +9,9 @@ In order to access a query parameter of the intercepted request, use the `query`
 ### Single parameter
 
 ```js showLineNumbers focusedLines=5
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   rest.get('/products', (req, res, ctx) => {
     const productId = req.query.get('id')
 
@@ -47,9 +47,9 @@ start()
 Call `req.query.getAll()` method to access all values assigned to a parameter.
 
 ```js showLineNumbers focusedLines=5
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   rest.get('/products', (req, res, ctx) => {
     const productIds = req.query.getAll('id')
 

@@ -8,7 +8,7 @@
     "@mdx-js/mdx": "^1.5.8",
     "@mdx-js/react": "^1.5.8",
     "@svgr/webpack": "^5.3.1",
-    "atomic-layout": "^0.15.0",
+    "atomic-layout": "^0.16.1",
     "gatsby": "^2.20.12",
     "gatsby-image": "^2.3.1",
     "gatsby-plugin-manifest": "^2.3.3",

@@ -17,9 +17,7 @@ export const Workshops = () => {
           <p>Some image</p>
         </Box>
         <div>
-          <Heading level={2} marginBottom={8}>
-            Teach frontend freely
-          </Heading>
+          <Heading level={2}>Perfect for teachers</Heading>
           <TextLead>
             API for your next tutorial <Accent>in a matter of minutes</Accent>.
           </TextLead>

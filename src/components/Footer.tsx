@@ -7,7 +7,7 @@ import { Grid } from './Grid'
 import { HeadingDiminished } from './HeadingDiminished'
 
 const StyledFooter = styled.footer`
-  background-color: ${({ theme }) => theme.colors.grayDark};
+  background-color: ${({ theme }) => theme.colors.black};
   color: ${({ theme }) => theme.colors.grayLight};
   font-size: 0.95rem;
 
@@ -47,7 +47,7 @@ export const Footer: React.FC = () => {
           <HeadingDiminished>Documentation</HeadingDiminished>
           <ul>
             <li>
-              <Link to="/docs/getting-started">Getting started</Link>
+              <Link to="/docs/tutorials/getting-started">Getting started</Link>
             </li>
             <li>
               <Link to="/docs/api">API</Link>

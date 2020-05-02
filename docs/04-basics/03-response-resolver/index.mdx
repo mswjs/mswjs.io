@@ -2,7 +2,7 @@
 title: Response resolver
 ---
 
-Response resolver is a function that accepts a matched request and returns a mocked response.
+**Response resolver** is a function that accepts a matched request and returns a mocked response.
 
 ## Parameters
 
@@ -22,9 +22,9 @@ The basic workflow implies that you pass a response resolver function to a reque
 
 ```js showLineNumbers focusedLines=7-15
 // src/mocks.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   rest.get(
     '/user',
     // Example of a response resolver that returns
@@ -61,10 +61,10 @@ export const mockUser = (req, res, ctx) => {
 
 ```js showLineNumbers focusedLines=3,6-7
 // src/mocks/index.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 import { mockUser } from './resolvers/mockUser'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   rest.get('/user', mockUser)
   rest.get('/me', mockUser)
 )

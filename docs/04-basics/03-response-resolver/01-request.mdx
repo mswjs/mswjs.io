@@ -39,9 +39,9 @@ When mocking a GraphQL API, the `req` object has the following extra properties:
 Access the request object as the first argument of a [response resolver](/docs/basics/response-resolver) function.
 
 ```js showLineNumbers focusedLines=4,5
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-composeMocks(
+setupWorker(
   rest.post('/user/:userId/articles', (req, res, ctx) => {
     const { userId } = req.params
     return res(ctx.text(userId))

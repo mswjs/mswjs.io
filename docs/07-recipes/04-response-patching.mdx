@@ -8,12 +8,12 @@ Pass the intercepted `request` object to the `ctx.fetch()` call to get the origi
 
 ## Example
 
-Below is an example of response patching in a handler that mocks a user detail request from GitHub API.
+Below is an example of patching a response from a user detail endpoint of GitHub API V3.
 
 ```js showLineNumbers focusedLines=5,6
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   rest.get('https://api.github.com/users/:username', async (req, res, ctx) => {
     // Perform an original request to the intercepted request URL
     const originalResponse = await ctx.fetch(req)

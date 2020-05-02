@@ -16,9 +16,9 @@ Each method in this namespace represents a GraphQL operation kind:
 Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](/docs/basics/response-resolver) as the second to mock the respective operation.
 
 ```js showLineNumbers
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
-composeMocks(
+setupWorker(
   // Mock a query by name "GetUserDetail"
   graphql.query('GetUserDetail', responseResolver),
 
@@ -32,9 +32,9 @@ composeMocks(
 ### Basic query/mutation
 
 ```js showLineNumbers
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   graphql.query('GetUserDetail', (req, res, ctx) => {
     return res(
       ctx.data({
@@ -55,9 +55,9 @@ start()
 The variables of a query/mutation can be accessed in the `req.variables` object.
 
 ```js showLineNumbers focusedLines=5
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   graphql.mutation('DeletePost', (req, res, ctx) => {
     const { postId } = req.variables
 
@@ -71,7 +71,7 @@ start()
 ### Usage with TypeScript
 
 ```ts showLineNumbers
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
 // Provide manually written types or use the generated ones
 // (i.e. when using "graphql-codegen" package).
@@ -97,7 +97,7 @@ interface LoginMutationVariables {
   password: string
 }
 
-const { start } = composeMocks(
+const { start } = setupWorker(
   graphql.query<GetUserDetailQuery, GetUserDetailVariables>(
     'GetUserDetail',
     (req, res, ctx) => {

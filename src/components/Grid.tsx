@@ -5,7 +5,7 @@ import { BoxProps } from '@atomic-layout/core'
 export const Grid: React.FC<BoxProps> = (props) => {
   return (
     <Box
-      widthSm="540px"
+      widthSm="600px"
       widthMd="720px"
       widthLg="960px"
       widthXl="1140px"

@@ -125,6 +125,7 @@ exports.createPages = ({ actions, graphql }) => {
   return graphql(`
     {
       allMdx(
+        filter: { frontmatter: { title: { ne: "" } } }
         sort: { order: ASC, fields: [frontmatter___order, fileAbsolutePath] }
       ) {
         edges {

@@ -19,7 +19,9 @@ const StyledHeading = styled(Text)<HeadingProps>`
   ${({ hero }) =>
     hero &&
     css`
-      font-size: 3rem;
+      font-size: 3.4rem;
+      font-weight: 800;
+      line-height: 1.1;
     `}
 `
 

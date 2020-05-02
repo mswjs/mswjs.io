@@ -1,0 +1,29 @@
+---
+title: Cookies
+---
+
+## Limitations
+
+Fetch specification explicitly forbids setting `Set-Cookie` and `Set-Cookie2` headers when constructing a new `Response` instance for security reasons.
+
+However, since Mock Service Worker executes on the client side, it can provide a functionality similar to receiving a mocked cookie from the response, without violating security. To achieve that, use the `ctx.cookie()` response transformer function that sets the given cookies on the `document.cookie` string directly.
+
+## Example
+
+```js showLineNumbers focusedLines=8
+import { setupWorker, rest } from 'msw'
+
+const { start } = setupWorker(
+  rest.post('/login', (req, res, ctx) => {
+    return res(
+      // Calling `ctx.cookie()` sets given cookies
+      // on `document.cookie` directly.
+      ctx.cookie('auth-token', 'abc-123'),
+    )
+  }),
+)
+
+start()
+```
+
+> Note that you still won't be able to access the `Set-Cookie` header on the response, as the cookie is set on the `document` directly, bypassing network.

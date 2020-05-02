@@ -1,5 +1,5 @@
 ---
-title: useWorker()
+title: setupWorker()
 ---
 
 A function that configures the mocking Service Worker instance.
@@ -7,9 +7,9 @@ A function that configures the mocking Service Worker instance.
 ## Examples
 
 ```js showLineNumbers
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const worker = setupWorker(
   // Provide request handlers
   rest.get('/user/:userId', (req, res, ctx) => {
     return res(
@@ -22,5 +22,5 @@ const { start } = composeMocks(
 )
 
 // Start the Mock Service Worker
-start()
+worker.start()
 ```

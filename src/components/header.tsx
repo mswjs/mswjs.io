@@ -2,13 +2,13 @@ import React from 'react'
 import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { Box, Composition } from 'atomic-layout'
+import { DiGithubBadge as GitHubIcon } from 'react-icons/di'
 
 import { Grid } from './Grid'
 import logo from '../images/logo.svg'
 
 const StyledHeader = styled.header`
-  background-color: ${({ theme }) => theme.colors.grayDark};
-  color: ${({ theme }) => theme.colors.grayLight};
+  color: ${({ theme }) => theme.colors.grayDark};
   font-size: 0.9rem;
   font-weight: 600;
 
@@ -16,12 +16,9 @@ const StyledHeader = styled.header`
     color: inherit;
     text-decoration: none;
 
-    &:hover {
-      color: #fff;
-    }
-
+    &:hover,
     &[aria-current='page'] {
-      color: #fff;
+      color: ${({ theme }) => theme.colors.secondary};
     }
   }
 `
@@ -30,16 +27,23 @@ const Header = () => (
   <Box as={StyledHeader} paddingVertical={12}>
     <Grid flex alignItems="center" justifyContent="space-between">
       <Box flex alignItems="center">
-        <Link to="/">
+        <Box as={Link} to="/" flex>
           <img src={logo} alt="MSW" width="48" />
-        </Link>
+        </Box>
         <Box as="span" marginLeft={8}>
           <strong>Mock Service Worker</strong>
         </Box>
       </Box>
-      <Composition inline templateCols="repeat(2, auto)" gap={32}>
+      <Composition
+        inline
+        templateCols="repeat(2, auto)"
+        alignItems="center"
+        gap={32}
+      >
         <Link to="/docs">Docs</Link>
-        <a href="https://github.com/open-draft/msw">GitHub</a>
+        <Box as="a" href="https://github.com/open-draft/msw" flex>
+          <GitHubIcon size={24} />
+        </Box>
       </Composition>
     </Grid>
   </Box>

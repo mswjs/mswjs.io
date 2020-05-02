@@ -29,7 +29,7 @@ We can use this transformer by providing it as an argument to the `res()` functi
 // src/mocks/index.js
 import { redirectStatus } from './redirectStatus'
 
-composeMocks(
+setupWorker(
   rest.get('/user', (req, res, ctx) => {
     return res(redirectStatus)
   }),

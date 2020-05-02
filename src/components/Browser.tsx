@@ -21,12 +21,15 @@ const BrowserContainer = styled(Box)`
 `
 
 const BrowserHeader = styled.header<{ useLightTheme?: boolean }>`
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+
   ${({ useLightTheme }) =>
     useLightTheme
       ? css`
           background-image: line-gradient(#e5e5e5, #cdcdcd);
-          border-bottom: 1px solid #eee;
-          box-shadow: inset 0 1px 0 #eee, inset 0 2px 0 #fff;
+          border-bottom: 1px solid #e4e4e4;
+          box-shadow: inset 0 1px 0 #e4e4e4;
         `
       : css`
           background-image: linear-gradient(#424242, #363636);

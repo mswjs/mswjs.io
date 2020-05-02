@@ -25,7 +25,12 @@ export const StartUsing = () => {
             API mocking to the next level today.
           </TextLead>
           <Box marginTop={32}>
-            <Button variant="primary" hero as={Link} to="/docs/getting-started">
+            <Button
+              variant="primary"
+              hero
+              as={Link}
+              to="/docs/tutorials/getting-started"
+            >
               Get started
             </Button>
           </Box>

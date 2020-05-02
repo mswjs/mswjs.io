@@ -2,7 +2,7 @@
 title: Mocking GraphQL API
 ---
 
-Mock Service Worker comes with a first-class support for mocking a GraphQL API. This tutorials assumes you have completed the [Getting started](/docs/getting-started) tutorial, and have the `msw` package installed in your project.
+Mock Service Worker comes with a first-class support for mocking a GraphQL API. This tutorials assumes you have completed the [Getting started](/docs/tutorials/getting-started) tutorial, and have the `msw` package installed in your project.
 
 ## GraphQL client
 
@@ -29,12 +29,12 @@ interface GraphQLRequest {
 
 After the MSW library is installed, let's create a `mocks.js` file where our mocking definitions would be stored. We would have to import two things from the library:
 
-- `composeMocks()`, a function that describes which operations to mock;
+- `setupWorker()`, a function that describes which operations to mock;
 - `graphql`, a namespace that contains utilities for mocking GraphQL API.
 
 ```js
 // src/mocks.js
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 ```
 
 ## Declaration
@@ -43,9 +43,9 @@ Now let's define which GraphQL operations should be mocked. In order to target a
 
 ```js showLineNumbers focusedLines=5,6
 // src/mocks.js
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
-composeMocks(
+setupWorker(
   graphql.query('GetUserDetail', null),
   graphql.mutation('Login', null),
 )
@@ -77,9 +77,9 @@ Let's add response resolvers to our existing code:
 
 ```js showLineNumbers focusedLines=14-21,32-46
 // src/mocks.js
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
-composeMocks(
+setupWorker(
   /**
    * query GetUserDetail {
    *   user {
@@ -130,20 +130,20 @@ With the above declaration our `GetUserDetail` query would return the user data,
 
 ## Running Service Worker
 
-The result of calling the `composeMocks()` function is a public API object that contains the `start()` function. We need to call that function in order for MSW to start the Service Worker responsible for intercepting requests and mocking their responses.
+The result of calling the `setupWorker()` function is a public API object that contains the `start()` function. We need to call that function in order for MSW to start the Service Worker responsible for intercepting requests and mocking their responses.
 
 ```js showLineNumbers focusedLines=4,11
 // src/mocks.js
-import { composeMocks, graphql } from 'msw'
+import { setupWorker, graphql } from 'msw'
 
-const { start } = composeMocks(
+const worker = setupWorker(
   // Our request handlers declared previously
   graphql.query('GetUserDetail', ...),
   graphql.mutation('Login', ...)
 )
 
 // Calling the "start" function registers the Service Worker
-start()
+worker.start()
 ```
 
 Upon refreshing the page you should see the confirmation message in the browser's console that the Service Worker is activated. Any operations happening on the page are now going through the MSW and can be mocked according to the defined request handlers.

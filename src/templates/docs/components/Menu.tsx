@@ -5,19 +5,15 @@ import { Box } from 'atomic-layout'
 
 const MenuSection = styled.section`
   position: relative;
-  background-color: var(--color-gray-dim);
-  border-right: 1px solid
-    ${({ theme }) => theme.utils.alpha(theme.colors.grayLight, 0.3)};
-  font-weight: 500;
 
-  &:before {
+  &:after {
     content: '';
     position: absolute;
-    top: 0;
+    top: 2rem;
     right: 0;
-    height: 100%;
-    width: 50vw;
-    background-color: inherit;
+    bottom: 2rem;
+    border-right: 1px solid
+      ${({ theme }) => theme.utils.alpha(theme.colors.grayLight, 0.5)};
   }
 
   a {
@@ -48,7 +44,7 @@ const PagesList = styled.ul<{ nested?: boolean }>`
   ${({ nested }) =>
     nested &&
     `
-    padding-left: 1rem;
+    padding-left: 1.5rem;
   `}
 `
 
@@ -90,17 +86,6 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 1px;
-
-      &::after {
-        content: '';
-        height: 1px;
-        background-color: ${theme.colors.grayLight};
-        top: 0;
-        width: 100%;
-        right: 1rem;
-        bottom: 0;
-        margin: auto 0 auto 0.5rem;
-      }
     `}
 
   ${({ isRootSection, hasChildren }) =>

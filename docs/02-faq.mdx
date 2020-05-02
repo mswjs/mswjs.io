@@ -3,21 +3,18 @@ title: Frequently asked questions
 displayName: FAQ
 ---
 
-## How does this library work?
-
-This library uses a [Service Worker][service-worker-api] that listens to the outgoing requests in your application _performed in a browser_. Let's take a closer look to the architecture of this library.
-
-![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG5cdEJyb3dzZXIgLT4-IFNlcnZpY2UgV29ya2VyOiAxLiByZXF1ZXN0XG4gIFNlcnZpY2UgV29ya2VyIC0tPj4gbXN3OiAyLiByZXF1ZXN0IGNsb25lXG4gIG1zdyAtLT4-IG1zdzogMy4gbWF0Y2ggYWdhaW5zdCBtb2Nrc1xuICBtc3cgLS0-PiBTZXJ2aWNlIFdvcmtlcjogNC4gTW9ja2VkIHJlc3BvbnNlXG4gIFNlcnZpY2UgV29ya2VyIC0-PiBCcm93c2VyOiA1LiByZXNwb25kV2l0aChtb2NrZWRSZXNwb25zZSlcblx0XHRcdFx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ)
-
-The sequence diagram above represents the following steps:
-
-1. **Interception**. Browser dispatches a request. Service Worker intercepts an outgoing request by listening to the `fetch` event. This functionality is primarily designed for caching purposes, for example, to check if there is a cached response to the current request.
-1. **Preparation**. Service Worker clones the intercepted request and prepares it to be sent to the `msw` client-side counterpart. Since only strings can be sent via the IPC, certain request information is being stripped off, and the request clone is signaled to the library.
-1. **Matching**. Client-side library finds a mock definition that handles the intercepted request. Upon match, it executes a [Response resolver](/docs/basics/response-resolver) function associated with that request, and signals a mocked response back to the Service Worker. If the intercepted request didn't match any defined request handlers, a "not found" event is signaled back.
-1. **Responding**. Service Worker responds with either a mocked response received from the client-side library, or with the original response, in case no mocks were found.
-
 ## Is this library secure?
 
-Mock Service Worker library uses a [Service Worker API][service-worker-api] for requests interception. It is a standardized and well-secured implementation on a browser's side.
+Mock Service Worker library uses a [Service Worker API][service-worker-api] for requests interception. That API is implemented by a browser according to the specification, making the library as secure as the worker's implementation itself.
+
+Moreover, you are in full control over the Service Worker's code (`mockServiceWorker.js`), because you serve it by your application.
+
+## Can I use it with Node?
+
+Yes. Mock Service Worker provides a Node-compatible API to allow you to reuse the same mocking logic in a Node environment (for example, for testing). Please refer to the [Usage in Node](/docs/tutorials/usage-in-node) tutorial for more details.
 
 [service-worker-api]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+
+## Can I use it with React Native?
+
+> TODO. Can you?

@@ -20,7 +20,7 @@ export const Button = styled.button<ButtonProps>`
   /* display: inline-block; */
 
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   color: var(--color-gray-dark);
   cursor: pointer;
   font-weight: 600;

@@ -99,7 +99,7 @@ export const Testing = () => {
       </Box>
       <div>
         <Heading level={2} marginBottom={8}>
-          Resilient end-to-end testing
+          Resilient testing
         </Heading>
         <TextLead>
           Write test suites that <Accent>don't smell</Accent>.

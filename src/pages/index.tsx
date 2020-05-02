@@ -3,11 +3,9 @@ import React from 'react'
 import SEO from '../components/seo'
 import Layout from '../components/layout'
 import { Grid } from '../components/Grid'
-import { DividerPattern } from '../components/DividerPattern'
 
 import { Hero } from '../sections/Hero'
 import { Highlights } from '../sections/Highlights'
-import { GettingStarted } from '../sections/GettingStarted'
 import { Features } from '../sections/Features'
 import { DesignedToScale } from '../sections/DesignedToScale'
 import { StartUsing } from '../sections/StartUsing'
@@ -27,8 +25,6 @@ const HomePage = () => (
     <SEO title="Home" />
     <Hero />
 
-    <DividerPattern />
-
     <Features />
 
     <Grid>
@@ -42,7 +38,7 @@ const HomePage = () => (
         >
           <Avatar src={kentAvatar} alt="Kent C. Dodds" />
           <div>
-            <Text marginBottom={4}>
+            <Text marginBottom={0}>
               <strong>Kent C. Dodds</strong>
             </Text>
             <TextSmall color="gray">
@@ -58,7 +54,6 @@ const HomePage = () => (
     <IncrementalDevelopment />
     <Debugging />
     <Workshops />
-    <GettingStarted />
     <DesignedToScale />
     <StartUsing />
   </Layout>

@@ -32,7 +32,7 @@ h4,
 h5 {
   margin-bottom: 0.75em;
   color: var(--color-black);
-  line-height: 1.2;
+  line-height: 1.25;
   font-weight: 500;
 
   &:first-child {
@@ -53,7 +53,12 @@ h2 {
   letter-spacing: -0.025em;
 }
 
+h2 {
+  margin-bottom: 0.25em;
+}
+
 h3 {
+  line-height: 1.4;
   letter-spacing: -0.25px;
 }
 
@@ -117,11 +122,13 @@ input {
 #docs-page {
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     margin-top: 2em;
   }
 
   h2 {
+    margin-bottom: 0.5em;
     padding-top: 2em;
     border-top: 1px solid var(--color-gray-dim);
   }

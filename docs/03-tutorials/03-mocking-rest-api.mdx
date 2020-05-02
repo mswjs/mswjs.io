@@ -2,7 +2,7 @@
 title: Mocking REST API
 ---
 
-This tutorial is going to take you through the process of mocking a REST API using Mock Service Worker. It assumes you have completed the [Getting started](/docs/getting-started) tutorial, and have the `msw` package installed in your project.
+This tutorial is going to take you through the process of mocking a REST API using Mock Service Worker. It assumes you have completed the [Getting started](/docs/tutorials/getting-started) tutorial, and have the `msw` package installed in your project.
 
 ## Imports
 
@@ -16,25 +16,25 @@ Next, import the following pieces from the `msw` package:
 
 ```js
 // src/mocks.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 ```
 
 Briefly, this is what each of them is needed for:
 
-- `composeMocks()`, a function that composes a list of [request handlers](/docs/basics/request-handler);
+- `setupWorker()`, a function that composes a list of [request handlers](/docs/basics/request-handler);
 - `rest`, a namespace that contains utility functions for mocking a REST API.
 
 ## Mock definition
 
-Describe which endpoints to mock by providing respective calls of `rest[METHOD]` as the arguments to `composeMocks()` function.
+Describe which endpoints to mock by providing respective calls of `rest[METHOD]` as the arguments to `setupWorker()` function.
 
 For example, to mock a `GET` request we would use `rest.get()`. This function call will accept a URL predicate as an argument, so any requests matching that predicate would be mocked.
 
 ```js showLineNumbers focusedLines=4
 // src/mocks.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-composeMocks(rest.get('/user/:userId', null))
+setupWorker(rest.get('/user/:userId', null))
 ```
 
 > Request URL predicate above uses a path parameter (`:userId`). It's a placeholder for a dynamic part of the URL. For example, given a `/user/abc-123` URL, the `userId` parameter would equal `"abc-123"`.
@@ -59,9 +59,9 @@ Here's how we will resolve a mocked response:
 
 ```js showLineNumbers focusedLines=6-15
 // src/mocks.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-composeMocks(
+setupWorker(
   rest.get('/user/:userId', (req, res, ctx) => {
     // Access the value of "userId" parameter
     const { userId } = req.params
@@ -89,22 +89,22 @@ First, let's start with the `rest.get('/users')` request handler. Its response r
 
 ## Running Service Worker
 
-The result of calling the `composeMocks()` function is a public API object that contains the `start()` method. This method registers and activates the Service Worker responsible for requests interception and mocking.
+The result of calling the `setupWorker()` function is a public API object that contains the `start()` method. This method registers and activates the Service Worker responsible for requests interception and mocking.
 
-Call the `start()` function returned from the previous `composeMocks()` invocation.
+Call the `start()` function returned from the previous `setupWorker()` invocation.
 
 ```js showLineNumbers focusedLines=4,11
 // src/mocks.js
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-const { start } = composeMocks(
+const worker = setupWorker(
   // Our request handlers declared previously
   rest.get('/users', ...),
   rest.put('/posts/:postId', ...)
 )
 
 // Calling the "start" function launches the Service Worker
-start()
+worker.start()
 ```
 
 Once you refresh the page, you will see the confirmation message in the browser's console. Any requests matching the defined request handlers are now mocked.
@@ -113,6 +113,21 @@ Once you refresh the page, you will see the confirmation message in the browser'
 
 Perform a request that matches our request handlers from `mocks.js` and see the observe the mocked response right in your browser's "Network" tab:
 
-```js
-fetch('/user/abc-123')
-```
+> TODO Add image
+
+<ResponsePreview
+  request={{
+    method: 'GET',
+    url: '/user/**abc-123**',
+  }}
+  response={{
+    statusCode: 200,
+    body: `
+{
+  "id": "abc-123",
+  "firstName": "John",
+  "age": 32
+}
+    `,
+  }}
+/>

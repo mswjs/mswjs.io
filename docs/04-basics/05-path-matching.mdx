@@ -2,7 +2,7 @@
 title: Path matching
 ---
 
-To determine which outgoing requests should be mocked, Mock Service Worker performs request path matching. It's a process when an actual request is compared to the predicate of your request handlers from `composeMocks()` call.
+To determine which outgoing requests should be mocked, Mock Service Worker performs request path matching. It's a process when an actual request is compared to the predicate of your request handlers from `setupWorker()` call.
 
 > Path matching is relevant only for REST API. When working with GraphQL, requests are matched by the _operation name_. Learn more about how Mock Service Worker matches GraphQL requests in the [GraphQL API section](/docs/api/graphql).
 
@@ -12,8 +12,8 @@ By default, any outgoing request is matched using these criteria:
 - Has matching URL.
 
 <Hint>
-  Mock Service Worker bypasses requests that don't have any corresponding
-  request handlers.
+  Requests that don't have any corresponding request handlers are performed
+  as-is.
 </Hint>
 
 ## URL matching
@@ -34,9 +34,9 @@ There are three ways to match a request:
 When providing an exact URL string, only requests that match that string would be mocked. Mock Service Worker uses _strict_ strings comparison, but ignores trailing slashes.
 
 ```js showLineNumbers focusedLines=5
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-composeMocks(
+setupWorker(
   // Only "POST https://api.backend.dev/users" requests would match this handler
   rest.post('https://api.backend.com/users', responseResolver),
 )
@@ -51,9 +51,9 @@ Path is an abstraction over regular expression for shorthand wildcard and path p
 ### Path with wildcard
 
 ```js showLineNumbers focusedLines=7
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-composeMocks(
+setupWorker(
   // Matches:
   // - /users/admin
   // - /users/octocat
@@ -66,9 +66,9 @@ composeMocks(
 To add a parameter to your request path use the `:paramName` format.
 
 ```js  showLineNumbers focusedLines=5
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-composeMocks(
+setupWorker(
   // Given "POST https://api.backend.dev/user/abc-123" request,
   rest.post('https://api.backend.dev/user/:userId', (req, res, ctx) => {
     // `userId` value becomes "abc-123"
@@ -88,9 +88,9 @@ Try out how Mock Service Worker matches paths in the interactive form below.
 When provided a regular expression, request URL must match that expression in order to be mocked. Unlike URL string matching, regular expressions use _weak_ comparison, supportng partial matches.
 
 ```js showLineNumbers focusedLines=8
-import { composeMocks, rest } from 'msw'
+import { setupWorker, rest } from 'msw'
 
-composeMocks(
+setupWorker(
   // Performing a `DELETE http://localhost:8080/posts/` request would match this handler.
   // This handle would match any of the following requests:
   // - DELETE http://localhost:8080/posts/

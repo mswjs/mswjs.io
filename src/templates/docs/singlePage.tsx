@@ -8,6 +8,7 @@ import Layout from '../../components/layout'
 import Seo from '../../components/seo'
 
 /* Documentation components */
+import { TextLead } from '../../components/TextLead'
 import { Menu } from './components/Menu'
 import { Breadcrumbs } from './components/Breadcrumbs'
 import { TableOfContents } from './components/TableOfContents'
@@ -39,6 +40,7 @@ const components = {
   PageLink,
   GitHubRepo,
   Hint,
+  TextLead,
   ResponsePreview,
   PathMatchPreview,
 }
