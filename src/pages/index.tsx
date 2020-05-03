@@ -16,9 +16,10 @@ import { Workshops } from '../sections/Workshops'
 import { Box, Composition } from 'atomic-layout'
 import { Avatar } from '../components/Avatar'
 
-import kentAvatar from '../images/avatars/kentcdodds.png'
+import KentAvatarUrl from '../images/avatars/kentcdodds.png'
 import { TextSmall } from '../components/TextSmall'
 import { Text } from '../components/Text'
+import { Agnostic } from '../sections/Agnostic'
 
 const HomePage = () => (
   <Layout>
@@ -36,7 +37,7 @@ const HomePage = () => (
           justifyContent="center"
           gap={12}
         >
-          <Avatar src={kentAvatar} alt="Kent C. Dodds" />
+          <Avatar src={KentAvatarUrl} alt="Kent C. Dodds" />
           <div>
             <Text marginBottom={0}>
               <strong>Kent C. Dodds</strong>
@@ -50,6 +51,7 @@ const HomePage = () => (
     </Grid>
 
     <Highlights />
+    <Agnostic />
     <Testing />
     <IncrementalDevelopment />
     <Debugging />
