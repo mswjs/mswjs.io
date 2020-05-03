@@ -34,6 +34,11 @@ const getDocumentBreadcrumbs = (node) => {
     }
   })
 
+  // Do not create a separate node for root files
+  if (/index\.mdx?$/i.test(relativePath)) {
+    return breadcrumbs
+  }
+
   return breadcrumbs.concat({
     title: node.frontmatter.title,
     display: node.frontmatter.displayName,

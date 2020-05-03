@@ -1,0 +1,88 @@
+---
+title: Mocking REST API
+---
+
+## Imports
+
+In our `mocks.js` file let's import the essentials we need for mocking a REST API:
+
+```js showLineNumbers
+// src/mocks.js
+import { setupWorker, rest } from 'msw'
+```
+
+- `setupWorker()`, a function we'll use to tell the Service Worker which requests to mock.
+- `rest`, a namespace that contains request handlers for working with REST API.
+
+## Request handler
+
+To handle a request we need to specify its _method_, _path_, and a function that would return the mocked response.
+
+In this tutorial we will be mocking a login functionality. For that, we need to handle these two requests:
+
+- `POST /login`, to allow our user to log in;
+- `GET /user`, to return an info about the logged in user.
+
+Let's create a request handler for each of those requests. To do that, we will call the `rest[METHOD]` function, where `METHOD` is a REST method to match, and provide a request path to that function.
+
+```js showLineNumbers
+// src/mocks.js
+import { setupWorker, rest } from 'msw'
+
+setupWorker(
+  // Handles a POST /login request
+  rest.post('/login', null),
+
+  // Handles a GET /user request
+  rest.get('/user', null),
+)
+```
+
+## Response resolver
+
+To make a request handler return a mocked response we have to provide it with a second argument—a response resolver function.
+
+Response resolver is a function that accepts the following arguments:
+
+- `req`, an information about a matching request;
+- `res`, a functional utility to compose the mocked response;
+- `ctx`, a group of utilities to help you get the response you need.
+
+Let's return a user data when our request is hit:
+
+```js showLineNumbers
+// src/mocks.js
+import { setupWorker, rest } from 'msw'
+
+setupWorker(
+  rest.post('/login', (req, res, ctx) => {
+    return res(
+      // Respond with a 200 status code
+      ctx.status(200),
+    )
+  }),
+
+  rest.get('/user', (req, res, ctx) => {
+    const isAuthenticated = '???'
+
+    if (!isAuthenticated) {
+      return res(
+        ctx.status(403),
+        ctx.json({
+          errorMessage: 'Not authorized',
+        }),
+      )
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        username: 'admin',
+      }),
+    )
+
+    // Check if logged in, then return a fake data.
+    // If not, return an error.
+  }),
+)
+```

@@ -92,7 +92,7 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
     !isRootSection &&
     hasChildren &&
     css`
-      color: red;
+      /* color: red; */
     `}
 `
 

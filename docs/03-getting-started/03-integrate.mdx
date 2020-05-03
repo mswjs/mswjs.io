@@ -1,0 +1,58 @@
+---
+title: Integrate
+---
+
+## Start the worker
+
+Calling the `setupWorker()` function returns a worker instance that we can start and stop to control the mocking. To register the worker let's call the `start()` method at the end of our mock definition file.
+
+```js showLineNumbers focusedLines=4,6
+// src/mocks.js
+import { setupWorker } from 'msw'
+
+const worker = setupWorker(...)
+
+worker.start()
+```
+
+> Calling the `start()` method registers and activates the Service worker that we have placed into our public directory at the beginning of this tutorial.
+
+## Import mocks
+
+<Hint mode="warning">
+  It's <strong>not recommended</strong> to include Mock Service Worker in
+  production. Doing so may lead to a distorted experience for your customers.
+</Hint>
+
+### Using webpack
+
+```js showLineNumbers focusedLines=6-7
+// webpack.config.js
+const __DEV__ = process.env.NODE_ENV === 'development'
+
+module.exports = {
+  entry: [
+    // Conditionally include the mock definition file
+    __DEV__ && 'src/mocks.js',
+
+    // Include your application's entry
+    'src/index.js',
+  ].filter(Boolean),
+  // The rest of your webpack config...
+}
+```
+
+### Using conditional import
+
+In case you are not sure about how to modify your building configuration, you can always provision a conditional import statement in your application's code:
+
+```js
+// src/index.js
+if (process.env.NODE_ENV === 'development') {
+  require('./mocks')
+}
+```
+
+## Verify & Inspect
+
+...

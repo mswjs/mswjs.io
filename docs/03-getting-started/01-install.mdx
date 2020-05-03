@@ -1,0 +1,29 @@
+---
+title: Install
+---
+
+Let's start by installing the `msw` package into our project. To do so, run the following command in the project's root directory:
+
+```bash
+$ npm install msw
+```
+
+## Initialize
+
+As the next step, we need to copy the Service Worker file into our application. Mock Service Worker provides a dedicated CLI to help us do that.
+
+Execute the following command from the project's root directory:
+
+```bash
+$ npx msw init <PUBLIC_DIR>
+```
+
+Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's public directory. For example, in a Create React App project this command would be:
+
+```bash
+npx msw init public/
+```
+
+import PublicDirSnippet from '../snippets/public-dir.mdx'
+
+<PublicDirSnippet />

@@ -1,12 +1,41 @@
 import React from 'react'
 import styled from 'styled-components'
-import { IoIosColorFilter as ArrowIcon } from 'react-icons/io'
+import { IoMdArrowRoundForward as Icon } from 'react-icons/io'
+import { Link } from 'gatsby'
+import { Box } from 'atomic-layout'
 
-const Container = styled.a`
-  display: block;
+const Container = styled(Link)`
+  margin: 2rem 0;
   padding: 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.grayLight};
+
+  background-color: var(--color-secondary);
+  color: #fff !important;
+
   border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+
+  .title {
+    transition: transform 0.2s ease;
+  }
+
+  :hover {
+    border-color: var(--color-secondary);
+
+    .title {
+      transform: translateX(8px);
+    }
+  }
+
+  :focus {
+    box-shadow: 0 0 0 3px
+      ${({ theme }) => theme.utils.alpha(theme.colors.secondary, 0.4)};
+  }
+`
+
+const UrlPreview = styled.span`
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 80%;
 `
 
 interface MdxModule {
@@ -16,11 +45,25 @@ interface MdxModule {
   }
 }
 
-export const PageLink: React.FC<{ to: MdxModule }> = ({ to }) => {
+interface PageLinksProps {
+  page: MdxModule
+  url: string
+}
+
+export const PageLink: React.FC<PageLinksProps> = ({ page, url }) => {
   return (
-    <Container>
-      <ArrowIcon />
-      <p>{to._frontmatter.title}</p>
-    </Container>
+    <Box
+      as={Container}
+      to={url}
+      flex
+      alignItems="center"
+      justifyContent="space-between"
+    >
+      <Box className="title" flex alignItems="center">
+        <Box as={Icon} size={16} marginRight={8} />
+        <span>{page._frontmatter.title}</span>
+      </Box>
+      <UrlPreview>{url}</UrlPreview>
+    </Box>
   )
 }

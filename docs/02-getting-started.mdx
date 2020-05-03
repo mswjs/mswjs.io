@@ -1,12 +1,12 @@
 ---
-title: Getting started
+title: ''
 ---
 
 This tutorial will take you through the steps to get started with Mock Service Worker. It assumes you have got a JavaScript project ready and running.
 
 ## Install
 
-Let's start by installing the `msw` package into our application:
+Let's start by installing the `msw` package into our application.
 
 ```bash
 $ npm install msw
@@ -14,7 +14,7 @@ $ npm install msw
 
 ## Configure
 
-As the next step, place the Service Worker file in your project's public directory. To do so, run the following command:
+As the next step, we need to copy the Service Worker file in our project's public directory. There is a shorthand CLI command to help us with that:
 
 ```bash
 $ npx msw init <PUBLIC_DIR>
@@ -22,13 +22,13 @@ $ npx msw init <PUBLIC_DIR>
 
 Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's public directory (for example, `npx msw init ./public`).
 
-import PublicDirSnippet from '../snippets/public-dir.mdx'
+import PublicDirSnippet from './snippets/public-dir.mdx'
 
 <PublicDirSnippet />
 
 ## Define mocks
 
-Create a `mocks.js` file where we the mocking logic will be described.
+Create a `mocks.js` file where we are going to describe our mocking logic, otherwise referred to as "mock definition".
 
 ```bash
 $ touch src/mocks.js
@@ -69,8 +69,6 @@ const { start } = setupWorker(
 /* Start the Service Worker */
 start()
 ```
-
-> Explore each mock definition line in more detail on the [Mock overview](/docs/basics/mock-overview) page.
 
 ## Integrate
 
@@ -146,7 +144,7 @@ It's highly recommended to enable "Update on reload" setting of Service Workers 
 
 ![Update on reload setting](/assets/sw-update-on-reload.png)
 
-## Verify
+## Verify & Inspect
 
 Upon successful completion of this tutorial you should see the following message in your browser's console:
 
