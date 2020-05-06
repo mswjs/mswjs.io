@@ -138,4 +138,9 @@ input {
   a {
     color: var(--color-secondary);
   }
+
+  ul,
+  ol {
+    margin-left: 4ch;
+  }
 }

@@ -1,0 +1,16 @@
+---
+title: Integrate
+---
+
+You can run the defined mocks in both browser and Node environments. Since Service Workers cannot be run in Node, the integration process is different depending on the environment. The mock definition, however, stays the same.
+
+<Action>Choose where to run the mocks:</Action>
+
+import * as IntegrateBrowserPage from './01-browser.mdx'
+import * as IntegrateNodePage from './02-node.mdx'
+
+<PageLink
+  page={IntegrateBrowserPage}
+  url="/docs/getting-started/integrate/browser"
+/>
+<PageLink page={IntegrateNodePage} url="/docs/getting-started/integrate/node" />

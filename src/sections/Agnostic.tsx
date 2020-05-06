@@ -203,7 +203,7 @@ export const Agnostic = () => {
         <MswLogo height={64} />
       </Box>
       <div>
-        <Heading level={2}>A perfect choice</Heading>
+        <Heading level={2}>Integrate anywhere</Heading>
         <TextLead>
           Integrate mocking into <Accent>any setup</Accent>.
         </TextLead>

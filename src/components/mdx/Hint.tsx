@@ -32,6 +32,7 @@ export const Hint = styled.div<HintProps>`
   border-left: 3px solid var(--border-color);
   font-size: 0.9rem;
   font-weight: 500;
+  line-height: 1.5;
 `
 
 Hint.defaultProps = {

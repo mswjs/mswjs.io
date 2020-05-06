@@ -6,7 +6,11 @@ To define which requests should be mocked, we are going to use [request handler]
 
 ## Mock definition
 
-Let's create a `mocks.js` file where we will store all our mock definitions. We are going to write all the mocking logic in this file in the next steps of this tutorial.
+Let's create a file where we will store all our mocking logic. In this tutorial we are going to work mainly with this file.
+
+<Action>
+  Create a <code>mocks.js</code> file in your project:
+</Action>
 
 ```bash
 $ touch src/mocks.js
@@ -14,7 +18,9 @@ $ touch src/mocks.js
 
 ## Choose an API
 
-Mock Service Worker comes with a first-grade support for various API types. Please choose the API type you would be mocking, and refer to the respective section of this tutorial for more details. You can also combiune both!
+The way we are going to mock an API will depend on the API type itself. Mock Service Worker provides tools dedicated to different API types, respecting their specifications, and helping you to mock requests easier.
+
+<Action>Choose an API type below:</Action>
 
 import * as MockingRestApiPage from './01-rest-api.mdx'
 import * as MockingGraphQLApiPage from './02-graphql-api.mdx'
@@ -28,4 +34,4 @@ import * as MockingGraphQLApiPage from './02-graphql-api.mdx'
   url="/docs/getting-started/mocks/graphql-api"
 />
 
-> If in doubt, starting from a REST API is a good place.
+> If in doubt, starting with a REST API is a good choice!

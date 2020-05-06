@@ -46,11 +46,12 @@ interface MdxModule {
 }
 
 interface PageLinksProps {
+  title?: string
   page: MdxModule
   url: string
 }
 
-export const PageLink: React.FC<PageLinksProps> = ({ page, url }) => {
+export const PageLink: React.FC<PageLinksProps> = ({ title, page, url }) => {
   return (
     <Box
       as={Container}
@@ -61,7 +62,7 @@ export const PageLink: React.FC<PageLinksProps> = ({ page, url }) => {
     >
       <Box className="title" flex alignItems="center">
         <Box as={Icon} size={16} marginRight={8} />
-        <span>{page._frontmatter.title}</span>
+        <span>{title || page._frontmatter.title}</span>
       </Box>
       <UrlPreview>{url}</UrlPreview>
     </Box>
