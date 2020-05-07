@@ -6,11 +6,15 @@ title: Browser
 
 Let's go to our `mocks.js` file and import a `setupWorker` function from the `msw` package. We will use this function to register the Service Worker and provide it the list of our `mocks`.
 
+<Action>
+  Import <code>setupWorker</code> function from the <code>msw</code> package:
+</Action>
+
 ```js showLineNumbers focusedLines=2,7-8
 // src/mocks.js
 import { setupWorker, /* rest, or graphql */ } from 'msw'
 
-// Our previously written mocks
+// Our previously defined mocks
 const mocks = [...]
 
 const worker = setupWorker(...mocks)

@@ -2,7 +2,7 @@
 title: Node
 ---
 
-In this example integration example we are going to write a test suite using [Jest](https://jestjs.io/) framework. Following the same principle, you can integrate mocking into any process running in Node.
+In this integration example we are going to use mocking during the unit testing with a [Jest](https://jestjs.io/) framework. Following the same principle, you can integrate mocking into any Node process.
 
 ## Setup
 
@@ -24,7 +24,7 @@ export { mocks }
 Now let's create a test suite and import our mock definition there, as well as the server setup function from the library.
 
 <Action>
-  Import <code>setupWorker</code> function from the <code>msw</code> package:
+  Import <code>setupServer</code> function from the <code>msw</code> package:
 </Action>
 
 ```js showLineNumbers focusedLines=2-3
@@ -37,8 +37,13 @@ import { mocks } from '../mocks'
 
 Let's start the server on the `beforeAll` hook. For that, call the `setupServer` function and provide the mock definitions to it.
 
+<Hint>
+  Internally, Mock Service Worker does not use any servers. The term "server"
+  has been chosen to provide familiar interface and describe the seeming
+  functionality.
+</Hint>
 <Action>
-  Pass the mock definitions to the <code>setupWorker</code> function:
+  Pass the mock definitions to the <code>setupServer</code> function:
 </Action>
 
 ```js showLineNumbers focusedLines=6,9
@@ -80,7 +85,7 @@ describe('Login', () => {
   })
 
   describe('given I log in', () => {
-    /* test the application's behavior */
+    /* perform requests and test the application's behavior */
   })
 })
 ```

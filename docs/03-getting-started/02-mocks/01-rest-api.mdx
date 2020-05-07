@@ -44,7 +44,7 @@ const mocks = [
 
 ## Response resolver
 
-To response to a request using a mocked response we have to specify it using a response resolver function.
+To respond to an intercepted request we have to specify a mocked response using a response resolver function.
 
 Response resolver is a function that accepts the following arguments:
 
@@ -96,11 +96,11 @@ const mocks = [
 ]
 ```
 
-> Utilize things like [`sessionStorage`](), [`localStorage`](), or [IndexDB]() to handle more complex API scenarios and user flows.
+> Utilize things like [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), or [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) to handle more complex API scenarios and user interactions.
 
 ## Next step
 
-The mock definition is written, yet there is one last step to perform: enabling the mocking.
+The mock definition is written, yet there is one last step to perform: enable the mocking.
 
 import * as IntegratePage from '../03-integrate/'
 

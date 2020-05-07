@@ -10,29 +10,35 @@ order: 1
 
 By bringing the ability of [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) to capture requests for the purpose of caching, Mock Service Worker enables API mocking on the highest level of the network communication chain. It is the closest thing to a mocking server **without having to create one**.
 
-Since Service Worker is a standard API shipped by all modern browsers, integrating Mock Service Worker into your application, or testing setup, requires no extra configuration, but placing a worker file and declaring mocks.
+Since Service Worker is a standard API shipped by all modern browsers. Integrating Mock Service Worker into your application, or testing setup, requires no extra configuration, but placing a worker file and declaring mocks.
 
 **Try Mock Service Worker in your application right now, it takes less than 5 minutes.**
 
 <PageLink title="Getting Started" url="/docs/getting-started/install" />
 
-## Why to mock API?
+## When to mock API?
 
 There are several reasons to mock an API:
 
 ### Development
 
-### Experimenting
+Modern software development is often done in parallel, which means the deadline is in few days, and waiting for the backend to be finished is not an option. Most likely you are using some sort of mocking already: static fixtures, hard-coded state, or a third-party library.
+
+When introduced in a dedicated layer, mocking can become a seamless pleasant experience, with one hardly noticing a difference when the mocking is gone.
 
 ### Debugging
 
-1. Develop against a non-existing backend.
-1. Experiment with the existing API strategy.
-1. Debug a data-related issue.
+Most of the client-side issues are data-related. Invalid API call, missing error handling, or recieving an unexpected response—such scenarios happen daily during both development and production.
 
-> Modern applications are often developed in an agile, competitive environment. API mocking is a great technique to develop frontend against a work-in-progress or non-existing backend.
+API mocking allows developers to model an exact API interaction that causes an issue. It's efficient in both debugging and fixing the problem, as one can mock a successful scenario easily as well.
 
-## Mocking in the wild
+### Experimenting
+
+Let's be honest: choices we make during development are not always the best ones. Technical debt and past architectural decisions may keep us from evolving our products, or trying a brand-new technologies.
+
+Mocks can help to see how the application would behave had it been written differently, without having to actually rewrite it, or committing to another ecosystem.
+
+## Conventional mocking
 
 Most of the mocking libraries operate by using one of the following approaches:
 
@@ -41,9 +47,9 @@ Most of the mocking libraries operate by using one of the following approaches:
 
 ### Issues with a mocking server
 
-A dedicated mocking server, although an actual server, may work differently compared to the production one, as each may have a different architecture, technologies, and infrastructure being used. Due to that, a mocking and production servers are not fully interchangable, creating a deviation in behavior that will affect your application.
+A dedicated mocking server, although an actual server, may work differently compared to the production one, as each may have a different architecture, technologies, and infrastructure being used. Due to that, a mocking and production servers are not fully interchangable, creating a deviation in behavior that may affect your application.
 
-Establishing a server implies having to run it and, thus, maintain it. This puts extra effort into mocking that starts resembling an actual server development, while not giving a benefit [...]. A mocking server also means a _different_ server that your application needs to speak to in certain scenarios. This requires to adjust the application's code for the sake of mocking, which increases a maintenance cost of such setup.
+Establishing a server implies having to run it and, thus, maintain it. This puts an extra effort into mocking that starts resembling an actual server implementation, rather than a quick and smooth development pattern. A mocking server also means a _different_ server that your application needs to speak to in certain scenarios. This requires to adjust the application's code for the sake of mocking, which increases a maintenance cost of such setup.
 
 In short, using a mocking server tests your application against a different server, rather than the same production server that behaves differently.
 
@@ -51,28 +57,28 @@ In short, using a mocking server tests your application against a different serv
 
 Augmenting native request issuing modules is an efficient way to intercept requests while retaining the same application's behavior. However, any change to the native code still creates a deviation between a mocking and non-mocking environments. It is also not advisable to mutate things that you do not own.
 
-Such approach is an optimal compromise, yet will always have tehcnical limitations due to the nature of stubs, giving you a partial assurance in the application's behavior.
+Such approach is an optimal compromise, yet will always have tehcnical limitations due to the nature of stubs, giving you a partial assurance in the application's behavior. This may not be the best option for the end-to-end testing.
 
-## Service Worker benefits
+## Why Service Workers?
 
-Mock Service Worker leverages a standardized Service Worker API that is designed to intercept requests on the network level, making the mocking completely seamless. Not only this guarantees an identical application's behavior with and without mocks, but also does not require any changes to the application's code for the sake of mocking.
+Mock Service Worker leverages a standardized Service Worker API that is designed to intercept requests on the network level, making the mocking completely seamless. Not only this guarantees an identical application's behavior with and without mocks, but also does not require any changes to the application's code for the sake of mocking. Observe requests in the "Network" of your DevTools, forgetting the mocks are at place.
 
 ## How does it work?
 
 ### Browser
 
-This library establishes a Service Worker that listens to the application's outgoing requests via the `fetch` event, routes those requests to the client-side library's implementation, and sends a mocked response, if any, to the worker to respond with.
+This library registers a Service Worker that listens to the application's outgoing requests via the `fetch` event, directs those requests to the client-side library, and sends a mocked response, if any, to the worker to respond with.
 
 Here's a high-level overview of the Mock Service Worker request flow:
 
 ![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG5cdEJyb3dzZXIgLT4-IFNlcnZpY2UgV29ya2VyOiAxLiByZXF1ZXN0XG4gIFNlcnZpY2UgV29ya2VyIC0tPj4gbXN3OiAyLiByZXF1ZXN0IGNsb25lXG4gIG1zdyAtLT4-IG1zdzogMy4gbWF0Y2ggYWdhaW5zdCBtb2Nrc1xuICBtc3cgLS0-PiBTZXJ2aWNlIFdvcmtlcjogNC4gTW9ja2VkIHJlc3BvbnNlXG4gIFNlcnZpY2UgV29ya2VyIC0-PiBCcm93c2VyOiA1LiByZXNwb25kV2l0aChtb2NrZWRSZXNwb25zZSlcblx0XHRcdFx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ)
 
-> You are always welcome to dive into the library's [source code on GitHub][repo-url] to explore how it works in more detail.
+> You are always welcome to dive into the library's [source code on GitHub][repo-url] to explore how it works in more detail. Your involvement and help are highly appreciated!
 
 ### Node
 
 Since Service Workers cannot be run in a non-browser environment, this library provides a designated API to reuse the same mock definitions in Node (for example for testing purposes).
 
-> Node support is achieved by _extending_ native `http`, `https` and `XMLHttpRequest` modules using [`node-request-interceptor`](https://github.com/mswjs/node-request-interceptor) library. Read more about [Usage in Node](/docs/tutorials/usage-in-node).
+> Node support is achieved by _extending_ native `http`, `https` and `XMLHttpRequest` modules using [`node-request-interceptor`](https://github.com/mswjs/node-request-interceptor) library. Read more about [Usage in Node](/docs/getting-started/integrate/node).
 
 [repo-url]: https://github.com/mswjs/msw
