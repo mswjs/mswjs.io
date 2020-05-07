@@ -34,17 +34,34 @@ When mocking a GraphQL API, the `req` object has the following extra properties:
 | ----------- | ------------------------ |
 | `variables` | `Record<string, string>` |
 
-## Usage
+## Example
 
-Access the request object as the first argument of a [response resolver](/docs/basics/response-resolver) function.
+### Path parameter
 
-```js showLineNumbers focusedLines=4,5
+```js showLineNumbers focusedLines=5
 import { setupWorker, rest } from 'msw'
 
 setupWorker(
   rest.post('/user/:userId/articles', (req, res, ctx) => {
     const { userId } = req.params
     return res(ctx.text(userId))
+  }),
+)
+```
+
+### GraphQL variable
+
+```js showLineNumbers focusedLines=5
+import { setupWorker, graphql } from 'msw'
+
+setupWorker(
+  graphql.mutation('Login', (req, res, ctx) => {
+    const { username } = req.variables
+    return res(
+      ctx.data({
+        user: { name: 'John ' },
+      }),
+    )
   }),
 )
 ```

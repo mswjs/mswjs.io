@@ -38,6 +38,65 @@ Let's be honest: choices we make during development are not always the best ones
 
 Mocks can help to see how the application would behave had it been written differently, without having to actually rewrite it, or committing to another ecosystem.
 
+## Why Service Workers?
+
+Mock Service Worker leverages a standardized Service Worker API that is designed to intercept requests on the network level, making the mocking completely seamless. Not only this guarantees an identical application's behavior with and without mocks, but also does not require any changes to the application's code for the sake of mocking. Observe requests in the "Network" of your DevTools, forgetting the mocks are at place.
+
+## How does it work?
+
+With Mock Service Worker you use declarative request handlers to capture requests based on URL, RegExp, or custom criteria, and provide a response resolver function that returns a mocked response.
+
+Here's an example of a mock definition file that mocks a `POST /login` request:
+
+```js showLineNumbers
+// src/mocks.js
+import { setupWorker, rest } from 'msw'
+
+const worker = setupWorker(
+  rest.post('/login', (req, res, ctx) => {
+    const isAuthenticated = sessionStorage.getItem('username')
+
+    if (!isAuthenticated) {
+      return res(
+        ctx.status(403),
+        ctx.json({
+          errorMessage: 'Not authenticated',
+        }),
+      )
+    }
+
+    return res(
+      ctx.json({
+        firstName: 'John',
+      }),
+    )
+  }),
+)
+
+// Register the Service Worker and enable the mocking
+worker.start()
+```
+
+Then this mock definition file is [imported conditionally](/docs/getting-started/integrate/browser#import-mocks) in your application. Done.
+
+### Implementation details
+
+#### Browser
+
+This library registers a Service Worker that listens to the application's outgoing requests via the `fetch` event, directs those requests to the client-side library, and sends a mocked response, if any, to the worker to respond with.
+
+Here's a high-level overview of the Mock Service Worker request flow:
+
+![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG5cdEJyb3dzZXIgLT4-IFNlcnZpY2UgV29ya2VyOiAxLiByZXF1ZXN0XG4gIFNlcnZpY2UgV29ya2VyIC0tPj4gbXN3OiAyLiByZXF1ZXN0IGNsb25lXG4gIG1zdyAtLT4-IG1zdzogMy4gbWF0Y2ggYWdhaW5zdCBtb2Nrc1xuICBtc3cgLS0-PiBTZXJ2aWNlIFdvcmtlcjogNC4gTW9ja2VkIHJlc3BvbnNlXG4gIFNlcnZpY2UgV29ya2VyIC0-PiBCcm93c2VyOiA1LiByZXNwb25kV2l0aChtb2NrZWRSZXNwb25zZSlcblx0XHRcdFx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ)
+
+> You are always welcome to dive into the library's [source code on GitHub][repo-url] to explore how it works in more detail. Your involvement and help are highly appreciated!
+
+#### Node
+
+Since Service Workers cannot be run in a non-browser environment, this library provides a designated API to reuse the same mock definitions in Node (for example for testing purposes).
+
+> Node support is achieved by _extending_ native `http`, `https` and `XMLHttpRequest` modules using [`node-request-interceptor`](https://github.com/mswjs/node-request-interceptor) library. Read more about [Usage in Node](/docs/getting-started/integrate/node).
+
 ## Conventional mocking
 
 Most of the mocking libraries operate by using one of the following approaches:
@@ -58,27 +117,5 @@ In short, using a mocking server tests your application against a different serv
 Augmenting native request issuing modules is an efficient way to intercept requests while retaining the same application's behavior. However, any change to the native code still creates a deviation between a mocking and non-mocking environments. It is also not advisable to mutate things that you do not own.
 
 Such approach is an optimal compromise, yet will always have tehcnical limitations due to the nature of stubs, giving you a partial assurance in the application's behavior. This may not be the best option for the end-to-end testing.
-
-## Why Service Workers?
-
-Mock Service Worker leverages a standardized Service Worker API that is designed to intercept requests on the network level, making the mocking completely seamless. Not only this guarantees an identical application's behavior with and without mocks, but also does not require any changes to the application's code for the sake of mocking. Observe requests in the "Network" of your DevTools, forgetting the mocks are at place.
-
-## How does it work?
-
-### Browser
-
-This library registers a Service Worker that listens to the application's outgoing requests via the `fetch` event, directs those requests to the client-side library, and sends a mocked response, if any, to the worker to respond with.
-
-Here's a high-level overview of the Mock Service Worker request flow:
-
-![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG5cdEJyb3dzZXIgLT4-IFNlcnZpY2UgV29ya2VyOiAxLiByZXF1ZXN0XG4gIFNlcnZpY2UgV29ya2VyIC0tPj4gbXN3OiAyLiByZXF1ZXN0IGNsb25lXG4gIG1zdyAtLT4-IG1zdzogMy4gbWF0Y2ggYWdhaW5zdCBtb2Nrc1xuICBtc3cgLS0-PiBTZXJ2aWNlIFdvcmtlcjogNC4gTW9ja2VkIHJlc3BvbnNlXG4gIFNlcnZpY2UgV29ya2VyIC0-PiBCcm93c2VyOiA1LiByZXNwb25kV2l0aChtb2NrZWRSZXNwb25zZSlcblx0XHRcdFx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ)
-
-> You are always welcome to dive into the library's [source code on GitHub][repo-url] to explore how it works in more detail. Your involvement and help are highly appreciated!
-
-### Node
-
-Since Service Workers cannot be run in a non-browser environment, this library provides a designated API to reuse the same mock definitions in Node (for example for testing purposes).
-
-> Node support is achieved by _extending_ native `http`, `https` and `XMLHttpRequest` modules using [`node-request-interceptor`](https://github.com/mswjs/node-request-interceptor) library. Read more about [Usage in Node](/docs/getting-started/integrate/node).
 
 [repo-url]: https://github.com/mswjs/msw
