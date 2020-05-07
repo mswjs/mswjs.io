@@ -11,6 +11,7 @@ import { TextLead } from '../components/TextLead'
 import bgPattern from '../images/bg-pattern.png'
 import { ReactComponent as GraphQLLogo } from '../images/graphql-logo.svg'
 import { Link } from 'gatsby'
+import { Heading } from '../components/Heading'
 
 const Container = styled.section`
   position: relative;
@@ -98,7 +99,9 @@ export const DesignedToScale = () => {
     <Container>
       <Grid paddingVertical={64} paddingVerticalMd={100}>
         <Box flex flexDirection="column" alignItems="center">
-          <h2>Scales with your needs</h2>
+          <Heading level={2} marginBottom={8}>
+            Scales with your needs
+          </Heading>
           <TextLead>Standard-compliant tools for your favorite API</TextLead>
         </Box>
         <Box flex justifyContent="center">

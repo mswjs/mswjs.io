@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Mock Service Worker`,
-    description: `...`,
+    description: `API mocking library of the next generation`,
     author: `@kettanaito`,
   },
   plugins: [
@@ -16,7 +16,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `posts`,
+        name: `docs`,
         path: `${__dirname}/docs/`,
       },
     },
@@ -45,7 +45,9 @@ module.exports = {
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
     `gatsby-plugin-typescript`,
-    `gatsby-plugin-svgr`,
+    {
+      resolve: `gatsby-plugin-svgr`,
+    },
     `gatsby-plugin-sass`,
     {
       resolve: `gatsby-plugin-mdx`,

@@ -1,15 +1,16 @@
 import React from 'react'
-import { TextLead } from '../components/TextLead'
-import { Grid } from '../components/Grid'
-import { Box } from 'atomic-layout'
-import { Button } from '../components/Button'
 import { Link } from 'gatsby'
-import { SectionDotted } from '../components/SectionDotted'
+import { Box } from 'atomic-layout'
+
+import { Grid } from '../components/Grid'
+import { Section } from '../components/Section'
+import { Text } from '../components/Text'
+import { Button } from '../components/Button'
 
 export const StartUsing = () => {
   return (
-    <SectionDotted>
-      <Grid paddingVertical={100}>
+    <Section>
+      <Grid>
         <Box
           flex
           flexDirection="column"
@@ -19,23 +20,23 @@ export const StartUsing = () => {
           marginHorizontal="auto"
         >
           <h2>Begin your journey!</h2>
-          <TextLead align="center">
+          <Text align="center">
             Mock Service Worker can be used in any browser environment, be it
             your application, a unit test, or an end-to-end scenario. Bring your
             API mocking to the next level today.
-          </TextLead>
+          </Text>
           <Box marginTop={32}>
             <Button
               variant="primary"
               hero
               as={Link}
-              to="/docs/tutorials/getting-started"
+              to="/docs/getting-started/install"
             >
-              Get started
+              Take the tutorial
             </Button>
           </Box>
         </Box>
       </Grid>
-    </SectionDotted>
+    </Section>
   )
 }

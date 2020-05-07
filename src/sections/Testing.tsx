@@ -12,6 +12,7 @@ import { TextLead } from '../components/TextLead'
 import { TextSmall } from '../components/TextSmall'
 import { Section } from '../components/Section'
 import { Browser, BrowserDevTools } from '../components/Browser'
+import { ObliqueSection } from '../components/ObliqueSection'
 
 const TestResults = styled.section`
   color: var(--color-gray-dim);
@@ -67,49 +68,54 @@ const TestResult: React.FC<{ title: string; delay?: number }> = ({
 
 export const Testing = () => {
   return (
-    <Section>
-      <Box width="100%">
-        <Box marginBottom={24}>
-          <Browser maxWidth={500} marginHorizontal="auto">
-            <Box
-              flex
-              height={200}
-              padding={20}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Button size="small">Log in</Button>
-            </Box>
-            <Box as={BrowserDevTools} padding={20}>
-              <TestResults>
-                <TestDescribe>given I open a product detail</TestDescribe>
-                <TestResult title="should display a product title" />
-                <TestResult
-                  title="should display the latest price"
-                  delay={850}
-                />
-                <TestResult title="should do... something else" delay={1700} />
-              </TestResults>
-            </Box>
-          </Browser>
+    <ObliqueSection>
+      <Section>
+        <Box width="100%">
+          <Box marginBottom={24}>
+            <Browser maxWidth={500} marginHorizontal="auto">
+              <Box
+                flex
+                height={200}
+                padding={20}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Button size="small">Log in</Button>
+              </Box>
+              <Box as={BrowserDevTools} padding={20}>
+                <TestResults>
+                  <TestDescribe>given I open a product detail</TestDescribe>
+                  <TestResult title="should display a product title" />
+                  <TestResult
+                    title="should display the latest price"
+                    delay={850}
+                  />
+                  <TestResult
+                    title="should do... something else"
+                    delay={1700}
+                  />
+                </TestResults>
+              </Box>
+            </Browser>
+          </Box>
+          <TextSmall align="center" color="gray">
+            Test example utilizing a <code>GET /posts</code> mock.
+          </TextSmall>
         </Box>
-        <TextSmall align="center" color="gray">
-          Test example utilizing a <code>GET /posts</code> mock.
-        </TextSmall>
-      </Box>
-      <div>
-        <Heading level={2} marginBottom={8}>
-          Resilient testing
-        </Heading>
-        <TextLead>
-          Write test suites that <Accent>don't smell</Accent>.
-        </TextLead>
-        <Text color="gray">
-          Target any state of your API, while keeping the test suits slim and
-          clean. A single imported module that declaratively mocks given request
-          routes, nothing more.
-        </Text>
-      </div>
-    </Section>
+        <div>
+          <Heading level={2} marginBottom={8}>
+            Resilient testing
+          </Heading>
+          <TextLead>
+            Write test suites that <Accent>don't smell</Accent>.
+          </TextLead>
+          <Text color="gray">
+            Target any state of your API, while keeping the test suits slim and
+            clean. A single imported module that declaratively mocks given
+            request routes, nothing more.
+          </Text>
+        </div>
+      </Section>
+    </ObliqueSection>
   )
 }

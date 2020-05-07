@@ -1,14 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Composition } from 'atomic-layout'
+import { Composition, Box } from 'atomic-layout'
 import { Link } from 'gatsby'
+
+import { ReactComponent as Logo } from '../images/logo-mask.svg'
 
 import { Grid } from './Grid'
 import { HeadingDiminished } from './HeadingDiminished'
 
 const StyledFooter = styled.footer`
-  background-color: ${({ theme }) => theme.colors.black};
-  color: ${({ theme }) => theme.colors.grayLight};
+  background-color: var(--color-black);
+  color: var(--color-gray-light);
   font-size: 0.95rem;
 
   a {
@@ -29,6 +31,14 @@ const StyledFooter = styled.footer`
     margin-bottom: 1rem;
     color: var(--color-gray-light);
   }
+
+  [class$='__alt-stroke'] {
+    stroke: var(--color-black);
+  }
+
+  [class$='__alt'] {
+    fill: var(--color-black);
+  }
 `
 
 export const Footer: React.FC = () => {
@@ -36,30 +46,42 @@ export const Footer: React.FC = () => {
     <StyledFooter>
       <Composition
         as={Grid}
-        templateCols="repeat(3, 1fr)"
+        templateColsMd="4fr 1fr 1fr"
         gap={64}
         paddingVertical={64}
       >
-        <div>
+        <Box flex alignItems="flex-start">
+          <Box
+            as={Logo}
+            width={32}
+            marginTop={-4}
+            flexShrink="0"
+            marginRight={10}
+          />
           <p>Mock Service Worker is released under the MIT license.</p>
-        </div>
-        <div>
+        </Box>
+        <section>
           <HeadingDiminished>Documentation</HeadingDiminished>
           <ul>
-            <li>
-              <Link to="/docs/tutorials/getting-started">Getting started</Link>
-            </li>
             <li>
               <Link to="/docs/api">API</Link>
             </li>
             <li>
-              <Link to="/docs/tutorials">Tutorials</Link>
+              <Link to="/docs/getting-started">Getting started</Link>
             </li>
             <li>
               <Link to="/docs/recipes">Recipes</Link>
             </li>
           </ul>
-        </div>
+        </section>
+        <section>
+          <HeadingDiminished>Community</HeadingDiminished>
+          <ul>
+            <li>
+              <a href="https://github.com/mswjs/msw">GitHub</a>
+            </li>
+          </ul>
+        </section>
       </Composition>
     </StyledFooter>
   )

@@ -7,7 +7,6 @@ import { DiNodejsSmall } from 'react-icons/di'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
 import { Text } from '../components/Text'
-import { ObliqueSection } from '../components/ObliqueSection'
 import { Section } from '../components/Section'
 import { Heading } from '../components/Heading'
 import { Browser } from '../components/Browser'
@@ -222,88 +221,81 @@ user {
 
 export const IncrementalDevelopment = () => {
   return (
-    <ObliqueSection>
-      <Section>
-        <Composition
-          as={IllustrationContainer}
-          orderLg={1}
-          gap={10}
-          templateCols="1fr"
+    <Section>
+      <Composition
+        as={IllustrationContainer}
+        orderLg={1}
+        gap={10}
+        templateCols="1fr"
+        alignItems="center"
+        justifyItems="center"
+        justifyContent="space-between"
+        width={380}
+      >
+        <Box
+          flex
+          flexDirection="column"
           alignItems="center"
-          justifyItems="center"
-          justifyContent="space-between"
-          width={380}
+          marginBottom={50}
+          height={32}
         >
-          <Box
-            flex
-            flexDirection="column"
-            alignItems="center"
-            marginBottom={50}
-            height={32}
+          <RequestExample />
+        </Box>
+
+        <Box
+          flex
+          alignItems="center"
+          justifyContent="space-between"
+          width="100%"
+        >
+          <FakeBrowser offsetX={-10} offsetY={-71} />
+          <Browser
+            showControls={false}
+            showAddressBar={false}
+            inline
+            height="100%"
+            width={150}
+            marginLeft={-24}
           >
-            <RequestExample />
-          </Box>
+            <Box flex alignItems="center" justifyContent="center" height={125}>
+              <BrowserContentIcon size={48} fill={theme.colors.primary} />
+            </Box>
+          </Browser>
 
-          <Box
-            flex
-            alignItems="center"
-            justifyContent="space-between"
-            width="100%"
-          >
-            <FakeBrowser offsetX={-10} offsetY={-71} />
-            <Browser
-              showControls={false}
-              showAddressBar={false}
-              inline
-              height="100%"
-              width={150}
-              marginLeft={-24}
-            >
-              <Box
-                flex
-                alignItems="center"
-                justifyContent="center"
-                height={125}
-              >
-                <BrowserContentIcon size={48} fill={theme.colors.primary} />
-              </Box>
-            </Browser>
+          <Logo height={80} />
+        </Box>
 
-            <Logo height={80} />
-          </Box>
+        <Box as={Parent} marginTop={16} height={80}>
+          <ResponseExample />
+        </Box>
 
-          <Box as={Parent} marginTop={16} height={80}>
-            <ResponseExample />
-          </Box>
-
-          <SvgCommunication>
-            <rect
-              x={10}
-              y={48}
-              height={240}
-              width={290}
-              fill="none"
-              stroke={theme.colors.grayLight}
-              strokeWidth={3}
-              strokeDasharray={10}
-            />
-          </SvgCommunication>
-        </Composition>
-        <div>
-          <Heading level={2} marginBottom={8}>
-            Develop incrementally
-          </Heading>
-          <TextLead>
-            Modern solution for <Accent>competitive development</Accent>.
-          </TextLead>
-          <Text color="gray">
-            Present a fully functioning application or kick off the next
-            successful startup without having any backend at all. RESTful API
-            today, or GraphQL tomorrow? Experiment, combine, and find what suits
-            your project best before committing to the ecosystem.
-          </Text>
-        </div>
-      </Section>
-    </ObliqueSection>
+        <SvgCommunication>
+          <rect
+            x={10}
+            y={48}
+            height={240}
+            width={290}
+            fill="none"
+            stroke={theme.colors.grayLight}
+            strokeWidth={3}
+            strokeDasharray={10}
+          />
+        </SvgCommunication>
+      </Composition>
+      <div>
+        <Heading level={2} marginBottom={8}>
+          Develop incrementally
+        </Heading>
+        <TextLead>
+          Modern solution for <Accent>competitive development</Accent>.
+        </TextLead>
+        <Text color="gray">
+          Present a fully functioning application or kick off the next
+          successful startup without having any backend at all. RESTful API
+          today, or GraphQL tomorrow? Experiment, combine, and find what suits
+          your project best before committing to the ecosystem.
+        </Text>
+      </div>
+    </Section>
   )
 }

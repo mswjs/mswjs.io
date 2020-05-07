@@ -107,7 +107,6 @@ export const Hero = () => {
                 <IoIosPlay size={48} />
               </Box>
             </Box>
-            {/* <img src={HeroIllustration} style={{ maxWidth: '450px' }} /> */}
           </Box>
           <div>
             <Heading level={1} hero>
@@ -127,7 +126,7 @@ export const Hero = () => {
             >
               <Button
                 as={Link}
-                to="/docs/tutorials/getting-started"
+                to="/docs/getting-started/install"
                 variant="primary"
                 hero
               >
