@@ -26,6 +26,8 @@ import { ResponsePreview } from '../../components/mdx/ResponsePreview'
 import { Action } from '../../components/mdx/Action'
 import { ConsoleMessage } from '../../components/mdx/ConsoleMessage'
 import { PathMatchPreview } from '../../components/mdx/PathMatchPreview'
+import { EditOnGitHub } from './components/EditOnGitHub'
+import { DocsPageFooter } from './components/DocsPageFooter'
 
 const createHeading = (level: 1 | 2 | 3 | 4): React.FC => {
   return (props) => <Heading level={level} {...props} />
@@ -70,6 +72,10 @@ const DocumentationPage = ({ data, pageContext }) => {
                 <MDXRenderer>{page.body}</MDXRenderer>
               </MDXProvider>
             </Box>
+            <DocsPageFooter
+              relativeFilePath={page.fields.relativeFilePath}
+              editUrl={page.fields.editUrl}
+            />
           </Box>
           {page.tableOfContents?.items && (
             <TableOfContents items={page.tableOfContents.items} />
@@ -83,6 +89,10 @@ const DocumentationPage = ({ data, pageContext }) => {
 export const query = graphql`
   query GetSinglePage($postId: String!) {
     page: mdx(id: { eq: $postId }) {
+      fields {
+        relativeFilePath
+        editUrl
+      }
       frontmatter {
         title
       }

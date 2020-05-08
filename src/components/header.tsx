@@ -40,7 +40,7 @@ const Header = () => (
         alignItems="center"
         gap={32}
       >
-        <Link to="/docs">Docs</Link>
+        <Link to="/docs/">Docs</Link>
         <Box as="a" href="https://github.com/open-draft/msw" flex>
           <GitHubIcon size={24} />
         </Box>

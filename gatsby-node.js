@@ -1,6 +1,7 @@
 const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 
+const REPO_URL = 'https://github.com/mswjs/mockserviceworker.io'
 const DOCS_BASE_PATH = 'docs'
 const DOCS_TEMPLATE_PATH = path.resolve(
   __dirname,
@@ -197,6 +198,19 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       node,
       name: 'slug',
       value: postSlug,
+    })
+
+    const relativeFilePath = path.relative(__dirname, node.fileAbsolutePath)
+    createNodeField({
+      node,
+      name: 'relativeFilePath',
+      value: relativeFilePath,
+    })
+
+    createNodeField({
+      node,
+      name: 'editUrl',
+      value: path.join(REPO_URL, 'tree/master', relativeFilePath),
     })
 
     createNodeField({
