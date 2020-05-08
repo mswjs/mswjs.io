@@ -1,0 +1,162 @@
+---
+title: Mocking GraphQL API
+order: 23
+---
+
+## Pre-requisites
+
+Since we will be working with a GraphQL API, we need to have a GraphQL client installed and configured in our application. We need that client primarily to dispatch queries and mutations. Please refer to the getting started steps of the respective client.
+
+<Action>Install and configure a GraphQL client</Action>
+
+Here are some GraphQL clients to consider:
+
+- [Apollo](https://www.apollographql.com/)
+- [URQL](https://formidable.com/open-source/urql/)
+
+### Supported clients
+
+Any GraphQL client that complies with the GraphQL operations specification can be used with Mock Service Worker. A client must dispatch requests with the following signature:
+
+```ts
+interface GraphQLRequest {
+  query: string
+  variables?: Record<string, any>
+}
+```
+
+<Hint>
+  Some GraphQL clients append extra information to the request's payload. That
+  information will be available in the response resolver function.
+</Hint>
+
+## Imports
+
+In our `mocks.js` file let's import the essentials we need for mocking a GraphQL API. They are groupped under the `graphql` namespace exposed by the library.
+
+<Action>
+  Import <code>graphql</code> from the <code>msw</code> package:
+</Action>
+
+```js showLineNumbers
+// src/mocks.js
+import { graphql } from 'msw'
+```
+
+## Request handler
+
+To handle a GraphQL request we need to specify its _operation kind_ (query/mutation).
+
+In this tutorial we will be mocking a basic login flow for our user. This flow implies handling two operations:
+
+- `Login` mutation;
+- `GetUserInfo` query.
+
+<Action>
+  Create a request handler by calling <code>graphql[OPERATION_KIND]</code> and
+  providing an operation name:
+</Action>
+
+```js showLineNumbers focusedLines=6,9
+// src/mocks.js
+import { graphql } from 'msw'
+
+const mocks = [
+  // Handles a "Login" mutation
+  graphql.mutation('Login', null),
+
+  // Handles a "GetUserInfo" query
+  graphql.query('GetUserInfo', null),
+]
+```
+
+## Response resolve
+
+To respond to an operation using a mocked response we have to specify it using a response resolver function.
+
+Response resolver is a function that accepts the following arguments:
+
+- `req`, an information about a matching request;
+- `res`, a functional utility to create the mocked response;
+- `ctx`, a group of functions that help to set a status code, headers, data, etc. on the mocked response.
+
+In GraphQL we describe the expected response in a query/mutation declaration itself. Let's design the shape of our response for both operations:
+
+```graphql
+# Authenticates using a given username
+mutation Login($username: String!) {
+  login(username: $username) {
+    username
+  }
+}
+```
+
+```graphql
+# Returns the information about the authenticated user
+query GetUserInfo() {
+  user {
+    username
+    firstName
+  }
+}
+```
+
+<Action>
+  Provide response resolvers to the previously defined request handlers:
+</Action>
+
+```js showLineNumbers focusedLines=10-16,25-30,34-41
+// src/mocks.js
+import { graphql } from 'msw'
+
+const mocks = [
+  // Handles a "Login" mutation
+  graphql.mutation('Login', (req, res, ctx) => {
+    const { username } = req.variables
+    sessionStorage.setItem('is-authenticated', username)
+
+    return res(
+      ctx.data({
+        login: {
+          username,
+        },
+      }),
+    )
+  }),
+
+  // Handles a "GetUserInfo" query
+  graphql.query('GetUserInfo', (req, res, ctx) => {
+    const authenticatedUser = sessionStorage.getItem('is-authenticated')
+
+    if (!authenticatedUser) {
+      // When not authenticated, respond with an error
+      return res(
+        ctx.error({
+          message: 'Not authenticated',
+          errorType: 'AuthenticationError',
+        }),
+      )
+    }
+
+    // When authenticated, respond with a query payload
+    return res(
+      ctx.data({
+        user: {
+          username: authenticatedUser,
+          firstName: 'John',
+        },
+      }),
+    )
+  }),
+]
+```
+
+> Utilize things like [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), or [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) to handle more complex API scenarios and user interactions.
+
+## Next step
+
+The mock definition is written, yet there is one last step to perform: enable the mocking.
+
+import * as IntegratePage from '../integrate/'
+
+<PageLink page={IntegratePage} url="/docs/getting-started/integrate" />

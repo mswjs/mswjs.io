@@ -1,0 +1,46 @@
+---
+title: response
+order: 45
+---
+
+Response (`res`) is a function that composes a mocked response object.
+
+Unlike the `Response` object in NodeJS, the `res` argument in Mock Service Worker is used to create and transform a mocked response. When called, it passes a created response from one [response transformer](/docs/basics/response-transformer) to another, eventually resolving to a mocked response used by the Service Worker.
+
+## Mocked response
+
+A call to the `res()` function creates a mocked response object. Each response transformer accepted by the `res()` function modifies that mocked response and passes it to the next response transformer, thus, creating a functional composition.
+
+### Properties
+
+| Property name | Type                                                                          | Description                                                   |
+| ------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `status`      | `number`                                                                      | Mocked response HTTP status code.                             |
+| `statusText`  | `string`                                                                      | HTTP status text of the current status code.                  |
+| `body`        | `string`                                                                      | Stringified body of the response.                             |
+| `headers`     | [`Headers`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/Headers) | Mocked response HTTP headers.                                 |
+| `delay`       | `number`                                                                      | Delay duration (ms) before responding with a mocked response. |
+
+## Example
+
+### Raw usage
+
+```js showLineNumbers
+rest.get('/users', (req, res) => {
+  return res((res) => {
+    res.status = 301
+    res.headers.set('Content-Type', 'application/json')
+    return res
+  })
+})
+```
+
+### Usage with standard response transformers
+
+The raw usage example above can be replaced by using standard response transformers.
+
+```js showLineNumbers
+rest.get('/users', (req, res, ctx) => {
+  return res(ctx.status(301), ctx.set('Content-Type', 'application/json'))
+})
+```

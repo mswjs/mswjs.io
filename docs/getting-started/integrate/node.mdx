@@ -1,0 +1,92 @@
+---
+title: Node
+order: 26
+---
+
+In this integration example we are going to use mocking during the unit testing with a [Jest](https://jestjs.io/) framework. Following the same principle, you can integrate mocking into any Node process.
+
+## Setup
+
+As the first step, let's export our mock definitions so they can be accessed in our test suite.
+
+<Action>
+  Export the <code>mocks</code> definition from the <code>mocks.js</code> file:
+</Action>
+
+```js showLineNumbers focusedLines=6
+// src/mocks.js
+import { /* rest, or graphql */ } from 'msw'
+
+const mocks = [...]
+
+export { mocks }
+```
+
+Now let's create a test suite and import our mock definition there, as well as the server setup function from the library.
+
+<Action>
+  Import <code>setupServer</code> function from the <code>msw</code> package:
+</Action>
+
+```js showLineNumbers focusedLines=2-3
+// test/login.test.js
+import { setupServer } from 'msw'
+import { mocks } from '../mocks'
+```
+
+## Start the server
+
+Let's start the server on the `beforeAll` hook. For that, call the `setupServer` function and provide the mock definitions to it.
+
+<Hint>
+  Internally, Mock Service Worker does not use any servers. The term "server"
+  has been chosen to provide familiar interface and describe the seeming
+  functionality.
+</Hint>
+<Action>
+  Pass the mock definitions to the <code>setupServer</code> function:
+</Action>
+
+```js showLineNumbers focusedLines=6,9
+// test/login.test.js
+import { setupServer } from 'msw'
+import { mocks } from '../mocks'
+
+describe('Login', () => {
+  let server
+
+  beforeAll(() => {
+    server = setupServer(...mocks)
+  })
+})
+```
+
+Now to enable the mocking we need to call the `listen()` method on the server. Alternatively, we can stop the mocking by calling the `close()` method (for example, during the test's cleanup).
+
+<Action>
+  Control the mocking with <code>server.listen()</code> and{' '}
+  <code>server.close()</code>:
+</Action>
+
+```js showLineNumbers focusedLines=10,14
+// test/login.test.js
+import { setupServer } from 'msw'
+import { mocks } from '../mocks'
+
+describe('Login', () => {
+  let server
+
+  beforeAll(() => {
+    server = setupServer(mocks)
+    server.listen()
+  })
+
+  afterAll(() => {
+    server.close()
+  })
+
+  describe('given I log in', () => {
+    /* perform requests and test the application's behavior */
+  })
+})
+```

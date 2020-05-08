@@ -6,7 +6,6 @@ const DOCS_TEMPLATE_PATH = path.resolve(
   __dirname,
   './src/templates/docs/singlePage.tsx',
 )
-const ORDER_PREFIX_EXP = /(?<=\/)(\d+?)-/g
 
 const unslugify = (slug) => {
   return slug
@@ -24,6 +23,10 @@ const getRelativePagePath = (absolutePath) => {
   )
 }
 
+const isRootFile = (filename) => {
+  return /^(index|readme)\.mdx?$/i.test(filename)
+}
+
 const getDocumentBreadcrumbs = (node) => {
   const relativePath = getRelativePagePath(node.fileAbsolutePath)
   const pathChunks = relativePath.split('/').slice(0, -1)
@@ -35,7 +38,7 @@ const getDocumentBreadcrumbs = (node) => {
   })
 
   // Do not create a separate node for root files
-  if (/index\.mdx?$/i.test(relativePath)) {
+  if (isRootFile(relativePath)) {
     return breadcrumbs
   }
 
@@ -57,36 +60,41 @@ const createNavTree = (edges) => {
 
   function getRecursiveTree(pages) {
     return pages.reduce((tree, page) => {
-      let { pathChunks, filename, url, title, displayName } = page
-      const resolvedTitle = displayName || title
+      let { pathChunks, filename, url, title } = page
+      const displayName = page.displayName || title
 
       // Remove the last node in the path chunks for root pages
-      if (/^(index|readme)\.mdx?$/i.test(filename)) {
+      if (isRootFile(filename)) {
         pathChunks = pathChunks.slice(0, -1)
       }
 
       if (pathChunks.length === 0) {
         return tree.concat({
           title,
-          displayName: resolvedTitle,
+          displayName,
           url,
         })
       } else {
         const targetItems = pathChunks.reduce((acc, pathSegment, index) => {
           const isLastSegment = index === pathChunks.length - 1
-          const existingNode = acc.find((node) => node.title === pathSegment)
+
+          const existingNode = acc.find((node) => {
+            return node.segment === pathSegment
+          })
 
           if (!existingNode) {
             acc.push(
               Object.assign(
+                {},
                 {
                   title: pathSegment,
+                  segment: pathSegment,
                   displayName: unslugify(pathSegment),
                 },
                 isLastSegment
                   ? {
                       title,
-                      displayName: resolvedTitle,
+                      displayName,
                       url,
                     }
                   : {
@@ -111,7 +119,8 @@ const createNavTree = (edges) => {
         if (targetItems && Array.isArray(targetItems)) {
           targetItems.push({
             title,
-            displayName: resolvedTitle,
+            pathSegment,
+            displayName,
             url,
           })
         }
@@ -131,7 +140,7 @@ exports.createPages = ({ actions, graphql }) => {
     {
       allMdx(
         filter: { frontmatter: { title: { ne: "" } } }
-        sort: { order: ASC, fields: [frontmatter___order, fileAbsolutePath] }
+        sort: { order: ASC, fields: [frontmatter___order] }
       ) {
         edges {
           node {
@@ -157,7 +166,6 @@ exports.createPages = ({ actions, graphql }) => {
     }
 
     const { edges } = result.data.allMdx
-
     const navTree = createNavTree(edges)
 
     edges.forEach(({ node }) => {
@@ -185,18 +193,16 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       trailingSlash: false,
     })
 
-    const postSlugWithoutOrder = postSlug.replace(ORDER_PREFIX_EXP, '')
-
     createNodeField({
       node,
       name: 'slug',
-      value: postSlugWithoutOrder,
+      value: postSlug,
     })
 
     createNodeField({
       node,
       name: 'url',
-      value: ['/', DOCS_BASE_PATH, '/', postSlugWithoutOrder]
+      value: ['/', DOCS_BASE_PATH, '/', postSlug]
         .filter(Boolean)
         .join('')
         .replace(/\/+/g, '/'),

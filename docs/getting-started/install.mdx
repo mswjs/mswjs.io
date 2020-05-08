@@ -1,0 +1,46 @@
+---
+title: Install
+order: 21
+---
+
+In this basic tutorial we are going to add Mock Service Worker to an existing [Create React App](https://create-react-app.dev) application. Following these steps, you can integrate mocking into any application.
+
+## Install
+
+Let's start by installing the `msw` package into our project.
+
+<Action>Run the following command in your project's root directory:</Action>
+
+```bash
+$ npm install msw
+```
+
+## Initialize
+
+Mock Service Worker operates client-side by registering a Service Worker responsible for requests interception. However, we don't have to write any of the worker's code by ourselves, but rather copy the worker file distributed by the library. Mock Service Worker provides a dedicated CLI to help us do that.
+
+<Action>
+  Execute the <code>init</code> command of the Mock Service Worker CLI:
+</Action>
+
+```bash
+$ npx msw init <PUBLIC_DIR>
+```
+
+Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's public directory. For example, in a Create React App project this command would be:
+
+```bash
+$ npx msw init public/
+```
+
+import PublicDirSnippet from '../snippets/public-dir.mdx'
+
+<PublicDirSnippet />
+
+## Next step
+
+With the library installed and Service Worker copied, let's continue with defining which requests to mock.
+
+import * as MockPage from './mocks'
+
+<PageLink page={MockPage} url="/docs/getting-started/mocks" />

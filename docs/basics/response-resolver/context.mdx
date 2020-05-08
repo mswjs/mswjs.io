@@ -1,0 +1,214 @@
+---
+title: context
+order: 46
+---
+
+`context` argument of a response resolver groups a set of utilities for working with various API types and mocking patterns.
+
+Context is specific to the used request handler. For example, you cannot access the `ctx.data()` method when using `rest.*` request handlers, because it's specific to GraphQL API.
+
+Below you can find a list of all utility functions available by default in the context.
+
+## Common
+
+### `ctx.fetch()`
+
+Performs a request that bypasses any mocking.
+
+```ts
+function fetch(req: MockedRequest): Promise<any>
+function fetch(input: RequestInfo, init?: RequestInit)
+```
+
+```js showLineNumbers focusedLines=2
+rest.get('https://api.github.com/users/:username', async (req, res, ctx) => {
+  const originalResponse = await ctx.fetch(req)
+
+  return res(
+    ctx.json({
+      name: 'John Maverick',
+      location: originalResponse.location,
+    }),
+  )
+})
+```
+
+### `ctx.delay()`
+
+Delays the response by the given duration (in ms).
+
+```ts
+function delay(duration: number): MockedResponse
+```
+
+```js showLineNumbers  focusedLines=3-4
+rest.post('/login', (req, res, ctx) => {
+  return res(
+    // Delays response for 2000ms
+    ctx.delay(2000),
+  )
+})
+```
+
+## REST API
+
+### `ctx.status()`
+
+Sets a given HTTP status code and text (optional) on the response.
+
+```ts
+function status(code: number, text?: string): MockedResponse
+```
+
+```js showLineNumbers focusedLines=2-4
+rest.get('/post/:postId', (req, res, ctx) => {
+  // Status text is automatically inferred from a given status code
+  // according to REST API specification.
+  return res(ctx.status(404))
+})
+```
+
+```js showLineNumbers focusedLines=2-4
+rest.get('/post/:postId', (req, res, ctx) => {
+  // You can override the inferred status text
+  // by providing it as the second argument.
+  return res(ctx.status(404, 'Custom error'))
+})
+```
+
+### `ctx.set()`
+
+Sets one, or multiple headers on the response.
+
+```ts
+function set(name: string, value: string): MockedResponse
+function set(headers: Record<string, string | string[]>): MockedResponse
+```
+
+#### Single header
+
+```js showLineNumbers focusedLines=2
+rest.get('/user', (req, res, ctx) => {
+  return res(ctx.set('Content-Type', 'application/hal+json'))
+})
+```
+
+#### Multiple values
+
+```js showLineNumbers focusedLines=3-5
+rest.get('/user', (req, res, ctx) => {
+  return res(
+    ctx.set({
+      '': ['one', 'two'],
+    }),
+  )
+})
+```
+
+#### Multiple headers
+
+```js showLineNumbers focusedLines=3-6
+rest.get('/user', (req, res, ctx) => {
+  return res(
+    ctx.set({
+      'Accept-Language': 'en-US',
+      'Content-Type': ['applcation/json', 'application/hal+json'],
+      'Content-Length': 40032,
+    }),
+  )
+})
+```
+
+### `ctx.body()`
+
+Sets a raw body on the response. Does not apply any `Content-Type` headers automatically.
+
+```ts
+function body(data: any): MockedResponse
+```
+
+### `ctx.text()`
+
+Sets a `Content-Type: text/plain` body on the response.
+
+```ts
+function text(data: string): MockedResponse
+```
+
+### `ctx.json()`
+
+Sets a `Content-Type: application/json` body on the response.
+
+```ts
+function json(data: Record<string, any>): MockedResponse
+```
+
+```js showLineNumbers focusedLines=3-6
+rest.get('/user', (req, res, ctx) => {
+  return res(
+    ctx.json({
+      firstName: 'John',
+      age: 32,
+    }),
+  )
+})
+```
+
+### `ctx.xml()`
+
+Sets a `Content-Type: text/xml` body on the response.
+
+```ts
+function json(data: string): MockedResponse
+```
+
+## GraphQL
+
+### `ctx.data()`
+
+Returns a data payload as the response to a GraphQL operation.
+
+```ts
+function data(payload: Record<string, any>): MockedResponse
+```
+
+```js showLineNumbers focusedLines=3-8
+graphql.query('GetUserDetail', (req, res, ctx) => {
+  return res(
+    ctx.data({
+      user: {
+        firstName: 'John',
+        age: 32,
+      },
+    }),
+  )
+})
+```
+
+### `ctx.error()`
+
+Returns a GraphQL error object in the response.
+
+```ts
+function error(e: GraphQLError): MockedResponse
+```
+
+```js showLineNumbers focusedLines=3-11
+graphql.mutation('Login', (req, res, ctx) => {
+  return res(
+    ctx.error({
+      message: 'Failed to log in: username or password are invalid',
+      locations: [
+        {
+          line: 8,
+          column: 12,
+        },
+      ],
+    }),
+  )
+})
+```
+
+## Custom context
+
+Creating custom context is only useful when working with [Custom request handlers](/docs/advanced/custom-request-handler). If you wish to abstract your response transformation logic, please consider writing a set of reusable [response transformers](/docs/basics/response-transformer) instead.

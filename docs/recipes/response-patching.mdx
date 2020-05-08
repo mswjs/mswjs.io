@@ -1,0 +1,57 @@
+---
+title: Response patching
+order: 73
+---
+
+**Response patching** is a technique when a mocked response is based on the actual response. This technique may be useful when working with an existing API with an intention to augment it for various purposes (i.e., experimenting or debugging).
+
+Pass the intercepted `request` object to the `ctx.fetch()` call to get the original response. Using `ctx.fetch()` performs a request that **bypasses any request handlers**, as any `window.fetch()` calls, even those inside response resolvers, are subjected to interception.
+
+## Example
+
+Below is an example of patching a response from a user detail endpoint of GitHub API V3.
+
+```js showLineNumbers focusedLines=5,6
+import { setupWorker, rest } from 'msw'
+
+const { start } = setupWorker(
+  rest.get('https://api.github.com/users/:username', async (req, res, ctx) => {
+    // Perform an original request to the intercepted request URL
+    const originalResponse = await ctx.fetch(req)
+
+    return res(
+      ctx.json({
+        location: originalResponse.location,
+        firstName: 'Not the real first name',
+      }),
+    )
+  }),
+)
+
+start()
+```
+
+> It is highly recommended to use `ctx.fetch()` instead of a regular `window.fetch()` within response resolvers, because it prevents actual requests **from being matched against the MSW mocks definition**.
+>
+> You may use `window.fetch()` intentionally, for example, when you need to perform a request that is later mocked as a part of another response resolver. Requests issued by regular `window.fetch()` are subjected to mocking.
+
+<ResponsePreview
+  request={{
+    method: 'GET',
+    url: 'https://api.github.com**/users/octocat**',
+  }}
+  statusCode={301}
+  response={{
+    statusCode: 200,
+    body: `
+{
+  // Resolved from the original response
+  "location": "San Francisco",
+  "firstName": "Not the real first name"
+}
+    `,
+  }}
+  codeProps={{
+    focusedLines: '2,3',
+  }}
+/>
