@@ -21,7 +21,6 @@ export const PageCollaborators: React.FC<Props> = ({ relativeFilePath }) => {
     )
       .then((res) => res.json())
       .then((data: any[]) => {
-        console.log({ data })
         return data.reduce<Author[]>((acc, commit) => {
           const isUniqueAuthor = acc.every(
             (author) => author.id !== commit.author.id,

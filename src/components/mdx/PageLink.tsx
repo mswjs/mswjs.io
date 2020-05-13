@@ -47,7 +47,7 @@ interface MdxModule {
 
 interface PageLinksProps {
   title?: string
-  page: MdxModule
+  page?: MdxModule
   url: string
 }
 

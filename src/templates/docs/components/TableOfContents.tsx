@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box } from 'atomic-layout'
+import { Link } from 'gatsby'
 import { IoIosList as ListIcon } from 'react-icons/io'
 import theme from '../../../theme'
 import { HeadingDiminished } from '../../../components/HeadingDiminished'

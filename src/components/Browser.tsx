@@ -6,6 +6,7 @@ import { BoxProps } from '@atomic-layout/core'
 import { IoIosMenu, IoIosRefresh } from 'react-icons/io'
 
 interface BrowserProps {
+  address?: string
   useLightTheme?: boolean
   showControls?: boolean
   showAddressBar?: boolean
@@ -58,6 +59,7 @@ export const BrowserDevTools = styled.section`
 
 export const Browser: React.FC<BrowserProps & BoxProps> = ({
   children,
+  address,
   useLightTheme,
   showControls,
   showAddressBar,
@@ -92,7 +94,7 @@ export const Browser: React.FC<BrowserProps & BoxProps> = ({
             paddingHorizontal={6}
           >
             <IoIosMenu fill="currentColor" />
-            <span>localhost:3000</span>
+            <span>{address}</span>
             <IoIosRefresh fill="currentColor" />
           </Composition>
         )}
@@ -103,6 +105,7 @@ export const Browser: React.FC<BrowserProps & BoxProps> = ({
 }
 
 Browser.defaultProps = {
+  address: 'localhost:3000',
   showControls: true,
   showAddressBar: true,
 }

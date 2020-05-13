@@ -29,7 +29,7 @@ export const Highlights = () => {
         >
           <div>
             <Heading level={3}>
-              Why people <Accent>fall in love</Accent> with{' '}
+              Why do people <Accent>fall in love</Accent> with{' '}
               <span className="no-wrap">Mock Service Worker</span>?
             </Heading>
           </div>

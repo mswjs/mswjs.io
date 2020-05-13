@@ -1,17 +1,25 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import styled, { css } from 'styled-components'
-import { Box } from 'atomic-layout'
+import { Box, query } from 'atomic-layout'
 
 const MenuSection = styled.section`
   position: relative;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  z-index: 10;
+
+  @media ${query({ from: 'lg' })} {
+    position: relative;
+  }
 
   &:after {
     content: '';
     position: absolute;
     top: 2rem;
     right: 0;
-    bottom: 2rem;
+    bottom: 3rem;
     border-right: 1px solid
       ${({ theme }) => theme.utils.alpha(theme.colors.grayLight, 0.5)};
   }
@@ -74,7 +82,17 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
 
       [aria-current='page'] &:before {
         color: var(--color-secondary);
-        content: '›';
+        content: '→';
+        animation: slideLeft 0.5s ease;
+
+        @keyframes slideLeft {
+          0% {
+            transform: translateX(-4px);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
       }
     `}
 
@@ -133,7 +151,13 @@ interface MenuTree {
 
 export const Menu: React.FC<MenuProps> = ({ tree }) => {
   return (
-    <Box as={MenuSection} paddingVertical={16} paddingRight={32}>
+    <Box
+      as={MenuSection}
+      paddingLeft={16}
+      paddingLeftLg={0}
+      paddingVertical={16}
+      paddingRight={32}
+    >
       <Box as={MenuSticky} paddingVertical={32}>
         <PagesList>{renderTreeItem(tree, true)}</PagesList>
       </Box>

@@ -5,7 +5,11 @@ const REPO_URL = 'https://github.com/mswjs/mockserviceworker.io'
 const DOCS_BASE_PATH = 'docs'
 const DOCS_TEMPLATE_PATH = path.resolve(
   __dirname,
-  './src/templates/docs/singlePage.tsx',
+  'src/templates/docs/singlePage.tsx',
+)
+const DOCS_CATEGORY_PAGE_PATH = path.resolve(
+  __dirname,
+  'src/templates/docs/categoryPage.tsx',
 )
 
 const unslugify = (slug) => {
@@ -17,6 +21,9 @@ const unslugify = (slug) => {
     })
 }
 
+/**
+ * Returns a relative path based on the given absolute path.
+ */
 const getRelativePagePath = (absolutePath) => {
   return path.relative(
     path.resolve(process.cwd(), DOCS_BASE_PATH),
@@ -24,10 +31,16 @@ const getRelativePagePath = (absolutePath) => {
   )
 }
 
+/**
+ * Determines if the given filename is a root file.
+ */
 const isRootFile = (filename) => {
   return /^(index|readme)\.mdx?$/i.test(filename)
 }
 
+/**
+ * Returns a breadcrumbs list for the given MDX node.
+ */
 const getDocumentBreadcrumbs = (node) => {
   const relativePath = getRelativePagePath(node.fileAbsolutePath)
   const pathChunks = relativePath.split('/').slice(0, -1)
@@ -50,6 +63,10 @@ const getDocumentBreadcrumbs = (node) => {
   })
 }
 
+/**
+ * Creates a deep nested navigation tree from the given
+ * MDX documents list.
+ */
 const createNavTree = (edges) => {
   const items = edges.map(({ node }) => ({
     url: node.fields.url,
@@ -134,13 +151,33 @@ const createNavTree = (edges) => {
   return getRecursiveTree(items)
 }
 
-exports.createPages = ({ actions, graphql }) => {
+exports.createPages = async ({ actions, graphql }) => {
   const { createPage } = actions
 
-  return graphql(`
+  const { errors, data } = await graphql(`
     {
-      allMdx(
-        filter: { frontmatter: { title: { ne: "" } } }
+      # MDX documents with no content are considered categories
+      categories: allMdx(filter: { wordCount: { paragraphs: { eq: null } } }) {
+        edges {
+          node {
+            fileAbsolutePath
+            fields {
+              url
+            }
+            frontmatter {
+              title
+              displayName
+              description
+            }
+          }
+        }
+      }
+
+      pages: allMdx(
+        filter: {
+          frontmatter: { title: { ne: "" } }
+          wordCount: { paragraphs: { ne: null } }
+        }
         sort: { order: ASC, fields: [frontmatter___order] }
       ) {
         edges {
@@ -149,7 +186,6 @@ exports.createPages = ({ actions, graphql }) => {
             fileAbsolutePath
             fields {
               url
-              slug
             }
             frontmatter {
               title
@@ -160,25 +196,39 @@ exports.createPages = ({ actions, graphql }) => {
         }
       }
     }
-  `).then((result) => {
-    if (result.errors) {
-      console.log(result.errors)
-      return Promise.reject(result.errors)
-    }
+  `)
 
-    const { edges } = result.data.allMdx
-    const navTree = createNavTree(edges)
+  if (errors) {
+    console.log(errors)
+    return null
+  }
 
-    edges.forEach(({ node }) => {
-      createPage({
-        path: node.fields.url,
-        component: DOCS_TEMPLATE_PATH,
-        context: {
-          postId: node.id,
-          breadcrumbs: getDocumentBreadcrumbs(node),
-          navTree,
-        },
-      })
+  const { categories, pages } = data
+  const navTree = createNavTree(pages.edges)
+
+  pages.edges.forEach(({ node }) => {
+    createPage({
+      path: node.fields.url,
+      component: DOCS_TEMPLATE_PATH,
+      context: {
+        postId: node.id,
+        breadcrumbs: getDocumentBreadcrumbs(node),
+        navTree,
+      },
+    })
+  })
+
+  categories.edges.forEach(({ node }) => {
+    createPage({
+      path: node.fields.url,
+      component: DOCS_CATEGORY_PAGE_PATH,
+      context: {
+        categoryTitle: node.frontmatter.title,
+        categoryDescription: node.frontmatter.description,
+        categoryRegex: new RegExp(`^${node.fields.url}\/.+`).toString(),
+        breadcrumbs: getDocumentBreadcrumbs(node),
+        navTree,
+      },
     })
   })
 }
@@ -207,6 +257,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       value: relativeFilePath,
     })
 
+    // Reference the raw file on GitHub to allow edits
     createNodeField({
       node,
       name: 'editUrl',

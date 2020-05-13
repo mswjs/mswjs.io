@@ -72,7 +72,11 @@ export const Testing = () => {
       <Section>
         <Box width="100%">
           <Box marginBottom={24}>
-            <Browser maxWidth={500} marginHorizontal="auto">
+            <Browser
+              address="eshop.com/product/1"
+              maxWidth={500}
+              marginHorizontal="auto"
+            >
               <Box
                 flex
                 height={200}
@@ -84,10 +88,10 @@ export const Testing = () => {
               </Box>
               <Box as={BrowserDevTools} padding={20}>
                 <TestResults>
-                  <TestDescribe>given I open a product detail</TestDescribe>
-                  <TestResult title="should display a product title" />
+                  <TestDescribe>given I opened a product detail</TestDescribe>
+                  <TestResult title="should display the product title" />
                   <TestResult
-                    title="should display the latest price"
+                    title="should display the product price"
                     delay={850}
                   />
                   <TestResult
@@ -99,7 +103,7 @@ export const Testing = () => {
             </Browser>
           </Box>
           <TextSmall align="center" color="gray">
-            Test example utilizing a <code>GET /posts</code> mock.
+            Test suite example utilizing a <code>GET /post/:postId</code> mock.
           </TextSmall>
         </Box>
         <div>
@@ -110,7 +114,7 @@ export const Testing = () => {
             Write test suites that <Accent>don't smell</Accent>.
           </TextLead>
           <Text color="gray">
-            Target any state of your API, while keeping the test suits slim and
+            Target any state of your API, while keeping a test suit slim and
             clean. A single imported module that declaratively mocks given
             request routes, nothing more.
           </Text>

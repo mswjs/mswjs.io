@@ -3,6 +3,7 @@ import { Code as ReactCdxCode } from 'react-cdx'
 import CodeTheme from 'prism-react-renderer/themes/github'
 
 interface CodeProps {
+  theme?: any
   children: string
   language: string
   className?: string
@@ -13,6 +14,7 @@ interface CodeProps {
 
 export const Code: React.FC<CodeProps> = ({
   children,
+  theme,
   language,
   className,
   lineStartNumber,
@@ -46,8 +48,9 @@ export const Code: React.FC<CodeProps> = ({
   return (
     <ReactCdxCode
       code={children}
+      className={className}
       language={language || (className && className.replace('language-', ''))}
-      theme={CodeTheme}
+      theme={theme || CodeTheme}
       showLineNumbers={showLineNumbers}
       lineNumberStart={lineStartNumber && parseFloat(lineStartNumber)}
       focusedLines={resolvedFocusedLines}

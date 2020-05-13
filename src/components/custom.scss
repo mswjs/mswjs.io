@@ -54,6 +54,7 @@ h2 {
 }
 
 h3 {
+  margin-bottom: 0.5em;
   line-height: 1.4;
   letter-spacing: -0.25px;
 }
@@ -75,7 +76,7 @@ hr {
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 .no-wrap {
   white-space: nowrap;
@@ -85,7 +86,6 @@ tt,
 code {
   display: inline-block;
   padding: 0px 4px;
-  // color: hsl(28, 69%, 46%);
   background-color: hsl(204, 45%, 98%);
   border: 1px solid hsla(0, 0%, 0%, 0.05);
   font-size: 0.9em;
@@ -115,6 +115,17 @@ input {
     background-color: #fff;
     box-shadow: inset 3px 0 0 var(--color-primary);
   }
+}
+
+.border-radius {
+  border-radius: var(--border-radius);
+}
+
+.box-shadow {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.008),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.012), 0 12.5px 10px rgba(0, 0, 0, 0.015),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.018), 0 41.8px 33.4px rgba(0, 0, 0, 0.022),
+    0 100px 80px rgba(0, 0, 0, 0.03);
 }
 
 #docs-page {

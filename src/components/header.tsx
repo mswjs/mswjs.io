@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import styled from 'styled-components'
-import { Box, Composition } from 'atomic-layout'
+import styled, { useTheme } from 'styled-components'
+import { Box, Composition, Only } from 'atomic-layout'
+import { IoIosMenu as MenuIcon } from 'react-icons/io'
 import { DiGithubBadge as GitHubIcon } from 'react-icons/di'
 
 import { Grid } from './Grid'
@@ -11,42 +12,66 @@ const StyledHeader = styled.header`
   color: ${({ theme }) => theme.colors.grayDark};
   font-size: 0.9rem;
   font-weight: 600;
+`
 
-  a {
-    color: inherit;
-    text-decoration: none;
+const HeaderLink = styled.a`
+  padding: 0.5rem;
+  color: inherit;
+  text-decoration: none;
 
-    &:hover,
-    &[aria-current='page'] {
-      color: ${({ theme }) => theme.colors.secondary};
-    }
+  &:hover {
+    color: ${({ theme }) => theme.colors.secondary};
   }
 `
 
-const Header = () => (
-  <Box as={StyledHeader} paddingVertical={12}>
-    <Grid flex alignItems="center" justifyContent="space-between">
-      <Box flex alignItems="center">
-        <Box as={Link} to="/" flex>
-          <img src={logo} alt="MSW" width="48" />
-        </Box>
-        <Box as="span" marginLeft={8}>
-          <strong>Mock Service Worker</strong>
-        </Box>
-      </Box>
+const Header = () => {
+  const theme = useTheme()
+
+  return (
+    <Box as={StyledHeader} paddingVertical={12}>
       <Composition
-        inline
-        templateCols="repeat(2, auto)"
+        as={Grid}
+        templateCols="repeat(3, 1fr)"
+        templateColsLg="1fr auto"
+        gap={10}
         alignItems="center"
-        gap={32}
+        justifyContent="space-between"
       >
-        <Link to="/docs/">Docs</Link>
-        <Box as="a" href="https://github.com/open-draft/msw" flex>
-          <GitHubIcon size={24} />
+        <Only to="lg">
+          <button>
+            <MenuIcon size={24} />
+          </button>
+        </Only>
+        <Box flex justify="center" justifyLg="flex-start" alignItems="center">
+          <Box as={Link} to="/" flex>
+            <img src={logo} alt="MSW" width="48" />
+          </Box>
+          <Only from="lg" as="span" marginLeft={8}>
+            <strong>Mock Service Worker</strong>
+          </Only>
+        </Box>
+        <Box
+          inline
+          flex
+          alignItems="center"
+          justify="flex-end"
+          justifyItems="flex-end"
+        >
+          <HeaderLink
+            as={Link}
+            to="/docs/"
+            activeStyle={{ color: theme.colors.secondary }}
+            partiallyActive
+          >
+            Documentation
+          </HeaderLink>
+          <Box as={HeaderLink} href="https://github.com/open-draft/msw" flex>
+            <GitHubIcon size={24} />
+          </Box>
         </Box>
       </Composition>
-    </Grid>
-  </Box>
-)
+    </Box>
+  )
+}
 
 export default Header

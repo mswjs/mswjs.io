@@ -14,6 +14,7 @@ import { TextMono } from '../components/TextMono'
 import { ReactComponent as Logo } from '../images/logo-mask.svg'
 import { ReactComponent as GraphqQL } from '../images/graphql-logo.svg'
 import theme from '../theme'
+import { Link } from 'gatsby'
 
 const Parent = styled.div`
   position: relative;
@@ -258,7 +259,7 @@ export const IncrementalDevelopment = () => {
             marginLeft={-24}
           >
             <Box flex alignItems="center" justifyContent="center" height={125}>
-              <BrowserContentIcon size={48} fill={theme.colors.primary} />
+              <BrowserContentIcon size={48} fill={theme.colors.grayLight} />
             </Box>
           </Browser>
 

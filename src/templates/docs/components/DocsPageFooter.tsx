@@ -29,7 +29,7 @@ export const DocsPageFooter: React.FC<Props> = ({
 }) => {
   return (
     <Box as={StyledFooter} marginTop="4rem" paddingTop="2rem">
-      <Box flex justifyContent="space-between">
+      <Box flex alignItems="center" justifyContent="space-between">
         <section>
           <PageCollaborators relativeFilePath={relativeFilePath} />
         </section>

@@ -26,8 +26,8 @@ import { ResponsePreview } from '../../components/mdx/ResponsePreview'
 import { Action } from '../../components/mdx/Action'
 import { ConsoleMessage } from '../../components/mdx/ConsoleMessage'
 import { PathMatchPreview } from '../../components/mdx/PathMatchPreview'
-import { EditOnGitHub } from './components/EditOnGitHub'
 import { DocsPageFooter } from './components/DocsPageFooter'
+import DocsLayout from './DocsLayout'
 
 const createHeading = (level: 1 | 2 | 3 | 4): React.FC => {
   return (props) => <Heading level={level} {...props} />
@@ -59,30 +59,20 @@ const DocumentationPage = ({ data, pageContext }) => {
   const { page } = data
 
   return (
-    <Layout>
-      <Seo title={page.frontmatter.title} />
-      <Grid>
-        <Composition templateCols="260px 1fr 185px" gap={64}>
-          <Menu tree={pageContext.navTree} />
-          <Box paddingVertical={48}>
-            <Breadcrumbs items={pageContext.breadcrumbs} />
-            <Box as="article" id="docs-page">
-              <h1>{page.frontmatter.title}</h1>
-              <MDXProvider components={components}>
-                <MDXRenderer>{page.body}</MDXRenderer>
-              </MDXProvider>
-            </Box>
-            <DocsPageFooter
-              relativeFilePath={page.fields.relativeFilePath}
-              editUrl={page.fields.editUrl}
-            />
-          </Box>
-          {page.tableOfContents?.items && (
-            <TableOfContents items={page.tableOfContents.items} />
-          )}
-        </Composition>
-      </Grid>
-    </Layout>
+    <DocsLayout
+      page={page}
+      navTree={pageContext.navTree}
+      breadcrumbs={pageContext.breadcrumbs}
+    >
+      <Seo
+        title={page.frontmatter.title}
+        description={page.frontmatter.description}
+      />
+      <h1>{page.frontmatter.title}</h1>
+      <MDXProvider components={components}>
+        <MDXRenderer>{page.body}</MDXRenderer>
+      </MDXProvider>
+    </DocsLayout>
   )
 }
 
@@ -95,6 +85,7 @@ export const query = graphql`
       }
       frontmatter {
         title
+        description
       }
       body
       tableOfContents

@@ -126,7 +126,7 @@ export const Hero = () => {
             >
               <Button
                 as={Link}
-                to="/docs/getting-started/install"
+                to="/docs/getting-started"
                 variant="primary"
                 hero
               >

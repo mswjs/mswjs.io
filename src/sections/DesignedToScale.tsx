@@ -107,7 +107,7 @@ export const DesignedToScale = () => {
         <Box flex justifyContent="center">
           <Composition
             inline
-            templateColsMd="repeat(3, auto)"
+            templateColsMd="repeat(2, auto)"
             gap={48}
             marginTop={64}
           >
@@ -116,23 +116,15 @@ export const DesignedToScale = () => {
               stroke="#8BB637"
               logo={DiNodejsSmall}
               iconSize={52}
-              url="/docs/tutorials/mocking-rest-api"
+              url="/docs/getting-started/install"
               title="REST API"
             />
             <ApiCard
               stripeColor="#D147A7"
               stroke="#D147A7"
               logo={GraphQLLogo}
-              url="/docs/tutorials/mocking-graphql-api"
+              url="/docs/getting-started/install"
               title="GraphQL"
-            />
-            <ApiCard
-              variant="outline"
-              stripeColor="#fff"
-              stroke="#fff"
-              logo={IoIosApps}
-              url="/docs/advanced/custom-request-handler"
-              title="Custom API"
             />
           </Composition>
         </Box>
