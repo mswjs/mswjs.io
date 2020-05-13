@@ -17,7 +17,8 @@ export const Button = styled.button<ButtonProps>`
     css`
       min-width: 200px;
     `}
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
 
   border: 0;
   border-radius: 4px;

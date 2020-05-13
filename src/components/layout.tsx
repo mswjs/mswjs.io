@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
     &:focus {
       outline: 0;
       box-shadow: 0 0 0 4px ${({ theme }) =>
-        theme.utils.alpha(theme.colors.primary, 0.5)};
+        theme.utils.alpha(theme.colors.secondary, 0.35)};
     }
   }
 `

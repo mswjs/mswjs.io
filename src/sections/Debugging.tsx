@@ -1,14 +1,14 @@
 import React from 'react'
+import { Link } from 'gatsby'
 import NightOwlTheme from 'prism-react-renderer/themes/nightOwl'
 
 import { TextLead } from '../components/TextLead'
 import { TextSmall } from '../components/TextSmall'
 import { Accent } from '../components/Accent'
-import { Section } from '../components/Section'
+import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 import { ObliqueSection } from '../components/ObliqueSection'
 import { Code } from '../components/mdx/code'
-import { Link } from 'gatsby'
 
 export const Debugging = () => {
   return (
@@ -43,11 +43,11 @@ rest.post('/login', (req, res, ctx) => {
             </strong>
           </TextSmall>
         </div>
-        <div>
-          <Heading level={2} marginBottom={8}>
+        <SectionContent>
+          <Heading level={2} marginBottom={8} align="center" alignLg="start">
             Your next favorite debugging tool
           </Heading>
-          <TextLead>
+          <TextLead align="center" alignLg="start">
             Mock the <Accent>very response</Accent> that crashes your app.
           </TextLead>
           <p>
@@ -55,7 +55,7 @@ rest.post('/login', (req, res, ctx) => {
             state of your application. Stop wasting time when you are one step
             away from full-scale mocking.
           </p>
-        </div>
+        </SectionContent>
       </Section>
     </ObliqueSection>
   )

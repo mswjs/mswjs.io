@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box } from 'atomic-layout'
 
-import { Section } from '../components/Section'
+import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 import { Text } from '../components/Text'
 
@@ -40,11 +40,11 @@ export const Agnostic = () => {
       <Box as={Parent} orderLg={1}>
         <AgnosticIllustration />
       </Box>
-      <div>
-        <Heading level={2} marginBottom={8}>
+      <SectionContent>
+        <Heading level={2} marginBottom={8} align="center" alignLg="start">
           Integrate anywhere
         </Heading>
-        <TextLead>
+        <TextLead align="center" alignLg="start">
           Perfect match for <Accent>any setup</Accent>.
         </TextLead>
         <Text color="gray">
@@ -53,7 +53,7 @@ export const Agnostic = () => {
           dedicated mocking layer, Mock Sercive Worker is agnostic of the
           frameworks, libraries, or setups you may use.
         </Text>
-      </div>
+      </SectionContent>
     </Section>
   )
 }

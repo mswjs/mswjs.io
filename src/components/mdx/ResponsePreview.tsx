@@ -113,9 +113,9 @@ export const ResponsePreview: React.FC<Props> = ({
       <h4>Response</h4>
       <Box flex alignItems="center">
         <Box as={StatusCode} marginRight={6}>
-          {response.statusCode}
+          {response.statusCode || 200}
         </Box>
-        <TextMono>{response.statusText}</TextMono>
+        <TextMono>{response.statusText || 'OK'}</TextMono>
       </Box>
       <h5>Body</h5>
       <Code language="json" showLineNumbers={true} {...codeProps}>
@@ -123,11 +123,4 @@ export const ResponsePreview: React.FC<Props> = ({
       </Code>
     </Box>
   )
-}
-
-ResponsePreview.defaultProps = {
-  response: {
-    statusCode: 200,
-    statusText: 'OK',
-  },
 }

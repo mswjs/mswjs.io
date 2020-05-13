@@ -10,7 +10,7 @@ import { Heading } from '../components/Heading'
 import { Text } from '../components/Text'
 import { TextLead } from '../components/TextLead'
 import { TextSmall } from '../components/TextSmall'
-import { Section } from '../components/Section'
+import { Section, SectionContent } from '../components/Section'
 import { Browser, BrowserDevTools } from '../components/Browser'
 import { ObliqueSection } from '../components/ObliqueSection'
 
@@ -106,11 +106,11 @@ export const Testing = () => {
             Test suite example utilizing a <code>GET /post/:postId</code> mock.
           </TextSmall>
         </Box>
-        <div>
-          <Heading level={2} marginBottom={8}>
+        <SectionContent>
+          <Heading level={2} marginBottom={8} align="center" alignLg="start">
             Resilient testing
           </Heading>
-          <TextLead>
+          <TextLead align="center" alignLg="start">
             Write test suites that <Accent>don't smell</Accent>.
           </TextLead>
           <Text color="gray">
@@ -118,7 +118,7 @@ export const Testing = () => {
             clean. A single imported module that declaratively mocks given
             request routes, nothing more.
           </Text>
-        </div>
+        </SectionContent>
       </Section>
     </ObliqueSection>
   )

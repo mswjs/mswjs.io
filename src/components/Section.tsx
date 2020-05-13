@@ -1,5 +1,5 @@
 import React from 'react'
-import { Composition } from 'atomic-layout'
+import { Composition, Box } from 'atomic-layout'
 import { Grid } from './Grid'
 
 export const Section: React.FC = ({ children }) => {
@@ -18,5 +18,18 @@ export const Section: React.FC = ({ children }) => {
         {children}
       </Composition>
     </Grid>
+  )
+}
+
+export const SectionContent: React.FC = ({ children }) => {
+  return (
+    <Box
+      maxWidth="100%"
+      maxWidthSm="80%"
+      maxWidthLg="100%"
+      marginHorizontal="auto"
+    >
+      {children}
+    </Box>
   )
 }

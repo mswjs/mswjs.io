@@ -7,7 +7,7 @@ import { DiNodejsSmall } from 'react-icons/di'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
 import { Text } from '../components/Text'
-import { Section } from '../components/Section'
+import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 import { Browser } from '../components/Browser'
 import { TextMono } from '../components/TextMono'
@@ -232,6 +232,8 @@ export const IncrementalDevelopment = () => {
         justifyItems="center"
         justifyContent="space-between"
         width={380}
+        marginBottom={24}
+        marginBottomLg={0}
       >
         <Box
           flex
@@ -283,11 +285,11 @@ export const IncrementalDevelopment = () => {
           />
         </SvgCommunication>
       </Composition>
-      <div>
-        <Heading level={2} marginBottom={8}>
+      <SectionContent>
+        <Heading level={2} marginBottom={8} align="center" alignLg="start">
           Develop incrementally
         </Heading>
-        <TextLead>
+        <TextLead align="center" alignLg="start">
           Modern solution for <Accent>competitive development</Accent>.
         </TextLead>
         <Text color="gray">
@@ -296,7 +298,7 @@ export const IncrementalDevelopment = () => {
           today, or GraphQL tomorrow? Experiment, combine, and find what suits
           your project best before committing to the ecosystem.
         </Text>
-      </div>
+      </SectionContent>
     </Section>
   )
 }

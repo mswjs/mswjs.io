@@ -4,20 +4,20 @@ import { Box } from 'atomic-layout'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
 import { Text } from '../components/Text'
-import { Section } from '../components/Section'
+import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 
 export const Workshops = () => {
   return (
     <Section>
-      <Box order={1}>
+      <Box orderLg={1}>
         <p>Some image</p>
       </Box>
-      <div>
-        <Heading level={2} marginBottom={8}>
+      <SectionContent>
+        <Heading level={2} marginBottom={8} align="center" alignLg="start">
           Perfect for teachers
         </Heading>
-        <TextLead>
+        <TextLead align="center" alignLg="start">
           API for your next tutorial <Accent>in a matter of minutes</Accent>.
         </TextLead>
         <Text color="gray">
@@ -26,7 +26,7 @@ export const Workshops = () => {
           reliable API substitution that you don't even have to run, and that
           behaves the same between different OS.
         </Text>
-      </div>
+      </SectionContent>
     </Section>
   )
 }

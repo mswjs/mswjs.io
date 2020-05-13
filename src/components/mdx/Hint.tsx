@@ -30,6 +30,7 @@ export const Hint = styled.div<HintProps>`
   background-color: var(--bg-color);
   border-radius: var(--border-radius);
   border-left: 3px solid var(--border-color);
+  color: var(--color-gray);
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.5;

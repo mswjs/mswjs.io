@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { Text } from './Text'
+import { TextProps, Text } from './Text'
 
-export const TextSmall = styled(Text)`
+export const TextSmall = styled(Text)<TextProps>`
   font-size: 0.9rem;
 `

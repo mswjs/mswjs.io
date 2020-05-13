@@ -109,7 +109,6 @@ input {
 
 .prism-code {
   margin: 2rem 0;
-  font-size: 0.9rem !important;
 
   .line-number-focused {
     background-color: #fff;
@@ -142,12 +141,16 @@ input {
     border-top: 1px solid var(--color-gray-dim);
   }
 
-  a {
-    color: var(--color-secondary);
-  }
-
   ul,
   ol {
     margin-left: 4ch;
+
+    ul {
+      margin-top: 0;
+    }
+  }
+
+  li {
+    margin: 0.4rem 0;
   }
 }

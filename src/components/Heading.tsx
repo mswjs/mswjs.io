@@ -1,9 +1,11 @@
 import React from 'react'
+import { BoxProps } from '@atomic-layout/core'
+import { makeResponsive } from 'atomic-layout'
 import { Text } from './Text'
 import styled, { css } from 'styled-components'
-import { BoxProps } from '@atomic-layout/core'
 
 interface HeadingProps {
+  align?: 'start' | 'center' | 'end'
   level?: keyof typeof headingComponents
   hero?: boolean
 }
@@ -25,7 +27,7 @@ const StyledHeading = styled(Text)<HeadingProps>`
     `}
 `
 
-export const Heading: React.FC<HeadingProps & BoxProps> = ({
+export const RawHeading: React.FC<HeadingProps & BoxProps> = ({
   level,
   children,
   ...restProps
@@ -37,6 +39,9 @@ export const Heading: React.FC<HeadingProps & BoxProps> = ({
   )
 }
 
-Heading.defaultProps = {
+RawHeading.defaultProps = {
   level: 1,
+  align: 'start',
 }
+
+export const Heading = makeResponsive(RawHeading)

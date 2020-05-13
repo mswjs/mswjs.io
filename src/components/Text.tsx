@@ -3,7 +3,7 @@ import { Box } from 'atomic-layout'
 import { BoxProps } from '@atomic-layout/core'
 import theme from '../theme'
 
-interface TextProps {
+export interface TextProps {
   color?: keyof typeof theme.colors | 'inherit'
   align?: 'start' | 'center' | 'end'
 }
