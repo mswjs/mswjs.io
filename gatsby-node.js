@@ -3,16 +3,178 @@ const { createFilePath } = require('gatsby-source-filesystem')
 
 const REPO_URL = 'https://github.com/mswjs/mockserviceworker.io'
 const DOCS_BASE_PATH = 'docs'
-const DOCS_TEMPLATE_PATH = path.resolve(
+const DOCS_PAGE_TEMPLATE = path.resolve(
   __dirname,
   'src/templates/docs/singlePage.tsx',
 )
-const DOCS_CATEGORY_PAGE_PATH = path.resolve(
+const DOCS_CATEGORY_TEMPLATE = path.resolve(
   __dirname,
   'src/templates/docs/categoryPage.tsx',
 )
 
-const unslugify = (slug) => {
+exports.createPages = async ({ actions, graphql }) => {
+  const { errors, data } = await graphql(`
+    {
+      pages: allMdx(
+        filter: { frontmatter: { title: { ne: "" } } }
+        sort: { order: ASC, fields: [frontmatter___order] }
+      ) {
+        edges {
+          node {
+            id
+            fileAbsolutePath
+            fields {
+              url
+            }
+            frontmatter {
+              title
+              displayName
+              description
+            }
+            wordCount {
+              paragraphs
+            }
+          }
+        }
+      }
+    }
+  `)
+
+  if (errors) {
+    console.log(errors)
+    return null
+  }
+
+  const { edges: allPages } = data.pages
+
+  const navTree = createNavTree(allPages)
+
+  const [categories, pages] = allPages.reduce(
+    (acc, { node }) => {
+      const [prevCategories, prevPages] = acc
+      const isCategory = node.wordCount.paragraphs === null
+
+      if (isCategory) {
+        return [prevCategories.concat(node), prevPages]
+      }
+
+      return [prevCategories, prevPages.concat(node)]
+    },
+    [[], []],
+  )
+
+  pages.forEach((node) => {
+    actions.createPage({
+      path: node.fields.url,
+      component: DOCS_PAGE_TEMPLATE,
+      context: {
+        postId: node.id,
+        breadcrumbs: getDocumentBreadcrumbs(node, navTree),
+        navTree,
+      },
+    })
+  })
+
+  // Populate each category node with its child nodes
+  // and build a hierarchical nav tree for each category.
+  const categoriesWithChildren = await Promise.all(
+    categories.map(async (node) => {
+      const regex = new RegExp(`^${node.fields.url}\/.+`).toString()
+      const { errors, data } = await graphql(`
+        {
+          allMdx(
+            filter: { fields: { url: { regex: "${regex}" } } }
+            sort: { order: ASC, fields: [frontmatter___order] }
+          ) {
+            edges {
+              node {
+                fileAbsolutePath
+                fields {
+                  url
+                }
+                frontmatter {
+                  title
+                  displayName
+                  description
+                }
+              }
+            }
+          }
+        }
+      `)
+
+      if (errors) {
+        return null
+      }
+
+      const { edges: childPages } = data.allMdx
+      return [node, childPages, createNavTree(childPages)]
+    }),
+  )
+
+  categoriesWithChildren.forEach(([node, childPages, childNavTree]) => {
+    actions.createPage({
+      path: node.fields.url,
+      component: DOCS_CATEGORY_TEMPLATE,
+      context: {
+        categoryTitle: node.frontmatter.title,
+        categoryDescription: node.frontmatter.description,
+        childPages,
+        childNavTree,
+        breadcrumbs: getDocumentBreadcrumbs(node, navTree),
+        navTree,
+      },
+    })
+  })
+}
+
+exports.onCreateNode = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions
+
+  if (['mdx'].includes(node.internal.type.toLowerCase())) {
+    const postSlug = createFilePath({
+      node,
+      getNode,
+      basePath: DOCS_BASE_PATH,
+      trailingSlash: false,
+    })
+
+    const relativeFilePath = path.relative(__dirname, node.fileAbsolutePath)
+    createNodeField({
+      node,
+      name: 'relativeFilePath',
+      value: relativeFilePath,
+    })
+
+    // Reference the raw file on GitHub to allow edits
+    createNodeField({
+      node,
+      name: 'editUrl',
+      value: path.join(REPO_URL, 'tree/master', relativeFilePath),
+    })
+
+    createNodeField({
+      node,
+      name: 'url',
+      value: ['/', DOCS_BASE_PATH, '/', postSlug]
+        .filter(Boolean)
+        .join('')
+        .replace(/\/+/g, '/'),
+    })
+
+    createNodeField({
+      node,
+      name: 'breadcrumbs',
+      value: ['a', 'b', 'c'],
+    })
+  }
+}
+
+//
+// Utils
+//
+
+function unslugify(slug) {
   return slug
     .replace(/^(\d+?)-/g, '')
     .replace(/^([a-z])/, (_, letter) => letter.toUpperCase())
@@ -24,7 +186,7 @@ const unslugify = (slug) => {
 /**
  * Returns a relative path based on the given absolute path.
  */
-const getRelativePagePath = (absolutePath) => {
+function getRelativePagePath(absolutePath) {
   return path.relative(
     path.resolve(process.cwd(), DOCS_BASE_PATH),
     absolutePath,
@@ -34,40 +196,45 @@ const getRelativePagePath = (absolutePath) => {
 /**
  * Determines if the given filename is a root file.
  */
-const isRootFile = (filename) => {
+function isRootFile(filename) {
   return /^(index|readme)\.mdx?$/i.test(filename)
 }
 
 /**
  * Returns a breadcrumbs list for the given MDX node.
  */
-const getDocumentBreadcrumbs = (node) => {
-  const relativePath = getRelativePagePath(node.fileAbsolutePath)
-  const pathChunks = relativePath.split('/').slice(0, -1)
-  const breadcrumbs = pathChunks.map((filePath) => {
-    return {
-      title: unslugify(filePath),
-      url: node.fields.url,
-    }
-  })
+function getDocumentBreadcrumbs(node, tree) {
+  const breadcrumbs = []
+  const { url } = node.fields
 
-  // Do not create a separate node for root files
-  if (isRootFile(relativePath)) {
-    return breadcrumbs
+  const traverseTree = (items) => {
+    items.forEach((chunk) => {
+      if (url.startsWith(chunk.url)) {
+        breadcrumbs.push({
+          title: chunk.displayName || chunk.title,
+          url: chunk.url,
+        })
+
+        if (chunk.items) {
+          return traverseTree(chunk.items)
+        }
+      }
+    })
   }
 
-  return breadcrumbs.concat({
-    title: node.frontmatter.title,
-    display: node.frontmatter.displayName,
-    url: node.fields.url,
-  })
+  traverseTree(tree)
+
+  // Unshift the first entry because it matches the "<docsRoot>/index.mdx" file.
+  // breadcrumbs.shift()
+
+  return breadcrumbs
 }
 
 /**
  * Creates a deep nested navigation tree from the given
  * MDX documents list.
  */
-const createNavTree = (edges) => {
+function createNavTree(edges) {
   const items = edges.map(({ node }) => ({
     url: node.fields.url,
     title: node.frontmatter.title,
@@ -76,7 +243,7 @@ const createNavTree = (edges) => {
     filename: path.basename(node.fileAbsolutePath),
   }))
 
-  function getRecursiveTree(pages) {
+  function buildRecursiveTree(pages) {
     return pages.reduce((tree, page) => {
       let { pathChunks, filename, url, title } = page
       const displayName = page.displayName || title
@@ -148,129 +315,5 @@ const createNavTree = (edges) => {
     }, [])
   }
 
-  return getRecursiveTree(items)
-}
-
-exports.createPages = async ({ actions, graphql }) => {
-  const { createPage } = actions
-
-  const { errors, data } = await graphql(`
-    {
-      # MDX documents with no content are considered categories
-      categories: allMdx(filter: { wordCount: { paragraphs: { eq: null } } }) {
-        edges {
-          node {
-            fileAbsolutePath
-            fields {
-              url
-            }
-            frontmatter {
-              title
-              displayName
-              description
-            }
-          }
-        }
-      }
-
-      pages: allMdx(
-        filter: {
-          frontmatter: { title: { ne: "" } }
-          wordCount: { paragraphs: { ne: null } }
-        }
-        sort: { order: ASC, fields: [frontmatter___order] }
-      ) {
-        edges {
-          node {
-            id
-            fileAbsolutePath
-            fields {
-              url
-            }
-            frontmatter {
-              title
-              displayName
-            }
-            body
-          }
-        }
-      }
-    }
-  `)
-
-  if (errors) {
-    console.log(errors)
-    return null
-  }
-
-  const { categories, pages } = data
-  const navTree = createNavTree(pages.edges)
-
-  pages.edges.forEach(({ node }) => {
-    createPage({
-      path: node.fields.url,
-      component: DOCS_TEMPLATE_PATH,
-      context: {
-        postId: node.id,
-        breadcrumbs: getDocumentBreadcrumbs(node),
-        navTree,
-      },
-    })
-  })
-
-  categories.edges.forEach(({ node }) => {
-    createPage({
-      path: node.fields.url,
-      component: DOCS_CATEGORY_PAGE_PATH,
-      context: {
-        categoryTitle: node.frontmatter.title,
-        categoryDescription: node.frontmatter.description,
-        categoryRegex: new RegExp(`^${node.fields.url}\/.+`).toString(),
-        breadcrumbs: getDocumentBreadcrumbs(node),
-        navTree,
-      },
-    })
-  })
-}
-
-exports.onCreateNode = ({ node, getNode, actions }) => {
-  const { createNodeField } = actions
-
-  if (['mdx'].includes(node.internal.type.toLowerCase())) {
-    const postSlug = createFilePath({
-      node,
-      getNode,
-      basePath: DOCS_BASE_PATH,
-      trailingSlash: false,
-    })
-
-    createNodeField({
-      node,
-      name: 'slug',
-      value: postSlug,
-    })
-
-    const relativeFilePath = path.relative(__dirname, node.fileAbsolutePath)
-    createNodeField({
-      node,
-      name: 'relativeFilePath',
-      value: relativeFilePath,
-    })
-
-    // Reference the raw file on GitHub to allow edits
-    createNodeField({
-      node,
-      name: 'editUrl',
-      value: path.join(REPO_URL, 'tree/master', relativeFilePath),
-    })
-
-    createNodeField({
-      node,
-      name: 'url',
-      value: ['/', DOCS_BASE_PATH, '/', postSlug]
-        .filter(Boolean)
-        .join('')
-        .replace(/\/+/g, '/'),
-    })
-  }
+  return buildRecursiveTree(items)
 }

@@ -58,6 +58,8 @@ const components = {
 const DocumentationPage = ({ data, pageContext }) => {
   const { page } = data
 
+  console.log(pageContext)
+
   return (
     <DocsLayout
       page={page}
@@ -69,6 +71,9 @@ const DocumentationPage = ({ data, pageContext }) => {
         description={page.frontmatter.description}
       />
       <h1>{page.frontmatter.title}</h1>
+      {page.frontmatter.description && (
+        <TextLead>{page.frontmatter.description}</TextLead>
+      )}
       <MDXProvider components={components}>
         <MDXRenderer>{page.body}</MDXRenderer>
       </MDXProvider>
