@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { Box, Composition } from 'atomic-layout'
 import { IoIosCode as BrowserContentIcon } from 'react-icons/io'
 import { DiNodejsSmall } from 'react-icons/di'
 
+import { useInterval } from '../hooks/useInterval'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
 import { Text } from '../components/Text'
@@ -14,7 +15,6 @@ import { TextMono } from '../components/TextMono'
 import { ReactComponent as Logo } from '../images/logo-mask.svg'
 import { ReactComponent as GraphqQL } from '../images/graphql-logo.svg'
 import theme from '../theme'
-import { Link } from 'gatsby'
 
 const Parent = styled.div`
   position: relative;
@@ -134,28 +134,6 @@ const TechnologyCircle = styled(Box)<{ borderColor: string }>`
   width: 42px;
   z-index: 1;
 `
-
-function useInterval(callback: () => void, delay: number) {
-  const savedCallback = useRef<Function>()
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback
-  }, [callback])
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      if (savedCallback) {
-        savedCallback.current()
-      }
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay)
-      return () => clearInterval(id)
-    }
-  }, [delay])
-}
 
 const useExampleType = (delay: number = 0) => {
   const [type, setType] = useState('node')
