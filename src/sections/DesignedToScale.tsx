@@ -99,7 +99,7 @@ export const DesignedToScale = () => {
     <Container>
       <Grid paddingVertical={64} paddingVerticalMd={100}>
         <Box flex flexDirection="column" alignItems="center">
-          <Heading level={2} marginBottom={8}>
+          <Heading level={2} marginBottom={8} align="center">
             Scales with your needs
           </Heading>
           <TextLead>Standard-compliant tools for your favorite API</TextLead>
