@@ -1,6 +1,13 @@
 import React, { useMemo } from 'react'
+import styled from 'styled-components'
 import { Code as ReactCdxCode } from 'react-cdx'
+import { IoIosCopy as CopyIcon } from 'react-icons/io'
 import CodeTheme from 'prism-react-renderer/themes/github'
+import { CopyButton } from '../CopyButton'
+
+const Container = styled.div`
+  position: relative;
+`
 
 interface CodeProps {
   theme?: any
@@ -54,6 +61,13 @@ export const Code: React.FC<CodeProps> = ({
       showLineNumbers={showLineNumbers}
       lineNumberStart={lineStartNumber && parseFloat(lineStartNumber)}
       focusedLines={resolvedFocusedLines}
-    />
+    >
+      {({ Preview, copyToClipboard }) => (
+        <Container>
+          <Preview />
+          <CopyButton onClick={copyToClipboard} />
+        </Container>
+      )}
+    </ReactCdxCode>
   )
 }
