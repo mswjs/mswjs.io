@@ -36,28 +36,24 @@ import { mocks } from '../mocks'
 
 ## Start the server
 
-Let's start the server on the `beforeAll` hook. For that, call the `setupServer` function and provide the mock definitions to it.
+To start the mocking server call the `setupServer` function and provide the mock definitions to it.
 
 <Hint>
-  Internally, Mock Service Worker does not use any servers. The term "server"
-  has been chosen to provide familiar interface and describe the seeming
-  functionality.
+  Internally, Mock Service Worker does not establish any servers. The term
+  "server" has been chosen to provide familiar interface and describe the
+  seeming functionality.
 </Hint>
 <Action>
   Pass the mock definitions to the <code>setupServer</code> function:
 </Action>
 
-```js showLineNumbers focusedLines=6,9
+```js showLineNumbers focusedLines=6
 // test/login.test.js
 import { setupServer } from 'msw'
 import { mocks } from '../mocks'
 
 describe('Login', () => {
-  let server
-
-  beforeAll(() => {
-    server = setupServer(...mocks)
-  })
+  const server = setupServer(...mocks)
 })
 ```
 
@@ -68,16 +64,15 @@ Now to enable the mocking we need to call the `listen()` method on the server. A
   <code>server.close()</code>:
 </Action>
 
-```js showLineNumbers focusedLines=10,14
+```js showLineNumbers focusedLines=9,13
 // test/login.test.js
 import { setupServer } from 'msw'
 import { mocks } from '../mocks'
 
 describe('Login', () => {
-  let server
+  const server = setupServer(mocks)
 
   beforeAll(() => {
-    server = setupServer(mocks)
     server.listen()
   })
 

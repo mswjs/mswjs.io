@@ -103,7 +103,8 @@ export const Testing = () => {
             </Browser>
           </Box>
           <TextSmall align="center" color="gray">
-            Test suite example utilizing a <code>GET /post/:postId</code> mock.
+            Test suite example utilizing a <code>GET /product/:productId</code>{' '}
+            mock.
           </TextSmall>
         </Box>
         <SectionContent>

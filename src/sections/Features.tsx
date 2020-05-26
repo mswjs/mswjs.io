@@ -40,8 +40,8 @@ export const Features = () => {
           </Heading>
           <Text color="gray">
             Dedicated layer of requests interception at your disposal. Keep your
-            application's code and tests clean and shiny: they know nothing
-            about mocking now.
+            application's code and tests unaware whether something is mocked or
+            not.
           </Text>
         </Section>
         <Section>
@@ -65,7 +65,7 @@ export const Features = () => {
             Familiar & Powerful
           </Heading>
           <Text color="gray">
-            Use Express-like routing syntax to match outgoing requests to mock.
+            Use Express-like routing syntax to capture outgoing requests.
             Parameters, wildcards, regular expressions—mocking has never been
             easier.
           </Text>

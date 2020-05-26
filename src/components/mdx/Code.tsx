@@ -1,9 +1,12 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Code as ReactCdxCode } from 'react-cdx'
-import { IoIosCopy as CopyIcon } from 'react-icons/io'
-import CodeTheme from 'prism-react-renderer/themes/github'
+import CodeTheme from 'prism-react-renderer/themes/nightOwlLight'
 import { CopyButton } from '../CopyButton'
+
+const StyledCode = styled(ReactCdxCode)`
+  overflow: auto;
+`
 
 const Container = styled.div`
   position: relative;
@@ -12,6 +15,7 @@ const Container = styled.div`
 interface CodeProps {
   theme?: any
   children: string
+  copyable?: boolean
   language: string
   className?: string
   lineStartNumber?: string
@@ -24,50 +28,27 @@ export const Code: React.FC<CodeProps> = ({
   theme,
   language,
   className,
+  copyable = true,
   lineStartNumber,
   showLineNumbers = false,
   focusedLines,
 }) => {
-  const resolvedFocusedLines = useMemo(() => {
-    if (!focusedLines) {
-      return []
-    }
-
-    return focusedLines
-      .split(',')
-      .reduce((acc, index) => {
-        if (index.includes('-')) {
-          const [lowEdge, highEdge] = index.split('-').map(Number)
-          const rangeArray = Array(highEdge - lowEdge + 1)
-            .fill(null)
-            .map((_, index) => {
-              return lowEdge + index
-            })
-
-          return acc.concat(rangeArray)
-        }
-
-        return acc.concat(index)
-      }, [])
-      .map(Number)
-  }, [focusedLines])
-
   return (
-    <ReactCdxCode
+    <StyledCode
       code={children}
       className={className}
       language={language || (className && className.replace('language-', ''))}
       theme={theme || CodeTheme}
       showLineNumbers={showLineNumbers}
       lineNumberStart={lineStartNumber && parseFloat(lineStartNumber)}
-      focusedLines={resolvedFocusedLines}
+      focusedLines={focusedLines}
     >
       {({ Preview, copyToClipboard }) => (
         <Container>
           <Preview />
-          <CopyButton onClick={copyToClipboard} />
+          {copyable && <CopyButton onClick={copyToClipboard} />}
         </Container>
       )}
-    </ReactCdxCode>
+    </StyledCode>
   )
 }

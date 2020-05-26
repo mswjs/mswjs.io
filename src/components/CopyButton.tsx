@@ -19,15 +19,14 @@ const Button = styled.button`
   color: var(--color-gray);
 
   :hover {
-    background-color: #fff;
-    border-color: var(--color-gray);
+    border-color: var(--color-black);
     color: var(--color-black);
   }
 
   :focus {
-    background-color: #fff;
+    background-color: var(--color-secondary);
     border-color: var(--color-secondary);
-    color: var(--color-secondary);
+    color: #fff;
   }
 `
 
@@ -63,7 +62,7 @@ export const CopyButton: React.FC<React.HTMLAttributes<HTMLButtonElement>> = ({
   return (
     <Button {...restProps} onClick={handleClick}>
       {isCopied ? (
-        <Icon as={DoneIcon} size={16} fill="green" />
+        <Icon as={DoneIcon} size={16} />
       ) : (
         <Icon as={CopyIcon} size={16} />
       )}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Box } from 'atomic-layout'
 
 import SEO from '../components/seo'
 import Layout from '../components/layout'
@@ -7,56 +8,41 @@ import { Grid } from '../components/Grid'
 import { Hero } from '../sections/Hero'
 import { Highlights } from '../sections/Highlights'
 import { Features } from '../sections/Features'
-import { DesignedToScale } from '../sections/DesignedToScale'
 import { StartUsing } from '../sections/StartUsing'
 import { Testing } from '../sections/Testing'
 import { IncrementalDevelopment } from '../sections/IncrementalDevelopment'
 import { Debugging } from '../sections/Debugging'
 import { Workshops } from '../sections/Workshops'
-import { Box, Composition } from 'atomic-layout'
-import { Avatar } from '../components/Avatar'
 
-import KentAvatarUrl from '../images/avatars/kentcdodds.png'
-import { TextSmall } from '../components/TextSmall'
-import { Text } from '../components/Text'
+import kentAvatarUrl from '../images/avatars/kentcdodds.png'
 import { Agnostic } from '../sections/Agnostic'
+import { Quote } from '../components/Quote'
 
 const HomePage = () => (
   <Layout>
-    <SEO title="Home" />
+    <SEO
+      title="MSW – Seamless REST/GraphQL API mocking library"
+      titleTemplate="%s"
+    />
     <Hero />
-
     <Features />
-
     <Grid>
-      <hr />
+      <Box as="hr" marginBottom={0} />
       <Box paddingVertical={120}>
-        <Composition
-          templateCols="auto auto"
-          alignItems="center"
-          justifyContent="center"
-          gap={12}
-        >
-          <Avatar src={KentAvatarUrl} alt="Kent C. Dodds" />
-          <div>
-            <Text marginBottom={0}>
-              <strong>Kent C. Dodds</strong>
-            </Text>
-            <TextSmall color="gray">
-              Teacher, open source developer, Google Developer Expert.
-            </TextSmall>
-          </div>
-        </Composition>
+        <Quote
+          name="Kent C. Dodds"
+          title="Teacher, Google Developer Expert."
+          content="This is a quote from Kent, I hope he'll share some feedback."
+          avatarUrl={kentAvatarUrl}
+        />
       </Box>
     </Grid>
-
     <Highlights />
     <Agnostic />
     <Testing />
     <IncrementalDevelopment />
     <Debugging />
     <Workshops />
-    <DesignedToScale />
     <StartUsing />
   </Layout>
 )

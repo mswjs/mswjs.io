@@ -28,7 +28,7 @@ const Container = styled(Link)`
   }
 
   :focus {
-    box-shadow: 0 0 0 3px
+    box-shadow: 0 0 0 4px
       ${({ theme }) => theme.utils.alpha(theme.colors.secondary, 0.4)};
   }
 `

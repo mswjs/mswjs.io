@@ -47,6 +47,11 @@ module.exports = {
     `gatsby-plugin-typescript`,
     {
       resolve: `gatsby-plugin-svgr`,
+      options: {
+        svgoConfig: {
+          cleanupIDs: false,
+        },
+      },
     },
     `gatsby-plugin-sass`,
     {

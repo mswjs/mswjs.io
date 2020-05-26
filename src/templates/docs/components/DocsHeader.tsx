@@ -1,17 +1,31 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import styled, { useTheme } from 'styled-components'
-import { Box, Composition, Only } from 'atomic-layout'
+import { Box, Composition, Only, query } from 'atomic-layout'
 import { IoIosMenu as MenuIcon } from 'react-icons/io'
 import { DiGithubBadge as GitHubIcon } from 'react-icons/di'
 
-import { Grid } from './Grid'
-import logo from '../images/logo.svg'
+import { Grid } from '../../../components/Grid'
+import logo from '../../../images/logo.svg'
+
+interface Props {
+  onBurgerClick?: () => void
+}
 
 const StyledHeader = styled.header`
   color: ${({ theme }) => theme.colors.grayDark};
   font-size: 0.9rem;
   font-weight: 600;
+
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  z-index: 1;
+
+  @media ${query({ to: 'lg' })} {
+    position: sticky;
+    top: 0;
+  }
 `
 
 const HeaderLink = styled.a`
@@ -41,25 +55,31 @@ const BurgerMenuButton = styled.button`
   }
 `
 
-const Header: React.FC = () => {
+export const DocsHeader: React.FC<Props> = ({ onBurgerClick }) => {
   const theme = useTheme()
 
   return (
     <Box as={StyledHeader} paddingVertical={12}>
       <Composition
         as={Grid}
-        templateCols="1fr auto"
+        templateCols="repeat(3, 1fr)"
+        templateColsLg="1fr auto"
         gap={10}
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box flex justify="flex-start" alignItems="center">
+        <Only to="lg">
+          <BurgerMenuButton onClick={onBurgerClick}>
+            <MenuIcon size={24} />
+          </BurgerMenuButton>
+        </Only>
+        <Box flex justify="center" justifyLg="flex-start" alignItems="center">
           <Box as={Link} to="/" flex>
             <img src={logo} alt="MSW" width="48" />
           </Box>
-          <Box as="span" marginLeft={8}>
+          <Only from="lg" as="span" marginLeft={8}>
             <strong>Mock Service Worker</strong>
-          </Box>
+          </Only>
         </Box>
         <Box
           inline
@@ -68,12 +88,7 @@ const Header: React.FC = () => {
           justify="flex-end"
           justifyItems="flex-end"
         >
-          <HeaderLink
-            as={Link}
-            to="/docs/"
-            activeStyle={{ color: theme.colors.secondary }}
-            partiallyActive
-          >
+          <HeaderLink as={Link} to="/docs/">
             Documentation
           </HeaderLink>
           <Box as={HeaderLink} href="https://github.com/open-draft/msw" flex>
@@ -84,5 +99,3 @@ const Header: React.FC = () => {
     </Box>
   )
 }
-
-export default Header

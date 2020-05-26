@@ -1,27 +1,47 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Link } from 'gatsby'
 import styled, { css } from 'styled-components'
 import { Box, query } from 'atomic-layout'
+import { FiChevronRight as SectionIcon } from 'react-icons/fi'
 
-const MenuSection = styled.section`
-  position: relative;
-  background-color: #fff;
+const MenuSection = styled.section<{ isOpen: boolean }>`
   position: fixed;
+  top: 0;
   left: 0;
   z-index: 10;
+  height: 100vh;
+  background-color: #fff;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform .5s ease;
+
+${({ isOpen }) =>
+  isOpen &&
+  css`
+    transform: translateX(0);
+  `}
 
   @media ${query({ from: 'lg' })} {
     position: relative;
+    height: initial;
+    transform: translateX(0);
+    background-color: transparent;
+    z-index: 0;
   }
 
   &:after {
     content: '';
     position: absolute;
-    top: 2rem;
+    top: 0;
+    bottom: 0;
     right: 0;
-    bottom: 3rem;
     border-right: 1px solid
       ${({ theme }) => theme.utils.alpha(theme.colors.grayLight, 0.5)};
+
+    @media ${query({ from: 'lg' })} {
+      bottom: 3rem;
+      top: 2rem;
+    }
   }
 
   a {
@@ -33,15 +53,21 @@ const MenuSection = styled.section`
       color: var(--color-black);
     }
 
-    &[aria-current='page'] {
-      color: var(--color-secondary);
+    &.active {
+      font-weight: 600;
+
+      &[aria-current="page"] {
+        color: var(--color-secondary);
+      }
     }
   }
 `
 
 const MenuSticky = styled(Box)`
-  position: sticky;
-  top: 0;
+  @media ${query({ from: 'lg' })} {
+    position: sticky;
+    top: 0;
+  }
 `
 
 const PagesList = styled.ul<{ nested?: boolean }>`
@@ -51,12 +77,33 @@ const PagesList = styled.ul<{ nested?: boolean }>`
 
   ${({ nested }) =>
     nested &&
-    `
-    padding-left: 1.5rem;
-  `}
+    css`
+      position: relative;
+      display: none;
+
+      &:before {
+        position: absolute;
+        left: 18px;
+        top: 4px;
+        bottom: 4px;
+        content: '';
+        width: 1px;
+        background-color: var(--color-gray-light);
+      }
+
+      ${PageTitle}:before {
+        padding-left: 4px;
+        height: 0;
+        width: 0;
+      }
+
+      .active + & {
+        display: block;
+      }
+    `}
 `
 
-const PageListItem = styled.li<{ isRootSection: boolean }>`
+const StyledPageListItem = styled.li<{ isRootSection: boolean }>`
   ${({ isRootSection }) =>
     isRootSection &&
     `
@@ -65,34 +112,28 @@ const PageListItem = styled.li<{ isRootSection: boolean }>`
 `
 
 const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
-  display: flex;
+  position: relative;
   padding: 0.5rem 1rem;
-  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  line-height: 1.25;
 
   ${({ isRootSection }) =>
     !isRootSection &&
     css`
-      &:before {
-        display: block;
-        content: '•';
-        color: var(--color-gray-light);
-        width: 1ch;
-        margin-right: 1ch;
+      text-indent: 20px;
+
+      svg {
+        position: absolute;
+        margin-left: -5px;
+
+        .active & {
+          transform: rotate(90deg);
+        }
       }
 
       [aria-current='page'] &:before {
-        color: var(--color-secondary);
-        content: '→';
-        animation: slideLeft 0.5s ease;
-
-        @keyframes slideLeft {
-          0% {
-            transform: translateX(-4px);
-          }
-          100% {
-            transform: translateX(0);
-          }
-        }
+        background-color: var(--color-black);
       }
     `}
 
@@ -101,45 +142,76 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
     css`
       color: ${theme.colors.grayDark};
       font-size: 90%;
-      font-weight: bold;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1px;
-    `}
-
-  ${({ isRootSection, hasChildren }) =>
-    !isRootSection &&
-    hasChildren &&
-    css`
-      /* color: red; */
+      letter-spacing: 0.15ch;
     `}
 `
 
-const renderTreeItem = (items: MenuTree[], isRoot?: boolean) => {
-  return items.map((page, index) => {
-    const { displayName, url, items: children } = page
-    const hasChildren = !!children
-    const isRootSection = isRoot && hasChildren
-    const Title = (
-      <PageTitle isRootSection={isRootSection} hasChildren={hasChildren}>
-        {displayName}
-      </PageTitle>
-    )
+const PageListItem: React.FC<{
+  displayName: string
+  url: string
+  childPages: MenuTree[]
+  isRoot: boolean
+}> = ({ childPages, displayName, url, isRoot }) => {
+  const isRootSection = useMemo(() => {
+    return isRoot && !!childPages
+  }, [isRoot, childPages])
 
+  const Icon = useMemo(() => {
+    if (isRootSection || !childPages) {
+      return null
+    }
+
+    return <SectionIcon />
+  }, [isRootSection, childPages])
+
+  const Title = (
+    <PageTitle isRootSection={isRootSection} hasChildren={!!childPages}>
+      {Icon}
+      <span>{displayName}</span>
+    </PageTitle>
+  )
+
+  return (
+    <StyledPageListItem isRootSection={isRootSection}>
+      {url ? (
+        <Link
+          to={url}
+          partiallyActive={!isRootSection}
+          activeClassName="active"
+        >
+          {Title}
+        </Link>
+      ) : (
+        Title
+      )}
+      {childPages && (
+        <PagesList nested={!isRootSection}>
+          {renderTreeItem(childPages, false)}
+        </PagesList>
+      )}
+    </StyledPageListItem>
+  )
+}
+
+const renderTreeItem = (items: MenuTree[], isRoot?: boolean) => {
+  return items.map((page) => {
     return (
-      <PageListItem key={url || index} isRootSection={isRootSection}>
-        {url ? <Link to={url}>{Title}</Link> : Title}
-        {children && (
-          <PagesList nested={!isRootSection}>
-            {renderTreeItem(children, false)}
-          </PagesList>
-        )}
-      </PageListItem>
+      <PageListItem
+        key={page.url}
+        isRoot={isRoot}
+        displayName={page.displayName}
+        url={page.url}
+        childPages={page.items}
+      />
     )
   })
 }
 
 interface MenuProps {
   tree: MenuTree[]
+  isOpen?: boolean
 }
 
 interface MenuTree {
@@ -149,14 +221,15 @@ interface MenuTree {
   items: MenuTree[]
 }
 
-export const Menu: React.FC<MenuProps> = ({ tree }) => {
+export const Menu: React.FC<MenuProps> = ({ tree, isOpen }) => {
   return (
     <Box
       as={MenuSection}
-      paddingLeft={16}
-      paddingLeftLg={0}
+      isOpen={isOpen}
       paddingVertical={16}
       paddingRight={32}
+      paddingTopMdDown={48}
+      paddingLeftLg={0}
     >
       <Box as={MenuSticky} paddingVertical={32}>
         <PagesList>{renderTreeItem(tree, true)}</PagesList>

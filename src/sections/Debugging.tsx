@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import styled from 'styled-components'
 import NightOwlTheme from 'prism-react-renderer/themes/nightOwl'
 
 import { TextLead } from '../components/TextLead'
@@ -10,42 +11,39 @@ import { Heading } from '../components/Heading'
 import { ObliqueSection } from '../components/ObliqueSection'
 import { Code } from '../components/mdx/code'
 
+const StyledCode = styled(Code)`
+  padding: 2rem 1rem;
+  box-shadow: var(--box-shadow);
+`
+
 export const Debugging = () => {
   return (
     <ObliqueSection>
       <Section>
         <div>
-          <div className="box-shadow border-radius">
-            <Code theme={NightOwlTheme} language="javascript">
-              {`
-// src/mocks.js
-rest.post('/login', (req, res, ctx) => {
-  // What if my API suddenly returns an error?
+          <StyledCode
+            theme={NightOwlTheme}
+            language="javascript"
+            copyable={false}
+          >
+            {`
+rest.get('/products', (req, res, ctx) => {
+  // So the issue is when there's a single product!
   return res(
-    ctx.status(403),
-    ctx.json({
-      errorMessage: 'Not authorized'
-    })
+    ctx.json([
+      {
+        id: 'ea42ffcb-e729-4dd5-bfac-7a5b645cb1da',
+        title: ''
+      }
+    ])
   )
 })
             `}
-            </Code>
-          </div>
-          <TextSmall align="center" color="gray">
-            Example of mocking an unexpected server response.
-            <br />
-            <strong>
-              Read more on{' '}
-              <Link to="/docs/recipes/mocking-error-responses">
-                mocking error responses
-              </Link>
-              .
-            </strong>
-          </TextSmall>
+          </StyledCode>
         </div>
         <SectionContent>
           <Heading level={2} marginBottom={8} align="center" alignLg="start">
-            Your next favorite debugging tool
+            Next favorite debugging tool
           </Heading>
           <TextLead align="center" alignLg="start">
             Mock the <Accent>very response</Accent> that crashes your app.

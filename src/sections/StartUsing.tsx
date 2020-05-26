@@ -5,6 +5,8 @@ import { Box } from 'atomic-layout'
 import { Grid } from '../components/Grid'
 import { Text } from '../components/Text'
 import { Button } from '../components/Button'
+import { Heading } from '../components/Heading'
+import { TextLead } from '../components/TextLead'
 
 export const StartUsing = () => {
   return (
@@ -17,7 +19,12 @@ export const StartUsing = () => {
         widthLg={600}
         marginHorizontal="auto"
       >
-        <h2>Start today</h2>
+        <Heading level={2} align="center">
+          Start today!
+        </Heading>
+        <TextLead align="center">
+          Integrate first-class API mocking in your project in under 10 minutes.
+        </TextLead>
         <Text align="center">
           Mock Service Worker can be used in any browser environment, be it your
           application, a unit test, or an end-to-end scenario. Bring your API

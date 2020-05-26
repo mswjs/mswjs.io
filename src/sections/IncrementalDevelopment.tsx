@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'gatsby'
 import styled, { css } from 'styled-components'
 import { Box, Composition } from 'atomic-layout'
 import { IoIosCode as BrowserContentIcon } from 'react-icons/io'
@@ -15,6 +16,7 @@ import { TextMono } from '../components/TextMono'
 import { ReactComponent as Logo } from '../images/logo-mask.svg'
 import { ReactComponent as GraphqQL } from '../images/graphql-logo.svg'
 import theme from '../theme'
+import { ReadmoreLink } from '../components/ReadmoreLink'
 
 const Parent = styled.div`
   position: relative;
@@ -275,6 +277,16 @@ export const IncrementalDevelopment = () => {
           successful startup without having any backend at all. RESTful API
           today, or GraphQL tomorrow? Experiment, combine, and find what suits
           your project best before committing to the ecosystem.
+        </Text>
+        <Text marginBottom={10}>
+          <ReadmoreLink as={Link} to="/docs/getting-started/mocks/rest-api">
+            Explore REST API integration
+          </ReadmoreLink>
+        </Text>
+        <Text>
+          <ReadmoreLink as={Link} to="/docs/getting-started/mocks/graphql-api">
+            Explore GraphQL API integration
+          </ReadmoreLink>
         </Text>
       </SectionContent>
     </Section>

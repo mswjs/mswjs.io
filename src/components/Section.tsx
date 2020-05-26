@@ -10,7 +10,7 @@ export const Section: React.FC = ({ children }) => {
         alignItems="center"
         justifyItems="center"
         gap={64}
-        paddingVertical={64}
+        paddingVertical={80}
         paddingVerticalLg={148}
         maxWidth="100%"
         marginHorizontal="auto"

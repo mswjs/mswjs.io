@@ -15,16 +15,16 @@ export const Workshops = () => {
       </Box>
       <SectionContent>
         <Heading level={2} marginBottom={8} align="center" alignLg="start">
-          Perfect for teachers
+          Teacher's choice
         </Heading>
         <TextLead align="center" alignLg="start">
-          API for your next tutorial <Accent>in a matter of minutes</Accent>.
+          API for your next lesson <Accent>in a matter of minutes</Accent>.
         </TextLead>
         <Text color="gray">
           Let your students <em>and</em> yourself focus on the topic, while{' '}
           <span className="no-wrap">Mock Service Worker</span> provides a
-          reliable API substitution that you don't even have to run, and that
-          behaves the same between different OS.
+          reliable API substitution that you don't need to run, and that behaves
+          the same between different OS.
         </Text>
       </SectionContent>
     </Section>

@@ -46,11 +46,19 @@ export const Footer: React.FC = () => {
     <StyledFooter>
       <Composition
         as={Grid}
+        templateCols="1fr 1fr"
         templateColsMd="4fr 1fr 1fr"
         gap={64}
         paddingVertical={64}
       >
-        <Box flex alignItems="flex-start">
+        <Box
+          order={1}
+          orderMd={0}
+          col="1 / span 2"
+          colMd="1"
+          flex
+          alignItems="flex-start"
+        >
           <Box
             as={Logo}
             width={32}

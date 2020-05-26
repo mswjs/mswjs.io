@@ -34,8 +34,8 @@ export const Highlights = () => {
             </Heading>
           </div>
           <Composition as={UnstyledUl} gap={12} templateColsMd="repeat(2, 1fr)">
-            <CheckistItem>Full specification compliance</CheckistItem>
-            <CheckistItem>Powerful functional syntax</CheckistItem>
+            <CheckistItem>Interception on the network level</CheckistItem>
+            <CheckistItem>Modular functional syntax</CheckistItem>
             <CheckistItem>Standardized Service Worker API</CheckistItem>
             <CheckistItem>Client-side execution</CheckistItem>
             <CheckistItem>Support of REST API and GraphQL</CheckistItem>

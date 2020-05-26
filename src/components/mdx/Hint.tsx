@@ -33,7 +33,7 @@ export const Hint = styled.div<HintProps>`
   color: var(--color-gray);
   font-size: 0.9rem;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.6;
 `
 
 Hint.defaultProps = {

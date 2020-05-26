@@ -1,15 +1,15 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Box } from 'atomic-layout'
 
 import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 import { Text } from '../components/Text'
-
-import { ReactComponent as AgnosticIllustration } from '../images/msw-agnostic.svg'
-
-import styled from 'styled-components'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
+import { ReadmoreLink } from '../components/ReadmoreLink'
+
+import { ReactComponent as AgnosticIllustration } from '../images/msw-agnostic.svg'
 
 const Parent = styled.div`
   position: relative;
@@ -45,14 +45,17 @@ export const Agnostic = () => {
           Integrate anywhere
         </Heading>
         <TextLead align="center" alignLg="start">
-          Perfect match for <Accent>any setup</Accent>.
+          Perfect match for <Accent>your setup</Accent>.
         </TextLead>
         <Text color="gray">
-          API mocking that is available anywhere: during the development, unit
-          tests of UI components, or entire end-to-end scenarios. Living in a
+          API mocking that is available anywhere: during development, unit tests
+          of UI components, or entire end-to-end scenarios. Living in a
           dedicated mocking layer, Mock Sercive Worker is agnostic of the
           frameworks, libraries, or setups you may use.
         </Text>
+        <ReadmoreLink href="https://github.com/mswjs/examples">
+          See usage example with your setup
+        </ReadmoreLink>
       </SectionContent>
     </Section>
   )
