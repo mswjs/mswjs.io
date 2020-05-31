@@ -4,19 +4,34 @@ order: 13
 displayName: FAQ
 ---
 
+## How is it different than library XYZ?
+
+Please the [Comparison](/docs/comparison) page for detailed technical and conceptual comparison between Mock Service Worker and other popular API mocking libraries.
+
+In a nutshell, most solutions provide requests interception on the application level, while Mock Service Worker intercepts requests on the _network level_.
+
 ## Is this library secure?
 
-Mock Service Worker library uses a [Service Worker API][service-worker-api] for requests interception. That API is implemented by a browser according to the specification, making the library as secure as the worker's implementation itself.
+Yes.
+
+Mock Service Worker uses [Service Worker API][service-worker-api] for requests interception. That API is implemented by a browser according to the specification, making the library as secure as the worker's implementation itself.
 
 Moreover, you are in full control over the Service Worker's code (`mockServiceWorker.js`), because you serve it by your application.
 
 ## Can I use it with Node?
 
-Yes. Mock Service Worker provides a Node-compatible API to allow you to reuse the same mocking logic in a Node environment (for example, for testing). Please refer to the [Usage in Node](/docs/tutorials/usage-in-node) tutorial for more details.
+Yes.
 
-[service-worker-api]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+Mock Service Worker provides a Node-compatible API to allow you to reuse the same mocking logic in a Node environment (for example, for testing).
+
+<PageLink
+  title="Integrate with Node"
+  url="/docs/getting-started/integrate/node"
+/>
 
 ## Can I use it with React Native?
+
+Yes, but only for NodeJS integration.
 
 Since React Native does not execute in a browser environment, you cannot run a Service Worker alongside your application.
 
@@ -28,6 +43,10 @@ Please see the following page for the integration steps:
   url="/docs/getting-started/integrate/node"
 />
 
-## Should I commit my worker file to Git?
+## Should I commit the Service Worker file to Git?
 
-Generally, the decision to commit the `mockServiceWorker.js` file to VCS (i.e. Git) is up to you, but we **highly recommend doing so**.
+Yes.
+
+Generally, the decision to commit the `mockServiceWorker.js` file to VCS (i.e. Git) is up to you, but we **highly recommend doing so**. That way all your team members will have the same mocking definition, ensuring consistent API behavior.
+
+[service-worker-api]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
