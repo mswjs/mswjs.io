@@ -9,7 +9,7 @@ import { Accent } from '../components/Accent'
 import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 import { ObliqueSection } from '../components/ObliqueSection'
-import { Code } from '../components/mdx/code'
+import { Code } from '../components/mdx/Code'
 
 const StyledCode = styled(Code)`
   padding: 2rem 1rem;

@@ -10,7 +10,7 @@ import { TextLead } from '../../components/TextLead'
 
 /* Markdown components */
 import { Link as MdxLink } from '../../components/mdx/Link'
-import { Code as MdxCode } from '../../components/mdx/code'
+import { Code as MdxCode } from '../../components/mdx/Code'
 import { Blockquote } from '../../components/mdx/Blockquote'
 import { GitHubRepo } from '../../components/mdx/GitHubRepo'
 import { PageLink } from '../../components/mdx/PageLink'
