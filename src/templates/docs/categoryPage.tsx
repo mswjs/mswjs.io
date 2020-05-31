@@ -35,8 +35,12 @@ const CategoryPage: React.FC<PageProps<never, PageContext>> = ({
       {categoryDescription && (
         <TextLead dangerouslySetInnerHTML={{ __html: categoryDescription }} />
       )}
-      <hr />
-      <CategoryChildPages items={childNavTree[0].items} />
+      {childNavTree[0]?.items && (
+        <>
+          <hr />
+          <CategoryChildPages items={childNavTree[0].items} />
+        </>
+      )}
     </DocsLayout>
   )
 }
