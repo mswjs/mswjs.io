@@ -58,7 +58,14 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         rehypePlugins: [require('rehype-slug')],
-        remarkPlugins: [require('remark-validate-links')],
+        remarkPlugins: [
+          {
+            resolve: require('remark-validate-links'),
+            options: {
+              repository: 'mswjs/mswjs.io',
+            },
+          },
+        ],
       },
     },
   ],
