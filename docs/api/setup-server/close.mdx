@@ -1,0 +1,18 @@
+---
+title: close()
+---
+
+Cleans up any agumented native request issuing classes and stops request interception.
+
+## Examples
+
+It's recommended to call `.close()` after all test suites to clean up and prevent the current interception layer from affecting irrelevant tests.
+
+```js showLineNumbers focusedLines=6
+import { setupServer } from 'msw/node'
+
+const server = setupServer(...)
+
+beforeAll(() => server.listen())
+afterAll(() => server.close())
+```
