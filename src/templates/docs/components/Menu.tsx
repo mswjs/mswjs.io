@@ -55,6 +55,7 @@ ${({ isOpen }) =>
 
     &.active {
       font-weight: 600;
+      color: var(--color-black);
 
       &[aria-current="page"] {
         color: var(--color-secondary);
