@@ -25,6 +25,7 @@ exports.createPages = async ({ actions, graphql }) => {
             fileAbsolutePath
             fields {
               url
+              isHomepage
             }
             frontmatter {
               title
@@ -162,6 +163,14 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
         .replace(/\/+/g, '/'),
     })
 
+    console.log({ postSlug })
+
+    createNodeField({
+      node,
+      name: 'isHomepage',
+      value: postSlug === '/',
+    })
+
     createNodeField({
       node,
       name: 'breadcrumbs',
@@ -237,6 +246,7 @@ function getDocumentBreadcrumbs(node, tree) {
 function createNavTree(edges) {
   const items = edges.map(({ node }) => ({
     url: node.fields.url,
+    isHomepage: node.fields.isHomepage,
     title: node.frontmatter.title,
     displayName: node.frontmatter.displayName,
     pathChunks: getRelativePagePath(node.fileAbsolutePath).split('/'),
@@ -245,7 +255,7 @@ function createNavTree(edges) {
 
   function buildRecursiveTree(pages) {
     return pages.reduce((tree, page) => {
-      let { pathChunks, filename, url, title } = page
+      let { pathChunks, filename, url, title, isHomepage } = page
       const displayName = page.displayName || title
 
       // Remove the last node in the path chunks for root pages
@@ -258,6 +268,7 @@ function createNavTree(edges) {
           title,
           displayName,
           url,
+          isHomepage,
         })
       } else {
         const targetItems = pathChunks.reduce((acc, pathSegment, index) => {

@@ -37,11 +37,6 @@ ${({ isOpen }) =>
     right: 0;
     border-right: 1px solid
       ${({ theme }) => theme.utils.alpha(theme.colors.grayLight, 0.5)};
-
-    @media ${query({ from: 'lg' })} {
-      bottom: 3rem;
-      top: 2rem;
-    }
   }
 
   a {
@@ -54,10 +49,12 @@ ${({ isOpen }) =>
     }
 
     &.active {
-      font-weight: 600;
       color: var(--color-black);
+      font-weight: 600;
 
       &[aria-current="page"] {
+        background-color: var(--color-gray-dim);
+        border-radius: var(--border-radius);
         color: var(--color-secondary);
       }
     }
@@ -85,8 +82,8 @@ const PagesList = styled.ul<{ nested?: boolean }>`
       &:before {
         position: absolute;
         left: 18px;
-        top: 4px;
-        bottom: 4px;
+        top: 0;
+        bottom: 0;
         content: '';
         width: 1px;
         background-color: var(--color-gray-light);
@@ -152,9 +149,10 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
 const PageListItem: React.FC<{
   displayName: string
   url: string
+  isHomapge?: boolean
   childPages: MenuTree[]
   isRoot: boolean
-}> = ({ childPages, displayName, url, isRoot }) => {
+}> = ({ childPages, displayName, url, isHomapge, isRoot }) => {
   const isRootSection = useMemo(() => {
     return isRoot && !!childPages
   }, [isRoot, childPages])
@@ -179,7 +177,7 @@ const PageListItem: React.FC<{
       {url ? (
         <Link
           to={url}
-          partiallyActive={!isRootSection}
+          partiallyActive={!isHomapge && !isRootSection}
           activeClassName="active"
         >
           {Title}
@@ -204,6 +202,7 @@ const renderTreeItem = (items: MenuTree[], isRoot?: boolean) => {
         isRoot={isRoot}
         displayName={page.displayName}
         url={page.url}
+        isHomapge={page.isHomepage}
         childPages={page.items}
       />
     )
@@ -219,6 +218,7 @@ interface MenuTree {
   title: string
   displayName: string
   url?: string
+  isHomepage?: boolean
   items: MenuTree[]
 }
 
@@ -229,7 +229,7 @@ export const Menu: React.FC<MenuProps> = ({ tree, isOpen }) => {
       isOpen={isOpen}
       paddingVertical={16}
       paddingRight={32}
-      paddingTopMdDown={48}
+      paddingTopMdDown={0}
       paddingLeftLg={0}
     >
       <Box as={MenuSticky} paddingVertical={32}>
