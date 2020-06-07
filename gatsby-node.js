@@ -219,10 +219,12 @@ function getDocumentBreadcrumbs(node, tree) {
   const traverseTree = (items) => {
     items.forEach((chunk) => {
       if (url.startsWith(chunk.url)) {
-        breadcrumbs.push({
-          title: chunk.displayName || chunk.title,
-          url: chunk.url,
-        })
+        if (!chunk.isHomepage) {
+          breadcrumbs.push({
+            title: chunk.displayName || chunk.title,
+            url: chunk.url,
+          })
+        }
 
         if (chunk.items) {
           return traverseTree(chunk.items)
@@ -232,9 +234,6 @@ function getDocumentBreadcrumbs(node, tree) {
   }
 
   traverseTree(tree)
-
-  // Unshift the first entry because it matches the "<docsRoot>/index.mdx" file.
-  // breadcrumbs.shift()
 
   return breadcrumbs
 }
