@@ -18,8 +18,14 @@ interface Props {
 }
 
 const BodyStylesOverride = createGlobalStyle`
-  html {
+  html,
+  body {
+    height: 100%;
     overflow: hidden;
+  }
+
+  body {
+    position: relative;
   }
 `
 

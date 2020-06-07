@@ -6,7 +6,6 @@ import Seo from '../../components/seo'
 import { TextLead } from '../../components/TextLead'
 import { Heading } from '../../components/Heading'
 import { CategoryChildPages } from './components/CategoryChildPages'
-import { Text } from '../../components/Text'
 
 interface PageContext {
   categoryTitle: string

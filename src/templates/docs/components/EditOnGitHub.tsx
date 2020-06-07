@@ -10,7 +10,7 @@ export const EditOnGitHub: React.FC<Props> = ({ url }) => {
   return (
     <Box as="a" href={url} target="_blank" flex>
       <Box as={GitHubIcon} size={20} marginTop={2} marginRight="0.25ch" />
-      Edit on GitHub
+      Edit this page
     </Box>
   )
 }

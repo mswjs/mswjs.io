@@ -9,7 +9,7 @@ const MenuSection = styled.section<{ isOpen: boolean }>`
   top: 0;
   left: 0;
   z-index: 10;
-  height: 100vh;
+  height: 100%;
   background-color: #fff;
   overflow-y: auto;
   transform: translateX(-100%);
