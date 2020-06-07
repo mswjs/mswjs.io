@@ -11,7 +11,7 @@ import { HeadingDiminished } from './HeadingDiminished'
 const StyledFooter = styled.footer`
   background-color: var(--color-black);
   color: var(--color-gray-light);
-  font-size: 0.95rem;
+  font-size: 90%;
 
   a {
     color: #fff;
@@ -42,55 +42,84 @@ const StyledFooter = styled.footer`
 `
 
 export const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <StyledFooter>
-      <Composition
-        as={Grid}
-        templateCols="1fr 1fr"
-        templateColsMd="4fr 1fr 1fr"
-        gap={64}
-        paddingVertical={64}
-      >
-        <Box
-          order={1}
-          orderMd={0}
-          col="1 / span 2"
-          colMd="1"
-          flex
-          alignItems="flex-start"
+    <Box as={StyledFooter} paddingVertical={48}>
+      <Grid>
+        <Composition
+          templateCols="1fr 1fr"
+          templateColsMd="32px repeat(3, 1fr)"
+          gap={48}
         >
           <Box
-            as={Logo}
-            width={32}
-            marginTop={-4}
-            flexShrink="0"
-            marginRight={10}
-          />
-          <p>Mock Service Worker is released under the MIT license.</p>
+            align="center"
+            alignMd="flex-start"
+            colMd="1"
+            justify="center"
+            justifyMd="flex-start"
+          >
+            <Logo height={48} />
+          </Box>
+          <section>
+            <HeadingDiminished>Documentation</HeadingDiminished>
+            <ul>
+              <li>
+                <Link to="/docs/getting-started">Getting started</Link>
+              </li>
+              <li>
+                <a href="https://github.com/mswjs/examples">Examples</a>
+              </li>
+              <li>
+                <Link to="/docs/api">API</Link>
+              </li>
+              <li>
+                <Link to="/docs/faq">Help</Link>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <HeadingDiminished>Recipes</HeadingDiminished>
+            <ul>
+              <li>
+                <Link to="/docs/recipes/cookies">Cookies</Link>
+              </li>
+              <li>
+                <Link to="/docs/recipes/query-parameters">
+                  Query parameters
+                </Link>
+              </li>
+              <li>
+                <Link to="/docs/recipes/mocking-error-responses">
+                  Mocking error responses
+                </Link>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <HeadingDiminished>Community</HeadingDiminished>
+            <ul>
+              <li>
+                <a href="https://github.com/mswjs/msw">GitHub</a>
+              </li>
+              <li>
+                <a href="https://github.com/mswjs/mswjs.io">
+                  Edit docs on GitHub
+                </a>
+              </li>
+            </ul>
+          </section>
+        </Composition>
+        <Box
+          as="p"
+          flex
+          alignItems="flex-start"
+          justifyContentMd="center"
+          marginTop={48}
+        >
+          Copyright © 2018-{currentYear} Artem Zakharchenko and contributors.
         </Box>
-        <section>
-          <HeadingDiminished>Documentation</HeadingDiminished>
-          <ul>
-            <li>
-              <Link to="/docs/api">API</Link>
-            </li>
-            <li>
-              <Link to="/docs/getting-started">Getting started</Link>
-            </li>
-            <li>
-              <Link to="/docs/recipes">Recipes</Link>
-            </li>
-          </ul>
-        </section>
-        <section>
-          <HeadingDiminished>Community</HeadingDiminished>
-          <ul>
-            <li>
-              <a href="https://github.com/mswjs/msw">GitHub</a>
-            </li>
-          </ul>
-        </section>
-      </Composition>
-    </StyledFooter>
+      </Grid>
+    </Box>
   )
 }
