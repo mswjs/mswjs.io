@@ -1,26 +1,54 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import { Box, Composition, Only } from 'atomic-layout'
 import { IoIosMenu as MenuIcon } from 'react-icons/io'
 import { DiGithubBadge as GitHubIcon } from 'react-icons/di'
 
 import { Grid } from './Grid'
-import logo from '../images/logo.svg'
+import { ReactComponent as Logo } from '../images/logo.svg'
 
 const StyledHeader = styled.header`
+  position: sticky;
+  top: 0;
+
   color: ${({ theme }) => theme.colors.grayDark};
   font-size: 0.9rem;
   font-weight: 600;
+
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  z-index: 1;
+`
+
+const LibraryName = styled.span`
+  font-weight: 800;
 `
 
 const HeaderLink = styled.a`
-  padding: 0.5rem;
+  position: relative;
+  padding: 1.5rem 0.5rem;
   color: inherit;
   text-decoration: none;
+  transition: color 0.1s ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.secondary};
+    color: var(--color-gray);
+  }
+
+  &.active {
+    color: var(--color-secondary);
+
+    ::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--color-secondary);
+    }
   }
 `
 
@@ -41,45 +69,57 @@ const BurgerMenuButton = styled.button`
   }
 `
 
-const Header: React.FC = () => {
-  const theme = useTheme()
+interface Props {
+  className?: string
+  withMenu?: boolean
+  onMenuClick?: () => void
+}
 
+const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
   return (
-    <Box as={StyledHeader} paddingVertical={12}>
+    <Box as={StyledHeader} className={className}>
       <Composition
         as={Grid}
-        templateCols="1fr auto"
+        templateCols="minmax(0, 1fr) auto"
         gap={10}
         alignItems="center"
         justifyContent="space-between"
       >
         <Box flex justify="flex-start" alignItems="center">
           <Box as={Link} to="/" flex>
-            <img src={logo} alt="MSW" width="48" />
+            <Logo height="48" width="48" />
           </Box>
-          <Box as="span" marginLeft={8}>
-            <strong>Mock Service Worker</strong>
-          </Box>
+          <Only from="md" as="span" marginLeft={8}>
+            <LibraryName>Mock Service Worker</LibraryName>
+          </Only>
         </Box>
-        <Box
-          inline
-          flex
-          alignItems="center"
-          justify="flex-end"
-          justifyItems="flex-end"
-        >
+        <Composition inline autoFlow="column" alignItems="center" gap={16}>
           <HeaderLink
             as={Link}
             to="/docs/"
-            activeStyle={{ color: theme.colors.secondary }}
+            activeClassName="active"
             partiallyActive
           >
-            Documentation
+            Docs
           </HeaderLink>
-          <Box as={HeaderLink} href="https://github.com/open-draft/msw" flex>
+          <Only
+            from="sm"
+            as={HeaderLink}
+            href="https://github.com/mswjs/examples"
+          >
+            Examples
+          </Only>
+          <Box as={HeaderLink} href="https://github.com/mswjs/msw" flex>
             <GitHubIcon size={24} />
           </Box>
-        </Box>
+          {withMenu && (
+            <Only to="lg">
+              <BurgerMenuButton onClick={onMenuClick}>
+                <MenuIcon size={24} />
+              </BurgerMenuButton>
+            </Only>
+          )}
+        </Composition>
       </Composition>
     </Box>
   )
