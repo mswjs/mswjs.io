@@ -8,8 +8,8 @@ import { Menu } from './components/Menu'
 import { TableOfContents } from './components/TableOfContents'
 import { DocsPageFooter } from './components/DocsPageFooter'
 import { BaseLayout } from '../../components/BaseLayout'
-import { DocsHeader } from './components/DocsHeader'
 import { Footer } from '../../components/Footer'
+import Header from '../../components/header'
 
 interface Props {
   page?: any
@@ -21,23 +21,6 @@ const BodyStylesOverride = createGlobalStyle`
   html {
     overflow: hidden;
   }
-`
-
-const Content = styled.div<{ isMenuOpen?: boolean }>`
-  transform: translateX(${({ isMenuOpen }) => (isMenuOpen ? 275 : 0)}px);
-  transition: transform 0.5s ease;
-
-  ${({ isMenuOpen }) =>
-    isMenuOpen &&
-    css`
-      body {
-        background-color: red;
-      }
-    `}
-`
-
-const TransitionContainer = styled.div`
-  overflow-x: hidden;
 `
 
 const OverlayMask = styled.div<{ isVisible: boolean }>`
@@ -78,18 +61,23 @@ const DocsLayout: React.FC<Props> = ({
 
   const threeColLayout = useMemo(() => {
     // Skip the right-most column when there is no table of contents
-    return ['300px', '1fr', page?.tableOfContents && '186px']
+    return ['300px', 'minmax(0, 1fr)', page?.tableOfContents && '186px']
       .filter(Boolean)
       .join(' ')
   }, [page])
 
   return (
     <BaseLayout>
-      <DocsHeader onBurgerClick={handleBurgerClick} />
-      <Grid as={TransitionContainer}>
-        <Composition templateColsLg={threeColLayout} gap={64}>
+      <Header withMenu={true} onMenuClick={handleBurgerClick} />
+      <Grid>
+        <Composition
+          templateCols="minmax(0, 1fr)"
+          templateColsLg="300px minmax(0, 1fr)"
+          templateColsXl={threeColLayout}
+          gap={64}
+        >
           <Menu tree={navTree} isOpen={isMenuOpen} />
-          <Box as={Content} isMenuOpen={isMenuOpen} paddingVertical={48}>
+          <Box paddingVertical={48}>
             <Breadcrumbs items={breadcrumbs} />
             <Box as="article" id="docs-page">
               {children}
