@@ -26,6 +26,7 @@ ${({ isOpen }) =>
     height: initial;
     transform: translateX(0);
     background-color: transparent;
+    overflow-y: initial;
     z-index: 0;
   }
 

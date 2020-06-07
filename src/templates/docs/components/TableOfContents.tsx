@@ -1,15 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box } from 'atomic-layout'
-import { Link } from 'gatsby'
 import { IoIosList as ListIcon } from 'react-icons/io'
 import theme from '../../../theme'
 import { HeadingDiminished } from '../../../components/HeadingDiminished'
 
-const Container = styled.div`
-  padding: 2rem 0 0;
+const StickyContainer = styled.aside`
   position: sticky;
   top: 0;
+`
+
+const Container = styled.div`
+  padding: 2rem 0 0;
 `
 
 const StyledList = styled.ol`
@@ -41,7 +43,7 @@ interface TableOfContentsProps {
 
 export const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
   return (
-    <Box as="aside" paddingTop={16}>
+    <Box as={StickyContainer} paddingTop={16}>
       <Container>
         <Box as={HeadingDiminished} flex alignItems="center">
           <Box as={ListIcon} fill={theme.colors.grayLight} marginRight={6} />
