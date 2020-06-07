@@ -1,7 +1,7 @@
 import React from 'react'
-import { IoIosLink } from 'react-icons/io'
+import styled from 'styled-components'
 import { Box } from 'atomic-layout'
-import styled, { css } from 'styled-components'
+import { IoIosLink as LinkIcon } from 'react-icons/io'
 
 const HeadingLink = styled.a`
   color: var(--color-black) !important;
@@ -21,7 +21,7 @@ const HeadingLink = styled.a`
     border-bottom: 1px dotted ${({ theme }) => theme.colors.grayLight};
 
     .icon {
-      display: block;
+      display: inline-block;
     }
   }
 `
@@ -33,15 +33,9 @@ export const Heading: React.FC<React.DetailedHTMLProps<
   const Component = `h${level}`
 
   const content = restProps.id ? (
-    <Box
-      as={HeadingLink}
-      href={`#${restProps.id}`}
-      inline
-      flex
-      alignItems="center"
-    >
+    <Box as={HeadingLink} href={`#${restProps.id}`} inline>
       <span>{children}</span>
-      <Box as={IoIosLink} className="icon" size="0.75em" marginLeft={6} />
+      <Box inline as={LinkIcon} className="icon" size="0.75em" marginLeft={6} />
     </Box>
   ) : (
     children
