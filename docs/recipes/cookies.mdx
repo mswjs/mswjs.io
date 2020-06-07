@@ -14,7 +14,7 @@ However, since Mock Service Worker executes on the client side, it can provide a
 ```js showLineNumbers focusedLines=8
 import { setupWorker, rest } from 'msw'
 
-const { start } = setupWorker(
+const worker = setupWorker(
   rest.post('/login', (req, res, ctx) => {
     return res(
       // Calling `ctx.cookie()` sets given cookies
@@ -24,7 +24,7 @@ const { start } = setupWorker(
   }),
 )
 
-start()
+worker.start()
 ```
 
 > Note that you still won't be able to access the `Set-Cookie` header on the response, as the cookie is set on the `document` directly, bypassing network.

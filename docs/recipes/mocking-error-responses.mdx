@@ -20,7 +20,7 @@ Here's an example on how to mock an error response for the login `POST` request:
 ```js showLineNumbers
 import { setupWorker, rest } from 'msw'
 
-const { start } = setupWorker(
+const worker = setupWorker(
   rest.post('/login', (req, res, ctx) => {
     const { username } = req.body
 
@@ -35,7 +35,7 @@ const { start } = setupWorker(
   }),
 )
 
-start()
+worker.start()
 ```
 
 <ResponsePreview

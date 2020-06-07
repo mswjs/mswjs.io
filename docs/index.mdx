@@ -20,7 +20,7 @@ There are several reasons to mock an API:
 
 ### Development
 
-Modern software development is often done in parallel, which means the deadline is in few days, and waiting for the backend to be finished is not an option. Most likely you are using some sort of mocking already: static fixtures, hard-coded state, or a third-party library.
+Modern software development is often done in parallel, which means the deadline is in few days, and waiting for the backend to be finished is not an option. Most likely you are using some sort of mocking already: static fixtures, hard-coded state, or a third-party libraries.
 
 When introduced in a dedicated layer, mocking can become a seamless pleasant experience, with one hardly noticing a difference when the mocking is gone.
 
@@ -91,7 +91,7 @@ Here's a high-level overview of the Mock Service Worker request flow:
 
 #### Node
 
-Since Service Workers cannot be run in a non-browser environment, this library provides a designated API to reuse the same mock definitions in Node (for example for testing purposes).
+Since Service Workers cannot run in a non-browser environment, this library provides a designated API to reuse the same mock definitions in Node (for example for testing purposes).
 
 > Node support is achieved by _extending_ native `http`, `https` and `XMLHttpRequest` modules using [`node-request-interceptor`](https://github.com/mswjs/node-request-interceptor) library. Read more about [Usage in Node](/docs/getting-started/integrate/node).
 
