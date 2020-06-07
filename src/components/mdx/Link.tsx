@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react'
 import { Link as RouterLink } from 'gatsby'
-import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { Box } from 'atomic-layout'
+import styled from 'styled-components'
+import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
+
+const StyledLink = styled.a`
+  display: inline-block;
+  white-space: nowrap;
+`
 
 export const Link: React.FC<{ href: string }> = ({
   href,
@@ -12,18 +18,10 @@ export const Link: React.FC<{ href: string }> = ({
 
   if (isExternal) {
     return (
-      <Box
-        as="a"
-        href={href}
-        target="_blank"
-        {...restProps}
-        inline
-        flex
-        alignItems="center"
-      >
+      <StyledLink {...restProps} href={href} target="_blank">
         <span>{children}</span>
-        <Box as={ExternalLinkIcon} marginLeft={4} />
-      </Box>
+        <Box as={ExternalLinkIcon} inline marginLeft={4} marginBottom={-2} />
+      </StyledLink>
     )
   }
 
