@@ -1,15 +1,19 @@
-import Layout from 'atomic-layout'
-import { defaultOptions } from '@atomic-layout/core'
+export const initLayout = () => {
+  const Layout = require('atomic-layout').default
+  const { defaultOptions } = require('@atomic-layout/core')
 
-Layout.configure({
-  breakpoints: {
-    ...defaultOptions.breakpoints,
-    xl: {
-      ...defaultOptions.breakpoints.xl,
-      maxWidth: '1399px',
+  console.log('Configuring Atomic Layout...')
+
+  Layout.configure({
+    breakpoints: {
+      ...defaultOptions.breakpoints,
+      xl: {
+        ...defaultOptions.breakpoints.xl,
+        maxWidth: '1399px',
+      },
+      xxl: {
+        minWidth: '1400px',
+      },
     },
-    xxl: {
-      minWidth: '1400px',
-    },
-  },
-})
+  })
+}

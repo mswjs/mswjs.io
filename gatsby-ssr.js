@@ -1,8 +1,9 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+import Layout from 'atomic-layout'
+import { initLayout } from './layout.config'
 
-// You can delete this file if you're not using it
-import './layout.config'
+export const wrapRootElement = () => {
+  // Configure Atomic Layout on the server only once.
+  if (!Layout.isConfigureCalled) {
+    initLayout()
+  }
+}

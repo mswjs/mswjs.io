@@ -163,8 +163,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
         .replace(/\/+/g, '/'),
     })
 
-    console.log({ postSlug })
-
     createNodeField({
       node,
       name: 'isHomepage',
