@@ -6,7 +6,7 @@ type Props = TextProps & { align?: 'start' | 'center' | 'end' }
 
 export const RawTextLead = styled.p<Props>`
   font-size: 1.4rem;
-  line-height: 1.6;
+  line-height: 1.5;
   letter-spacing: -0.4px;
 
   ${({ align }) =>
