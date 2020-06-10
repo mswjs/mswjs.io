@@ -6,11 +6,15 @@ order: 52
 A function that sets up a request interception layer in NodeJS environment.
 
 <Hint>
-  This function is designed for NodeJS environoment. If looking for a way to apply API mocking in a browser environment, consider using <Link to="/sdg"><code>setupWorker</code></Link> instead.
+  This function is designed for NodeJS environoment. If looking for a way to
+  apply API mocking in a browser environment, consider using{' '}
+  <a href="/sdg">
+    <code>setupWorker</code>
+  </a>{' '}
+  instead.
 </Hint>
 
 ## Operation
-
 
 Since Service Worker API cannot run in a non-browser environment, the NodeJS support of request interception is done via a designated [`node-request-interceptor`](https://github.com/mswjs/node-request-interceptor) library.
 

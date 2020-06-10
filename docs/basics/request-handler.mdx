@@ -26,13 +26,9 @@ Mock Service Worker ships with multiple ready-to-use request handlers for workin
 
 ## Request matching
 
-Request handlers are responsible for requests matching—a process of deciding whether a request should be mocked. Depending on the handler's type, request matching is performed differently. For example, `rest` handlers lookup matching methods and URLs, while `graphql` parses a request query string and expects a matching operation name.
+Request handlers are responsible for requests matching—a process of deciding whether a request should be mocked. Depending on the handler's type, request matching is performed differently. For example, `rest` handlers lookup matching methods and URLs, while `graphql` parse a request query string and expects a matching operation name.
 
 <Hint>
   Read more about which requests are being mocked in{' '}
   <a href="/docs/basics/path-matching">Path matching</a>.
 </Hint>
-
-## Custom request handler
-
-Integrating mocking into complex applications may require more flexibility in the way requests are matched, or mocked. For that, Mock Service Worker exposes an API to create your [custom request handlers](/docs/advanced/custom-request-handler).
