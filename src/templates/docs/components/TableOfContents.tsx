@@ -7,7 +7,7 @@ import { HeadingDiminished } from '../../../components/HeadingDiminished'
 
 const StickyContainer = styled.aside`
   position: sticky;
-  top: 0;
+  top: 73px;
 `
 
 const Container = styled.div`

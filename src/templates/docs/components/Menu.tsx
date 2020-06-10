@@ -65,7 +65,7 @@ ${({ isOpen }) =>
 const MenuSticky = styled(Box)`
   @media ${query({ from: 'lg' })} {
     position: sticky;
-    top: 0;
+    top: 89px;
   }
 `
 
