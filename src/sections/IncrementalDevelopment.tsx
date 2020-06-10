@@ -1,37 +1,38 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'gatsby'
-import styled, { css } from 'styled-components'
-import { Box, Composition } from 'atomic-layout'
-import { IoIosCode as BrowserContentIcon } from 'react-icons/io'
-import { DiNodejsSmall } from 'react-icons/di'
+import styled from 'styled-components'
+import { Box } from 'atomic-layout'
 
-import { useInterval } from '../hooks/useInterval'
 import { TextLead } from '../components/TextLead'
 import { Accent } from '../components/Accent'
 import { Text } from '../components/Text'
 import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
-import { Browser } from '../components/Browser'
-import { TextMono } from '../components/TextMono'
-import { ReactComponent as Logo } from '../images/logo-mask.svg'
-import { ReactComponent as GraphqQL } from '../images/graphql-logo.svg'
-import theme from '../theme'
+import { ReactComponent as Diagram } from '../images/development-diagram.svg'
 import { ReadmoreLink } from '../components/ReadmoreLink'
 
-const Parent = styled.div`
-  position: relative;
-`
+const AnimatedDiagram = styled(Diagram)`
+  width: 100%;
 
-const SvgCommunication = styled.svg`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  overflow: visible !important;
-  z-index: -1;
+  #progress {
+    animation: strokeOffset 30s linear infinite;
+  }
 
-  animation: strokeOffset 16s linear infinite;
+  #request-rest {
+    animation: requestRest 16s ease infinite;
+  }
+
+  #request-graphql {
+    animation: requestGraphql 16s ease infinite;
+  }
+
+  #response-rest {
+    animation: responseRest 16s ease infinite;
+  }
+
+  #response-graphql {
+    animation: responseGraphql 16s ease infinite;
+  }
 
   @keyframes strokeOffset {
     0% {
@@ -41,21 +42,34 @@ const SvgCommunication = styled.svg`
       stroke-dashoffset: 0;
     }
   }
-`
 
-const RequestAnimation = styled.div`
-  position: absolute;
-  animation: slideFromLeft 8s ease both infinite;
-  user-select: none;
-
-  @keyframes slideFromLeft {
+  @keyframes requestRest {
     0% {
       opacity: 0;
       transform: translateX(-50%);
     }
+    12.5%,
     25%,
+    37.5% {
+      opacity: 1;
+      transform: translateX(0);
+    }
     50%,
-    75% {
+    100% {
+      opacity: 0;
+      transform: translateX(50%);
+    }
+  }
+
+  @keyframes requestGraphql {
+    0%,
+    50% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+    62.5%,
+    75%,
+    87.5% {
       opacity: 1;
       transform: translateX(0);
     }
@@ -64,20 +78,34 @@ const RequestAnimation = styled.div`
       transform: translateX(50%);
     }
   }
-`
 
-const ResponseAnimation = styled.div`
-  animation: slideFromRight 8s ease both infinite;
-  user-select: none;
-
-  @keyframes slideFromRight {
+  @keyframes responseRest {
     0% {
       opacity: 0;
       transform: translateX(50%);
     }
+    12.5%,
     25%,
+    37.5% {
+      opacity: 1;
+      transform: translateX(0);
+    }
     50%,
-    75% {
+    100% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes responseGraphql {
+    0%,
+    50% {
+      opacity: 0;
+      transform: translateX(50%);
+    }
+    62.5%,
+    75%,
+    87.5% {
       opacity: 1;
       transform: translateX(0);
     }
@@ -90,181 +118,24 @@ const ResponseAnimation = styled.div`
 
 const IllustrationContainer = styled.div`
   position: relative;
-  z-index: 0;
+  overflow: hidden;
 `
-
-interface AbsoluteBrowserProps {
-  offsetX: number
-  offsetY: number
-}
-
-const AbsoluteBrowser = styled(Browser)<AbsoluteBrowserProps>`
-  position: absolute;
-  left: 0;
-  top: 50%;
-  z-index: -1;
-
-  ${({ offsetX, offsetY }) => css`
-    transform: translate(${offsetX}px, ${offsetY}px);
-  `}
-`
-
-AbsoluteBrowser.defaultProps = {
-  offsetX: 0,
-  offsetY: 0,
-}
-
-const FakeBrowser: React.FC<AbsoluteBrowserProps> = ({ offsetX, offsetY }) => {
-  return (
-    <AbsoluteBrowser
-      offsetX={offsetX}
-      offsetY={offsetY}
-      useLightTheme={true}
-      showControls={false}
-      showAddressBar={false}
-      width={150}
-    >
-      <Box height={128} width="100%" />
-    </AbsoluteBrowser>
-  )
-}
-
-const TechnologyCircle = styled(Box)<{ borderColor: string }>`
-  background-color: ${({ borderColor }) => borderColor};
-  border-radius: 50%;
-  height: 42px;
-  width: 42px;
-  z-index: 1;
-`
-
-const useExampleType = (delay: number = 0) => {
-  const [type, setType] = useState('node')
-
-  useInterval(() => {
-    setType(type === 'node' ? 'gql' : 'node')
-  }, 8000)
-
-  return type
-}
-
-const RequestExample = () => {
-  const type = useExampleType()
-
-  return (
-    <RequestAnimation>
-      <TextMono>
-        {type === 'node' ? (
-          <>
-            GET <strong>/user</strong>
-          </>
-        ) : (
-          <>
-            query <strong>GetUserInfo</strong>
-          </>
-        )}
-      </TextMono>
-    </RequestAnimation>
-  )
-}
-
-const ResponseExample = () => {
-  const type = useExampleType()
-
-  const isNode = type === 'node'
-  const resBody = isNode
-    ? `{ "firstName": "John" }`
-    : `\
-user {
-  firstName: "John"
-}`
-
-  return (
-    <Box as={ResponseAnimation} flex flexDirection="column" alignItems="center">
-      <TechnologyCircle
-        as={ResponseAnimation}
-        flex
-        alignItems="center"
-        justifyContent="center"
-        borderColor={isNode ? '#8BB637' : '#d147a7'}
-      >
-        {isNode ? (
-          <DiNodejsSmall size={24} fill="#fff" />
-        ) : (
-          <GraphqQL height={24} fill="#fff" />
-        )}
-      </TechnologyCircle>
-      <Box as={TextMono} marginTop={12}>
-        {resBody}
-      </Box>
-    </Box>
-  )
-}
 
 export const IncrementalDevelopment = () => {
   return (
     <Section>
-      <Composition
+      <Box
         as={IllustrationContainer}
         orderLg={1}
-        gap={10}
-        templateCols="1fr"
         alignItems="center"
         justifyItems="center"
         justifyContent="space-between"
-        width={380}
-        marginBottom={24}
-        marginBottomLg={0}
+        width="100%"
+        maxWidth={500}
+        marginHorizontal="auto"
       >
-        <Box
-          flex
-          flexDirection="column"
-          alignItems="center"
-          marginBottom={50}
-          height={32}
-        >
-          <RequestExample />
-        </Box>
-
-        <Box
-          flex
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-        >
-          <FakeBrowser offsetX={-10} offsetY={-71} />
-          <Browser
-            showControls={false}
-            showAddressBar={false}
-            inline
-            height="100%"
-            width={150}
-            marginLeft={-24}
-          >
-            <Box flex alignItems="center" justifyContent="center" height={125}>
-              <BrowserContentIcon size={48} fill={theme.colors.grayLight} />
-            </Box>
-          </Browser>
-
-          <Logo height={80} />
-        </Box>
-
-        <Box as={Parent} marginTop={16} height={80}>
-          <ResponseExample />
-        </Box>
-
-        <SvgCommunication>
-          <rect
-            x={10}
-            y={48}
-            height={240}
-            width={290}
-            fill="none"
-            stroke={theme.colors.grayLight}
-            strokeWidth={3}
-            strokeDasharray={10}
-          />
-        </SvgCommunication>
-      </Composition>
+        <AnimatedDiagram />
+      </Box>
       <SectionContent>
         <Heading level={2} marginBottom={8} align="center" alignLg="start">
           Develop incrementally
