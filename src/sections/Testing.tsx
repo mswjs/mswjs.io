@@ -10,6 +10,7 @@ import { Heading } from '../components/Heading'
 import { Text } from '../components/Text'
 import { TextLead } from '../components/TextLead'
 import { TextSmall } from '../components/TextSmall'
+import { ReadmoreLink } from '../components/ReadmoreLink'
 import { Section, SectionContent } from '../components/Section'
 import { Browser, BrowserDevTools } from '../components/Browser'
 import { ObliqueSection } from '../components/ObliqueSection'
@@ -119,6 +120,14 @@ export const Testing = () => {
             clean. A single imported module that declaratively mocks given
             request routes, nothing more.
           </Text>
+
+          <ReadmoreLink
+            href="https://kentcdodds.com/blog/stop-mocking-fetch"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn about API mocking in tests with Kent C. Dodds
+          </ReadmoreLink>
         </SectionContent>
       </Section>
     </ObliqueSection>

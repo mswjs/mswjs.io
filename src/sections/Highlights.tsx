@@ -25,7 +25,8 @@ export const Highlights = () => {
         <Composition
           templateColsXl="repeat(2, 1fr)"
           alignItems="center"
-          gap={64}
+          gap={32}
+          gapMd={64}
         >
           <div>
             <Heading level={3}>

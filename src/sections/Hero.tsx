@@ -1,9 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import styled from 'styled-components'
-import { Box, Composition, makeResponsive } from 'atomic-layout'
-
-import { ReactComponent as HeroShape } from '../images/hero-pattern.svg'
+import { Box, Composition } from 'atomic-layout'
 
 import { Grid } from '../components/Grid'
 import { Heading } from '../components/Heading'
@@ -15,7 +13,7 @@ import theme from '../theme'
 const Container = styled.section`
   position: relative;
   background-color: ${({ theme }) =>
-    theme.utils.alpha(theme.colors.secondary, 0.2)};
+    theme.utils.alpha(theme.colors.secondary, 0.25)};
 
   &:before {
     content: '';
@@ -43,7 +41,7 @@ const ManualHeroShape = () => {
         <linearGradient id="gradientGray" x1="0%" y1="0%" x2="0%" y2="400%">
           <stop
             offset="0%"
-            style={{ stopColor: theme.colors.secondary, stopOpacity: 0.2 }}
+            style={{ stopColor: theme.colors.secondary, stopOpacity: 0.25 }}
           />
           <stop
             offset="100%"
@@ -73,19 +71,22 @@ export const Hero = () => {
         as={Container}
         paddingVertical={48}
         paddingVerticalMd={64}
-        paddingVerticalLg={164}
+        paddingVerticalXl={164}
       >
         <Grid>
           <Composition
-            alignItems="flex-start"
-            templateColsXl="1fr minmax(650px, 1fr)"
+            templateCols="minmax(0, 1fr)"
+            templateColsXl="1fr minmax(auto, 1fr)"
             gap={64}
+            alignItems="flex-start"
+            width={650}
+            widthXl="initial"
+            maxWidth="100%"
+            marginHorizontal="auto"
           >
             <Box marginTopLg={60}>
               <Heading level={1} hero>
-                API mocking of
-                <br />
-                the next generation
+                API mocking of the next generation
               </Heading>
               <TextLead>
                 Mock by intercepting actual requests. No more servers,
@@ -93,20 +94,22 @@ export const Hero = () => {
               </TextLead>
               <Composition
                 inline
-                templateCols="repeat(2, auto)"
+                templateColsSm="repeat(2, auto)"
                 gap={10}
                 marginTop={24}
+                width="100%"
+                widthMd="initial"
               >
                 <Button
                   as={Link}
-                  to="/docs/getting-started"
+                  to="/docs/getting-started/install"
                   variant="primary"
                   hero
                 >
                   Getting started
                 </Button>
-                <Button as="a" href="https://github.com/open-draft/msw">
-                  GitHub
+                <Button as="a" href="https://github.com/mswjs/examples">
+                  See examples
                 </Button>
               </Composition>
             </Box>
@@ -117,9 +120,8 @@ export const Hero = () => {
           </Composition>
         </Grid>
       </Box>
-      <ManualHeroShape />
 
-      {/* <Box as={AbsoluteHeroShape} height={50} heightMd="initial" /> */}
+      <ManualHeroShape />
     </div>
   )
 }

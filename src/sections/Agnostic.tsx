@@ -37,8 +37,8 @@ const Parent = styled.div`
 export const Agnostic = () => {
   return (
     <Section>
-      <Box as={Parent} orderLg={1}>
-        <AgnosticIllustration />
+      <Box as={Parent} orderLg={1} maxWidth="100%">
+        <AgnosticIllustration width="364px" style={{ maxWidth: '100%' }} />
       </Box>
       <SectionContent>
         <Heading level={2} marginBottom={8} align="center" alignLg="start">

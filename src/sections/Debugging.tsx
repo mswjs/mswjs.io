@@ -1,11 +1,10 @@
 import React from 'react'
-import { Link } from 'gatsby'
 import styled from 'styled-components'
+import { Box } from 'atomic-layout'
 import NightOwlTheme from 'prism-react-renderer/themes/nightOwl'
 
-import { TextLead } from '../components/TextLead'
-import { TextSmall } from '../components/TextSmall'
 import { Accent } from '../components/Accent'
+import { TextLead } from '../components/TextLead'
 import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 import { ObliqueSection } from '../components/ObliqueSection'
@@ -20,27 +19,27 @@ export const Debugging = () => {
   return (
     <ObliqueSection>
       <Section>
-        <div>
+        <Box maxWidth="100%" widthLg="100%">
           <StyledCode
             theme={NightOwlTheme}
             language="javascript"
             copyable={false}
           >
             {`
-rest.get('/products', (req, res, ctx) => {
-  // So the issue is when there's a single product!
+rest.get('/books', (req, res, ctx) => {
+  // So the issue is when there's a single book!
   return res(
     ctx.json([
       {
         id: 'ea42ffcb-e729-4dd5-bfac-7a5b645cb1da',
-        title: ''
+        title: 'Lord of the Rings'
       }
     ])
   )
 })
             `}
           </StyledCode>
-        </div>
+        </Box>
         <SectionContent>
           <Heading level={2} marginBottom={8} align="center" alignLg="start">
             Next favorite debugging tool
