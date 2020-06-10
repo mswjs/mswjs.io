@@ -223,7 +223,7 @@ h1 {
   color: inherit;
   font-weight: bold;
   text-rendering: optimizeLegibility;
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   line-height: 1.1;
 }
 h2 {
@@ -238,7 +238,7 @@ h2 {
   color: inherit;
   font-weight: bold;
   text-rendering: optimizeLegibility;
-  font-size: 2.4rem;
+  font-size: 2.25rem;
   line-height: 1.1;
 }
 h3 {
@@ -253,7 +253,7 @@ h3 {
   color: inherit;
   font-weight: bold;
   text-rendering: optimizeLegibility;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   line-height: 1.1;
 }
 h4 {
@@ -268,7 +268,7 @@ h4 {
   color: inherit;
   font-weight: bold;
   text-rendering: optimizeLegibility;
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1.1;
 }
 h5 {
@@ -583,9 +583,4 @@ pre code:after,
 pre tt:before,
 pre tt:after {
   content: '';
-}
-@media only screen and (max-width: 480px) {
-  html {
-    font-size: 100%;
-  }
 }
