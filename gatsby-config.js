@@ -32,11 +32,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Mock Service Worker`,
+        short_name: `MSW`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#ef9e57`,
+        theme_color: `#ef9e57`,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
@@ -48,9 +48,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-svgr`,
       options: {
-        svgoConfig: {
-          cleanupIDs: false,
-        },
+        // Disable SVGO entirely, because `svgoConfig: { cleanupIDs: false}` doesn't work.
+        svgo: false,
       },
     },
     `gatsby-plugin-sass`,
