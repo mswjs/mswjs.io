@@ -77,7 +77,7 @@ const AnimatedDiagram = styled(TeachersDiagram)`
   }
 `
 
-export const Workshops = () => {
+export const Teaching: React.FC = () => {
   return (
     <Section>
       <Box orderLg={1}>

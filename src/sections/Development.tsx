@@ -112,7 +112,7 @@ const IllustrationContainer = styled.div`
   overflow: hidden;
 `
 
-export const IncrementalDevelopment = () => {
+export const Development = () => {
   return (
     <Section>
       <Box

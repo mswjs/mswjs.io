@@ -34,7 +34,7 @@ const Parent = styled.div`
   }
 `
 
-export const Agnostic = () => {
+export const Integration = () => {
   return (
     <Section>
       <Box as={Parent} orderLg={1} maxWidth="100%">

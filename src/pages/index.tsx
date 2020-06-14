@@ -9,12 +9,12 @@ import { Hero } from '../sections/Hero'
 import { Highlights } from '../sections/Highlights'
 import { Features } from '../sections/Features'
 import { Testing } from '../sections/Testing'
-import { IncrementalDevelopment } from '../sections/IncrementalDevelopment'
+import { Development } from '../sections/Development'
 import { Debugging } from '../sections/Debugging'
-import { Workshops } from '../sections/Workshops'
+import { Teaching } from '../sections/Teaching'
+import { Integration } from '../sections/Integration'
 
 import kentAvatarUrl from '../images/avatars/kentcdodds.png'
-import { Agnostic } from '../sections/Agnostic'
 import { Quote } from '../components/Quote'
 
 const HomePage = () => (
@@ -37,11 +37,11 @@ const HomePage = () => (
       </Box>
     </Grid>
     <Highlights />
-    <Agnostic />
+    <Integration />
     <Testing />
-    <IncrementalDevelopment />
+    <Development />
     <Debugging />
-    <Workshops />
+    <Teaching />
   </Layout>
 )
 
