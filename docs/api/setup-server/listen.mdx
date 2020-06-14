@@ -6,7 +6,9 @@ Establishes a request interception instance previously configured via `setupServ
 
 ## Examples
 
-In typical testing setup `.listen()` is called in a `beforeAll` hook, making sure the request interception is at place before your tests run.
+In typical a testing setup you call `.listen()` in a setup hook before all your tests, making sure the request interception is at place once the test suits run.
+
+Here's an example of using `.listen()` with Jest's `beforeAll` hook:
 
 ```js showLineNumbers focusedLines=6
 import { setupServer } from 'msw/node'
@@ -18,4 +20,4 @@ beforeAll(() => {
 })
 ```
 
-> Unlike a similar method on actual servers, `.listen()` operates synchronously, because there is no actual connection in place.
+> Unlike a similar method on actual servers, `.listen()` operates synchronously, because there is no servers and, thus, no actual connection to establish.
