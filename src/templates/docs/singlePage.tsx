@@ -53,6 +53,15 @@ const components = {
 const DocumentationPage = ({ data, pageContext }) => {
   const { page } = data
 
+  const categoryPage = pageContext.breadcrumbs[0]
+  const seoTitleTemplate = [
+    '%s',
+    categoryPage?.title,
+    'Mock Service Worker Docs',
+  ]
+    .filter(Boolean)
+    .join(' - ')
+
   return (
     <DocsLayout
       page={page}
@@ -61,6 +70,7 @@ const DocumentationPage = ({ data, pageContext }) => {
     >
       <Seo
         title={page.frontmatter.title}
+        titleTemplate={seoTitleTemplate}
         description={page.frontmatter.description}
       />
       <h1>{page.frontmatter.title}</h1>
