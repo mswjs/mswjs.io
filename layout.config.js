@@ -2,8 +2,6 @@ export const initLayout = () => {
   const Layout = require('atomic-layout').default
   const { defaultOptions } = require('@atomic-layout/core')
 
-  console.log('Configuring Atomic Layout...')
-
   Layout.configure({
     breakpoints: {
       ...defaultOptions.breakpoints,

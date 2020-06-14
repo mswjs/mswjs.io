@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Box } from 'atomic-layout'
+import { Box, Composition } from 'atomic-layout'
 import styled from 'styled-components'
-import { IoIosCheckmark } from 'react-icons/io'
-import { AiOutlineLoading } from 'react-icons/ai'
+import { IoIosCheckmark as CheckedIcon } from 'react-icons/io'
+import { AiOutlineLoading as LoadingIcon } from 'react-icons/ai'
+import { useInView } from 'react-intersection-observer'
 
-import { Button } from '../components/Button'
 import { Accent } from '../components/Accent'
 import { Heading } from '../components/Heading'
 import { Text } from '../components/Text'
@@ -19,16 +19,16 @@ const TestResults = styled.section`
   color: var(--color-gray-dim);
   font-family: var(--font-family-mono);
   font-size: 85%;
-  line-height: 24px;
+  line-height: 1.35;
   user-select: none;
 `
 
 const TestDescribe = styled.p`
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   font-weight: bold;
 `
 
-const Loading = styled(AiOutlineLoading)`
+const Loading = styled(LoadingIcon)`
   animation: spin 1s linear infinite;
 `
 
@@ -36,43 +36,106 @@ const TestResultIcon = styled(Box)`
   animation: fadeIn 1s ease both;
 `
 
-const TestResult: React.FC<{ title: string; delay?: number }> = ({
-  title,
-  delay = 0,
-}) => {
-  const [passed, setPassed] = useState(false)
+const TestResult: React.FC<{
+  title: string
+  isLoading?: boolean
+  delay?: number
+}> = ({ title, isLoading, delay = 0 }) => {
+  const [isPassed, setPassed] = useState(false)
+
   const Icon = useMemo(() => {
-    return passed ? (
-      <TestResultIcon as={IoIosCheckmark} fill="#6FDF4D" size={24} />
+    return isPassed ? (
+      <TestResultIcon as={CheckedIcon} fill="#6FDF4D" size={24} />
     ) : (
       <Box as={Loading} fill="var(--color-gray)" width={24} />
     )
-  }, [passed])
+  }, [isPassed])
 
   useEffect(() => {
-    const ref = setTimeout(() => {
-      setPassed(true)
-    }, 1000 + delay)
+    if (!isLoading) {
+      const ref = setTimeout(() => {
+        setPassed(true)
+      }, delay)
 
-    return () => {
-      clearTimeout(ref)
+      return () => {
+        clearTimeout(ref)
+      }
     }
-  })
+  }, [isLoading])
 
   return (
-    <Box flex alignItems="center" marginLeft="1ch">
-      {Icon}
+    <Box
+      flex
+      alignItems="center"
+      marginVertical={4}
+      marginLeft={0}
+      marginLeftMd="1ch"
+    >
+      <Box
+        flex
+        alignItems="center"
+        marginRight={6}
+        height={24}
+        width={24}
+        flexShrink="0"
+      >
+        {Icon}
+      </Box>
       <span>{title}</span>
     </Box>
   )
 }
 
+const Block = styled.div`
+  background-color: var(--color-gray-light);
+  border-radius: var(--border-radius);
+  animation: fadeIn 1s ease;
+`
+
+const PageContent: React.FC<{ isLoading?: boolean }> = ({ isLoading }) => {
+  if (isLoading) {
+    return (
+      <Box>
+        <Loading size={32} fill="var(--color-primary)" />
+      </Box>
+    )
+  }
+
+  return (
+    <Composition
+      templateCols="minmax(125px, 1fr) 2fr"
+      gap={24}
+      gapMd={32}
+      width="100%"
+    >
+      <Box as={Block} height="100%" />
+      <Box>
+        <Box as={Block} height={32} marginBottom={24} />
+        <Box as={Block} height={10} marginBottom={16} />
+        <Box as={Block} height={10} marginBottom={16} />
+        <Box as={Block} height={10} />
+      </Box>
+    </Composition>
+  )
+}
+
 export const Testing = () => {
+  const [isLoading, setLoading] = useState(true)
+  const [ref, isContainerVisible] = useInView({
+    threshold: 1,
+  })
+
+  useEffect(() => {
+    if (isContainerVisible) {
+      setLoading(false)
+    }
+  }, [isContainerVisible])
+
   return (
     <ObliqueSection>
       <Section>
         <Box width="100%">
-          <Box marginBottom={24}>
+          <Box ref={ref} marginBottom={24}>
             <Browser
               address="eshop.com/product/1"
               maxWidth={500}
@@ -80,23 +143,30 @@ export const Testing = () => {
             >
               <Box
                 flex
-                height={200}
-                padding={20}
+                heightMd={250}
+                padding={32}
                 alignItems="center"
                 justifyContent="center"
               >
-                <Button size="small">Log in</Button>
+                <PageContent isLoading={isLoading} />
               </Box>
               <Box as={BrowserDevTools} padding={20}>
                 <TestResults>
-                  <TestDescribe>given I opened a product detail</TestDescribe>
-                  <TestResult title="should display the product title" />
+                  <TestDescribe>
+                    given I wrote a test suite with MSW
+                  </TestDescribe>
                   <TestResult
-                    title="should display the product price"
+                    title="treats API response as a pre-requisite"
+                    isLoading={isLoading}
+                  />
+                  <TestResult
+                    title="tests how a user actually interacts with my app"
+                    isLoading={isLoading}
                     delay={850}
                   />
                   <TestResult
-                    title="should do... something else"
+                    title="produces a maintainable and resilient test"
+                    isLoading={isLoading}
                     delay={1700}
                   />
                 </TestResults>
@@ -104,8 +174,7 @@ export const Testing = () => {
             </Browser>
           </Box>
           <TextSmall align="center" color="gray">
-            Test suite example utilizing a <code>GET /product/:productId</code>{' '}
-            mock.
+            Test suite using a <code>GET /product/:productId</code> mock.
           </TextSmall>
         </Box>
         <SectionContent>
