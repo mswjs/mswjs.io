@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Mock Service Worker`,
-    description: `API mocking library of the next generation`,
+    description: `Seamless API mocking library for browser and Node`,
     author: `@kettanaito`,
   },
   plugins: [
@@ -38,7 +38,7 @@ module.exports = {
         background_color: `#ef9e57`,
         theme_color: `#ef9e57`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/favicon.png`,
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
@@ -49,6 +49,7 @@ module.exports = {
       resolve: `gatsby-plugin-svgr`,
       options: {
         // Disable SVGO entirely, because `svgoConfig: { cleanupIDs: false}` doesn't work.
+        // It strips IDs anyway, making SVGs much harder to style and animate.
         svgo: false,
       },
     },
