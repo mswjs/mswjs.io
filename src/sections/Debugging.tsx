@@ -2,6 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box } from 'atomic-layout'
 import NightOwlTheme from 'prism-react-renderer/themes/nightOwl'
+import {
+  IoIosPlay as PlayIcon,
+  IoIosPause as PauseIcon,
+  IoIosSquare as StopIcon,
+} from 'react-icons/io'
 
 import { Accent } from '../components/Accent'
 import { Text } from '../components/Text'
@@ -11,16 +16,42 @@ import { Heading } from '../components/Heading'
 import { ObliqueSection } from '../components/ObliqueSection'
 import { Code } from '../components/mdx/Code'
 
+const Parent = styled.div`
+  position: relative;
+`
+
 const StyledCode = styled(Code)`
   padding: 2rem 1rem;
   box-shadow: var(--box-shadow);
 `
 
+const DebugginToolsContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+
+  background-color: var(--color-gray);
+  border-radius: var(--border-radius);
+  color: #fff;
+`
+
+const DebugginTools: React.FC = () => {
+  return (
+    <Box as={DebugginToolsContainer} flex alignItems="center">
+      <Box as={PlayIcon} fill="#67DA69" margin={10} />
+      <Box as={PauseIcon} margin={10} />
+      <Box as={StopIcon} fill="#E56B6B" margin={10} />
+    </Box>
+  )
+}
+
 export const Debugging = () => {
   return (
     <ObliqueSection>
       <Section>
-        <Box maxWidth="100%" widthLg="100%">
+        <Box as={Parent} maxWidth="100%" widthLg="100%">
+          <DebugginTools />
           <StyledCode
             theme={NightOwlTheme}
             language="javascript"
