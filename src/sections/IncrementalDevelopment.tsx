@@ -34,15 +34,6 @@ const AnimatedDiagram = styled(Diagram)`
     animation: responseGraphql 16s ease infinite;
   }
 
-  @keyframes strokeOffset {
-    0% {
-      stroke-dashoffset: 100%;
-    }
-    100% {
-      stroke-dashoffset: 0;
-    }
-  }
-
   @keyframes requestRest {
     0% {
       opacity: 0;
