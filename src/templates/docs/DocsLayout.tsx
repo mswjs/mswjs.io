@@ -84,7 +84,7 @@ const DocsLayout: React.FC<Props> = ({
         >
           <Menu tree={navTree} isOpen={isMenuOpen} />
           <Box paddingVertical={48}>
-            <Breadcrumbs items={breadcrumbs} />
+            {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
             <Box as="article" id="docs-page">
               {children}
             </Box>

@@ -1,4 +1,5 @@
 const path = require('path')
+const { exec } = require('child_process')
 const { createFilePath } = require('gatsby-source-filesystem')
 
 const REPO_URL = 'https://github.com/mswjs/mockserviceworker.io'
@@ -129,7 +130,7 @@ exports.createPages = async ({ actions, graphql }) => {
   })
 }
 
-exports.onCreateNode = ({ node, getNode, actions }) => {
+exports.onCreateNode = async ({ node, getNode, actions }) => {
   const { createNodeField } = actions
 
   if (['mdx'].includes(node.internal.type.toLowerCase())) {
@@ -168,12 +169,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       name: 'isHomepage',
       value: postSlug === '/',
     })
-
-    createNodeField({
-      node,
-      name: 'breadcrumbs',
-      value: ['a', 'b', 'c'],
-    })
   }
 }
 
@@ -211,7 +206,7 @@ function isRootFile(filename) {
  * Returns a breadcrumbs list for the given MDX node.
  */
 function getDocumentBreadcrumbs(node, tree) {
-  const breadcrumbs = []
+  let breadcrumbs = []
   const { url } = node.fields
 
   const traverseTree = (items) => {
@@ -232,6 +227,12 @@ function getDocumentBreadcrumbs(node, tree) {
   }
 
   traverseTree(tree)
+
+  // If the current page is the only breadcrumb item,
+  // produce no breadcrumbs.
+  if (breadcrumbs.length == 1) {
+    breadcrumbs = []
+  }
 
   return breadcrumbs
 }

@@ -51,10 +51,6 @@ interface BreadcrumbsProps {
 }
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
-  if (items.length < 2) {
-    return null
-  }
-
   return (
     <ScrollableContainer>
       <Box as={StyledList} flex alignItems="center" marginBottom={16}>
