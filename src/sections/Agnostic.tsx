@@ -48,10 +48,10 @@ export const Agnostic = () => {
           Perfect match for <Accent>your setup</Accent>.
         </TextLead>
         <Text color="gray">
-          API mocking that is available anywhere: during development, unit tests
-          of UI components, or entire end-to-end scenarios. Living in a
-          dedicated mocking layer, Mock Sercive Worker is agnostic of the
-          frameworks, libraries, or setups you may use.
+          API mocking that is available anywhere: during development, on any
+          level of testing, and even debugging. Living in a dedicated layer,
+          Mock Sercive Worker is agnostic of the frameworks, libraries, or
+          setups you may use.
         </Text>
         <ReadmoreLink href="https://github.com/mswjs/examples">
           See usage example with your setup

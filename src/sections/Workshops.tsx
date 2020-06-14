@@ -15,7 +15,7 @@ export const Workshops = () => {
       </Box>
       <SectionContent>
         <Heading level={2} marginBottom={8} align="center" alignLg="start">
-          Teacher's choice
+          Teach what matters
         </Heading>
         <TextLead align="center" alignLg="start">
           API for your next lesson <Accent>in a matter of minutes</Accent>.

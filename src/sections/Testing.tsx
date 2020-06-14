@@ -110,17 +110,17 @@ export const Testing = () => {
         </Box>
         <SectionContent>
           <Heading level={2} marginBottom={8} align="center" alignLg="start">
-            Resilient testing
+            Test with confidence
           </Heading>
           <TextLead align="center" alignLg="start">
             Write test suites that <Accent>don't smell</Accent>.
           </TextLead>
           <Text color="gray">
-            Target any state of your API, while keeping a test suit slim and
-            clean. A single imported module that declaratively mocks given
-            request routes, nothing more.
+            You don't expect your customers to mock <code>fetch</code>, do you?
+            So don't expect your tests either. Target any state of your API
+            while testing your application exactly how your users interact with
+            it.
           </Text>
-
           <ReadmoreLink
             href="https://kentcdodds.com/blog/stop-mocking-fetch"
             target="_blank"

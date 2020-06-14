@@ -8,7 +8,6 @@ import { Grid } from '../components/Grid'
 import { Hero } from '../sections/Hero'
 import { Highlights } from '../sections/Highlights'
 import { Features } from '../sections/Features'
-import { StartUsing } from '../sections/StartUsing'
 import { Testing } from '../sections/Testing'
 import { IncrementalDevelopment } from '../sections/IncrementalDevelopment'
 import { Debugging } from '../sections/Debugging'
@@ -21,7 +20,7 @@ import { Quote } from '../components/Quote'
 const HomePage = () => (
   <Layout>
     <SEO
-      title="MSW – Seamless REST/GraphQL API mocking library"
+      title="MSW – Seamless API mocking library for browser and Node"
       titleTemplate="%s"
     />
     <Hero />
@@ -31,7 +30,7 @@ const HomePage = () => (
       <Box paddingVertical={120}>
         <Quote
           name="Kent C. Dodds"
-          title="Teacher, Google Developer Expert."
+          title="Teacher, Google Developer Expert"
           content="This is a quote from Kent, I hope he'll share some feedback."
           avatarUrl={kentAvatarUrl}
         />
@@ -43,7 +42,6 @@ const HomePage = () => (
     <IncrementalDevelopment />
     <Debugging />
     <Workshops />
-    <StartUsing />
   </Layout>
 )
 

@@ -4,6 +4,7 @@ import { Box } from 'atomic-layout'
 import NightOwlTheme from 'prism-react-renderer/themes/nightOwl'
 
 import { Accent } from '../components/Accent'
+import { Text } from '../components/Text'
 import { TextLead } from '../components/TextLead'
 import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
@@ -32,7 +33,8 @@ rest.get('/books', (req, res, ctx) => {
     ctx.json([
       {
         id: 'ea42ffcb-e729-4dd5-bfac-7a5b645cb1da',
-        title: 'Lord of the Rings'
+        title: 'The Lord of the Rings',
+        publishedAt: -486867600
       }
     ])
   )
@@ -42,16 +44,17 @@ rest.get('/books', (req, res, ctx) => {
         </Box>
         <SectionContent>
           <Heading level={2} marginBottom={8} align="center" alignLg="start">
-            Next favorite debugging tool
+            Debug like a pro
           </Heading>
           <TextLead align="center" alignLg="start">
             Mock the <Accent>very response</Accent> that crashes your app.
           </TextLead>
-          <p>
-            Triage, bisect, and eliminate front-end issues without resetting the
-            state of your application. Stop wasting time when you are one step
-            away from full-scale mocking.
-          </p>
+          <Text color="gray">
+            Triage, bisect, and eliminate API-related issues without resetting
+            the state of your application. With the unique ability to intercept
+            requests to any origins, finally feel like you are in charge on what
+            happens with the traffic.
+          </Text>
         </SectionContent>
       </Section>
     </ObliqueSection>
