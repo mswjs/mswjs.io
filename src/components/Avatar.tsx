@@ -2,8 +2,10 @@ import styled from 'styled-components'
 
 export const Avatar = styled.img<{ size?: number }>`
   display: flex;
-  height: ${({ size }) => size}px;
+  max-height: ${({ size }) => size}px;
   width: ${({ size }) => size}px;
+  max-width: 100%;
+  height: auto;
 
   border-radius: 50%;
 `
