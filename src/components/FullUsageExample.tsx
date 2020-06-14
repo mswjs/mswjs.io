@@ -11,8 +11,7 @@ import { ReactComponent as JavaScriptIcon } from '../images/logos/javascript-2.s
 import { ReactComponent as TypeScriptIcon } from '../images/logos/typescript.svg'
 
 const Section = styled.section`
-  margin: auto;
-  width: 600px;
+  width: 100%;
   max-width: 100%;
   box-shadow: var(--box-shadow);
 `
