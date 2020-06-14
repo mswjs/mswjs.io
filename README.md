@@ -18,5 +18,5 @@
 > Would like your company to be featured as a sponsor? [Get in touch](https://twitter.com/kettanaito).
 
 <a href="https://vercel.com/?utm_source=artemz">
-  <img src="./media/vercel-logo.svg" alt="Vercel" height="40" />
+  <img src="./media/vercel-logo-black.svg" height="32" alt="Vercel">
 </a>

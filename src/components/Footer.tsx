@@ -4,6 +4,7 @@ import { Composition, Box } from 'atomic-layout'
 import { Link } from 'gatsby'
 
 import { ReactComponent as Logo } from '../images/logo-mask.svg'
+import { ReactComponent as VercelLogo } from '../../media/vercel-logo.svg'
 
 import { Grid } from './Grid'
 import { HeadingDiminished } from './HeadingDiminished'
@@ -38,6 +39,16 @@ const StyledFooter = styled.footer`
 
   .alt {
     fill: var(--color-black);
+  }
+`
+
+const HostedLink = styled.a`
+  svg {
+    fill: var(--color-gray-light);
+  }
+
+  :hover svg {
+    fill: #fff;
   }
 `
 
@@ -113,13 +124,22 @@ export const Footer: React.FC = () => {
             </ul>
           </section>
         </Composition>
-        <Box
-          as="p"
-          flex
-          alignItems="flex-start"
-          justifyContentMd="center"
-          marginTop={48}
-        >
+        <Box flex alignItems="center" justifyContent="center" marginTop={48}>
+          <Box as="span" marginRight={4}>
+            Hosted by
+          </Box>
+          <Box
+            as={HostedLink}
+            flex
+            alignItems="center"
+            href="https://vercel.com/?utm_source=artemz"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <VercelLogo width={75} />
+          </Box>
+        </Box>
+        <Box as="p" flex alignItems="flex-start" justifyContentMd="center">
           Copyright © 2018-{currentYear} Artem Zakharchenko and contributors.
         </Box>
       </Grid>
