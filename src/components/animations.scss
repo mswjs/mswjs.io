@@ -15,3 +15,12 @@
     opacity: 1;
   }
 }
+
+@keyframes strokeOffset {
+  0% {
+    stroke-dashoffset: 100%;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
