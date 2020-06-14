@@ -1,6 +1,6 @@
 import React from 'react'
 import { BoxProps } from '@atomic-layout/core'
-import { makeResponsive } from 'atomic-layout'
+import { makeResponsive, query } from 'atomic-layout'
 import { Text } from './Text'
 import styled, { css } from 'styled-components'
 
@@ -21,9 +21,12 @@ const StyledHeading = styled(Text)<HeadingProps>`
   ${({ hero }) =>
     hero &&
     css`
-      font-size: 3.4rem;
-      font-weight: 800;
-      line-height: 1.1;
+      line-height: 1.2;
+
+      @media ${query({ from: 'md' })} {
+        font-size: 3.4rem;
+        font-weight: 800;
+      }
     `}
 `
 
