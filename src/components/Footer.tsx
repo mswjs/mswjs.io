@@ -32,11 +32,11 @@ const StyledFooter = styled.footer`
     color: var(--color-gray-light);
   }
 
-  [class$='__alt-stroke'] {
+  .alt-stroke {
     stroke: var(--color-black);
   }
 
-  [class$='__alt'] {
+  .alt {
     fill: var(--color-black);
   }
 `
@@ -106,6 +106,9 @@ export const Footer: React.FC = () => {
                 <a href="https://github.com/mswjs/mswjs.io">
                   Edit docs on GitHub
                 </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/ApiMocking">Twitter</a>
               </li>
             </ul>
           </section>
