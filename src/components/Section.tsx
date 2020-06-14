@@ -6,11 +6,14 @@ export const Section: React.FC = ({ children }) => {
   return (
     <Grid>
       <Composition
+        templateCols="minmax(0, 1fr)"
         templateColsLg="repeat(2, 1fr)"
         alignItems="center"
         justifyItems="center"
-        gap={64}
-        paddingVertical={80}
+        gap={48}
+        gapMd={64}
+        paddingVertical={64}
+        paddingVerticalMd={80}
         paddingVerticalLg={148}
         maxWidth="100%"
         marginHorizontal="auto"

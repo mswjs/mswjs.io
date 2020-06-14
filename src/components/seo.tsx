@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 
@@ -47,6 +46,13 @@ const SEO: React.FC<Props> = ({
       title={title}
       titleTemplate={template}
       meta={[
+        {
+          name: 'viewport',
+          content:
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no',
+        },
+
+        /* SEO */
         {
           name: `description`,
           content: metaDescription,
