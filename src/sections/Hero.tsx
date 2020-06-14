@@ -38,14 +38,14 @@ const ManualHeroShape = () => {
   return (
     <AbsoluteHeroShape viewBox="0 0 2000 150" preserveAspectRatio="none">
       <defs>
-        <linearGradient id="gradientGray" x1="0%" y1="0%" x2="0%" y2="400%">
+        <linearGradient id="gradientGray" x1="0%" y1="20%" x2="0%" y2="100%">
           <stop
             offset="0%"
             style={{ stopColor: theme.colors.secondary, stopOpacity: 0.25 }}
           />
           <stop
             offset="100%"
-            style={{ stopColor: theme.colors.secondary, stopOpacity: 0.4 }}
+            style={{ stopColor: theme.colors.secondary, stopOpacity: 0.35 }}
           />
         </linearGradient>
       </defs>
@@ -76,7 +76,7 @@ export const Hero = () => {
         <Grid>
           <Composition
             templateCols="minmax(0, 1fr)"
-            templateColsXl="1fr minmax(auto, 1fr)"
+            templateColsXl="1fr 50%"
             gap={64}
             alignItems="flex-start"
             width={650}
