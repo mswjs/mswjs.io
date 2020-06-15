@@ -31,7 +31,7 @@ const HomePage = () => (
         <Quote
           name="Kent C. Dodds"
           title="Teacher, Google Developer Expert"
-          content="This is a quote from Kent, I hope he'll share some feedback."
+          content="I found MSW and was thrilled that not only could I still see the mocked responses in my DevTools, but that the mocks didn't have to be written in a Service Worker and could instead live alongside the rest of my app. This made it silly easy to adopt. The fact that I can use it for testing as well makes MSW a huge productivity booster."
           avatarUrl={kentAvatarUrl}
         />
       </Box>

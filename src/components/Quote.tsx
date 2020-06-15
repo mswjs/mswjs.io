@@ -31,6 +31,7 @@ const QuoteContainer = styled.blockquote`
 const QuoteContent = styled(TextLead)`
   color: var(--color-black);
   font-style: italic;
+  line-height: 1.7;
 `
 
 interface Props {
@@ -47,6 +48,8 @@ export const Quote: React.FC<Props> = ({ name, title, content, avatarUrl }) => {
       templateCols="auto auto auto"
       justifyContent="center"
       gap={20}
+      maxWidthMd="75%"
+      marginHorizontal="auto"
     >
       <section>
         <Box as={QuoteContent} align="center" marginBottom={48}>
