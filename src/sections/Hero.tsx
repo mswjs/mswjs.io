@@ -89,8 +89,9 @@ export const Hero = () => {
                 API mocking of the next generation
               </Heading>
               <TextLead>
-                Mock by intercepting actual requests. No more servers,
-                conditional URL, and changes to the existing code.
+                Mock by intercepting requests on the network level. Seamlessly
+                reuse the same mock definition for testing, development, and
+                debugging.
               </TextLead>
               <Composition
                 inline
@@ -106,7 +107,7 @@ export const Hero = () => {
                   variant="primary"
                   hero
                 >
-                  Getting started
+                  Get started
                 </Button>
                 <Button as="a" href="https://github.com/mswjs/examples">
                   See examples

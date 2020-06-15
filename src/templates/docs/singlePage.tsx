@@ -20,8 +20,9 @@ import { ResponsePreview } from '../../components/mdx/ResponsePreview'
 import { Action } from '../../components/mdx/Action'
 import { ConsoleMessage } from '../../components/mdx/ConsoleMessage'
 import { PathMatchPreview } from '../../components/mdx/PathMatchPreview'
-import DocsLayout from './DocsLayout'
 import { Table } from '../../components/mdx/Table'
+import { VideoEmbed } from '../../components/mdx/VideoEmbed'
+import DocsLayout from './DocsLayout'
 
 const createHeading = (level: 1 | 2 | 3 | 4): React.FC => {
   return (props) => <Heading level={level} {...props} />
@@ -48,6 +49,7 @@ const components = {
   ResponsePreview,
   PathMatchPreview,
   table: Table,
+  VideoEmbed,
 }
 
 const DocumentationPage = ({ data, pageContext }) => {

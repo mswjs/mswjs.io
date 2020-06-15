@@ -96,7 +96,7 @@ const DocsLayout: React.FC<Props> = ({
             )}
           </Box>
           {page?.tableOfContents?.items && (
-            <Only from="lg">
+            <Only from="xl">
               <TableOfContents items={page.tableOfContents.items} />
             </Only>
           )}

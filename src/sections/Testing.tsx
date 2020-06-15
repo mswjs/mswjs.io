@@ -40,7 +40,7 @@ const TestResult: React.FC<{
   title: string
   isLoading?: boolean
   delay?: number
-}> = ({ title, isLoading, delay = 0 }) => {
+}> = ({ title, isLoading, preDelay = 1000, delay = 0 }) => {
   const [isPassed, setPassed] = useState(false)
 
   const Icon = useMemo(() => {
@@ -127,7 +127,13 @@ export const Testing = () => {
 
   useEffect(() => {
     if (isContainerVisible) {
-      setLoading(false)
+      const timeout = setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+
+      return () => {
+        clearTimeout(timeout)
+      }
     }
   }, [isContainerVisible])
 
