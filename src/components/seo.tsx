@@ -102,6 +102,7 @@ const SEO: React.FC<Props> = ({
 
       {/* Twitter */}
       <meta name="twitter:card" content={twitterSeo.card} />
+      <meta name="twitter:image" content={ogImageUrl} />
       <meta name="twitter:title" content={twitterSeo.title} />
       <meta name="twitter:description" content={twitterSeo.description} />
       <meta name="twitter:site" content={site.siteMetadata.twitterAccount} />
