@@ -55,7 +55,8 @@ ${({ isOpen }) =>
 
       &[aria-current="page"] {
         background-color: var(--color-gray-dim);
-        border-radius: var(--border-radius);
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
         color: var(--color-secondary);
       }
     }
@@ -237,6 +238,7 @@ export const Menu: React.FC<MenuProps> = ({ tree, isOpen }) => {
       isOpen={isOpen}
       paddingTopMdDown={0}
       paddingLeftLg={0}
+      paddingHorizontalMdDown={16}
     >
       <Box as={MenuSticky}>
         <Box as={Scrollable} paddingVertical={32}>
