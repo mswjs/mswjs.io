@@ -65,7 +65,14 @@ ${({ isOpen }) =>
 const MenuSticky = styled(Box)`
   @media ${query({ from: 'lg' })} {
     position: sticky;
-    top: 89px;
+    top: 73px;
+  }
+`
+
+const Scrollable = styled.div`
+  @media ${query({ from: 'lg' })} {
+    max-height: calc(100vh - 73px);
+    overflow-y: auto;
   }
 `
 
@@ -228,13 +235,13 @@ export const Menu: React.FC<MenuProps> = ({ tree, isOpen }) => {
     <Box
       as={MenuSection}
       isOpen={isOpen}
-      paddingVertical={16}
-      paddingRight={32}
       paddingTopMdDown={0}
       paddingLeftLg={0}
     >
-      <Box as={MenuSticky} paddingVertical={32}>
-        <PagesList>{renderTreeItem(tree, true)}</PagesList>
+      <Box as={MenuSticky}>
+        <Box as={Scrollable} paddingVertical={32}>
+          <PagesList>{renderTreeItem(tree, true)}</PagesList>
+        </Box>
       </Box>
     </Box>
   )
