@@ -73,7 +73,7 @@ const SEO: React.FC<Props> = ({
   const twitterSeo = Object.assign(
     {},
     {
-      card: 'summary',
+      card: 'summary_large_image',
       title: metaTitle,
       description: socialDescription || metaDescription,
     },

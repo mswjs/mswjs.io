@@ -22,9 +22,6 @@ const HomePage = () => (
     <SEO
       title="MSW – Seamless API mocking library for browser and Node"
       socialTitle="Mock Service Worker"
-      twitter={{
-        card: 'summary_large_image',
-      }}
     />
     <Hero />
     <Features />
