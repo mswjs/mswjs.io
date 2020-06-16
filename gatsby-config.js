@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Mock Service Worker`,
     description: `Seamless API mocking library for browser and Node`,
-    author: `@kettanaito`,
+    twitterAccount: `@ApiMocking`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

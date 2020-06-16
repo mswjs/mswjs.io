@@ -1,42 +1,73 @@
 import React from 'react'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
+
+const GET_METADATA = graphql`
+  query {
+    site {
+      siteMetadata {
+        title
+        description
+        twitterAccount
+      }
+    }
+  }
+`
+
+interface TwitterSEO {
+  card?: 'summary' | 'summary_large_image'
+  description?: string
+}
+
+interface OpenGraphSEO {
+  type?: string
+  siteName?: string
+}
 
 interface Props {
   title: string
   titleTemplate?: string
   description?: string
+  socialDescription?: string
+  twitter?: TwitterSEO
+  og?: OpenGraphSEO
   lang?: string
-  meta?: Array<{
-    name?: string
-    property?: string
-    content: string
-  }>
 }
 
 const SEO: React.FC<Props> = ({
+  children,
   description,
-  lang,
-  meta,
+  lang = 'en',
   title,
   titleTemplate,
+  socialDescription,
+  og,
+  twitter,
 }) => {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
-          }
-        }
-      }
-    `,
-  )
+  const { site } = useStaticQuery(GET_METADATA)
 
   const metaDescription = description || site.siteMetadata.description
   const template = titleTemplate || `%s | ${site.siteMetadata.title}`
+
+  const ogSeo = Object.assign(
+    {},
+    {
+      type: 'website',
+      title,
+      siteName: site.siteMetadata.title,
+    },
+    og,
+  )
+
+  const twitterSeo = Object.assign(
+    {},
+    {
+      card: 'summary',
+      title,
+      description: socialDescription || metaDescription,
+    },
+    twitter,
+  )
 
   return (
     <Helmet
@@ -45,55 +76,35 @@ const SEO: React.FC<Props> = ({
       }}
       title={title}
       titleTemplate={template}
-      meta={[
-        {
-          name: 'viewport',
-          content:
-            'width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no',
-        },
+    >
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"
+      />
 
-        /* SEO */
-        {
-          name: `description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:title`,
-          content: title,
-        },
-        {
-          property: `og:description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          name: `twitter:card`,
-          content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: site.siteMetadata.author,
-        },
-        {
-          name: `twitter:title`,
-          content: title,
-        },
-        {
-          name: `twitter:description`,
-          content: metaDescription,
-        },
-      ].concat(meta)}
-    />
+      {/* Description */}
+      <meta name="description" content={metaDescription} />
+
+      {/* OpenGraph */}
+      <meta name="og:type" content={ogSeo.type} />
+      <meta name="og:title" content={title} />
+      <meta name="og:site_name" content={ogSeo.siteName} />
+      <meta
+        name="og:description"
+        content={socialDescription || metaDescription}
+      />
+      <meta name="og:image" content="/og-image.png" />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content={twitterSeo.card} />
+      <meta name="twitter:title" content={twitterSeo.title} />
+      <meta name="twitter:description" content={twitterSeo.description} />
+      <meta name="twitter:site" content={site.siteMetadata.twitterAccount} />
+      <meta name="twitter:creator" content="@kettanaito" />
+
+      {children}
+    </Helmet>
   )
-}
-
-SEO.defaultProps = {
-  lang: `en`,
-  meta: [],
-  description: ``,
 }
 
 export default SEO

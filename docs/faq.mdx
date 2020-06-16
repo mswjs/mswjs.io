@@ -6,9 +6,9 @@ displayName: FAQ
 
 ## How is it different than library XYZ?
 
-Please the [Comparison](/docs/comparison) page for detailed technical and conceptual comparison between Mock Service Worker and other popular API mocking libraries.
+Please see the [Comparison](/docs/comparison) page for detailed technical and conceptual comparison between Mock Service Worker and other popular API mocking libraries.
 
-In a nutshell, most solutions provide requests interception on the application level, while Mock Service Worker intercepts requests on the _network level_.
+In a nutshell, most solutions provide requests interception on the application level, while Mock Service Worker intercepts requests on the _network level_. It also allows you to use the same mock definition not only for testing, but for development and debugging as well.
 
 ## Is this library secure?
 
@@ -47,6 +47,8 @@ Please see the following page for the integration steps:
 
 Yes.
 
-Generally, the decision to commit the `mockServiceWorker.js` file to VCS (i.e. Git) is up to you, but we **highly recommend doing so**. That way all your team members will have the same mocking definition, ensuring consistent API behavior.
+Generally, the decision to commit the `mockServiceWorker.js` file to VCS (i.e. Git) is up to you, but we **highly recommend doing so**. That way all the collaborators would have the same mocking behavior, ensuring consistent experience across the team.
+
+> Alternatively, you can generate the Service Worker file by executing `npx msw init` as a part of your development pipeline.
 
 [service-worker-api]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API

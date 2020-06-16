@@ -21,7 +21,7 @@ const HomePage = () => (
   <Layout>
     <SEO
       title="MSW – Seamless API mocking library for browser and Node"
-      titleTemplate="%s"
+      twitter={{ card: 'summary_large_image' }}
     />
     <Hero />
     <Features />

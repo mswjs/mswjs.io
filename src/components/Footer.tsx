@@ -76,7 +76,7 @@ export const Footer: React.FC = () => {
             <HeadingDiminished>Documentation</HeadingDiminished>
             <ul>
               <li>
-                <Link to="/docs/getting-started">Getting started</Link>
+                <Link to="/docs/getting-started/install">Getting started</Link>
               </li>
               <li>
                 <a href="https://github.com/mswjs/examples">Examples</a>

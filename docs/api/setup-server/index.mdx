@@ -18,7 +18,7 @@ A function that sets up a request interception layer in NodeJS environment.
 
 Since Service Worker API cannot run in a non-browser environment, the NodeJS support of request interception is done via a designated [`node-request-interceptor`](https://github.com/mswjs/node-request-interceptor) library.
 
-> Although there is "server" in `setupServer`, the library does not establish any actual servers, but operates by augmenting native request issuing modules (such as `https` or `XMLHttpRequest`). The namespace is chosen for what the logic _represents_, not how it operates internally.
+> Although there is "server" in `setupServer`, the library does not establish any actual servers, but operates by augmenting native request issuing modules (such as `https` or `XMLHttpRequest`). The namespace is chosen for what the logic _represents_, not how it works internally.
 
 ### Limitations
 

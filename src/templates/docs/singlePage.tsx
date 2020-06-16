@@ -56,13 +56,14 @@ const DocumentationPage = ({ data, pageContext }) => {
   const { page } = data
 
   const categoryPage = pageContext.breadcrumbs[0]
-  const seoTitleTemplate = [
-    '%s',
-    categoryPage?.title,
-    'Mock Service Worker Docs',
-  ]
-    .filter(Boolean)
-    .join(' - ')
+  const siteName = 'Mock Service Worker Docs'
+  const seo = {
+    title: [page.frontmatter.title, categoryPage?.title]
+      .filter(Boolean)
+      .join(' - '),
+    description:
+      page.frontmatter.seo?.description || page.frontmatter.description,
+  }
 
   return (
     <DocsLayout
@@ -71,9 +72,13 @@ const DocumentationPage = ({ data, pageContext }) => {
       breadcrumbs={pageContext.breadcrumbs}
     >
       <Seo
-        title={page.frontmatter.title}
-        titleTemplate={seoTitleTemplate}
-        description={page.frontmatter.description}
+        title={seo.title}
+        titleTemplate={`%s - ${siteName}`}
+        description={page.frontmatter.description || siteName}
+        socialDescription={seo.description}
+        og={{
+          siteName,
+        }}
       />
       <h1>{page.frontmatter.title}</h1>
       {page.frontmatter.description && (
@@ -96,6 +101,9 @@ export const query = graphql`
       frontmatter {
         title
         description
+        seo {
+          description
+        }
       }
       body
       tableOfContents

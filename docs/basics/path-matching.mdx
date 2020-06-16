@@ -1,6 +1,6 @@
 ---
 title: Path matching
-description: This page describes how request URL matching works for REST API requests.
+description: Learn why some requests are mocked, while others are not.
 order: 48
 ---
 
@@ -11,7 +11,7 @@ To determine which outgoing requests should be mocked, Mock Service Worker perfo
 By default, any outgoing request is matched using these criteria:
 
 - Has matching method;
-- Has matching URL.
+- Has matching URL.~
 
 <Hint>
   Request that doesn't have any corresponding request handlers is performed
@@ -93,8 +93,7 @@ When provided a regular expression, request URL must match that expression in or
 import { setupWorker, rest } from 'msw'
 
 setupWorker(
-  // Performing a `DELETE http://localhost:8080/posts/` request would match this handler.
-  // This handle would match any of the following requests:
+  // This request handler would match all these requests:
   // - DELETE http://localhost:8080/posts/
   // - DELETE https://backend.dev/user/posts/
   rest.delete(/\/posts\//, responseResolver),
