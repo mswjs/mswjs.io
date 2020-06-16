@@ -97,14 +97,14 @@ const SEO: React.FC<Props> = ({
       <meta name="description" content={metaDescription} />
 
       {/* OpenGraph */}
-      <meta name="og:type" content={ogSeo.type} />
-      <meta name="og:title" content={metaTitle} />
-      <meta name="og:site_name" content={ogSeo.siteName} />
+      <meta property="og:type" content={ogSeo.type} />
+      <meta property="og:title" content={metaTitle} />
+      <meta property="og:site_name" content={ogSeo.siteName} />
       <meta
-        name="og:description"
+        property="og:description"
         content={socialDescription || metaDescription}
       />
-      <meta name="og:image" content={ogImageFullUrl} />
+      <meta property="og:image" content={ogImageFullUrl} />
 
       {/* Twitter */}
       <meta name="twitter:card" content={twitterSeo.card} />
