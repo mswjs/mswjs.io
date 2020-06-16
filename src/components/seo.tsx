@@ -8,6 +8,7 @@ const GET_METADATA = graphql`
   query {
     site {
       siteMetadata {
+        siteUrl
         title
         description
         twitterAccount
@@ -54,6 +55,11 @@ const SEO: React.FC<Props> = ({
   const metaDescription = description || site.siteMetadata.description
   const template = titleTemplate || `%s | ${site.siteMetadata.title}`
 
+  const ogImageFullUrl =
+    process.env.NODE_ENV === 'development'
+      ? ogImageUrl
+      : site.siteMetadata.siteUrl + ogImageUrl
+
   const ogSeo = Object.assign(
     {},
     {
@@ -98,11 +104,11 @@ const SEO: React.FC<Props> = ({
         name="og:description"
         content={socialDescription || metaDescription}
       />
-      <meta name="og:image" content={ogImageUrl} />
+      <meta name="og:image" content={ogImageFullUrl} />
 
       {/* Twitter */}
       <meta name="twitter:card" content={twitterSeo.card} />
-      <meta name="twitter:image" content={ogImageUrl} />
+      <meta name="twitter:image" content={ogImageFullUrl} />
       <meta name="twitter:title" content={twitterSeo.title} />
       <meta name="twitter:description" content={twitterSeo.description} />
       <meta name="twitter:site" content={site.siteMetadata.twitterAccount} />

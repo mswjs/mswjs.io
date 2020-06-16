@@ -1,7 +1,8 @@
 module.exports = {
   siteMetadata: {
+    siteUrl: 'https://mswjs.io',
     title: `Mock Service Worker`,
-    description: `Seamless API mocking library for browser and Node`,
+    description: `Seamless API mocking library for browser and Node.`,
     twitterAccount: `@ApiMocking`,
   },
   plugins: [
