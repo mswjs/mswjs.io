@@ -19,7 +19,7 @@ const StyledHeader = styled.header`
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-  z-index: 1;
+  z-index: 2;
 `
 
 const LibraryName = styled.span`
