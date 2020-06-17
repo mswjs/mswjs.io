@@ -86,7 +86,7 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
         justifyContent="space-between"
       >
         <Box flex justify="flex-start" alignItems="center">
-          <Box as={Link} to="/" flex>
+          <Box as={Link} to="/" alt="Mock Service Worker logo" flex>
             <Logo height="48" width="48" />
           </Box>
           <Only from="md" as="span" marginLeft={8}>
@@ -109,7 +109,12 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
           >
             Examples
           </Only>
-          <Box as={HeaderLink} href="https://github.com/mswjs/msw" flex>
+          <Box
+            as={HeaderLink}
+            href="https://github.com/mswjs/msw"
+            alt="GitHub repository"
+            flex
+          >
             <GitHubIcon size={24} />
           </Box>
           {withMenu && (

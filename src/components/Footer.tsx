@@ -130,11 +130,12 @@ export const Footer: React.FC = () => {
           </Box>
           <Box
             as={HostedLink}
-            flex
-            alignItems="center"
             href="https://vercel.com/?utm_source=artemz"
+            alt="Vercel"
             target="_blank"
             rel="noopener noreferrer"
+            flex
+            alignItems="center"
           >
             <VercelLogo width={75} />
           </Box>
