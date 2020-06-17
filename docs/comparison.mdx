@@ -13,7 +13,7 @@ Below you can find a detailed comparison between Mock Service Worker and other p
 - **Environments**. List of environments where a mock can be run.
 - **Implementation**. Brief high-level explanation on how a library works.
 - **Integration**. Steps to perform in order to integrate a library into your project.
-- **Definition**. How is the mocking logic defined.
+- **Definition**. How the mocking logic is defined.
 
 ## JSON Server
 
@@ -39,13 +39,13 @@ MirageJS is a mocking library that is highly focused on data relation, and allow
 
 | Criteria       | MirageJS                                                                                      | Mock Service Worker                                                                                |
 | -------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Supported API  | REST                                                                                | REST / GraphQL                                                                                     |
+| Supported API  | REST                                                                                          | REST / GraphQL                                                                                     |
 | Environments   | Browser                                                                                       | Node / Browser                                                                                     |
 | Implementation | Intercepts requests on the application level by stubbing native `fetch` and `XMLHttpRequest`. | Intercepts requests on the network level using Service Worker API.                                 |
 | Integration    | Does not require any changes to an existing code.                                             | Does not require any changes to an existing code.                                                  |
 | Definition     | Uses OOP and ORM oriented declaration of mocks. Provides rich tools for data modelling.       | Uses functional declaration of routes and responses. Non-opinionated in regards to data modelling. |
 
-> MirageJS is a great tool for data-driven mocking. Mock Service Worker is a mocking basis, on which you can model data relations using third-party tools.
+> MirageJS has a focus on data relation during mocking. Mock Service Worker, on the other hand, conducts API mocking on per-transaction basis, making mocking a matter of request-response relation.
 
 ## Service Mocker
 
