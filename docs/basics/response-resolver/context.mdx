@@ -3,7 +3,7 @@ title: context
 order: 46
 ---
 
-Context (`ctx`) argument of a response resolver contains a set of helper functions for working with various API types and mocking patterns.
+**Context** (`ctx`) argument of a response resolver contains a set of helper functions for working with various API types and mocking patterns.
 
 Context is specific to the used request handler. For example, you cannot access the `ctx.data()` method when using `rest.*` request handlers, because it's specific to GraphQL API, and will be available only in `graphql.*` handlers.
 
