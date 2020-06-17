@@ -10,13 +10,11 @@ Please see the [Comparison](/docs/comparison) page for detailed technical and co
 
 In a nutshell, most solutions provide requests interception on the application level, while Mock Service Worker intercepts requests on the _network level_. It also allows you to use the same mock definition not only for testing, but for development and debugging as well.
 
-## Is this library secure?
+## Does it support library XYZ?
 
-Yes.
+Yes. All request-issuing libraries are supported.
 
-Mock Service Worker uses [Service Worker API][service-worker-api] for requests interception. That API is implemented by a browser according to the specification, making the library as secure as the worker's implementation itself.
-
-Moreover, you are in full control over the Service Worker's code (`mockServiceWorker.js`), because you serve it by your application.
+Be it `axios`, `react-query`, or plain `fetch`—Mock Service Worker supports all libraries that issue requests.
 
 ## Can I use it with Node?
 
@@ -42,6 +40,14 @@ Please see the following page for the integration steps:
   title="Integrate with Node"
   url="/docs/getting-started/integrate/node"
 />
+
+## Is this library secure?
+
+Yes.
+
+Mock Service Worker uses [Service Worker API][service-worker-api] for requests interception. That API is implemented by a browser according to the specification, making the library as secure as the worker's implementation itself.
+
+Moreover, you are in full control over the Service Worker's code (`mockServiceWorker.js`), because you serve it by your application.
 
 ## Should I commit the Service Worker file to Git?
 
