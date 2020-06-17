@@ -1,5 +1,6 @@
 import React from 'react'
-import { Box, Composition } from 'atomic-layout'
+import { Box, Composition, query } from 'atomic-layout'
+
 import { TextLead } from './TextLead'
 import { Text } from './Text'
 import { TextSmall } from './TextSmall'
@@ -13,10 +14,13 @@ const QuoteContainer = styled.blockquote`
   ::before,
   ::after {
     display: inline-block;
+    height: 3rem;
     color: var(--color-primary);
     font-size: 4rem;
     font-weight: 600;
     margin-top: -0.5ch;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   ::before {
@@ -24,7 +28,11 @@ const QuoteContainer = styled.blockquote`
   }
 
   ::after {
-    content: '”';
+    content: '';
+
+    @media ${query({ from: 'md' })} {
+      content: '”';
+    }
   }
 `
 
@@ -32,6 +40,10 @@ const QuoteContent = styled(TextLead)`
   color: var(--color-black);
   font-style: italic;
   line-height: 1.7;
+
+  @media ${query({ to: 'md' })} {
+    font-size: 1rem;
+  }
 `
 
 interface Props {
@@ -45,22 +57,17 @@ export const Quote: React.FC<Props> = ({ name, title, content, avatarUrl }) => {
   return (
     <Composition
       as={QuoteContainer}
-      templateCols="auto auto auto"
+      templateColsMd="auto auto auto"
       justifyContent="center"
       gap={20}
       maxWidthMd="75%"
       marginHorizontal="auto"
     >
       <section>
-        <Box as={QuoteContent} align="center" marginBottom={48}>
+        <Box as={QuoteContent} alignMd="center" marginBottom={48}>
           {content}
         </Box>
-        <Composition
-          templateCols="auto auto"
-          alignItems="center"
-          justifyContent="center"
-          gap={12}
-        >
+        <Composition templateCols="auto auto" alignItems="center" gap={12}>
           <Avatar src={avatarUrl} alt={name} />
           <div>
             <Text marginBottom={0}>
