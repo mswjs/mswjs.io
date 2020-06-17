@@ -11,6 +11,8 @@ import { Heading } from '../components/Heading'
 import { ReactComponent as TeachersDiagram } from '../images/teachers-diagram.svg'
 
 const AnimatedDiagram = styled(TeachersDiagram)`
+  max-width: 100%;
+
   #progress-left,
   #progress-top,
   #progress-bottom,
