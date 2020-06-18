@@ -3,26 +3,83 @@ title: start()
 order: 54
 ---
 
-Starts the Service Worker instance responsible for mocking.
+Registers and activates the Service Worker instance responsible for requests interception.
 
 ## Options
 
-Calling `start()` accepts the following options:
+### `serviceWorker`
 
-```ts
-interface StartOptions {
+#### `url`
+
+- `string` (default: `"/mockServiceWorker.js"`)
+
+Custom Service Worker registration URL.
+
+```js showLineNumbers focusedLines=6
+const worker = setupWorker(...)
+
+worker.start({
   serviceWorker: {
-    // Custom Service Worker registration URL
-    url: string
-
-    // Custom Service Worker scope
-    scope: string
+    // Points to the custom location of the Service Worker file.
+    url: '/assets/mockServiceWorker.js'
   }
-
-  // Disable matched requests logging in the console
-  quiet: boolean
-}
+})
 ```
+
+<Hint mode="warning">
+  Note that the <code>url</code> path is relative to the server's root
+  directory.
+</Hint>
+
+#### `options`
+
+- `RegistrationOptions`
+
+Custom Service Worker registration options.
+
+```js showLineNumbers focusedLines=5-9
+const worker = setupWorker(...)
+
+worker.start({
+  serviceWorker: {
+    options: {
+      // Narrow the scope of the Service Worker to intercept requests
+      // only from pages under this path.
+      scope: '/product'
+    }
+  }
+})
+```
+
+---
+
+### `quiet`
+
+- `boolean` (default: _false_)
+
+Disables the logging of matched requests in a browser's console.
+
+```js showLineNumbers focusedLines=4
+const worker = setupWorker(...)
+
+worker.start({
+  quiet: true,
+})
+```
+
+---
+
+### `waitUntilReady`
+
+- `boolean` (default: _true_)
+
+Defers any application requests that happened while Service Worker was activating.
+
+<Hint mode="warning">
+  Disabling this behavior is <strong>not recommended</strong>, as that would
+  create a race condition between the Service Worker registration and your
+  application's runtime.
+</Hint>
 
 ## Operation
 
@@ -48,62 +105,10 @@ Internally, the worker file keeps a map of all controlled `clients`. This allows
 
 ## Usage
 
-### Basic usage
-
 ```js showLineNumbers
 // src/mocks.js
 import { setupWorker } from 'msw'
 
 const worker = setupWorker(...mocks)
 worker.start()
-```
-
-### Custom Service Worker URL
-
-```js showLineNumbers focusedLines=9
-// src/mocks.js
-import { setupWorker } from 'msw'
-
-const worker = setupWorker(...mocks)
-worker.start({
-  serviceWorker: {
-    // Notice that the path is relative to the
-    // server's root directory, not the `__dirname`.
-    url: './assets/mockServiceWorker.js',
-  },
-})
-```
-
-### Custom scope
-
-For the mocking to affect only a part of your application, consider providing a custom `scope` option:
-
-```js showLineNumbers focusedLines=5
-const worker = setupWorker(...)
-
-worker.start({
-  serviceWorker: {
-    scope: '/pages/product'
-  }
-})
-```
-
-### Deferred start
-
-When your application performs requests upon start, it may be useful to defer the application's bootstrapping until the mocks are enabled. Since `start()` returns a `Promise`, you can start the application after it resolves.
-
-```js showLineNumbers focusedLines=4
-// src/mocks.js
-const worker = setupWorker(...mocks)
-
-export { worker }
-```
-
-```js showLineNumbers focusedLines=4
-// src/index.js
-import { worker } from './mocks'
-
-worker.start().then(() => {
-  // Bootstrap the application when the mocking is enabled
-})
 ```
