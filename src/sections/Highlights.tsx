@@ -21,7 +21,7 @@ const UnstyledUl = styled.ul`
 export const Highlights = () => {
   return (
     <Container>
-      <Grid paddingVertical={64} paddingVerticalMd={100}>
+      <Grid paddingVertical={64} paddingVerticalMd={80} paddingVerticalLg={120}>
         <Composition
           templateColsXl="repeat(2, 1fr)"
           alignItems="center"

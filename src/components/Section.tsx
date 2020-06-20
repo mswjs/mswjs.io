@@ -14,7 +14,7 @@ export const Section: React.FC = ({ children }) => {
         gapMd={64}
         paddingVertical={64}
         paddingVerticalMd={80}
-        paddingVerticalLg={148}
+        paddingVerticalLg={120}
         maxWidth="100%"
         marginHorizontal="auto"
       >

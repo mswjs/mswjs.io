@@ -29,6 +29,7 @@ export const Features = () => {
         templateColsLg="repeat(3, 1fr)"
         gap={64}
         paddingVertical={64}
+        paddingVerticalMd={80}
         paddingVerticalLg={120}
       >
         <Section>
