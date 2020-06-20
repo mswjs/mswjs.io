@@ -29,9 +29,11 @@ const QuoteContainer = styled.blockquote`
 
   ::after {
     content: '';
+    display: none;
 
     @media ${query({ from: 'md' })} {
       content: '”';
+      display: inline-block;
     }
   }
 `
