@@ -68,7 +68,7 @@ export const Quote: React.FC<Props> = ({ name, title, content, avatarUrl }) => {
           {content}
         </Box>
         <Composition templateCols="auto auto" alignItems="center" gap={12}>
-          <Avatar src={avatarUrl} alt={name} />
+          <Box as={Avatar} src={avatarUrl} alt={name} justify="flex-end" />
           <div>
             <Text marginBottom={0}>
               <strong>{name}</strong>
