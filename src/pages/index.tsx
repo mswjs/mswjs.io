@@ -27,7 +27,7 @@ const HomePage = () => (
     <Features />
     <Grid>
       <Box as="hr" margin={0} />
-      <Box paddingVertical={64} paddingVerticalMd={120}>
+      <Box paddingVertical={64} paddingVerticalLg={120}>
         <Quote
           name="Kent C. Dodds"
           title="Teacher, Google Developer Expert"
