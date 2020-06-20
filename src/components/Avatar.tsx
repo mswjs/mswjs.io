@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 export const Avatar = styled.img<{ size?: number }>`
   display: flex;
-  justify-self: end;
   max-height: ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   max-width: 100%;
