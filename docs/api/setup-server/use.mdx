@@ -38,7 +38,7 @@ When a runtime request handler overlaps with an existing one (has the same predi
 
 ```js showLineNumbers focusedLines=12-17
 import { rest } from 'msw'
-import { setupWorker } from 'msw/node'
+import { setupServer } from 'msw/node'
 
 const server = setupServer(
   // Initial request handler for a book detail.
