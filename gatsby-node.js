@@ -247,7 +247,7 @@ function createNavTree(edges) {
     isHomepage: node.fields.isHomepage,
     title: node.frontmatter.title,
     displayName: node.frontmatter.displayName,
-    pathChunks: getRelativePagePath(node.fileAbsolutePath).split('/'),
+    pathChunks: getRelativePagePath(node.fileAbsolutePath).split(path.sep),
     filename: path.basename(node.fileAbsolutePath),
   }))
 
