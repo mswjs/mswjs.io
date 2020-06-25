@@ -77,12 +77,12 @@ const Scrollable = styled.div`
   }
 `
 
-const PagesList = styled.ul<{ nested?: boolean }>`
+const PagesList = styled.ul<{ nested?: boolean, showChildren?: boolean }>`
   margin: 0;
   padding: 0;
   list-style: none;
 
-  ${({ nested }) =>
+  ${({ nested, showChildren = true }) =>
     nested &&
     css`
       position: relative;
@@ -107,11 +107,15 @@ const PagesList = styled.ul<{ nested?: boolean }>`
       .active + & {
         display: block;
       }
+
+      ${showChildren && css`
+        display: block;
+      `}
     `}
 `
 
 const StyledPageListItem = styled.li<{ isRootSection: boolean }>`
-  ${({ isRootSection }) =>
+  ${({ isRootSection  }) =>
     isRootSection &&
     `
       margin-top: 2rem;
@@ -164,8 +168,6 @@ const StyledButton = styled.button`
   background-color: transparent;
   border: none;
   padding: 10px;
-  margin-left: -5px;
-  margin-right: 5px;
 `
 
 const PageListItem: React.FC<{
@@ -175,6 +177,11 @@ const PageListItem: React.FC<{
   childPages: MenuTree[]
   isRoot: boolean
 }> = ({ childPages, displayName, url, isHomapge, isRoot }) => {
+  const [toggleSubMenu, isToggleSubMenu] = useState(false)
+
+  const ManagedIconSubMenu = (event) => {
+    return isToggleSubMenu(!toggleSubMenu)
+  }
 
   const isRootSection = useMemo(() => {
     return isRoot && !!childPages
@@ -185,12 +192,11 @@ const PageListItem: React.FC<{
       return null
     }
 
-    return <Box as={StyledButton} flex justifyContent="center" alignItems="center"><SectionIcon /></Box>
+    return <Box as={StyledButton} onClick={ManagedIconSubMenu} flex justifyContent="center" alignItems="center"><SectionIcon /></Box>
   }, [isRootSection, childPages])
 
   const Title = (
     <PageTitle isRootSection={isRootSection} hasChildren={!!childPages}>
-      {Icon}
       <span>{displayName}</span>
     </PageTitle>
   )
@@ -198,6 +204,8 @@ const PageListItem: React.FC<{
   return (
     <StyledPageListItem isRootSection={isRootSection}>
       {url ? (
+        <Box flex>
+          {Icon}
         <Link
           to={url}
           partiallyActive={!isHomapge && !isRootSection}
@@ -205,11 +213,12 @@ const PageListItem: React.FC<{
         >
           {Title}
         </Link>
+        </Box>
       ) : (
         Title
       )}
       {childPages && (
-        <PagesList nested={!isRootSection}>
+        <PagesList nested={!isRootSection} showChildren={toggleSubMenu}>
           {renderTreeItem(childPages, false)}
         </PagesList>
       )}
