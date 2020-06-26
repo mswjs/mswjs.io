@@ -17,7 +17,7 @@ export const PageCollaborators: React.FC<Props> = ({ relativeFilePath }) => {
 
   React.useEffect(() => {
     fetch(
-      `https://api.github.com/repos/mswjs/mockserviceworker.io/commits?path=${relativeFilePath}`,
+      `https://api.github.com/repos/mswjs/mswjs.io/commits?path=${relativeFilePath}`,
     )
       .then((res) => res.json())
       .then((data: any[]) => {
@@ -29,6 +29,10 @@ export const PageCollaborators: React.FC<Props> = ({ relativeFilePath }) => {
         }, [])
       })
       .then(setCollaborators)
+      .catch(() => {
+        // Exceeding GitHub API rate limit falls through here.
+        return null
+      })
   }, [relativeFilePath])
 
   if (!collaborators) {
