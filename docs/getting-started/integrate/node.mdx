@@ -3,85 +3,75 @@ title: Node
 order: 26
 ---
 
-In this integration example we are going to use mocking during the unit testing with a [Jest](https://jestjs.io/) framework. Following the same principle, you can integrate mocking into any Node process.
+One of the most common usages of Mock Service Worker in Node is utilizing our request handlers for integration tests. We are going to use [Jest](https://jestjs.io/) as a test runner. Following the same principle, you can integrate mocking into any Node process.
 
 ## Setup
 
-As the first step, let's export our mock definitions so they can be accessed in our test suite.
+It's recommended to configure API mocking as a part of your tests teardown, so that your tests don't have to reference any mocking during their runs, focusing on testing what matters.
+
+### Using Create React App
+
+In Create React App there is a `src/setupTests.js` module that is used as a Jest teardown configuration.
 
 <Action>
-  Export the <code>mocks</code> definition from the <code>mocks.js</code> file:
+  Modify the <code>src/setupTests.js</code> tests teardown file:
 </Action>
 
-```js showLineNumbers focusedLines=6
-// src/mocks.js
-import { /* rest, or graphql */ } from 'msw'
+```js showLineNumbers
+// src/setupTests.js
+import { server } from './mocks/server.js'
 
-const mocks = [...]
+// Establish API mocking before all tests.
+beforeAll(() => server.listen())
 
-export { mocks }
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests.
+afterEach(() => server.resetHandlers())
+
+// Clean up after the tests are finished.
+afterAll(() => server.close())
 ```
-
-Now let's create a test suite and import our mock definition there, as well as the server setup function from the library.
-
-<Action>
-  Import <code>setupServer</code> function from the <code>msw/node</code> package:
-</Action>
-
-```js showLineNumbers focusedLines=2-3
-// test/login.test.js
-import { setupServer } from 'msw/node'
-import { mocks } from '../mocks'
-```
-
-## Start the server
-
-To start the mocking server call the `setupServer` function and provide the mock definitions to it.
 
 <Hint>
-  Internally, Mock Service Worker does not establish any servers. The term
-  "server" has been chosen to provide familiar interface and describe the
-  seeming functionality.
+  You can use the same code as above in a single test suite, if you don't wish
+  to establish API mocking on the global level.
 </Hint>
+
+### Using manual setup
+
+If you are not using CRA, please create a custom teardown module and reference it using Jest's [`setupFiles`](https://jestjs.io/docs/en/configuration#setupfiles-array) option in your `jest.config.js`.
+
 <Action>
-  Pass the mock definitions to the <code>setupServer</code> function:
+  Create a <code>jest.setup.js</code> test teardown file:
 </Action>
 
-```js showLineNumbers focusedLines=6
-// test/login.test.js
-import { setupServer } from 'msw/node'
-import { mocks } from '../mocks'
-
-describe('Login', () => {
-  const server = setupServer(...mocks)
-})
+```bash
+$ touch jest.setup.js
 ```
 
-Now to enable the mocking we need to call the `listen()` method on the server. Alternatively, we can stop the mocking by calling the `close()` method (for example, during the test's cleanup).
+Open the `jest.setup.js` file and write there the same code as in the Create React App `src/setupTests.js` example above.
 
 <Action>
-  Control the mocking with <code>server.listen()</code> and{' '}
-  <code>server.close()</code>:
+  Reference the teardown file in <code>jest.config.js</code>:
 </Action>
 
-```js showLineNumbers focusedLines=9,13
-// test/login.test.js
-import { setupServer } from 'msw/node'
-import { mocks } from '../mocks'
+```js
+// jest.config.js
+module.exports = {
+  setupFiles: ['jest.setup.js'],
+}
+```
 
-describe('Login', () => {
-  const server = setupServer(mocks)
+> Create `jest.config.js`, if you don't have it already.
 
-  beforeAll(() => {
-    server.listen()
-  })
+## Run tests
 
-  afterAll(() => {
-    server.close()
-  })
+Since API mocking has been established in the tests teardown, each test suite doesn't need any extra adjustments to intercept and mock API requests according to your handlers.
 
-  describe('given I logged in', () => {
-    /* perform requests and test the application's behavior */
-  })
+```js showLineNumbers
+// test/Login.test.js
+
+test('allows user to log in', async () => {
+  // Render components, perform requests, receive mocked responses.
 })
 ```

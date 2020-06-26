@@ -32,14 +32,14 @@ interface GraphQLRequest {
 
 ## Imports
 
-In our `mocks.js` file let's import the essentials we need for mocking a GraphQL API. They are groupped under the `graphql` namespace exposed by the library.
+In our `src/mocks/handlers.js` file let's import the essentials we need for mocking a GraphQL API. They are groupped under the `graphql` namespace exposed by the library.
 
 <Action>
   Import <code>graphql</code> from the <code>msw</code> package:
 </Action>
 
 ```js showLineNumbers
-// src/mocks.js
+// src/mocks/handlers.js
 import { graphql } from 'msw'
 ```
 
@@ -49,19 +49,19 @@ To handle a GraphQL request we need to specify its _operation kind_ (query/mutat
 
 In this tutorial we will be mocking a basic login flow for our user. This flow implies handling two operations:
 
-- `Login` mutation;
-- `GetUserInfo` query.
+- `Login` mutation, to allow a user to log in,
+- `GetUserInfo` query, to return the information about the logged in user.
 
 <Action>
-  Create a request handler by calling <code>graphql[OPERATION_KIND]</code> and
+  Create request handlers by calling <code>graphql[OPERATION_KIND]</code> and
   providing an operation name:
 </Action>
 
 ```js showLineNumbers focusedLines=6,9
-// src/mocks.js
+// src/mocks/handlers.js
 import { graphql } from 'msw'
 
-const mocks = [
+export const handlers = [
   // Handles a "Login" mutation
   graphql.mutation('Login', null),
 
@@ -106,10 +106,10 @@ query GetUserInfo() {
 </Action>
 
 ```js showLineNumbers focusedLines=10-16,25-30,34-41
-// src/mocks.js
+// src/mocks/handlers.js
 import { graphql } from 'msw'
 
-const mocks = [
+export const handlers = [
   // Handles a "Login" mutation
   graphql.mutation('Login', (req, res, ctx) => {
     const { username } = req.variables
@@ -155,7 +155,7 @@ const mocks = [
 
 ## Next step
 
-The mock definition is written, yet there is one last step to perform: enable the mocking.
+The request handlers are complete, yet there is one last step to perform: integrate the mocking.
 
 import * as IntegratePage from '../integrate/'
 

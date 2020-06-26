@@ -5,20 +5,20 @@ order: 22
 
 ## Imports
 
-In our `mocks.js` file let's import the essentials we need for mocking a REST API. They are groupped under the `rest` namespace exposed by the library.
+In our `src/mocks/handlers.js` file let's import the essentials we need for mocking a REST API. They are groupped under the `rest` namespace exposed by the library.
 
 <Action>
   Import <code>rest</code> from the <code>msw</code> package:
 </Action>
 
 ```js showLineNumbers
-// src/mocks.js
+// src/mocks/handlers.js
 import { rest } from 'msw'
 ```
 
 ## Request handler
 
-To handle a REST request we need to specify its _method_, _path_, and a function that would return the mocked response.
+To handle a REST API request we need to specify its _method_, _path_, and a function that would return the mocked response.
 
 In this tutorial we will be mocking a basic login flow for our user. This flow implies handling two requests:
 
@@ -26,15 +26,15 @@ In this tutorial we will be mocking a basic login flow for our user. This flow i
 - `GET /user`, to return the information about the logged in user.
 
 <Action>
-  Create a request handler by calling <code>rest[METHOD]</code> and providing a
+  Create request handlers by calling <code>rest[METHOD]</code> and providing a
   request path:
 </Action>
 
 ```js showLineNumbers focusedLines=6,9
-// src/mocks.js
+// src/mocks/handlers.js
 import { rest } from 'msw'
 
-const mocks = [
+export const handlers = [
   // Handles a POST /login request
   rest.post('/login', null),
 
@@ -58,10 +58,10 @@ Response resolver is a function that accepts the following arguments:
 </Action>
 
 ```js showLineNumbers focusedLines=9-12,21-25,30-35
-// src/mocks.js
+// src/mocks/handlers.js
 import { rest } from 'msw'
 
-const mocks = [
+export const handlers = [
   rest.post('/login', (req, res, ctx) => {
     // Persist user's authentication in the session
     sessionStorage.setItem('is-authenticated', true)
@@ -101,7 +101,7 @@ const mocks = [
 
 ## Next step
 
-The mock definition is written, yet there is one last step to perform: enable the mocking.
+The request handlers are complete, yet there is one last step to perform: integrate the mocking.
 
 import * as IntegratePage from '../integrate/'
 
