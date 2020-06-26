@@ -25,30 +25,37 @@ import PublicDirSnippet from '../../snippets/public-dir.mdx'
 
 <PublicDirSnippet />
 
-## Start the worker
+## Configure worker
 
-Let's go to our `mocks.js` file and import a `setupWorker` function from the `msw` package. We will use this function to register the Service Worker and provide it the list of our `mocks`.
+Let's create a file in our mock definition directory (`src/mocks`) where we would configure and start our Service Worker.
 
 <Action>
-  Import <code>setupWorker</code> function from the <code>msw</code> package:
+  Create a <code>src/mocks/browser.js</code> file:
+</Action>
+
+```bash
+$ touch src/mocks/browser.js
+```
+
+In the `browser.js` file we are going to create a worker instance with our request handlers defined earlier.
+
+<Action>
+  Import <code>setupWorker</code> function from the <code>msw</code> package and
+  create a worker instance with previously defined request handlers
 </Action>
 
 ```js showLineNumbers focusedLines=2,7-8
-// src/mocks.js
-import { setupWorker, /* rest, or graphql */ } from 'msw'
+// src/mocks/browser.js
+import { setupWorker } from 'msw'
+import { handlers } from './handlers'
 
-// Our previously defined mocks
-const mocks = [...]
-
-const worker = setupWorker(...mocks)
-worker.start()
+// This configures a Service Worker with the given request handlers.
+export const worker = setupWorker(...handlers)
 ```
 
-> Calling the `start()` method registers and activates the Service Worker that we have placed into our public directory at the beginning of this tutorial.
+## Start worker
 
-## Import mocks
-
-In order for our mock definition to excute during the runtime, it needs to be imported into our application's code. However, since mocking is a development-oriented technique, we will be importing our `mocks.js` file _conditionally_, depending on the current environment.
+In order for our mock definition to excute during the runtime, it needs to be imported into our application's code. However, since mocking is a development-oriented technique, we will be importing our `src/mocks/browser.js` file _conditionally_, depending on the current environment.
 
 <Hint mode="warning">
   It's <strong>not recommended</strong> to include Mock Service Worker in
@@ -63,16 +70,18 @@ In order for our mock definition to excute during the runtime, it needs to be im
 
 Adding a conditional import is the optimal choice, as you don't always have access to the project's build configuration.
 
-```js showLineNumbers focusedLines=5-7
+```js showLineNumbers focusedLines=6-9
 // src/index.js
 import React from 'react'
 import ReactDOM from 'react-dom'
+import App from './App'
 
 if (process.env.NODE_ENV === 'development') {
-  require('./mocks')
+  const { worker } = require('./mocks/browser')
+  worker.start()
 }
 
-ReactDOM.render(...)
+ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
 ### Using webpack
@@ -86,7 +95,7 @@ const __DEV__ = process.env.NODE_ENV === 'development'
 module.exports = {
   entry: [
     // Conditionally include the mock definition file
-    __DEV__ && 'src/mocks.js',
+    __DEV__ && 'src/mocks/browser.js',
 
     // Include your application's entry
     'src/index.js',
@@ -97,8 +106,8 @@ module.exports = {
 
 ## Verify & Inspect
 
-After restarting your application you should see a successful activation message from Mock Service Worker in your browser's console:
+After importing the mock definition, you should see a successful activation message from Mock Service Worker in your browser's console:
 
 <ConsoleMessage>[MSW] Mocking enabled</ConsoleMessage>
 
-Any requests that match our mock definitions will now be intercepted and mocked.
+Any requests that match previously defined handlers will now be intercepted and mocked.

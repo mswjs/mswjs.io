@@ -7,21 +7,31 @@ To define which requests should be mocked, we are going to use [request handler]
 
 ## Mock definition
 
-Let's create a file where we will store all our mocking logic. In this tutorial we are going to work mainly with this file.
+When working with Mock Service Worker, the list of request handlers, browser- and server-specific setup is referred to as _mock definition_. There is no strict rules on managing your mock definition, however, we recommend keeping API mocking-related modules in a single directory.
 
 <Action>
-  Create a <code>mocks.js</code> file in your project:
+  Create a <code>src/mocks</code> directory:
 </Action>
 
 ```bash
-$ touch src/mocks.js
+$ mkdir src/mocks
+```
+
+Once we have a directory, let's create a module where we will have all our request handlers. The handlers from this module can be reused for both browser and Node in the further steps of this tutorial.
+
+<Action>
+  Create a <code>src/mocks/handlers.js</code> file:
+</Action>
+
+```bash
+$ touch src/mocks/handlers.js
 ```
 
 ## Choose an API
 
-The way we mock an API with Mock Service Worker resembles how that API is being used. Please follow the respective steps below, depending on the API type you would like to mock.
+The way we mock an API with Mock Service Worker resembles how that API is being used in an actual application. Please follow the respective steps below, depending on the API type you would like to mock.
 
-<Action>Choose an API type below:</Action>
+<Action>Choose an API type to mock:</Action>
 
 import * as MockingRestApiPage from './rest-api.mdx'
 import * as MockingGraphQLApiPage from './graphql-api.mdx'
