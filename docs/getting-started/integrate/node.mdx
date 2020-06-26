@@ -9,6 +9,34 @@ One of the most common usages of Mock Service Worker in Node is utilizing our re
 
 It's recommended to configure API mocking as a part of your tests teardown, so that your tests don't have to reference any mocking during their runs, focusing on testing what matters.
 
+## Configure server
+
+Let's create a file in our mock definition directory (`src/mocks`) where we would configure our request mocking server.
+
+<Action>
+  Create a <code>src/mocks/server.js</code> file:
+</Action>
+
+```bash
+$ touch src/mocks/server.js
+```
+
+In the `server.js` file we are going to create a server instance with our request handlers defined earlier.
+
+<Action>
+  Import <code>setupServer</code> function from the <code>msw/node</code> package and
+  create a server instance with previously defined request handlers
+</Action>
+
+```js showLineNumbers focusedLines=2,7-8
+// src/mocks/server.js
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+// This configures a request mocking server with the given request handlers.
+export const server = setupServer(...handlers)
+```
+
 ### Using Create React App
 
 In Create React App there is a `src/setupTests.js` module that is used as a Jest teardown configuration.
