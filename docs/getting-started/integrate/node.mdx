@@ -5,10 +5,6 @@ order: 26
 
 One of the most common usages of Mock Service Worker in Node is utilizing our request handlers for integration tests. We are going to use [Jest](https://jestjs.io/) as a test runner. Following the same principle, you can integrate mocking into any Node process.
 
-## Setup
-
-It's recommended to configure API mocking as a part of your tests teardown, so that your tests don't have to reference any mocking during their runs, focusing on testing what matters.
-
 ## Configure server
 
 Let's create a file in our mock definition directory (`src/mocks`) where we would configure our request mocking server.
@@ -24,7 +20,7 @@ $ touch src/mocks/server.js
 In the `server.js` file we are going to create a server instance with our request handlers defined earlier.
 
 <Action>
-  Import <code>setupServer</code> function from the <code>msw/node</code> package and
+  Import <code>setupServer</code> function from the <code>msw</code> package and
   create a server instance with previously defined request handlers
 </Action>
 
@@ -36,6 +32,10 @@ import { handlers } from './handlers'
 // This configures a request mocking server with the given request handlers.
 export const server = setupServer(...handlers)
 ```
+
+## Setup
+
+It's recommended to configure API mocking as a part of your tests teardown, so that your tests don't have to reference any mocking during their runs, focusing on testing what matters.
 
 ### Using Create React App
 
