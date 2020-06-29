@@ -102,7 +102,7 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
           >
             Docs
           </HeaderLink>
-          <Only from="sm">
+          <Only from="sm" flex>
             <HeaderLink
               as={Link}
               to="/examples/"
