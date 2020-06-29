@@ -13,7 +13,8 @@ import { Heading } from '../components/Heading'
 const ExampleList: React.FC = ({ children }) => {
   return (
     <Composition
-      gap={64}
+      gap={32}
+      gapMd={64}
       templateColsMd="repeat(2, 1fr)"
       templateColsLg="repeat(3, 1fr)"
     >
@@ -31,7 +32,7 @@ const Examples = () => {
           Browser through the collection of Mock Service Worker usage examples
           with various libraries and frameworks.
         </TextLead>
-        <Composition gap={32} gapMd={80} marginTop={80}>
+        <Composition gap={80} marginTop={80}>
           <section>
             <Heading level={2}>API types</Heading>
             <ExampleList>
