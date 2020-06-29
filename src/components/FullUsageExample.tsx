@@ -71,7 +71,7 @@ const LanguageName: React.FC<{
 }> = ({ name, icon: Icon, fill }) => {
   return (
     <Box as="span" flex alignItems="center">
-      <Box as={Icon} fill={fill} size={16} marginRight={6} />
+      <Box as={Icon} fill={fill} size={16} width={16} marginRight={6} />
       {name}
     </Box>
   )

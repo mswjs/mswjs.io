@@ -102,12 +102,15 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
           >
             Docs
           </HeaderLink>
-          <Only
-            from="sm"
-            as={HeaderLink}
-            href="https://github.com/mswjs/examples"
-          >
-            Examples
+          <Only from="sm">
+            <HeaderLink
+              as={Link}
+              to="/examples/"
+              activeClassName="active"
+              partiallyActive
+            >
+              Examples
+            </HeaderLink>
           </Only>
           <Box
             as={HeaderLink}
