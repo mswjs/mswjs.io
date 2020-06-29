@@ -1,5 +1,5 @@
 import React from 'react'
-import { Composition, Box } from 'atomic-layout'
+import { Composition } from 'atomic-layout'
 
 import Layout from '../components/layout'
 import { Grid } from '../components/Grid'
@@ -31,7 +31,7 @@ const Examples = () => {
           Browser through the collection of Mock Service Worker usage examples
           with various libraries and frameworks.
         </TextLead>
-        <Composition gap={80} marginTop={80}>
+        <Composition gap={32} gapMd={80} marginTop={80}>
           <section>
             <Heading level={2}>API types</Heading>
             <ExampleList>
