@@ -12,7 +12,12 @@ import { Heading } from '../components/Heading'
 
 const ExampleList: React.FC = ({ children }) => {
   return (
-    <Composition gap={64} templateCols="repeat(3, 1fr)">
+    <Composition
+      gap={64}
+      templateCols="repeat(1, 1fr)"
+      templateColsMd="repeat(2, 1fr)"
+      templateColsLg="repeat(3, 1fr)"
+    >
       {children}
     </Composition>
   )
