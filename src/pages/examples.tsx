@@ -1,7 +1,8 @@
-~import React from 'react'
+import React from 'react'
 import { Composition } from 'atomic-layout'
 
 import Layout from '../components/layout'
+import SEO from '../components/seo'
 import { Grid } from '../components/Grid'
 import { ExampleItem } from '../components/exampleItem'
 import { TextLead } from '../components/TextLead'
@@ -26,6 +27,12 @@ const ExampleList: React.FC = ({ children }) => {
 const Examples = () => {
   return (
     <Layout>
+      <SEO
+        title="Examples – MSW – Seamless API mocking library for browser and Node"
+        socialTitle="Examples – Mock Service Worker"
+        description="Browse through the collection of Mock Service Worker usage examples
+        with various libraries and frameworks."
+      />
       <Grid paddingVertical={64} paddingVerticalMd={80}>
         <Heading>Examples</Heading>
         <TextLead>
