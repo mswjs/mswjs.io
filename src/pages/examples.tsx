@@ -1,4 +1,4 @@
-import React from 'react'
+~import React from 'react'
 import { Composition } from 'atomic-layout'
 
 import Layout from '../components/layout'
@@ -29,7 +29,7 @@ const Examples = () => {
       <Grid paddingVertical={64} paddingVerticalMd={80}>
         <Heading>Examples</Heading>
         <TextLead>
-          Browser through the collection of Mock Service Worker usage examples
+          Browse through the collection of Mock Service Worker usage examples
           with various libraries and frameworks.
         </TextLead>
         <Composition gap={80} marginTop={80}>
