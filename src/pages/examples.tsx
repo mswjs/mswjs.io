@@ -29,8 +29,8 @@ const Examples = () => {
       <Grid paddingVertical={64} paddingVerticalMd={80}>
         <Heading>Examples</Heading>
         <TextLead>
-          Here will be the introductory text on why examples are important and
-          that we provide some of them below.
+          Browser through the collection of Mock Service Worker usage examples
+          with various libraries and frameworks.
         </TextLead>
         <Composition gap={80} marginTop={80}>
           <section>
@@ -38,14 +38,14 @@ const Examples = () => {
             <ExampleList>
               <ExampleItem
                 textLide="REST API"
-                text="info"
+                text="Learn how to mock a RESTful API in a React application."
                 logo={JavaScriptIcon}
                 fill="red"
                 url="https://github.com/mswjs/examples/tree/master/examples/rest-react"
               />
               <ExampleItem
                 textLide="GraphQL API (Apollo)"
-                text="info"
+                text="Learn how to mock a GraphQL API in a React application using Apollo."
                 logo={GraphQLLogo}
                 fill="#E535AB"
                 url="https://github.com/mswjs/examples/tree/master/examples/graphql-react-apollo"
@@ -57,7 +57,7 @@ const Examples = () => {
             <ExampleList>
               <ExampleItem
                 textLide="Storybook"
-                text="info"
+                text="Integrate API mocking for your stories in Storybook."
                 logo={StorybookIcon}
                 fill="#ff4785"
                 url="https://github.com/mswjs/examples/tree/master/examples/with-storybook"
