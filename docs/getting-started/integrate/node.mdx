@@ -67,7 +67,7 @@ afterAll(() => server.close())
 
 ### Using manual setup
 
-If you are not using CRA, please create a custom teardown module and reference it using Jest's [`setupFiles`](https://jestjs.io/docs/en/configuration#setupfiles-array) option in your `jest.config.js`.
+If you are not using CRA, please create a custom teardown module and reference it using Jest's [`setupFilesAfterEnv`](https://jestjs.io/docs/en/configuration#setupfilesafterenv-array) option in your `jest.config.js`.
 
 <Action>
   Create a <code>jest.setup.js</code> test teardown file:
