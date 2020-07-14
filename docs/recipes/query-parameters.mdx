@@ -67,6 +67,29 @@ worker.start()
 
 > Read more in the [`URLSearchParams.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) specification.
 
+Call `req.url.searchParams.entries()` method to access all query parameters.
+
+```js showLineNumbers focusedLines=5
+import { setupWorker, rest } from 'msw'
+
+const worker = setupWorker(
+  rest.get('/products', (req, res, ctx) => {
+    const queryParams = Object.fromEntries(req.url.searchParams.entries());
+    
+    const { productIds } = queryParams;
+
+    return res(
+      ctx.json({
+        productIds,
+      }),
+    )
+  }),
+)
+
+worker.start()
+```
+> Read more in the [`URLSearchParams.entries()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/entries) specification.
+
 <ResponsePreview
   request={{
     method: 'GET',
