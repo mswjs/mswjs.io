@@ -99,6 +99,27 @@ export const handlers = [
 
 > Utilize things like [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), or [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) to handle more complex API scenarios and user interactions.
 
+## Fallback to default request
+
+If you wish a handler to let the request reach the original endpoint you can simply return nothing from the handler.
+
+```js
+  export const handlers = [
+    rest.get('/user', (req, res, ctx) => {
+      if (someCondition) {
+        return; // pass-through
+      }
+      // mocked response
+      return res(
+        ctx.status(200),
+        ctx.json({
+          username: 'admin',
+        }),
+      )
+    }
+]
+```
+
 ## Next step
 
 The request handlers are complete, yet there is one last step to perform: integrate the mocking.
