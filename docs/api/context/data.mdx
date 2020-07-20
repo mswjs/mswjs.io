@@ -1,0 +1,27 @@
+---
+title: data()
+order: 577
+---
+
+Returns a data payload as the response to a GraphQL operation.
+
+## Call signature
+
+```ts
+function data(payload: Record<string, any>): MockedResponse
+```
+
+## Examples
+
+```js showLineNumbers focusedLines=3-8
+graphql.query('GetUserDetail', (req, res, ctx) => {
+  return res(
+    ctx.data({
+      user: {
+        firstName: 'John',
+        age: 32,
+      },
+    }),
+  )
+})
+```

@@ -1,0 +1,43 @@
+---
+title: delay()
+order: 579
+---
+
+Delays the response by the given duration (in ms). When no duration is provided, uses a random realistic server response time.
+
+## Call signature
+
+```ts
+function delay(duration?: number): MockedResponse
+```
+
+## Examples
+
+### Explicit response delay
+
+```js showLineNumbers focusedLines=3-4
+rest.post('/login', (req, res, ctx) => {
+  return res(
+    // Delays response for 2000ms.
+    ctx.delay(2000),
+    ctx.json({
+      id: 'abc-123',
+    }),
+  )
+})
+```
+
+### Implicit response delay
+
+When no delay duration is explicitly provided, Mock Service Worker uses a random realistic server response time on the particular mocked response.
+
+```js showLineNumbers focusedLines=3
+rest.delete('/post/:postId', (req, res, ctx) => {
+  return res(
+    ctx.delay(),
+    ctx.json({
+      message: `Post ${req.params.postId} successfully deleted!`,
+    }),
+  )
+})
+```

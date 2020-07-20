@@ -1,0 +1,20 @@
+---
+title: body()
+order: 573
+---
+
+Sets a raw response body. Does not apply any `Content-Type` headers or other response transformations.
+
+## Call signature
+
+```js
+function body(data: any): MockedResponse
+```
+
+## Examples
+
+```js showLineNumbers
+rest.get('/user', (req, res, ctx) => {
+  return res(ctx.body('text-body'))
+})
+```

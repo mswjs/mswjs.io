@@ -9,7 +9,7 @@ Fetch specification explicitly [forbids](https://developer.mozilla.org/en-US/doc
 
 However, since Mock Service Worker executes on the client side, it can provide a functionality similar to receiving a mocked cookie from the response, without violating security. To achieve that, use the `ctx.cookie()` response transformer function that sets the given cookies on the `document.cookie` string directly.
 
-## Example
+## Examples
 
 ```js showLineNumbers focusedLines=8
 import { setupWorker, rest } from 'msw'

@@ -1,0 +1,34 @@
+---
+title: status()
+order: 571
+---
+
+Sets a given HTTP status code and text (optional) on the response.
+
+## Call signature
+
+```ts
+function status(code: number, text?: string): MockedResponse
+```
+
+## Examples
+
+### Status code
+
+```js showLineNumbers focusedLines=2-4
+rest.get('/post/:postId', (req, res, ctx) => {
+  // Status text is automatically inferred from a given status code
+  // according to REST API specification.
+  return res(ctx.status(404))
+})
+```
+
+### Status code and status text
+
+```js showLineNumbers focusedLines=2-4
+rest.get('/post/:postId', (req, res, ctx) => {
+  // You can override the inferred status text
+  // by providing it as the second argument.
+  return res(ctx.status(404, 'Custom status text'))
+})
+```

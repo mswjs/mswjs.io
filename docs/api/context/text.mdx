@@ -1,0 +1,24 @@
+---
+title: text()
+order: 574
+---
+
+Sets a textual response body. Appends a `Content-Type: text/plain` header on the response.
+
+## Call signature
+
+```ts
+function text(data: string): MockedResponse
+```
+
+## Examples
+
+```js showLineNumbers focusedLines=3-5
+rest.get('/quote', (req, res, ctx) => {
+  return res(
+    ctx.text(
+      'The future belongs to those who believe in the beauty of their dreams.',
+    ),
+  )
+})
+```
