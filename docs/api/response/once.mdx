@@ -3,7 +3,7 @@ title: once()
 order: 561
 ---
 
-Responds with the current response resolver only once. Any subsequent request matches are ignored.
+When called, marks the current request handler as used. Any subsequent request matches to this handler are ignored, and fall-through to the next suitable handler.
 
 ## Examples
 
@@ -11,4 +11,18 @@ Responds with the current response resolver only once. Any subsequent request ma
 rest.post('/login', (req, res, ctx) => {
   return res.once(ctx.json({ id: 'abc-123' }))
 })
+```
+
+```js showLineNumbers
+// src/any-module.js
+// The first request to the captured route
+// returns the mocked response specified.
+fetch('/login', { method: 'POST' })
+// { "id": "abc-123" }
+
+// Any subsequent request, although matches,
+// will skip the request handler that has been used.
+// Let's consider that we don't have an actual "POST /login" endpoint.
+fetch('/login', { method: 'POST' })
+// ERR: Network error! (no such endpoint)
 ```
