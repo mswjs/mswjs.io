@@ -9,17 +9,17 @@ order: 43
 
 Response resolver function accepts the following parameters:
 
-| Parameter name                                        | Description                                                |
-| ----------------------------------------------------- | ---------------------------------------------------------- |
-| [`request`](/docs/basics/response-resolver/request)   | Information about the intercepted request.                 |
-| [`response`](/docs/basics/response-resolver/response) | Function to compose the mocked response.                   |
-| [`context`](/docs/basics/response-resolver/context)   | Context utilities specific to the current request handler. |
+| Parameter name                   | Description                                                |
+| -------------------------------- | ---------------------------------------------------------- |
+| [`request`](/docs/api/request)   | Information about the intercepted request.                 |
+| [`response`](/docs/api/response) | Function to compose the mocked response.                   |
+| [`context`](/docs/api/context)   | Context utilities specific to the current request handler. |
 
 ## Examples
 
 ### Basic
 
-The basic workflow implies that you pass a response resolver function to a request handler. Response resolver must always return the call of the `res()` function.
+The basic workflow implies that you pass a response resolver function to a request handler. A mocked response created as a result of calling the `res()` function and supplying it with a list of request handlers would be returned as a response to a matched request.
 
 ```js showLineNumbers focusedLines=7-15
 // src/mocks.js
@@ -71,4 +71,48 @@ const worker = setupWorker(
 )
 
 worker.start()
+```
+
+### Conditional response
+
+When a response resolver function returns nothing, it performs the matched request as-is, returning an actual response.
+
+```js showLineNumbers focusedLines=7,15
+rest.get('/user', (req, res, ctx) => {
+  const { userId } = req.url.searchParams
+
+  if (userId === 'abc-123') {
+    // Return a mocked response only if the `userId` query parameter
+    // equals to a specific value.
+    return res(
+      ctx.json({
+        firstName: 'John',
+        lastName: 'Maverick',
+      }),
+    )
+  }
+
+  // No return statement, perform the request as-is.
+})
+```
+
+Alternatively, you can use an explicit `return` statement without the `res()` call to achieve the same behavior.
+
+```js showLineNumbers
+rest.post('/login', (req, res, ctx) => {
+  const { username } = req.body
+
+  if (username === 'real-user') {
+    // Bypass this request, returning an actual response
+    // only when the `username` equals to a specific value.
+    return
+  }
+
+  // Otherwise, always respond with a mocked response.
+  return res(
+    ctx.json({
+      id: 'abc-123',
+    }),
+  )
+})
 ```

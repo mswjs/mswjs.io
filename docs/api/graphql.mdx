@@ -12,7 +12,14 @@ Each method in this namespace represents a GraphQL operation kind:
 - `graphql.query()`
 - `graphql.mutation()`
 
-<Hint>Subscriptions are not currently supported.</Hint>
+<Hint mode="warning">
+  Subscriptions are not currently supported.{' '}
+  <strong>
+    Contribute to the support{' '}
+    <a href="https://github.com/mswjs/msw/issues/285">here</a>
+  </strong>
+  .
+</Hint>
 
 Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](/docs/basics/response-resolver) as the second to mock the respective operation.
 

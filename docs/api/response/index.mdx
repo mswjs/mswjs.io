@@ -1,6 +1,6 @@
 ---
 title: response
-order: 45
+order: 56
 ---
 
 **Response** (`res`) is a function that composes a mocked response object.
@@ -23,7 +23,22 @@ A call to the `res()` function creates a mocked response object. Each response t
 
 ## Example
 
+### Standard usage
+
+```js showLineNumbers
+rest.get('/users', (req, res, ctx) => {
+  return res(
+    // This response transformer sets a custom status text on the response.
+    ctx.status(301),
+    // While this one appends a "Content-Type" response header.
+    ctx.set('Content-Type', 'application/json'),
+  )
+})
+```
+
 ### Raw usage
+
+The `res()` call can accept a function that modifies and returns a created mocked response instance. It's recommended, however, to use standard response transformers for faster reference and reliability.
 
 ```js showLineNumbers
 rest.get('/users', (req, res) => {
@@ -35,12 +50,37 @@ rest.get('/users', (req, res) => {
 })
 ```
 
-### Usage with standard response transformers
+### Custom response composition
 
-The raw usage example above can be replaced by using standard response transformers.
+Usually the `res` function is available as an argument of a request handler. However, in some cases (like building a custom response composition) it's useful to import the `res` function directly, outside of the request handler's scope.
 
-```js showLineNumbers
-rest.get('/users', (req, res, ctx) => {
-  return res(ctx.status(301), ctx.set('Content-Type', 'application/json'))
-})
+You can do that by importing the `response` function from the `msw` package:
+
+```js showLineNumbers focusedLines=2,7
+// src/mocks/res.js
+import { response, context } from 'msw'
+
+export function res(...transformers) {
+  // A custom response composition chain that embeds
+  // a random realistic server response delay to each `res()` call.
+  return response(...transformers, context.delay())
+}
+```
+
+Such custom response composition can later be used when creating a mocked response in a request handler:
+
+```js showLineNumbers focusedLines=3,9
+// src/mocks/handlers.js
+import { setupWorker, rest } from 'msw'
+import { res } from './res'
+
+const worker = setupWorker(
+  rest.get('/user', (req, _, ctx) => {
+    // Notice how this response resolver is using a custom `res` function
+    // imported at the top of this module.
+    return res(ctx.json({ firstName: 'John', lastName: 'Maverick' }))
+  }),
+)
+
+worker.start()
 ```

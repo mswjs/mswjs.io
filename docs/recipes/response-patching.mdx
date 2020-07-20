@@ -7,7 +7,7 @@ order: 73
 
 Pass the intercepted `request` object to the `ctx.fetch()` call to get the original response. Using `ctx.fetch()` performs a request that **bypasses any request handlers**, as any `window.fetch()` calls, even those inside response resolvers, are subjected to interception.
 
-## Example
+## Examples
 
 Below is an example of patching a response from a user detail endpoint of [GitHub API v3](https://developer.github.com/v3/).
 

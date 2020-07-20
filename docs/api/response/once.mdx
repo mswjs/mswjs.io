@@ -1,0 +1,14 @@
+---
+title: once()
+order: 561
+---
+
+Responds with the current response resolver only once. Any subsequent request matches are ignored.
+
+## Examples
+
+```js showLineNumbers focusedLines=2
+rest.post('/login', (req, res, ctx) => {
+  return res.once(ctx.json({ id: 'abc-123' }))
+})
+```

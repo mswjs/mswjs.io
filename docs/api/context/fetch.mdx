@@ -1,0 +1,37 @@
+---
+title: fetch()
+order: 5710
+---
+
+Performs a request inside a request handler.
+
+### Response patching
+
+The `ctx.fetch()` utility is primarily designed for [Response patching](/docs/recipes/response-patching), as it produces requests that are bypassed by any otherwise matching request handlers.
+
+### NodeJS compatibility
+
+To preserve a NodeJS compatibility, `ctx.fetch()` uses [`node-fetch`](https://github.com/node-fetch/node-fetch) package when called in the NodeJS environment.
+
+## Call signature
+
+```ts
+function fetch(req: MockedRequest): Promise<any>
+function fetch(input: RequestInfo, init?: RequestInit)
+```
+
+## Examples
+
+```js showLineNumbers focusedLines=2-3
+rest.get('https://api.github.com/users/:username', async (req, res, ctx) => {
+  // Performs an original request to the GitHub API.
+  const originalResponse = await ctx.fetch(req)
+
+  return res(
+    ctx.json({
+      name: 'John Maverick',
+      location: originalResponse.location,
+    }),
+  )
+})
+```

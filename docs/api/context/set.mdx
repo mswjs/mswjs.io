@@ -1,0 +1,49 @@
+---
+title: set()
+order: 572
+---
+
+Sets one, or multiple headers on the mocked response.
+
+## Call signature
+
+```ts
+function set(name: string, value: string): MockedResponse
+function set(headers: Record<string, string | string[]>): MockedResponse
+```
+
+## Examples
+
+### Single header
+
+```js showLineNumbers focusedLines=2
+rest.get('/user', (req, res, ctx) => {
+  return res(ctx.set('Content-Type', 'application/hal+json'))
+})
+```
+
+### Multiple values
+
+```js showLineNumbers focusedLines=3-5
+rest.get('/user', (req, res, ctx) => {
+  return res(
+    ctx.set({
+      'x-my-header': ['one', 'two'],
+    }),
+  )
+})
+```
+
+### Multiple headers
+
+```js showLineNumbers focusedLines=3-6
+rest.get('/user', (req, res, ctx) => {
+  return res(
+    ctx.set({
+      'Accept-Language': 'en-US',
+      'Content-Type': ['applcation/json', 'application/hal+json'],
+      'Content-Length': 40032,
+    }),
+  )
+})
+```

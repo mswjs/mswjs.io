@@ -1,0 +1,30 @@
+---
+title: error()
+order: 578
+---
+
+Returns a GraphQL error object in the response.
+
+## Call signature
+
+```ts
+function error(e: GraphQLError): MockedResponse
+```
+
+## Examples
+
+```js showLineNumbers focusedLines=3-11
+graphql.mutation('Login', (req, res, ctx) => {
+  return res(
+    ctx.error({
+      message: 'Failed to log in: username or password are invalid',
+      locations: [
+        {
+          line: 8,
+          column: 12,
+        },
+      ],
+    }),
+  )
+})
+```

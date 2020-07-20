@@ -1,0 +1,25 @@
+---
+title: json()
+order: 575
+---
+
+Sets a JSON response body. Appends a `Content-Type: application/json` header on the response.
+
+## Call signature
+
+```ts
+function json(data: Record<string, any>): MockedResponse
+```
+
+## Examples
+
+```js showLineNumbers focusedLines=3-6
+rest.get('/user', (req, res, ctx) => {
+  return res(
+    ctx.json({
+      firstName: 'John',
+      age: 32,
+    }),
+  )
+})
+```

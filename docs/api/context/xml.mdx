@@ -1,0 +1,28 @@
+---
+title: xml()
+order: 576
+---
+
+Sets an XML response body. Appends a `Content-Type: text/xml` header on the response.
+
+## Call signature
+
+```ts
+function xml(data: string): MockedResponse
+```
+
+## Examples
+
+```js showLineNumbers
+rest.get('/user', (req, res, ctx) => {
+  return res(
+    ctx.xml(`
+<user>
+  <id>abc-123</id>
+  <firstName>John</firstName>
+  <lastName>Maverick</lastName>
+</user>
+    `),
+  )
+})
+```
