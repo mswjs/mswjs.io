@@ -1,0 +1,22 @@
+---
+title: networkError()
+order: 562
+---
+
+Emulates a network error during the response. Cancels the respective request.
+
+### Intended vs unintended exceptions
+
+The `res.networkError()` call produces an intended exception, as opposed to a `throw` statement within a request handler, which is considered an unintended exception. Such differentiation is necessary to catch and surface exceptions early during your request handling logic.
+
+Read more about exceptions handling on the [Mocking error responses](/docs/recipes/mocking-error-responses) page.
+
+## Examples
+
+The request handler below produces a network error in response to the `GET /books` request:
+
+```js showLineNumbers focusedLines=2
+rest.get('/books', (req, res, ctx) => {
+  return res.networkError('Failed to connect')
+})
+```
