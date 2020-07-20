@@ -37,7 +37,7 @@ Here are some examples of request URLs that would match the request handler abov
 ```js showLineNumbers
 import { setupWorker, rest } from 'msw'
 
-const { start } = setupWorker(
+const worker = setupWorker(
   rest.get('/users/:userId', (req, res, ctx) => {
     const { userId } = req.params
 
@@ -51,5 +51,5 @@ const { start } = setupWorker(
   }),
 )
 
-start()
+worker.start()
 ```

@@ -42,7 +42,7 @@ setupWorker(
 ```js showLineNumbers
 import { setupWorker, graphql } from 'msw'
 
-const { start } = setupWorker(
+const worker = setupWorker(
   graphql.query('GetUserDetail', (req, res, ctx) => {
     return res(
       ctx.data({
@@ -55,7 +55,7 @@ const { start } = setupWorker(
   }),
 )
 
-start()
+worker.start()
 ```
 
 ### Accessing variables
@@ -65,7 +65,7 @@ The variables of a query/mutation can be accessed in the `req.variables` object.
 ```js showLineNumbers focusedLines=5
 import { setupWorker, graphql } from 'msw'
 
-const { start } = setupWorker(
+const worker = setupWorker(
   graphql.mutation('DeletePost', (req, res, ctx) => {
     const { postId } = req.variables
 
@@ -73,7 +73,7 @@ const { start } = setupWorker(
   }),
 )
 
-start()
+worker.start()
 ```
 
 ### Usage with TypeScript
@@ -105,7 +105,7 @@ interface LoginMutationVariables {
   password: string
 }
 
-const { start } = setupWorker(
+const worker = setupWorker(
   graphql.query<GetUserDetailQuery, GetUserDetailVariables>(
     'GetUserDetail',
     (req, res, ctx) => {
@@ -137,7 +137,7 @@ const { start } = setupWorker(
   )
 )
 
-start()
+worker.start()
 ```
 
 In case you write your GraphQL implementation schema-first, it's recommended you use TypeScript type generators to get the types for your queries. We recommend using [GraphQL Code Generator](https://graphql-code-generator.com/) for that purpose.

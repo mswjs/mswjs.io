@@ -1,6 +1,6 @@
 ---
 title: Response resolver
-order: 43
+order: 42
 ---
 
 **Response resolver** is a function that accepts a matched request and returns a mocked response.
@@ -25,7 +25,7 @@ The basic workflow implies that you pass a response resolver function to a reque
 // src/mocks.js
 import { setupWorker, rest } from 'msw'
 
-const { start } = setupWorker(
+const worker = setupWorker(
   rest.get(
     '/user',
     // Example of a response resolver that returns
@@ -41,7 +41,7 @@ const { start } = setupWorker(
   ),
 )
 
-start()
+worker.start()
 ```
 
 ### Reusable resolver
