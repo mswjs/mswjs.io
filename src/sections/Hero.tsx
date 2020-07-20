@@ -109,7 +109,7 @@ export const Hero = () => {
                 >
                   Get started
                 </Button>
-                <Button as="a" href="https://github.com/mswjs/examples">
+                <Button as={Link} to="/examples">
                   See examples
                 </Button>
               </Composition>
