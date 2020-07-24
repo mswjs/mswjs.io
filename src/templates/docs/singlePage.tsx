@@ -70,6 +70,7 @@ const DocumentationPage = ({ data, pageContext }) => {
       page={page}
       navTree={pageContext.navTree}
       breadcrumbs={pageContext.breadcrumbs}
+      contributors={pageContext.contributors}
     >
       <Seo
         title={seo.title}

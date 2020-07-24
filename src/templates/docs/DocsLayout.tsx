@@ -15,6 +15,7 @@ interface Props {
   page?: any
   navTree: any
   breadcrumbs: any
+  contributors?: any
 }
 
 const BodyStylesOverride = createGlobalStyle`
@@ -54,6 +55,7 @@ const DocsLayout: React.FC<Props> = ({
   page,
   navTree,
   breadcrumbs,
+  contributors,
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false)
 
@@ -90,7 +92,7 @@ const DocsLayout: React.FC<Props> = ({
             </Box>
             {page && (
               <DocsPageFooter
-                relativeFilePath={page.fields.relativeFilePath}
+                contributors={contributors}
                 editUrl={page.fields.editUrl}
               />
             )}

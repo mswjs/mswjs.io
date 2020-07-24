@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { Box } from 'atomic-layout'
 import { EditOnGitHub } from './EditOnGitHub'
-import { PageCollaborators } from './PageCollaborators'
+import { PageContributors } from './PageContributors'
 
 const StyledFooter = styled.footer`
   border-top: 1px solid var(--color-gray-dim);
@@ -19,19 +19,16 @@ const StyledFooter = styled.footer`
 `
 
 interface Props {
-  relativeFilePath: string
+  contributors: any[]
   editUrl: string
 }
 
-export const DocsPageFooter: React.FC<Props> = ({
-  relativeFilePath,
-  editUrl,
-}) => {
+export const DocsPageFooter: React.FC<Props> = ({ contributors, editUrl }) => {
   return (
     <Box as={StyledFooter} marginTop="4rem" paddingTop="2rem">
       <Box flex alignItems="center" justifyContent="space-between">
         <section>
-          <PageCollaborators relativeFilePath={relativeFilePath} />
+          <PageContributors users={contributors} />
         </section>
         <section>
           <EditOnGitHub url={editUrl} />
