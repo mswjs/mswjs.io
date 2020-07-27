@@ -1,0 +1,32 @@
+---
+title: errors()
+order: 578
+---
+
+Returns one, or multiple GraphQL errors in the mocked response.
+
+## Call signature
+
+```ts
+function errors(errorsList: GraphQLError[]): MockedResponse
+```
+
+## Examples
+
+```js showLineNumbers focusedLines=3-11
+graphql.mutation('Login', (req, res, ctx) => {
+  return res(
+    ctx.errors([
+      {
+        message: 'Failed to log in: username or password are invalid',
+        locations: [
+          {
+            line: 8,
+            column: 12,
+          },
+        ],
+      },
+    ]),
+  )
+})
+```
