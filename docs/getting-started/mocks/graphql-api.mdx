@@ -131,10 +131,12 @@ export const handlers = [
     if (!authenticatedUser) {
       // When not authenticated, respond with an error
       return res(
-        ctx.error({
-          message: 'Not authenticated',
-          errorType: 'AuthenticationError',
-        }),
+        ctx.errors([
+          {
+            message: 'Not authenticated',
+            errorType: 'AuthenticationError',
+          },
+        ]),
       )
     }
 
