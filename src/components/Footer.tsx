@@ -119,6 +119,9 @@ export const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
+                <a href="https://kentcdodds.com/discord/">Discord</a>
+              </li>
+              <li>
                 <a href="https://twitter.com/ApiMocking">Twitter</a>
               </li>
             </ul>

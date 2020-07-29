@@ -33,8 +33,8 @@ export const Button = styled.button<ButtonProps>`
     switch (variant) {
       case 'primary': {
         return css`
-          background-color: ${({ theme }) => theme.colors.primary};
-          color: ${({ theme }) => theme.colors.primaryDark};
+          background-color: ${({ theme }) => theme.colors.black};
+          color: #fff;
         `
       }
 

@@ -15,7 +15,7 @@ const QuoteContainer = styled.blockquote`
   ::after {
     display: inline-block;
     height: 3rem;
-    color: var(--color-primary);
+    color: var(--color-gray-light);
     font-size: 4rem;
     font-weight: 600;
     margin-top: -0.5ch;

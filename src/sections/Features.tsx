@@ -19,7 +19,7 @@ const Block = styled.div`
   display: inline-flex;
   margin: 0.5ch 0.5ch 0 0;
   border-radius: 4px;
-  color: ${({ theme }) => theme.colors.secondary};
+  color: var(--color-black);
 `
 
 export const Features = () => {

@@ -7,11 +7,7 @@ import { Accent } from '../components/Accent'
 import { Heading } from '../components/Heading'
 
 const Container = styled.div`
-  background-image: linear-gradient(
-    120deg,
-    #eee,
-    ${({ theme }) => theme.colors.grayDim}
-  );
+  background-color: var(--color-gray-dim);
 `
 
 const UnstyledUl = styled.ul`

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Code as ReactCdxCode } from 'react-cdx'
 import CodeTheme from 'prism-react-renderer/themes/nightOwlLight'
 import { CopyButton } from '../CopyButton'
-import { query, useResponsiveQuery, useResponsiveValue } from 'atomic-layout'
+import { query, useResponsiveValue } from 'atomic-layout'
 
 const StyledCode = styled(ReactCdxCode)`
   overflow: auto;

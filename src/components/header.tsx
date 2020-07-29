@@ -6,23 +6,24 @@ import { IoIosMenu as MenuIcon } from 'react-icons/io'
 import { DiGithubBadge as GitHubIcon } from 'react-icons/di'
 
 import { Grid } from './Grid'
+import { ShowOnly } from './ShowOnly'
 import { ReactComponent as Logo } from '../images/logo.svg'
 
 const StyledHeader = styled.header`
   position: sticky;
   top: 0;
 
-  color: ${({ theme }) => theme.colors.grayDark};
+  color: var(--color-gray);
   font-size: 0.9rem;
   font-weight: 600;
 
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
   z-index: 2;
 `
 
 const LibraryName = styled.span`
+  color: var(--color-black);
   font-weight: 800;
 `
 
@@ -34,11 +35,11 @@ const HeaderLink = styled.a`
   transition: color 0.1s ease;
 
   &:hover {
-    color: var(--color-gray);
+    color: var(--color-black);
   }
 
   &.active {
-    color: var(--color-secondary);
+    color: var(--color-black);
 
     ::before {
       content: '';
@@ -47,7 +48,7 @@ const HeaderLink = styled.a`
       left: 0;
       right: 0;
       height: 2px;
-      background-color: var(--color-secondary);
+      background-color: var(--color-black);
     }
   }
 `
@@ -89,9 +90,9 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
           <Box as={Link} to="/" alt="Mock Service Worker logo" flex>
             <Logo height="48" width="48" />
           </Box>
-          <Only from="md" as="span" marginLeft={8}>
+          <ShowOnly from="md" as="span" marginLeft={8}>
             <LibraryName>Mock Service Worker</LibraryName>
-          </Only>
+          </ShowOnly>
         </Box>
         <Composition inline autoFlow="column" alignItems="center" gap={16}>
           <HeaderLink
@@ -102,7 +103,7 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
           >
             Docs
           </HeaderLink>
-          <Only from="sm" flex>
+          <ShowOnly from="sm" flex>
             <HeaderLink
               as={Link}
               to="/examples/"
@@ -111,7 +112,7 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
             >
               Examples
             </HeaderLink>
-          </Only>
+          </ShowOnly>
           <Box
             as={HeaderLink}
             href="https://github.com/mswjs/msw"
