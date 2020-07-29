@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components'
 import { CodeWithVariants, Code } from 'react-cdx'
 import { IoIosInformationCircleOutline as InfoIcon } from 'react-icons/io'
 import { Box } from 'atomic-layout'
-import CodeTheme from 'prism-react-renderer/themes/nightOwl'
 
 import { Fragment, FragmentItem } from './Fragment'
+import { theme as HeroCodeTheme } from '../codeTheme'
 import { ReactComponent as JavaScriptIcon } from '../images/logos/javascript-2.svg'
 import { ReactComponent as TypeScriptIcon } from '../images/logos/typescript.svg'
 
@@ -17,7 +17,7 @@ const Section = styled.section`
 `
 
 const Container = styled.div`
-  background-color: #061626;
+  background-color: var(--color-black);
   border-radius: calc(var(--border-radius) * 2);
   border-top-left-radius: 0;
   color: #fff;
@@ -39,10 +39,10 @@ const Container = styled.div`
 
 const TabItem = styled.button<{ active?: boolean }>`
   padding: 0.5rem 1rem;
-  background-color: var(--color-gray-dark);
+  background-color: var(--color-gray);
   border: 0;
   box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
-  color: var(--color-gray-light);
+  color: #fff;
   cursor: pointer;
   font-size: 90%;
 
@@ -57,10 +57,8 @@ const TabItem = styled.button<{ active?: boolean }>`
   ${({ active }) =>
     active &&
     css`
-      background-color: #061626;
+      background-color: var(--color-black);
       box-shadow: unset;
-      color: #fff;
-      font-weight: 600;
     `}
 `
 
@@ -95,7 +93,7 @@ const renderCodeExample = ({
         </FragmentItem>
       ))}
     </Box>
-    <Code theme={CodeTheme} showLineNumbers {...activeVariant.codeProps} />
+    <Code theme={HeroCodeTheme} showLineNumbers {...activeVariant.codeProps} />
   </section>
 )
 

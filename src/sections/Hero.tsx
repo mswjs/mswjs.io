@@ -8,12 +8,10 @@ import { Heading } from '../components/Heading'
 import { TextLead } from '../components/TextLead'
 import { Button } from '../components/Button'
 import { FullUsageExample } from '../components/FullUsageExample'
-import theme from '../theme'
 
 const Container = styled.section`
   position: relative;
-  background-color: ${({ theme }) =>
-    theme.utils.alpha(theme.colors.secondary, 0.25)};
+  background-image: linear-gradient(hsl(210, 32%, 97%), transparent);
 
   &:before {
     content: '';
@@ -26,43 +24,6 @@ const Container = styled.section`
     z-index: -1;
   }
 `
-
-const AbsoluteHeroShape = styled.svg`
-  box-sizing: border-box;
-  fill: url(#gradientGray);
-  z-index: -1;
-  width: 100%;
-`
-
-const ManualHeroShape = () => {
-  return (
-    <AbsoluteHeroShape viewBox="0 0 2000 150" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="gradientGray" x1="0%" y1="20%" x2="0%" y2="100%">
-          <stop
-            offset="0%"
-            style={{ stopColor: theme.colors.secondary, stopOpacity: 0.25 }}
-          />
-          <stop
-            offset="100%"
-            style={{ stopColor: theme.colors.secondary, stopOpacity: 0.35 }}
-          />
-        </linearGradient>
-      </defs>
-      <path
-        d="
-M-250 0
-t250 100
-t500 0
-t500 0
-t500 -20
-t500 0
-t 500 -100
-"
-      />
-    </AbsoluteHeroShape>
-  )
-}
 
 export const Hero = () => {
   return (
@@ -121,8 +82,6 @@ export const Hero = () => {
           </Composition>
         </Grid>
       </Box>
-
-      <ManualHeroShape />
     </div>
   )
 }
