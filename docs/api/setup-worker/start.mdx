@@ -81,6 +81,57 @@ Defers any application requests that happened while Service Worker was activatin
   application's runtime.
 </Hint>
 
+---
+
+### `onUnhandledRequest`
+
+- `"bypass" | "warn" | "error" | (req: MockedRequest) => void`
+- (default: `"bypass"`)
+
+Specifies how to handle a request that is not listed in the request handlers.
+
+#### Pre-defined behaviors
+
+| Option name | Description                                  |
+| ----------- | -------------------------------------------- |
+| `"bypass"`  | Performs an unhandled request as-is.         |
+| `"warn"`    | Produces a warning in the browser's console. |
+| `"error"`   | Produces an error in the browser's console.  |
+
+```js showLineNumbers focusedLines=8
+const worker = setupWorker(
+  rest.get('/books', (req, res, ctx) => {
+    return res(ctx.json({ title: 'The Lord of the Rings' }))
+  }),
+)
+
+worker.start({
+  onUnhandledRequest: 'warn',
+})
+```
+
+#### Custom callback
+
+When passed a function as a value of this option, the library executes that function whenever an unhandled request occurs. The behavior of such unhandled request won't be affected, but can be prevented if the custom callback function throws an exception.
+
+```js showLineNumbers focusedLines=8
+const worker = setupWorker(
+  rest.get('/books', (req, res, ctx) => {
+    return res(ctx.json({ title: 'The Lord of the Rings' }))
+  }),
+)
+
+worker.start({
+  onUnhandledRequest(req) {
+    console.error(
+      'Found an unhandled %s request to %s',
+      req.method,
+      req.url.href,
+    )
+  },
+})
+```
+
 ## Operation
 
 ### Reusing worker
