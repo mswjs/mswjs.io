@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "msw-website",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "description": "Official website and documentation for the Mock Service Worker library.",
+  "version": "0.0.0",
+  "author": "Artem Zakharchenko <kettanaito@gmail.com>",
   "dependencies": {
     "@mdx-js/mdx": "^1.5.8",
     "@mdx-js/react": "^1.5.8",
@@ -46,7 +46,7 @@
     "prettier": "^1.19.1"
   },
   "keywords": [
-    "gatsby"
+    "msw"
   ],
   "license": "MIT",
   "scripts": {
@@ -55,14 +55,13 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "yarn clean && yarn develop",
     "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "clean": "gatsby clean"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/mswjs/mswjs.io"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/mswjs/mswjs.io/issues"
   }
 }
