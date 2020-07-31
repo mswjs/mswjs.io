@@ -9,6 +9,7 @@ import { Section, SectionContent } from '../components/Section'
 import { Heading } from '../components/Heading'
 
 import { ReactComponent as TeachersDiagram } from '../images/teachers-diagram.svg'
+import { ReadmoreLink } from '../components/ReadmoreLink'
 
 const AnimatedDiagram = styled(TeachersDiagram)`
   max-width: 100%;
@@ -98,6 +99,13 @@ export const Teaching: React.FC = () => {
           reliable API substitution that you don't need to run, and that behaves
           the same between different OS.
         </Text>
+        <ReadmoreLink
+          href="https://epicreact.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Enroll in the "Epic React" course featuring MSW
+        </ReadmoreLink>
       </SectionContent>
     </Section>
   )
