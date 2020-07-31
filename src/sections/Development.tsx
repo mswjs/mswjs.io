@@ -140,7 +140,7 @@ export const Development = () => {
           today, or GraphQL tomorrow? Experiment, combine, and find what suits
           your project best before committing to the ecosystem.
         </Text>
-        <Text marginBottom={10}>
+        <Text marginBottom={0}>
           <ReadmoreLink as={Link} to="/docs/getting-started/mocks/rest-api">
             Explore REST API integration
           </ReadmoreLink>

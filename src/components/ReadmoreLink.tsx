@@ -4,10 +4,12 @@ import { Box } from 'atomic-layout'
 import { IoMdArrowDropright as Icon } from 'react-icons/io'
 
 export const StyledLink = styled.a`
+  display: inline-flex;
   margin: 0 -1rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.1em;
   font-weight: 500;
+  line-height: 1.5;
   text-decoration: none;
 
   &:hover {
@@ -21,7 +23,7 @@ export const ReadmoreLink: React.FC<React.DetailedHTMLProps<
 > & { as?: any }> = ({ children, ref, ...restProps }) => {
   return (
     <StyledLink {...restProps}>
-      <Box inline as={Icon} marginRight={4} marginBottom={-2} />
+      <Box inline as={Icon} marginRight={4} marginTop="0.25ch" />
       <span>{children}</span>
     </StyledLink>
   )
