@@ -105,6 +105,11 @@ export const Footer: React.FC = () => {
                   Mocking error responses
                 </Link>
               </li>
+              <li>
+                <Link to="/docs/recipes/binary-response-type">
+                  Binary response type
+                </Link>
+              </li>
             </ul>
           </section>
           <section>
