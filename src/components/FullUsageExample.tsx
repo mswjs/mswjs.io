@@ -243,7 +243,7 @@ interface Response {
 }
 
 const worker = setupWorker(
-  graphql.mutation<Variables, Response>('Login', (req, res, ctx) => {
+  graphql.mutation<Response, Variables>('Login', (req, res, ctx) => {
     const { username } = req.variables
 
     return res(
