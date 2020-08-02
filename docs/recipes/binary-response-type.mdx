@@ -6,7 +6,7 @@ Providing the `ctx.body()` utility function with a [`BufferSource`](https://deve
 
 ## Example
 
-Here is an example of a mocked response that sends a local image:
+Here is an example of a mocked response that sends a local image, using `setupWorker`:
 
 ```js showLineNumbers focusedLines=6-9,12-15
 import { setupWorker, rest } from 'msw'
@@ -29,6 +29,40 @@ const worker = setupWorker(
 )
 
 worker.start()
+```
+
+Here is an example of a mocked response that reads an image from the file system and sends it, using `setupServer` in
+a node environment:
+```js showLineNumbers focusedLines=9-12,15-18
+import { rest } from "msw";
+import { setupServer } from "msw/node";
+
+import * as path from "path";
+import * as fs from "fs";
+
+const server = setupServer(
+  rest.get("/images/:imageId", (_, res, ctx) => {
+    // Read the image from the file system using readFileSync
+    const imageBuffer = fs.readFileSync(
+      path.resolve(__dirname, "../fixtures/image.jpg")
+    )
+
+    return res(
+      ctx.set("Content-Length", imageBuffer.byteLength.toString()),
+      ctx.set("Content-Type", "image/jpeg"),
+      // Respond with the "ArrayBuffer".
+      ctx.body(imageBuffer)
+    )
+  })
+);
+
+beforeAll(() => {
+  server.listen()
+})
+
+afterAll(() => {
+  server.close()
+})
 ```
 
 <Hint>
