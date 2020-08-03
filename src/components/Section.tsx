@@ -1,8 +1,12 @@
 import React from 'react'
 import { Composition, Box } from 'atomic-layout'
+import { CompositionProps } from '@atomic-layout/core'
 import { Grid } from './Grid'
 
-export const Section: React.FC = ({ children }) => {
+export const Section: React.FC<CompositionProps> = ({
+  children,
+  ...gridProps
+}) => {
   return (
     <Grid>
       <Composition
@@ -17,6 +21,7 @@ export const Section: React.FC = ({ children }) => {
         paddingVerticalLg={120}
         maxWidth="100%"
         marginHorizontal="auto"
+        {...gridProps}
       >
         {children}
       </Composition>

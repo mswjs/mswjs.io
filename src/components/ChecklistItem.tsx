@@ -15,7 +15,8 @@ export const CheckistItem: React.FC = ({ children }) => {
         as={IoIosCheckmark}
         size={32}
         fill={theme.colors.secondary}
-        marginTop={-4}
+        marginTop="-0.25ch"
+        marginRight="0.25ch"
         flexShrink="0"
       />
       <span>{children}</span>

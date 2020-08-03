@@ -16,6 +16,7 @@ import { Integration } from '../sections/Integration'
 
 import kentAvatarUrl from '../images/avatars/kentcdodds.png'
 import { Quote } from '../components/Quote'
+import { Companies } from '../sections/Companies'
 
 const HomePage = () => (
   <Layout>

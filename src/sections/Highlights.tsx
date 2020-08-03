@@ -1,13 +1,20 @@
 import React from 'react'
-import { Composition } from 'atomic-layout'
+import { Composition, Box } from 'atomic-layout'
 import styled from 'styled-components'
-import { Grid } from '../components/Grid'
 import { CheckistItem } from '../components/ChecklistItem'
-import { Accent } from '../components/Accent'
 import { Heading } from '../components/Heading'
+import { Section } from '../components/Section'
+import { Companies } from './Companies'
 
 const Container = styled.div`
   background-color: var(--color-gray-dim);
+  font-size: 1.15rem;
+
+  hr {
+    background-color: var(--color-gray);
+    opacity: 0.16;
+    width: 100%;
+  }
 `
 
 const UnstyledUl = styled.ul`
@@ -17,29 +24,28 @@ const UnstyledUl = styled.ul`
 export const Highlights = () => {
   return (
     <Container>
-      <Grid paddingVertical={64} paddingVerticalMd={80} paddingVerticalLg={120}>
+      <Section templateColsLg="1fr">
+        <div>
+          <Heading level={3} align="center">
+            Why Mock Service Worker?
+          </Heading>
+        </div>
         <Composition
-          templateColsXl="repeat(2, 1fr)"
-          alignItems="center"
-          gap={32}
-          gapMd={64}
+          as={UnstyledUl}
+          gap={12}
+          gapCol={64}
+          templateColsMd="repeat(2, 1fr)"
         >
-          <div>
-            <Heading level={3}>
-              Why do people <Accent>fall in love</Accent> with{' '}
-              <span className="no-wrap">Mock Service Worker</span>?
-            </Heading>
-          </div>
-          <Composition as={UnstyledUl} gap={12} templateColsMd="repeat(2, 1fr)">
-            <CheckistItem>Interception on the network level</CheckistItem>
-            <CheckistItem>Modular functional syntax</CheckistItem>
-            <CheckistItem>Standardized Service Worker API</CheckistItem>
-            <CheckistItem>Client-side execution</CheckistItem>
-            <CheckistItem>Support of REST API and GraphQL</CheckistItem>
-            <CheckistItem>TypeScript support</CheckistItem>
-          </Composition>
+          <CheckistItem>Interception on the network level</CheckistItem>
+          <CheckistItem>Composable functional syntax</CheckistItem>
+          <CheckistItem>Standardized Service Worker API</CheckistItem>
+          <CheckistItem>Client-side execution</CheckistItem>
+          <CheckistItem>Support of REST API and GraphQL</CheckistItem>
+          <CheckistItem>Native TypeScript support</CheckistItem>
         </Composition>
-      </Grid>
+        <hr />
+        <Companies />
+      </Section>
     </Container>
   )
 }
