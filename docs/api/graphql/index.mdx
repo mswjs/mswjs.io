@@ -7,7 +7,7 @@ The `graphql` namespace contains a set of [Request handlers](/docs/basics/reques
 
 ## Methods
 
-Each method in this namespace represents a GraphQL operation kind:
+Methods of this namespace represent GraphQL operation kinds:
 
 - `graphql.query()`
 - `graphql.mutation()`
@@ -75,6 +75,20 @@ const worker = setupWorker(
 
 worker.start()
 ```
+
+### Multiple GraphQL endpoints
+
+When your application communicates with multiple GraphQL endpoints it's useful to establish a per-endpoint requests interception.
+
+Please refer to the following `graphql.link` API:
+
+import * as GraphQLLinkAPI from './link.mdx'
+
+<PageLink
+  title="graphql.link()"
+  page={GraphQLLinkAPI}
+  url="/docs/api/graphql/link"
+/>
 
 ### Usage with TypeScript
 
