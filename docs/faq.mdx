@@ -14,7 +14,7 @@ In a nutshell, most solutions provide requests interception on the application l
 
 Yes. All request-issuing libraries are supported.
 
-Be it `axios`, `react-query`, or plain `fetch`—Mock Service Worker supports all libraries that issue requests.
+Be it `axios`, `react-query`, or plain `fetch`—Mock Service Worker supports all libraries that issue requests in both browser and NodeJS.
 
 ## Can I use it with Node?
 
@@ -45,15 +45,17 @@ Please see the following page for the integration steps:
 
 Yes.
 
-Mock Service Worker uses [Service Worker API][service-worker-api] for requests interception. That API is implemented by a browser according to the specification, making the library as secure as the worker's implementation itself.
+Mock Service Worker uses [Service Worker API][service-worker-api] for requests interception. That API is implemented by a browser according to the Service Worker specification, making the library as secure as the worker's implementation itself.
 
-Moreover, you are in full control over the Service Worker's code (`mockServiceWorker.js`), because you serve it by your application.
+Moreover, you are in full control over the Service Worker's code (`mockServiceWorker.js`), because you copy and serve it manually.
+
+**Learn more about [Service Worker security](https://chromium.googlesource.com/chromium/src/+/master/docs/security/service-worker-security-faq.md) from Google.**
 
 ## Should I commit the Service Worker file to Git?
 
 Yes.
 
-Generally, the decision to commit the `mockServiceWorker.js` file to VCS (i.e. Git) is up to you, but we **highly recommend doing so**. That way all the collaborators would have the same mocking behavior, ensuring consistent experience across the team.
+We **highly recommend committing** the `mockServiceWorker.js` file to Git. That way all the collaborators would have the same mocking behavior, ensuring consistent experience across the team.
 
 > Alternatively, you can generate the Service Worker file by executing `npx msw init` as a part of your development pipeline.
 
