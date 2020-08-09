@@ -10,6 +10,7 @@ import { TextLead } from '../components/TextLead'
 import { ReactComponent as GraphQLLogo } from '../images/graphql-logo.svg'
 import { ReactComponent as JavaScriptIcon } from '../images/logos/javascript-2.svg'
 import { ReactComponent as StorybookIcon } from '../images/logos/storybook.svg'
+import { ReactComponent as AngularIcon } from '../images/logos/angular.svg'
 import reduxSagaLogo from '../images/logos/redux-saga.png'
 import { Heading } from '../components/Heading'
 
@@ -75,6 +76,13 @@ const Examples = () => {
               Service Worker with other tools.
             </Text>
             <Composition gap={24}>
+              <ExampleItem
+                mode="minimal"
+                title="Angular"
+                logo={AngularIcon}
+                fill="#ff4785"
+                url="https://github.com/mswjs/examples/tree/master/examples/rest-angular"
+              />
               <ExampleItem
                 mode="minimal"
                 title="Storybook"

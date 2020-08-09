@@ -88,7 +88,7 @@ export const ExampleItem: React.FC<PropsExample> = ({
           {title}
         </Box>
         {description && (
-          <Text color="gray" marginTop={8}>
+          <Text color="gray" marginTop={4}>
             {description}
           </Text>
         )}
