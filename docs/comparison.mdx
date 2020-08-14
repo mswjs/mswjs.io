@@ -100,6 +100,6 @@ Per specification, a hard reload of a page stops any Service Worker execution un
 
 Since Service Worker controls a page at a given host and port, opening a different project on the same port may result into Service Worker still attempting to process irrelevant requests.
 
-| Service Mocker                                                                                                           | Mock Service Worker                                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Does not support multiple projects on the same port. Requires to unregister the Service Worker manually in your browser. | Supports multiple projects on the same port by detecing when the last client is closed, unregsitering the Service Worker automatically. |
+| Service Mocker                                                                                                           | Mock Service Worker                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Does not support multiple projects on the same port. Requires to unregister the Service Worker manually in your browser. | Supports multiple projects on the same port by detecting when the last client is closed, unregistering the Service Worker automatically. |
