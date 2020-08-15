@@ -83,6 +83,32 @@ Defers any application requests that happened while Service Worker was activatin
 
 ---
 
+### `matchFilenameOnly`
+
+- `boolean` (default: _false_)
+
+Allows you to override the default strict matching behavior when selecting a worker to `start`. If set to `true`, the first worker
+based on a matching filename only (ex: mockServiceWorker.js) will be returned. 
+
+```js showLineNumbers focusedLines=4
+const worker = setupWorker(...)
+
+worker.start({
+  serviceWorker: {
+    // Register the worker on the port of the proxy instead of where the app might actually be running
+    url: 'https://localhost:1337/mockServiceWorker.js',
+  },
+  matchFilenameOnly: true,
+})
+```
+
+<Hint mode="warning">
+  Most normal implementations <strong>will not</strong> need to set this. This is primarily useful as an escape hatch in the scenario that
+you are using proxies and having difficulty to get the origin and `scriptURL` to match due to port differences.
+</Hint>
+
+---
+
 ### `onUnhandledRequest`
 
 - `"bypass" | "warn" | "error" | (req: MockedRequest) => void`
