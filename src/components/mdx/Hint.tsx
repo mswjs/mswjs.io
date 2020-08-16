@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 interface HintProps {
-  mode?: 'info' | 'warning' | 'danger'
+  mode?: 'info' | 'success' | 'warning' | 'danger'
 }
 
 export const Hint = styled.div<HintProps>`
@@ -9,6 +9,10 @@ export const Hint = styled.div<HintProps>`
 
   ${({ mode }) => {
     switch (mode) {
+      case 'success':
+        return css`
+          --border-color: var(--color-success);
+        `
       case 'warning':
         return css`
           --border-color: var(--color-primary);

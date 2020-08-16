@@ -10,6 +10,7 @@ export default {
     grayDark: 'hsl(210, 18%, 24%)',
 
     black: 'hsl(220, 18%, 20%)',
+    success: 'hsl(90, 60%, 60%)',
     danger: 'hsl(0, 90%, 60%)',
   },
   utils: {
