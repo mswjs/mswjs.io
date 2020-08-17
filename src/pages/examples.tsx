@@ -8,7 +8,7 @@ import { ExampleItem } from '../components/ExampleItem'
 import { Text } from '../components/Text'
 import { TextLead } from '../components/TextLead'
 import { ReactComponent as GraphQLLogo } from '../images/graphql-logo.svg'
-import { ReactComponent as JavaScriptIcon } from '../images/logos/javascript-2.svg'
+import { ReactComponent as ReactLogo } from '../images/logos/react.svg'
 import { ReactComponent as NextjsIcon } from '../images/logos/nextjs.svg'
 import { ReactComponent as StorybookIcon } from '../images/logos/storybook.svg'
 import { ReactComponent as AngularIcon } from '../images/logos/angular.svg'
@@ -53,22 +53,39 @@ const Examples = () => {
               place to start with API mocking when all you know is the API type
               your application uses.
             </Text>
-            <ExampleList>
-              <ExampleItem
-                title="REST API"
-                description="Learn how to mock a RESTful API in a React application."
-                logo={JavaScriptIcon}
-                fill="red"
-                url="https://github.com/mswjs/examples/tree/master/examples/rest-react"
-              />
-              <ExampleItem
-                title="GraphQL API"
-                description="Learn how to mock a GraphQL API in a React application using Apollo."
-                logo={GraphQLLogo}
-                fill="#E535AB"
-                url="https://github.com/mswjs/examples/tree/master/examples/graphql-react-apollo"
-              />
-            </ExampleList>
+            <Composition gap={32}>
+              <div>
+                <Heading level={3}>React</Heading>
+                <ExampleList>
+                  <ExampleItem
+                    title="REST API"
+                    description="Learn how to mock a RESTful API in a React application."
+                    logo={ReactLogo}
+                    fill="#61DAFB"
+                    url="https://github.com/mswjs/examples/tree/master/examples/rest-react"
+                  />
+                  <ExampleItem
+                    title="GraphQL API"
+                    description="Learn how to mock a GraphQL API in a React application using Apollo."
+                    logo={GraphQLLogo}
+                    fill="#E535AB"
+                    url="https://github.com/mswjs/examples/tree/master/examples/graphql-react-apollo"
+                  />
+                </ExampleList>
+              </div>
+              <div>
+                <Heading level={3}>Angular</Heading>
+                <ExampleList>
+                  <ExampleItem
+                    title="REST API"
+                    description="Learn how to mock a RESTful API in an Angular application."
+                    logo={AngularIcon}
+                    fill="#ff4785"
+                    url="https://github.com/mswjs/examples/tree/master/examples/rest-angular"
+                  />
+                </ExampleList>
+              </div>
+            </Composition>
           </section>
           <section>
             <Heading level={2}>Libraries & Frameworks</Heading>
@@ -77,13 +94,6 @@ const Examples = () => {
               Worker with specific tools.
             </Text>
             <Composition gap={24}>
-              <ExampleItem
-                mode="minimal"
-                title="Angular"
-                logo={AngularIcon}
-                fill="#ff4785"
-                url="https://github.com/mswjs/examples/tree/master/examples/rest-angular"
-              />
               <ExampleItem
                 mode="minimal"
                 title="NextJS"
