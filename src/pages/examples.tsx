@@ -9,9 +9,9 @@ import { Text } from '../components/Text'
 import { TextLead } from '../components/TextLead'
 import { ReactComponent as GraphQLLogo } from '../images/graphql-logo.svg'
 import { ReactComponent as ReactLogo } from '../images/logos/react.svg'
-import { ReactComponent as NextjsIcon } from '../images/logos/nextjs.svg'
-import { ReactComponent as StorybookIcon } from '../images/logos/storybook.svg'
-import { ReactComponent as AngularIcon } from '../images/logos/angular.svg'
+import { ReactComponent as NextJsLogo } from '../images/logos/nextjs.svg'
+import { ReactComponent as StorybookLogo } from '../images/logos/storybook.svg'
+import { ReactComponent as AngularLogo } from '../images/logos/angular.svg'
 import reduxSagaLogo from '../images/logos/redux-saga.png'
 import { Heading } from '../components/Heading'
 
@@ -79,7 +79,7 @@ const Examples = () => {
                   <ExampleItem
                     title="REST API"
                     description="Learn how to mock a RESTful API in an Angular application."
-                    logo={AngularIcon}
+                    logo={AngularLogo}
                     fill="#ff4785"
                     url="https://github.com/mswjs/examples/tree/master/examples/rest-angular"
                   />
@@ -97,14 +97,14 @@ const Examples = () => {
               <ExampleItem
                 mode="minimal"
                 title="NextJS"
-                logo={NextjsIcon}
+                logo={NextJsLogo}
                 fill="#ff4785"
                 url="https://github.com/vercel/next.js/tree/canary/examples/with-msw"
               />
               <ExampleItem
                 mode="minimal"
                 title="Storybook"
-                logo={StorybookIcon}
+                logo={StorybookLogo}
                 fill="#ff4785"
                 url="https://github.com/mswjs/examples/tree/master/examples/with-storybook"
               />
