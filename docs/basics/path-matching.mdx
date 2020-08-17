@@ -14,7 +14,7 @@ By default, any outgoing request is matched using these criteria:
 - Has matching URL.
 
 <Hint>
-  Request that doesn't have any corresponding request handlers is performed
+  Requests with no corresponding request handlers are performed
   as-is.
 </Hint>
 
@@ -28,18 +28,18 @@ There are three ways to match a request:
 
 <Hint mode="warning">
   URL query parameters and hashes <strong>are ignored</strong> when matching
-  request URL.
+  a request URL.
 </Hint>
 
 ## Exact URL
 
-When providing an exact URL string, only requests that match that string would be mocked. Mock Service Worker uses _strict_ strings comparison, but ignores trailing slashes.
+When providing an exact URL string, only requests that match that string are mocked. Mock Service Worker uses _strict_ strings comparison, but ignores trailing slashes.
 
 ```js showLineNumbers focusedLines=5
 import { setupWorker, rest } from 'msw'
 
 setupWorker(
-  // Only "POST https://api.backend.dev/users" requests would match this handler
+  // Only "POST https://api.backend.dev/users" requests match this handler
   rest.post('https://api.backend.com/users', responseResolver),
 )
 ```
@@ -87,7 +87,7 @@ Try out how Mock Service Worker matches paths in the interactive form below.
 
 ## RegExp
 
-When provided a regular expression, request URL must match that expression in order to be mocked. Unlike URL string matching, regular expressions use _weak_ comparison, supportng partial matches.
+When provided a regular expression, the request URL must match that expression in order to be mocked. Unlike URL string matching, regular expressions use _weak_ comparison, supporting partial matches.
 
 ```js showLineNumbers focusedLines=8
 import { setupWorker, rest } from 'msw'
