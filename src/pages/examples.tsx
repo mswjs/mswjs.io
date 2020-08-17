@@ -9,6 +9,7 @@ import { Text } from '../components/Text'
 import { TextLead } from '../components/TextLead'
 import { ReactComponent as GraphQLLogo } from '../images/graphql-logo.svg'
 import { ReactComponent as JavaScriptIcon } from '../images/logos/javascript-2.svg'
+import { ReactComponent as NextjsIcon } from '../images/logos/nextjs.svg'
 import { ReactComponent as StorybookIcon } from '../images/logos/storybook.svg'
 import { ReactComponent as AngularIcon } from '../images/logos/angular.svg'
 import reduxSagaLogo from '../images/logos/redux-saga.png'
@@ -72,8 +73,8 @@ const Examples = () => {
           <section>
             <Heading level={2}>Libraries & Frameworks</Heading>
             <Text>
-              Examples below are strictly targeted on the integration of Mock
-              Service Worker with other tools.
+              Examples below are focused on the integration of Mock Service
+              Worker with specific tools.
             </Text>
             <Composition gap={24}>
               <ExampleItem
@@ -82,6 +83,13 @@ const Examples = () => {
                 logo={AngularIcon}
                 fill="#ff4785"
                 url="https://github.com/mswjs/examples/tree/master/examples/rest-angular"
+              />
+              <ExampleItem
+                mode="minimal"
+                title="NextJS"
+                logo={NextjsIcon}
+                fill="#ff4785"
+                url="https://github.com/vercel/next.js/tree/canary/examples/with-msw"
               />
               <ExampleItem
                 mode="minimal"
