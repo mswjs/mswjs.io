@@ -58,7 +58,7 @@ MirageJS is a mocking library that is highly focused on data relation, and allow
 
 - GitHub: [`service-mocker`](https://github.com/service-mocker/service-mocker/)
 
-Service Mocker is another library that leverages the Service Mocker API for the purpose of mocking. Although both libraries share a similar idea, their implementations differ.
+Service Mocker is another library that leverages the Service Worker API for the purpose of mocking. Although both libraries share a similar idea, their implementations differ.
 
 | Criteria       | Service Mocker                                                                                                                                         | Mock Service Worker                                                                  |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
@@ -78,7 +78,7 @@ Service Worker is registered for a specific scope on the website. For example, a
 
 | Service Mocker                                                                                                                                   | Mock Service Worker                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| Leverates a dedicated `Service-Worker-Allowed` header to control a worker's scope. Requires access to the build configuration to set the header. | Encourages to register a Service Worker in the root of your application (by running `npx msw init` shorthand command). |
+| Leverages a dedicated `Service-Worker-Allowed` header to control a worker's scope. Requires access to the build configuration to set the header. | Encourages to register a Service Worker in the root of your application (by running `npx msw init` shorthand command). |
 
 #### Cookies
 
