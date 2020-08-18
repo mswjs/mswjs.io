@@ -7,7 +7,7 @@ import { DiGithubBadge as GitHubIcon } from 'react-icons/di'
 
 import { Grid } from './Grid'
 import { ShowOnly } from './ShowOnly'
-import { ReactComponent as Logo } from '../images/logo.svg'
+import { ReactComponent as Logo } from '../images/logos/msw.svg'
 
 const StyledHeader = styled.header`
   position: sticky;
