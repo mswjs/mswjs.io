@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Composition, Box } from 'atomic-layout'
 import { Link } from 'gatsby'
 
-import { ReactComponent as Logo } from '../images/logo-mask.svg'
+import { ReactComponent as Logo } from '../images/logos/msw-mask.svg'
 import { ReactComponent as VercelLogo } from '../../media/vercel-logo.svg'
 
 import { Grid } from './Grid'
