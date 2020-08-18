@@ -62,13 +62,9 @@ In order for our mock definition to excute during the runtime, it needs to be im
   production. Doing so may lead to a distorted experience for your users.
 </Hint>
 <Action>
-  Import the <code>src/mocks/browser.js</code> file conditionally following one of the
-  examples below:
+  Import the <code>src/mocks/browser.js</code> file conditionally following one
+  of the examples below:
 </Action>
-
-### Using conditional import
-
-Adding a conditional import is the optimal choice, as you don't always have access to the project's build configuration.
 
 ```js showLineNumbers focusedLines=6-9
 // src/index.js
@@ -82,26 +78,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
-```
-
-### Using webpack
-
-If you can access your build configuration, consider importing the mock definition as a conditional entry module. This is the best strategy for your application to know nothing about the mocking.
-
-```js showLineNumbers focusedLines=6-7
-// webpack.config.js
-const __DEV__ = process.env.NODE_ENV === 'development'
-
-module.exports = {
-  entry: [
-    // Conditionally include the mock definition file
-    __DEV__ && 'src/mocks/browser.js',
-
-    // Include your application's entry
-    'src/index.js',
-  ].filter(Boolean),
-  // The rest of your webpack config...
-}
 ```
 
 ## Verify & Inspect
