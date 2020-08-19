@@ -66,7 +66,7 @@ import { setupWorker, rest } from 'msw'
 import { mockUser } from './resolvers/mockUser'
 
 const worker = setupWorker(
-  rest.get('/user', mockUser)
+  rest.get('/user', mockUser),
   rest.get('/me', mockUser)
 )
 
