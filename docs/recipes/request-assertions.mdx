@@ -8,14 +8,16 @@ When testing, it may be tempting to write assertions against a dispatched reques
 - Check that a request was issued with the correct URL/parameters/body/etc;
 - Check that a specific request handler was called.
 
-Adding such assertions, however, is **implementation details testing** and is **highly discouraged**. Mock Service Worker gives you a guarantee over network communication.
+Adding such assertions, however, is implementation details testing and is **highly discouraged**. Asserting requests in such way is testing how your application is written, instead of what it does.
+
+Mock Service Worker gives you a guarantee over network communication.
 
 <Hint mode="success">
   Instead of asserting that a request was made, or had the correct data, test
   how <strong>your application</strong> reacted to that request.
 </Hint>
 
-Your application fetches data for a reason. If a request's method, headers, or body are invalid, your application is likely to get an invalid response back. Below we are going to take a look at some recommended strategies to request testing.
+Your application fetches data for a reason, so prefer testing that reason as the outcome of the request. If a request's method, headers, or body are invalid, your application is likely to get an invalid response back. Below we are going to take a look at some recommended strategies to request testing.
 
 ## Include failure scenarios
 
@@ -51,6 +53,8 @@ rest.get('/search', (req, res, ctx) => {
 By accounting on the failure scenario, you can rely on your application's output in your tests being a reflection of the request's validity.
 
 > Remember that mocks execute next to the rest of your application. Import validation utilities, constants, and other useful data to reduce the amount of repetition in your mocking setup and keep it aligned with your application's logic.
+
+Including partial representation of the business logic is also beneficial, as it helps mocks to represent the state of an API in a point of time, making mocks useful when reasoning about API's behavior.
 
 ## Treat unhandled requests
 
