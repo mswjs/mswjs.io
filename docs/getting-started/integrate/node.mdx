@@ -35,20 +35,19 @@ export const server = setupServer(...handlers)
 
 ## Setup
 
-It's recommended to configure API mocking as a part of your tests teardown, so that your tests don't have to reference any mocking during their runs, focusing on testing what matters.
+It's recommended to configure API mocking as a part of your tests setup, so that your tests don't have to reference any mocking during their runs, focusing on testing what matters.
 
 ### Using Create React App
 
-In Create React App there is a `src/setupTests.js` module that is used as a Jest teardown configuration.
+In Create React App there is a `src/setupTests.js` module that is used in the Jest configuration as the [setupFilesAfterEnv](https://jestjs.io/docs/en/configuration.html#setupfilesafterenv-array) value.
 
 <Action>
-  Modify the <code>src/setupTests.js</code> tests teardown file:
+  Modify the <code>src/setupTests.js</code> tests setup file:
 </Action>
 
 ```js showLineNumbers
 // src/setupTests.js
 import { server } from './mocks/server.js'
-
 // Establish API mocking before all tests.
 beforeAll(() => server.listen())
 
@@ -67,10 +66,10 @@ afterAll(() => server.close())
 
 ### Using manual setup
 
-If you are not using CRA, please create a custom teardown module and reference it using Jest's [`setupFilesAfterEnv`](https://jestjs.io/docs/en/configuration#setupfilesafterenv-array) option in your `jest.config.js`.
+If you are not using CRA, please create a custom setup module and reference it using Jest's [`setupFilesAfterEnv`](https://jestjs.io/docs/en/configuration#setupfilesafterenv-array) option in your `jest.config.js`.
 
 <Action>
-  Create a <code>jest.setup.js</code> test teardown file:
+  Create a <code>jest.setup.js</code> test setup file:
 </Action>
 
 ```bash
@@ -80,7 +79,7 @@ $ touch jest.setup.js
 Open the `jest.setup.js` file and write there the same code as in the Create React App `src/setupTests.js` example above.
 
 <Action>
-  Reference the teardown file in <code>jest.config.js</code>:
+  Reference the setup file in <code>jest.config.js</code>:
 </Action>
 
 ```js
@@ -94,7 +93,7 @@ module.exports = {
 
 ## Run tests
 
-Since API mocking has been established in the tests teardown, each test suite doesn't need any extra adjustments to intercept and mock API requests according to your handlers.
+Since API mocking has been established in the tests setup, each test suite doesn't need any extra adjustments to intercept and mock API requests according to your handlers.
 
 ```js showLineNumbers
 // test/Login.test.js
