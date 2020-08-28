@@ -11,8 +11,7 @@ Unlike a NodeJS `Request`, the request object in Mock Service Worker is a _parti
   The <code>req</code> object of the same response resolve will be different in
   browser and Node environment. Certain request properties are not available in
   Node (i.e. <code>credentials</code>, <code>integrity</code> or{' '}
-  <code>destination</code>). The values of such properties are set to the
-  default values, when referenced in Node environment.
+  <code>destination</code>). The values of such properties are set to sensible defaults when referenced in Node environment.
 </Hint>
 
 ## Properties
