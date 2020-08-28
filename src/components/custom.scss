@@ -3,11 +3,6 @@
 
 @import 'animations.scss';
 
-::selection {
-  background-color: var(--color-secondary);
-  color: #fff;
-}
-
 html {
   --font-family-mono: 'Source Code Pro', Menlo, monospace;
   --border-radius: 3px;
@@ -16,8 +11,9 @@ html {
     0 22.3px 17.9px rgba(0, 0, 0, 0.018), 0 41.8px 33.4px rgba(0, 0, 0, 0.022),
     0 100px 80px rgba(0, 0, 0, 0.03);
 
+    // font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-family: Inter, sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 body {
@@ -70,7 +66,6 @@ h3 {
 
 h4 {
   margin: 1.5em 0 0.5em;
-  font-weight: 500;
 }
 
 h5 {

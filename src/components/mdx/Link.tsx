@@ -20,7 +20,7 @@ export const Link: React.FC<{ href: string }> = ({
     return (
       <StyledLink {...restProps} href={href} target="_blank">
         <span>{children}</span>
-        <Box as={ExternalLinkIcon} inline marginLeft={4} marginBottom={-2} />
+        <Box as={ExternalLinkIcon} inline marginLeft="0.25ch" marginBottom={-2} />
       </StyledLink>
     )
   }
