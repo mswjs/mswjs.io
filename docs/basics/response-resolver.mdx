@@ -3,7 +3,7 @@ title: Response resolver
 order: 42
 ---
 
-**Response resolver** is a function that accepts a matched request and returns a mocked response.
+**Response resolver** is a function that accepts a captured request and may return a mocked response.
 
 ## Parameters
 
@@ -11,15 +11,15 @@ Response resolver function accepts the following parameters:
 
 | Parameter name                   | Description                                                |
 | -------------------------------- | ---------------------------------------------------------- |
-| [`request`](/docs/api/request)   | Information about the intercepted request.                 |
-| [`response`](/docs/api/response) | Function to compose the mocked response.                   |
+| [`request`](/docs/api/request)   | Information about the captured request.                 |
+| [`response`](/docs/api/response) | Function to create the mocked response.                   |
 | [`context`](/docs/api/context)   | Context utilities specific to the current request handler. |
 
 ## Examples
 
 ### Basic
 
-The basic workflow implies that you pass a response resolver function to a request handler. A mocked response created as a result of calling the `res()` function and supplying it with a list of request handlers would be returned as a response to a matched request.
+The most common usage is when a response resolver is used as an argument to a [request handler](/docs/basics/request-handler) to specify a mocked response it should return.
 
 ```js showLineNumbers focusedLines=7-15
 // src/mocks.js
@@ -46,7 +46,7 @@ worker.start()
 
 ### Reusable resolver
 
-Since response resolver is a plain function, you can create a single resolver and reuse it for multiple request handlers.
+Since response resolver is a regular function, you can declare and reuse it across multiple request handlers.
 
 ```js showLineNumbers
 // src/mocks/resolvers/mockUser.js
@@ -75,7 +75,7 @@ worker.start()
 
 ### Conditional response
 
-When a response resolver function returns nothing, it performs the matched request as-is, returning an actual response.
+When nothing is returned from a response resolver, MSW performed a captured request as-is, hitting the actual endpoint returning the response. Leverage this behavior to perform conditional mocking, for example based on the request's payload.
 
 ```js showLineNumbers focusedLines=7,15
 rest.get('/user', (req, res, ctx) => {
