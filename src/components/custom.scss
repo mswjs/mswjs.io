@@ -114,7 +114,7 @@ input {
   margin: 2rem 0;
 
   .line-number-focused {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 0.05);
     box-shadow: inset 3px 0 0 var(--color-primary);
   }
 }
