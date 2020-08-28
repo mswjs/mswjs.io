@@ -22,6 +22,22 @@ Below you can find an unbiased comparison between Mock Service Worker and other 
 - **Integration**. Steps to perform in order to integrate a library into your project.
 - **Definition**. How the mocking logic is defined.
 
+## Nock
+
+- GitHub: [`nock`](https://github.com/nock/nock)
+
+Nock is an HTTP server mocking and expectations library for NodeJS.
+
+| Criteria | Nock | Mock Service Worker |
+| - | - | - | 
+| Supported API |  REST | REST / GraphQL |
+| Environments |  Node | Node / Browser |
+| Implementation | Intercepts requests by monkey patching `http`/`https`/`XMLHttpRequest` modules. | <strong>Node</strong><br/>Intercepts requests by monkey patching `http`/`https`/`XMLHttpRequest` modules. |
+| Integration | Does not require any changes to an existing code. Requires additional adapters for request issuing libraries (i.e. `axios`). | Does not require any changes to an existing code. Does not require any additional adapters. |
+| Definition | Response mocking through method chaining. | Response mocking through functional composition. |
+
+> Nock is a great tool for combining API mocking and assertions in NodeJS. NodeJS API of Mock Service Worker functions similarly to Nock, but allows you to reuse the same mock definition in browser as well.
+
 ## JSON Server
 
 - GitHub: [`json-server`](https://github.com/typicode/json-server)
@@ -37,6 +53,7 @@ JSON Server allows you to create an actual HTTP server based on a JSON file.
 | Definition     | Mocks are defined using a custom JSON file, being a separate context.              | Mocks are defined in a client-side JavaScript, allowing to reuse actual logic, typings, utilities.                                                                                                             |
 
 > JSON Server is an actual HTTP server based on an abstract definition. Mock Service Worker is a Service Worker intercepting actual requests your application makes.
+
 
 ## MirageJS
 
