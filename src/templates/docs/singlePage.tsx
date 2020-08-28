@@ -71,6 +71,7 @@ const DocumentationPage = ({ data, pageContext }) => {
       navTree={pageContext.navTree}
       breadcrumbs={pageContext.breadcrumbs}
       contributors={pageContext.contributors}
+      lastModified={pageContext.lastModified}
     >
       <Seo
         title={seo.title}

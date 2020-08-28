@@ -8,7 +8,7 @@ interface Props {
 
 export const EditOnGitHub: React.FC<Props> = ({ url }) => {
   return (
-    <Box as="a" href={url} target="_blank" rel="noopener nofollow" flex>
+    <Box as="a" href={url} target="_blank" rel="noopener nofollow" flex inline>
       <Box as={GitHubIcon} size={20} marginTop={2} marginRight="0.25ch" />
       Edit this page
     </Box>
