@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const path = require('path')
+const { execSync } = require('child_process')
 const { until } = require('@open-draft/until')
 const { createApolloFetch } = require('apollo-fetch')
 const { createFilePath } = require('gatsby-source-filesystem')
@@ -174,6 +175,7 @@ exports.createPages = async ({ actions, graphql }) => {
         breadcrumbs: getDocumentBreadcrumbs(node, navTree),
         navTree,
         contributors: contributors[node.id],
+        lastModified: getLastModifiedDate(node.fileAbsolutePath)
       },
     })
   })
@@ -427,4 +429,17 @@ function createNavTree(edges) {
   }
 
   return buildRecursiveTree(items)
+}
+
+/**
+ * Returns the date string of the latest commit for the given path.
+ */
+function getLastModifiedDate(filePath) {
+  const buffer = execSync(`git log -1 --pretty="format:%ci" ${filePath}`)
+
+  if (!buffer) {
+    return null
+  }
+
+  return buffer.toString()
 }

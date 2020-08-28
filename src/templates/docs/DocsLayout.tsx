@@ -56,6 +56,7 @@ const DocsLayout: React.FC<Props> = ({
   navTree,
   breadcrumbs,
   contributors,
+  lastModified
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false)
 
@@ -92,6 +93,7 @@ const DocsLayout: React.FC<Props> = ({
             </Box>
             {page && (
               <DocsPageFooter
+                lastModified={lastModified}
                 contributors={contributors}
                 editUrl={page.fields.editUrl}
               />
