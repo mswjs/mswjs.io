@@ -18,14 +18,16 @@ const Button = styled.button`
   font-size: 90%;
 
   :hover {
-    border-color: var(--color-black);
-    color: var(--color-black);
+    border-color: var(--color-gray);
+    background-color: var(--color-gray);
+    color: #fff;
   }
 
   :focus {
-    background-color: var(--color-secondary);
-    border-color: var(--color-secondary);
-    color: #fff;
+    outline: 0;
+    background-color: var(--color-gray);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px var(--color-primary-dim);
   }
 
   span {

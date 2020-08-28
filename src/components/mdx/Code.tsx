@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Code as ReactCdxCode } from 'react-cdx'
-import CodeTheme from 'prism-react-renderer/themes/nightOwlLight'
+import { theme } from '../../codeTheme'
 import { CopyButton } from '../CopyButton'
 import { query, useResponsiveValue } from 'atomic-layout'
 
@@ -16,6 +16,9 @@ const Container = styled.div`
 
 const CopyCodeButton = styled(CopyButton)`
   margin-top: -1rem;
+  background-color: var(--color-black);
+  border-color: var(--color-gray);
+  color: #fff;
   width: 100%;
 
   @media ${query({ from: 'md' })} {
@@ -29,7 +32,6 @@ const CopyCodeButton = styled(CopyButton)`
 `
 
 interface CodeProps {
-  theme?: any
   children: string
   copyable?: boolean
   language: string
@@ -41,7 +43,6 @@ interface CodeProps {
 
 export const Code: React.FC<CodeProps> = ({
   children,
-  theme,
   language,
   className,
   copyable = true,
@@ -63,7 +64,7 @@ export const Code: React.FC<CodeProps> = ({
       code={children}
       className={className}
       language={language || (className && className.replace('language-', ''))}
-      theme={theme || CodeTheme}
+      theme={theme}
       showLineNumbers={showLineNumbers}
       lineNumberStart={lineStartNumber && parseFloat(lineStartNumber)}
       focusedLines={focusedLines}

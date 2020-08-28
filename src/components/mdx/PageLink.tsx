@@ -10,7 +10,7 @@ const StyledLink = styled(Link)`
 
   background-color: var(--color-secondary);
   color: #fff !important;
-  font-size: 90%;
+  font-size: 95%;
   line-height: 1.25;
 
   border-radius: var(--border-radius);
