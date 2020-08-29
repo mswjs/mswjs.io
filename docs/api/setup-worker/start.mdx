@@ -3,7 +3,7 @@ title: start()
 order: 511
 ---
 
-Registers and activates the Service Worker instance responsible for requests interception.
+Registers and activates the Service Worker instance responsible for intercepting requests.
 
 ## Options
 
@@ -79,6 +79,28 @@ Defers any application requests that happened while Service Worker was activatin
   Disabling this behavior is <strong>not recommended</strong>, as that would
   create a race condition between the Service Worker registration and your
   application's runtime.
+</Hint>
+
+---
+
+### `findWorker`
+
+- `(scriptURL, mockServiceWorkerUrl) => boolean`
+
+A custom lookup function to find a Mock Service Worker in the list of all registered Service Workers on the page.
+
+```js showLineNumbers focusedLines=6
+const worker = setupWorker(...)
+
+worker.start({
+  // Return the first registered service worker found with the name
+  // of `mockServiceWorker`, disregarding all other parts of the URL
+  findWorker: (scriptURL, _mockServiceWorkerUrl) => scriptURL.includes('mockServiceWorker'),
+})
+```
+
+<Hint mode="warning">
+Most applications should not need to use this option, but it may be useful in the scenario that your application runs behind a proxy, or has a dynamic hostname.
 </Hint>
 
 ---
