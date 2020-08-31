@@ -87,3 +87,13 @@ After importing the mock definition, you should see a successful activation mess
 <ConsoleMessage>[MSW] Mocking enabled</ConsoleMessage>
 
 Any requests that match previously defined handlers will now be intercepted and mocked.
+
+## Troubleshoot
+
+If you have created a project using Create React App you should remove the following line
+
+```js
+serviceWorker.unregister()
+```
+
+in your index file. Create React App will `unregister` all service workers by default causing issues with MSW.
