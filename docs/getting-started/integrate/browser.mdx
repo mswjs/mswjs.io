@@ -96,4 +96,4 @@ If you have created a project using Create React App you should remove the follo
 serviceWorker.unregister()
 ```
 
-in your index file. Create React App will `unregister` all service workers by default causing issues with MSW.
+in your `src/index.js` file. Create React App unregisters all Service Workers by default, which would also unregister the mock Service Worker, resulting into broken requests interception.
