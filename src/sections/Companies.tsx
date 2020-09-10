@@ -1,16 +1,16 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Composition, useResponsiveValue } from 'atomic-layout'
+import { Composition } from 'atomic-layout'
 import { Grid } from '../components/Grid'
 import { HeadingDiminished } from '../components/HeadingDiminished'
 
 import { ReactComponent as GoogleLogo } from '../images/logos/google.svg'
 import { ReactComponent as SpotifyLogo } from '../images/logos/spotify-text.svg'
 import { ReactComponent as RedwoodLogo } from '../images/logos/redwoodjs.svg'
-import { ReactComponent as AmexLogo } from '../images/logos/amex.svg'
+import { ReactComponent as LinodeLogo } from '../images/logos/linode.svg'
 
 const Container = styled.div`
-  color: var(--color-gray-light);
+  color: var(--color-gray);
 
   svg {
     fill: currentColor;
@@ -18,7 +18,7 @@ const Container = styled.div`
 `
 
 export const Companies: React.FC = () => {
-  const iconSize = useResponsiveValue({ xs: 48, sm: 48, md: 48 }, 64)
+  const iconSize = 48
 
   return (
     <Grid>
@@ -38,8 +38,8 @@ export const Companies: React.FC = () => {
       >
         <GoogleLogo height={iconSize} />
         <SpotifyLogo height={iconSize} />
-        <AmexLogo height={iconSize} />
         <RedwoodLogo width={iconSize} height={iconSize} />
+        <LinodeLogo width={iconSize} />
       </Composition>
     </Grid>
   )
