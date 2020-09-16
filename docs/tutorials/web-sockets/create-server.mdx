@@ -1,0 +1,44 @@
+---
+title: Create a server
+order: 61
+---
+
+Mock Service Worker provides a `ws` API to emulate a production Web Socket server as a part of your mock definition. Such mocked server introduces an interception layer to capture any incoming events from the client and allows to send server-side events.
+
+## Declaration
+
+Let's start by creating a Web Socket server on a non-existing address.
+
+<Action>
+  Create a Web Socket server using the <code>ws.link</code> API:
+</Action>
+
+```js
+import { ws } from 'msw'
+
+const chatServer = ws.link('wss://api.github.com/chat')
+```
+
+> Traditionally, there are no actual servers involved. Mock Service Worker operates entirely client-side, providing you a familiar abstraction layer to handle incoming and outgoing events.
+
+There is no need to run or establish a Web Socket server, it comes into affect immediately after its declaration.
+
+## Server life-cycle
+
+A mocked Web Socket server behaves as a regular Web Socket server, meaning it can react to the following events:
+
+| Event        | Description |
+| ------------ | ----------- |
+| `connection` | sdg         |
+| `message`    | sdg         |
+| `close`      | sdg         |
+
+> Note that each event has its own arguments to the event listener.
+
+For example, to react to a new Web Socket client connecting to the server, attach a `connection` event listener to the mocked Web Socket server:
+
+```js focusedLines=1
+chatServer.on('connection', (ws) => {
+  console.log('New client connected!', ws.url)
+})
+```

@@ -1,0 +1,19 @@
+---
+title: Handle client events
+order: 63
+---
+
+...
+
+<Action>React to a client-side event by attaching a "message" listener:</Action>
+
+```js
+// When the server receives an event from the client...
+chatServer.on('message', (ws, data) => {
+  // ...send an event to all Web Socket clients.
+  chatServer.send({
+    author: data.author,
+    message: data.message,
+  })
+})
+```

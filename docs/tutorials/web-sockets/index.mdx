@@ -1,0 +1,34 @@
+---
+title: Web Sockets
+---
+
+In this tutorial we are going to implement a chat application using [Create React App](#) and mocking the [Web Socket](#) communication with Mock Service Worker. You can follow the same instructions to adopt Web Socket mocking into any other JavaScript or NodeJS application.
+
+## Setup
+
+- Suggest learning resource on Web Sockets in general.
+- [Install](/docs/getting-started/install) the `msw` library.
+
+## Difference
+
+Working with sockets is largely different compared to REST or GraphQL API. This difference is reflected in the API that Mock Service Worker provides to mock a Web Socket communication.
+
+### Mock Web Socket server
+
+Similar to how MSW acts as a production HTTP server, in case of Web Sockets MSW allows you to create a mocked Web Socket server instance. Unlike spawning a custom server instance (i.e. using a `ws` package), the benefits of using MSW for Web Socket mocking are:
+
+1. Does not need to run and maintain an actual server;
+1. Allows to intercept and send events from any origin (i.e. third-party servers).
+1. Allows to create a Web Socket server at a non-existing address.
+
+<Hint mode="warning">
+  Unfortunately, Web Socket events cannot be interecpted in a Service Worker.
+  This means that the Web Socker support is implemented client-side, making
+  events unobservable in a browser's "Network" tab.
+</Hint>
+
+### No request handlers
+
+Web Sockets are event-based, so there are no traditional requests at place. Therefore, there are no traditional request handlers from the Mock Service Worker side as well when mocking a Web Sockets communication.
+
+Instead, ...

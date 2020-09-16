@@ -1,0 +1,22 @@
+---
+title: Send server events
+order: 62
+---
+
+To send an event from the server use the `.send()` method of the Web Socket server instance created previously via the `ws.link()` API.
+
+<Action>
+  Send an event from the server using the <code>.send()</code> method:
+</Action>
+
+```js focusedLines=5-9
+import { ws } from 'msw'
+
+const chatServer = ws.link('wss://api.github.com/chat')
+
+// Sends an event with the data to all the clients.
+chatServer.send({
+  author: 'Server Bot',
+  message: 'Hey! Welcome to the chat!',
+})
+```
