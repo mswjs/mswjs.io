@@ -47,7 +47,7 @@ export const Code: React.FC<CodeProps> = ({
   className,
   copyable = true,
   lineStartNumber,
-  showLineNumbers = false,
+  showLineNumbers = true,
   focusedLines,
 }) => {
   const shouldShowCopyText = useResponsiveValue(
