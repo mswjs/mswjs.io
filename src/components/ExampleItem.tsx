@@ -7,13 +7,19 @@ import { TextLead } from './TextLead'
 
 type ExampleItemMode = 'full' | 'minimal'
 
-const Container = styled.a<{ mode: ExampleItemMode }>`
-  background-color: var(--color-gray-dim);
-  border: 1px solid transparent;
+const Container = styled.a<{ bgColor?: string; mode: ExampleItemMode }>`
   border-radius: var(--border-radius);
   text-decoration: none;
   color: inherit;
   align-items: center;
+
+  ${({ bgColor }) =>
+    bgColor &&
+    css`
+      background-color: ${bgColor};
+      background-image: linear-gradient(#ccc, #fff 50%);
+      background-blend-mode: screen;
+    `}
 
   ${({ mode }) => {
     switch (mode) {
@@ -47,6 +53,7 @@ const Container = styled.a<{ mode: ExampleItemMode }>`
 
 interface PropsExample {
   mode?: ExampleItemMode
+  bgColor?: string
   title: string
   description?: string
   logo: any
@@ -56,6 +63,7 @@ interface PropsExample {
 
 export const ExampleItem: React.FC<PropsExample> = ({
   mode = 'full',
+  bgColor,
   title,
   description,
   logo: Logo,
@@ -72,6 +80,7 @@ export const ExampleItem: React.FC<PropsExample> = ({
       href={url}
       flex
       mode={mode}
+      bgColor={bgColor}
       paddingVertical={paddingVertical}
       paddingHorizontal={paddingHorizontal}
     >
@@ -88,7 +97,7 @@ export const ExampleItem: React.FC<PropsExample> = ({
           {title}
         </Box>
         {description && (
-          <Text color="gray" marginTop={4}>
+          <Text color="gray" marginTop={8}>
             {description}
           </Text>
         )}

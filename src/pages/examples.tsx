@@ -8,6 +8,7 @@ import { Heading } from '../components/Heading'
 import { Text } from '../components/Text'
 import { TextLead } from '../components/TextLead'
 import { ExampleItem } from '../components/ExampleItem'
+import { ScopedExampleItem } from '../components/ScopedExampleItem'
 import { ReactComponent as GraphQLLogo } from '../images/logos/graphql.svg'
 import { ReactComponent as ReactLogo } from '../images/logos/react.svg'
 import { ReactComponent as NextJsLogo } from '../images/logos/nextjs.svg'
@@ -40,20 +41,17 @@ const Examples = () => {
       <Grid paddingVertical={64} paddingVerticalMd={80}>
         <Heading>Examples</Heading>
         <TextLead>
-          Learn by inspecting how Mock Service Worker integrates with your
-          favorite tools.
+          See how Mock Service Worker integrates with your favorite libraries.
         </TextLead>
         <hr />
         <Composition gap={80} marginTop={80}>
           <section>
-            <Heading level={2}>API types</Heading>
+            <Heading level={2}>Full examples</Heading>
             <Text>
-              Each example in this section contains a complete showcase of Mock
-              Service Worker usage in development, unit, and E2E tests. A great
-              place to start with API mocking when all you know is the API type
-              your application uses.
+              Each example in this section features a complete usage of Mock
+              Service Worker in development, integration, and E2E tests.
             </Text>
-            <Composition gap={32}>
+            <Composition gap={32} marginTop={48}>
               <div>
                 <Heading level={3}>React</Heading>
                 <ExampleList>
@@ -62,6 +60,7 @@ const Examples = () => {
                     description="Learn how to mock a RESTful API in a React application."
                     logo={ReactLogo}
                     fill="#61DAFB"
+                    bgColor="#61DAFB"
                     url="https://github.com/mswjs/examples/tree/master/examples/rest-react"
                   />
                   <ExampleItem
@@ -69,6 +68,7 @@ const Examples = () => {
                     description="Learn how to mock a GraphQL API in a React application using Apollo."
                     logo={GraphQLLogo}
                     fill="#E535AB"
+                    bgColor="#E535AB"
                     url="https://github.com/mswjs/examples/tree/master/examples/graphql-react-apollo"
                   />
                 </ExampleList>
@@ -81,38 +81,35 @@ const Examples = () => {
                     description="Learn how to mock a RESTful API in an Angular application."
                     logo={AngularLogo}
                     fill="#ff4785"
+                    bgColor="#C82B39"
                     url="https://github.com/mswjs/examples/tree/master/examples/rest-angular"
                   />
                 </ExampleList>
               </div>
             </Composition>
           </section>
+          <hr />
           <section>
-            <Heading level={2}>Libraries & Frameworks</Heading>
+            <Heading level={2}>Scoped examples</Heading>
             <Text>
               Examples below are focused on the integration of Mock Service
               Worker with specific tools.
             </Text>
-            <Composition gap={24}>
-              <ExampleItem
-                mode="minimal"
+            <Composition gap={24} marginTop={32} paddingHorizontalMd={16}>
+              <ScopedExampleItem
                 title="NextJS"
                 logo={NextJsLogo}
-                fill="#ff4785"
                 url="https://github.com/vercel/next.js/tree/canary/examples/with-msw"
               />
-              <ExampleItem
-                mode="minimal"
+              <ScopedExampleItem
                 title="Storybook"
-                logo={StorybookLogo}
                 fill="#ff4785"
+                logo={StorybookLogo}
                 url="https://github.com/mswjs/examples/tree/master/examples/with-storybook"
               />
-              <ExampleItem
-                mode="minimal"
+              <ScopedExampleItem
                 title="Redux Saga"
                 logo={(props) => <img {...props} src={reduxSagaLogo} />}
-                fill="#ff4785"
                 url="https://github.com/mswjs/examples/tree/master/examples/with-redux-saga"
               />
             </Composition>
