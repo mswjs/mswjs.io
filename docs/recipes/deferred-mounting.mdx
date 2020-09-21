@@ -1,0 +1,41 @@
+---
+title: Deferred mounting
+---
+
+<Hint mode="warning">
+  This is <strong>not a default recommended setup</strong>. Please refer to the{' '}
+  <a href="/docs/getting-started/integrate/browser">
+    default browser integration
+  </a>
+  , and use this recipe only when the default setup doesn't cover your needs.
+</Hint>
+
+Service Worker registration is an asynchronous process, which means that any requests that happen between calling `worker.start()` and the worker registration cannot be intercepted by the library.
+
+To tackle this, Mock Service Worker captures all outgoing requests in that pending period and defers their execution until the worker registration has finished, and the worker is ready to handle requests.
+
+> Learn more about the [`waitUntilReady`](/docs/api/setup-worker/start#waituntilready) option.
+
+However, in case when such default behavior is insufficient or undesired, you may defer your application's mount manually. Since `worker.start()` returns a `Promise`, you can execute your application bootstrapping logic once that promise resolves.
+
+Here's an example on how to defer application's mount in a React application:
+
+```js showLineNumbers focusedLines=7-10,15-17
+// src/index.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+
+function prepare() {
+  if (process.env.NODE_ENV === 'development') {
+    const { worker } = require('./mocks/browser')
+    return worker.start()
+  }
+
+  return Promise.resolve()
+}
+
+prepare().then(() => {
+  ReactDOM.render(<App />, document.getElememtById('root'))
+})
+```
