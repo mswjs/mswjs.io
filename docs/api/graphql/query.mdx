@@ -1,5 +1,6 @@
 ---
 title: query()
+order: 541
 ---
 
 A request handler that captures a GraphQL query by the given name.
@@ -17,7 +18,10 @@ A request handler that captures a GraphQL query by the given name.
 
 ```ts
 interface graphql {
-  query(name: string | RegExp, resolver: ResponseResolver): RequestHandler
+  query<QueryType, VariablesType>(
+    name: string | RegExp,
+    resolver: ResponseResolver,
+  ): RequestHandler
 }
 ```
 
@@ -123,3 +127,40 @@ graphql.query(/^Get(.+?)Detail$/, (req, res, ctx) => {
   )
 })
 ```
+
+### Usage with TypeScript
+
+Annotate your queries in TypeScript to get autocompletion and validation for query data and variables in your IDE.
+
+```ts focusedLines=3-8,10-12,14
+import { graphql } from 'msw'
+
+interface GetUserQuery {
+  user: {
+    firstName: string
+    lastName: string
+  }
+}
+
+interface GetUserQueryVariables {
+  id: string
+}
+
+graphql.query<GetUserQuery, GetUserQueryVariables>(
+  'GetUser',
+  (req, res, ctx) => {
+    const { id } = req.variables
+
+    return res(
+      ctx.data({
+        user: {
+          firstName: 'John',
+          lastName: 'Maverick',
+        },
+      }),
+    )
+  },
+)
+```
+
+> Consider tools like [GraphQL Code Generator](https://graphql-code-generator.com/) to annotate your mocks with the type definitions derived from the actual GraphQL schema.
