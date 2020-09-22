@@ -1,0 +1,103 @@
+---
+title: mutation()
+---
+
+A request handler that captures a GraphQL mutation by the given name.
+
+## Call signature
+
+```ts
+interface graphql {
+  mutation(name: string | RegExp, resolver: ResponseResolver): RequestHandler
+}
+```
+
+## Examples
+
+### Basic mutation
+
+```graphql
+mutation Logout {
+  user {
+    sessionId
+  }
+}
+```
+
+To capture a GraphQL mutation provide its name as the first argument to the `graphql.mutation()` request handler. Using the mutation definition above, the request handler for it would look as follows:
+
+```js focusedLines=3
+import { graphql } from 'msw'
+
+graphql.mutation('Logout', (req, res, ctx) => {
+  return res(
+    ctx.data({
+      user: {
+        sessionId: 'abc-123',
+      },
+    }),
+  )
+})
+```
+
+### Mutation variables
+
+```graphql focusedLines=1
+mutation Login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    sessionId
+  }
+}
+```
+
+> Variables must be correctly defined in the GraphQL mutation definition in order to be accessible in mocks. Refer to the [GraphQL Variables](https://graphql.org/learn/queries/#variables) for more information.
+
+Use `req.variables` object to access all the variables of the captured mutation.
+
+```js focusedLines=4
+import { graphql } from 'msw'
+
+graphql.mutation('Logout', (req, res, ctx) => {
+  const { username, password } = req.variables
+
+  return res(
+    ctx.data({
+      login: {
+        sessionId: 'abc-123',
+      },
+    }),
+  )
+})
+```
+
+### Dynamic mutation name
+
+When given a `RegExp` as the mutation name, all the GraphQL mutations that match that expression would be captured by this request handler.
+
+```graphql
+mutation CreateUser {
+  user {
+    id
+  }
+}
+
+mutation DeleteUser {
+  user {
+    id
+  }
+}
+```
+
+```js focusedLines=3
+import { graphql } from 'msw'
+
+graphql.mutation(/^(.+?)User$/, (req, res, ctx) => {
+  return res(
+    ctx.errors([
+      {
+        message: 'Not authorized',
+      },
+    ]),
+  )
+})
+```
