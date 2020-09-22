@@ -22,9 +22,14 @@ const StyledFooter = styled.footer`
 interface Props {
   contributors: any[]
   editUrl: string
+  lastModified: string
 }
 
-export const DocsPageFooter: React.FC<Props> = ({ contributors, editUrl, lastModified }) => {
+export const DocsPageFooter: React.FC<Props> = ({
+  contributors,
+  editUrl,
+  lastModified,
+}) => {
   const lastModifiedDate = React.useMemo(() => {
     if (!lastModified) {
       return null
@@ -33,7 +38,7 @@ export const DocsPageFooter: React.FC<Props> = ({ contributors, editUrl, lastMod
     return new Date(lastModified).toLocaleDateString('en-EU', {
       day: 'numeric',
       month: 'short',
-      year: 'numeric'
+      year: 'numeric',
     })
   }, [lastModified])
 
@@ -44,10 +49,12 @@ export const DocsPageFooter: React.FC<Props> = ({ contributors, editUrl, lastMod
           <PageContributors users={contributors} />
         </section>
         <Box flex flexDirection="column" alignItems="flex-end">
-          {lastModified && (
-          <Text color="gray" marginBottom="0.5em">Updated on {lastModifiedDate}</Text>
+          {lastModifiedDate !== 'Invalid Date' && (
+            <Text color="gray" marginBottom="0.5em">
+              Updated on {lastModifiedDate}
+            </Text>
           )}
-            <EditOnGitHub url={editUrl} />
+          <EditOnGitHub url={editUrl} />
         </Box>
       </Box>
     </Box>
