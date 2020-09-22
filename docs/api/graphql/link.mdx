@@ -1,5 +1,6 @@
 ---
 title: link()
+order: 544
 ---
 
 A high-order request handler that scopes a [GraphQL API](/docs/api/graphql/) under the given endpoint.
@@ -9,7 +10,9 @@ A high-order request handler that scopes a [GraphQL API](/docs/api/graphql/) und
 ## Call signature
 
 ```ts
-function link(uri: string): GraphQLMethods
+interface graphql {
+  link(uri: string): GraphQLRequestHandlers
+}
 ```
 
 ## Examples
