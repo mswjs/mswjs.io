@@ -3,15 +3,29 @@ title: graphql
 order: 54
 ---
 
-The `graphql` namespace contains a set of [Request handlers](/docs/basics/request-handler) for matching GraphQL API requests.
+The `graphql` namespace contains a set of [Request handlers](/docs/basics/request-handler) and utilities for capturing requests to a GraphQL API.
 
 ## Methods
 
-Methods of this namespace represent GraphQL operation kinds:
+import * as GraphQLQueryAPI from './query.mdx'
+import * as GraphQLMutationAPI from './query.mdx'
+import * as GraphQLOperationAPI from './query.mdx'
+import * as GraphQLLinkAPI from './link.mdx'
 
-- `graphql.query()`
-- `graphql.mutation()`
+### Operation kind
 
+<PageLink
+  title="query()"
+  description="Capture a GraphQL query by name"
+  page={GraphQLQueryAPI}
+  url="/docs/api/graphql/query"
+/>
+<PageLink
+  title="mutation()"
+  description="Capture a GraphQL mutation by name"
+  page={GraphQLMutationAPI}
+  url="/docs/api/graphql/mutation"
+/>
 <Hint mode="warning">
   Subscriptions are not currently supported.{' '}
   <strong>
@@ -21,137 +35,17 @@ Methods of this namespace represent GraphQL operation kinds:
   .
 </Hint>
 
-Using a method under this namespace automatically creates a request handler for the respective GraphQL operation. Pass the operation name as the first argument and the [Response resolver](/docs/basics/response-resolver) as the second to mock the respective operation.
-
-```js showLineNumbers
-import { setupWorker, graphql } from 'msw'
-
-setupWorker(
-  // Mock a query by name "GetUserDetail"
-  graphql.query('GetUserDetail', responseResolver),
-
-  // Mock a mutation by name "Login"
-  graphql.mutation('Login', responseResolver),
-)
-```
-
-## Examples
-
-### Basic query/mutation
-
-```js showLineNumbers
-import { setupWorker, graphql } from 'msw'
-
-const worker = setupWorker(
-  graphql.query('GetUserDetail', (req, res, ctx) => {
-    return res(
-      ctx.data({
-        user: {
-          firstName: 'John',
-          lastName: 'Maverick',
-        },
-      }),
-    )
-  }),
-)
-
-worker.start()
-```
-
-### Accessing variables
-
-The variables of a query/mutation can be accessed in the `req.variables` object.
-
-```js showLineNumbers focusedLines=5
-import { setupWorker, graphql } from 'msw'
-
-const worker = setupWorker(
-  graphql.mutation('DeletePost', (req, res, ctx) => {
-    const { postId } = req.variables
-
-    return res(ctx.data([{ id: 2 }, { id: 3 }]))
-  }),
-)
-
-worker.start()
-```
-
-### Multiple GraphQL endpoints
-
-When your application communicates with multiple GraphQL endpoints it's useful to establish a per-endpoint requests interception.
-
-Please refer to the following `graphql.link` API:
-
-import * as GraphQLLinkAPI from './link.mdx'
+### Utilities
 
 <PageLink
-  title="graphql.link()"
+  title="operation()"
+  description="Capture any GraphQL operation regardless of type or name"
+  page={GraphQLOperationAPI}
+  url="/docs/api/graphql/operation"
+/>
+<PageLink
+  title="link()"
+  description="Configure endpoint-based GraphQL requests interception"
   page={GraphQLLinkAPI}
   url="/docs/api/graphql/link"
 />
-
-### Usage with TypeScript
-
-```ts showLineNumbers
-import { setupWorker, graphql } from 'msw'
-
-// Provide manually written types or use the generated ones
-// (i.e. when using "graphql-codegen" package).
-interface GetUserDetailQuery {
-  user {
-    firstName: string
-    lastName: string
-  }
-}
-
-interface GetUserDetailQueryVariables {
-  userId: string
-}
-
-interface LoginMutation {
-  user {
-    firstName
-  }
-}
-
-interface LoginMutationVariables {
-  username: string
-  password: string
-}
-
-const worker = setupWorker(
-  graphql.query<GetUserDetailQuery, GetUserDetailVariables>(
-    'GetUserDetail',
-    (req, res, ctx) => {
-      // Get auto-completion of variables
-      const { userId } = req.variables
-
-      return res(
-        ctx.data({
-          // And auto-completion of the expected response structure
-          user: {
-            firstName: 'John',
-            lastName: 'Maverick'
-          }
-        })
-      )
-    }),
-
-    graphql.mutation<LoginMutation, LoginMutationVariables>('Login', (req, res, ctx) => {
-      // Get auto-completion of variables
-      const { username, password } = req.variables
-
-      return res.data({
-        // And auto-completion of the expected response structure
-        user: {
-          firstName: 'John'
-        }
-      })
-    })
-  )
-)
-
-worker.start()
-```
-
-In case you write your GraphQL implementation schema-first, it's recommended you use TypeScript type generators to get the types for your queries. We recommend using [GraphQL Code Generator](https://graphql-code-generator.com/) for that purpose.
