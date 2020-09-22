@@ -5,6 +5,14 @@ order: 543
 
 A request handler that targets any GraphQL operation, regardless of type or name.
 
+## Call signature
+
+```ts
+interface graphql {
+  operation(resolver: ResponseResolver): RequestHandler
+}
+```
+
 ## Examples
 
 ### Fixed response
