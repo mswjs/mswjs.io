@@ -10845,10 +10845,10 @@ node-libs-browser@^2.2.1:
     util "^0.11.0"
     vm-browserify "^1.0.1"
 
-node-match-path@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/node-match-path/-/node-match-path-0.4.2.tgz#30cc39510fa493bff03c3d0d2fff711c868ec457"
-  integrity sha512-wfde4FOC5A8RTSUVZ7pTpBV+dJsr2vVxT6374VrNam6wnnhx6EvwAwL/E/r3AW/YU6XkeZggF5xfBlu4a/ULBg==
+node-match-path@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/node-match-path/-/node-match-path-0.5.1.tgz#65d2fadef8bbded238cb89918de0c6c3c758aa22"
+  integrity sha512-C1IHXMxhKglNiCMxHmYrknLX6CUARvs9SdsnZ+3rdMvH8wJIX/pRq4KzThvEz4LNyiU+KrSP7GH1EsdwWYNl3g==
 
 node-object-hash@^2.0.0:
   version "2.0.0"
