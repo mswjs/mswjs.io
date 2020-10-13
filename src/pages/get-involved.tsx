@@ -99,7 +99,7 @@ const GetInvolvedPage: React.FC = () => {
             examples of things you can do concerning MSW website:
           </Text>
           <ul>
-            <li>Improve semantics and accessibility of the website;</li>
+            <li>Improve the semantics and accessibility of the website;</li>
             <li>Suggest architecture improvements to a Gatsby project;</li>
             <li>Enhance UI and UX of the website.</li>
           </ul>
@@ -175,7 +175,7 @@ const GetInvolvedPage: React.FC = () => {
             Start your journey by browsing any open issues with the{' '}
             <code>help wanted</code> or <code>good first issue</code> labels on{' '}
             <MdxLink href="https://github.com/mswjs">GitHub</MdxLink>. Once you
-            find something you'd be interested in contributting, assign that
+            find something you'd be interested in contributing, assign that
             issue to yourself so others know you are planning your work. See you
             in the pull requests!
           </Text>
