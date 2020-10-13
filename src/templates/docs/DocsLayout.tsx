@@ -16,6 +16,7 @@ interface Props {
   navTree: any
   breadcrumbs: any
   contributors?: any
+  lastModified?: any
 }
 
 const BodyStylesOverride = createGlobalStyle`
@@ -56,7 +57,7 @@ const DocsLayout: React.FC<Props> = ({
   navTree,
   breadcrumbs,
   contributors,
-  lastModified
+  lastModified,
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false)
 
