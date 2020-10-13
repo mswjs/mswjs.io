@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/docs/basics/path-matching",
+      "destination": "/docs/basics/request-matching"
+    }
+  ]
+}
