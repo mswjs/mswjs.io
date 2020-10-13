@@ -116,6 +116,11 @@ export const Footer: React.FC = () => {
             <HeadingDiminished>Community</HeadingDiminished>
             <ul>
               <li>
+                <Link to="/get-involved">
+                  <strong>Get involved</strong>
+                </Link>
+              </li>
+              <li>
                 <a href="https://github.com/mswjs/msw">GitHub</a>
               </li>
               <li>
