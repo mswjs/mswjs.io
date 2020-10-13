@@ -1,0 +1,150 @@
+---
+title: Request matching
+order: 44
+---
+
+To determine which outgoing requests should be mocked, Mock Service Worker performs request matching—a process of executing a request handler predicate against the actual request.
+
+<Hint>
+  Requests with no corresponding request handlers are performed as-is
+  (bypassed).
+</Hint>
+
+Request matching substantially differs based on the request handler (`rest`/`graphql`) that's being used. See the summary of that difference between the standard request handlers of the library below.
+
+## REST API
+
+Working with `rest.*` request handlers allows you to match requests by the following criteria:
+
+- Request method;
+- Request URL.
+
+<Hint mode="warning">
+  Query parameters and hases are removed from the URL during matching.
+</Hint>
+
+### Request method
+
+To match REST API requests by their method call the respective method on the `rest` request handler object. Here's a few examples:
+
+- `rest.get()` matches `GET` requests;
+- `rest.delete()` matches `DELETE` requests.
+
+<PageLink url="/docs/api/rest" title="Learn more about REST request handlers" />
+
+### Request URL
+
+There are multiple ways to match a REST API request by its URL:
+
+- Provide an exact request URL;
+- Use a path;
+- Use a RegExp.
+
+#### Exact request URL
+
+Provided an exact request URL string, only those request that strictly match that string are mocked.
+
+```js
+// Only "POST https://api.backend.dev/users" requests match this handler
+rest.post('https://api.backend.com/users', responseResolver)
+
+// Given your application runs on "http://localhost:8080",
+// this request handler URL gets resolved to "http://localhost:8080/invoices"
+rest.get('/invoices', invocesResolver)
+```
+
+> Note that relative URL are resolved against the current location (`window.location`).
+
+#### Path
+
+Mock Service Worker uses an Express-like path syntax to match requests.
+
+Path is an abstraction over regular expression for shorthand wildcard and path parameters definition. See the examples of using paths below.
+
+##### Path with wildcard
+
+```js
+// Matches:
+// - /users/admin
+// - /users/octocat
+rest.get('/users/*', responseResolver),
+```
+
+> Note that prepending a wildcard to a path would capture requests _regardless of origin_. You rarely want to do something like `*/users`, as it may easily produce ambiguous matches.
+
+##### Path with parameters
+
+To add a parameter to your request path use the `:paramName` format. Parsed parameters values is available in the `req.params` object of the response resolver.
+
+```js focusedLines=5
+import { setupWorker, rest } from 'msw'
+
+setupWorker(
+  // Given "POST https://api.backend.dev/user/abc-123" request,
+  rest.post('https://api.backend.dev/user/:userId', (req, res, ctx) => {
+    // `userId` value becomes "abc-123"
+    const { userId } = req.params
+  }),
+)
+```
+
+#### REPL
+
+You can test how Mock Service Worker resolves paths against the actual request URL using the REPL below.
+
+<PathMatchPreview path="/user/:userId" url="/user/0251e7ac" />
+
+### RegExp
+
+When provided a regular expression, all request URL that match that expression will be captured, regardless of the their origin.
+
+```js
+// This request handler would match all these requests:
+// - DELETE http://localhost:8080/posts/
+// - DELETE https://backend.dev/user/posts/
+rest.delete(/\/posts\//, responseResolver)
+```
+
+> Unlike paths, regular expressions use _weak_ comparison, supporting partial matches.
+
+## GraphQL API
+
+Working with `graphql.*` request handlers allows you to match GraphQL requests (operations) by the following criteria:
+
+- Operation kind (query/mutation);
+- Operation name.
+
+> Both `GET` and `POST` requests are supported according to the GraphQL specification.
+
+<PageLink
+  url="/docs/api/graphql"
+  title="Learn more about the GraphQL request handlers"
+/>
+
+### Operation kind
+
+Execute a method of the `graphql` request handler object that corresponds to a GraphQL operation kind to target operations of that kind. For example:
+
+- `graphql.query()` to match GraphQL queries;
+- `graphql.mutation()` to match GraphQL mutations.
+
+### Operation name
+
+By default, all GraphQL operation names are matched _regardless of origin_.
+
+```js
+// This will match a "GetUser" operation against any host
+// (i.e. both "https://api.github.com/v4" and "http://localhost:8080")
+graphql.query('GetUser', resolveUser)
+```
+
+> Use [`graphql.link`](/docs/api/graphql/link) to target GraphQL operations against a specific endpoint.
+
+#### RegExp
+
+You can use a regular expression to match multiple GraphQL operation names.
+
+```js
+// Matches all GraphQL queries that end with "User".
+graphql.query(/User$/, resolveAnyUserQuery)
+```
