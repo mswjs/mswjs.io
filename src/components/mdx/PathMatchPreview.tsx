@@ -46,7 +46,7 @@ export const PathMatchPreview: React.FC<Props> = ({
     <Box as={InteractiveArea} marginVertical={32}>
       <Composition templateCols="repeat(2, 1fr)" gap={16}>
         <Composition gap={4}>
-          <label htmlFor="path">Path:</label>
+          <label htmlFor="path">Request handler URL:</label>
           <Input
             id="path"
             name="path"
