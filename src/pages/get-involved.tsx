@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import { Box } from 'atomic-layout'
+import SEO from '../components/seo'
 import { Link as MdxLink } from '../components/mdx/Link'
 import { PageLink } from '../components/mdx/PageLink'
 import Layout from '../components/layout'
@@ -11,6 +12,10 @@ import { Text } from '../components/Text'
 const GetInvolvedPage: React.FC = () => {
   return (
     <Layout>
+      <SEO
+        title="Get involved"
+        description="Learn about the ways you can contribute to Mock Service Worker"
+      />
       <Grid paddingVertical={64} paddingVerticalMd={80}>
         <Heading>Get involved</Heading>
         <Text>
