@@ -58,13 +58,9 @@ graphql.operation(async (req, res, ctx) => {
     req.body.query,
     root,
     null,
-    req.body.variables,
+    req.variables,
   )
 
-  if (payload.errors) {
-    return res(ctx.errors(payload.errors))
-  }
-
-  return res(ctx.data(payload))
+  return res(ctx.data(payload.data), ctx.errors(payload.errors))
 })
 ```
