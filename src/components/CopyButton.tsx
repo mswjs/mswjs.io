@@ -43,13 +43,9 @@ interface Props {
   showText?: boolean
 }
 
-export const CopyButton: React.FC<Props &
-  React.HTMLAttributes<HTMLButtonElement>> = ({
-  children,
-  showText = false,
-  onClick,
-  ...restProps
-}) => {
+export const CopyButton: React.FC<
+  Props & React.HTMLAttributes<HTMLButtonElement>
+> = ({ children, showText = false, onClick, ...restProps }) => {
   const [isCopied, setCopied] = useState(false)
 
   useEffect(() => {

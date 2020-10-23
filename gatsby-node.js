@@ -175,7 +175,7 @@ exports.createPages = async ({ actions, graphql }) => {
         breadcrumbs: getDocumentBreadcrumbs(node, navTree),
         navTree,
         contributors: contributors[node.id],
-        lastModified: getLastModifiedDate(node.fileAbsolutePath)
+        lastModified: getLastModifiedDate(node.fileAbsolutePath),
       },
     })
   })

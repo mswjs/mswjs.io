@@ -17,10 +17,12 @@ export const StyledLink = styled.a`
   }
 `
 
-export const ReadmoreLink: React.FC<React.DetailedHTMLProps<
-  React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  HTMLAnchorElement
-> & { as?: any }> = ({ children, ref, ...restProps }) => {
+export const ReadmoreLink: React.FC<
+  React.DetailedHTMLProps<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+  > & { as?: any }
+> = ({ children, ref, ...restProps }) => {
   return (
     <StyledLink {...restProps}>
       <Box inline as={Icon} marginRight={4} marginTop="0.25ch" />
