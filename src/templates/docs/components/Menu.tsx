@@ -13,13 +13,13 @@ const MenuSection = styled.section<{ isOpen: boolean }>`
   background-color: #fff;
   overflow-y: auto;
   transform: translateX(-100%);
-  transition: transform .5s ease;
+  transition: transform 0.5s ease;
 
-${({ isOpen }) =>
-  isOpen &&
-  css`
-    transform: translateX(0);
-  `}
+  ${({ isOpen }) =>
+    isOpen &&
+    css`
+      transform: translateX(0);
+    `}
 
   @media ${query({ from: 'lg' })} {
     position: relative;
@@ -53,7 +53,7 @@ ${({ isOpen }) =>
       color: var(--color-black);
       font-weight: 600;
 
-      &[aria-current="page"] {
+      &[aria-current='page'] {
         background-color: var(--color-gray-dim);
         border-top-left-radius: var(--border-radius);
         border-bottom-left-radius: var(--border-radius);

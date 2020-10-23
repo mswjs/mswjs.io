@@ -26,10 +26,12 @@ const HeadingLink = styled.a`
   }
 `
 
-export const Heading: React.FC<React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLHeadingElement>,
-  HTMLHeadingElement
-> & { level: number }> = ({ level, children, ...restProps }) => {
+export const Heading: React.FC<
+  React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLHeadingElement>,
+    HTMLHeadingElement
+  > & { level: number }
+> = ({ level, children, ...restProps }) => {
   const Component = `h${level}`
 
   const content = restProps.id ? (

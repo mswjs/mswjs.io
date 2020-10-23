@@ -11,8 +11,8 @@ Response resolver function accepts the following parameters:
 
 | Parameter name                   | Description                                                |
 | -------------------------------- | ---------------------------------------------------------- |
-| [`request`](/docs/api/request)   | Information about the captured request.                 |
-| [`response`](/docs/api/response) | Function to create the mocked response.                   |
+| [`request`](/docs/api/request)   | Information about the captured request.                    |
+| [`response`](/docs/api/response) | Function to create the mocked response.                    |
 | [`context`](/docs/api/context)   | Context utilities specific to the current request handler. |
 
 ## Examples
@@ -67,7 +67,7 @@ import { mockUser } from './resolvers/mockUser'
 
 const worker = setupWorker(
   rest.get('/user', mockUser),
-  rest.get('/me', mockUser)
+  rest.get('/me', mockUser),
 )
 
 worker.start()
