@@ -3,13 +3,13 @@ import styled, { css, createGlobalStyle } from 'styled-components'
 import { Box, Composition, Only } from 'atomic-layout'
 
 import { Grid } from '../../components/Grid'
+import Header from '../../components/header'
 import { Breadcrumbs } from './components/Breadcrumbs'
 import { Menu } from './components/Menu'
 import { TableOfContents } from './components/TableOfContents'
 import { DocsPageFooter } from './components/DocsPageFooter'
 import { BaseLayout } from '../../components/BaseLayout'
 import { Footer } from '../../components/Footer'
-import Header from '../../components/header'
 
 interface Props {
   page?: any
