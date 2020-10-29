@@ -23,6 +23,7 @@ import { PathMatchPreview } from '../../components/mdx/PathMatchPreview'
 import { Table } from '../../components/mdx/Table'
 import { VideoEmbed } from '../../components/mdx/VideoEmbed'
 import DocsLayout from './DocsLayout'
+import { CarbonAds } from '../../components/CarbonAds'
 
 const createHeading = (level: 1 | 2 | 3 | 4): React.FC => {
   return (props) => <Heading level={level} {...props} />
@@ -82,10 +83,12 @@ const DocumentationPage = ({ data, pageContext }) => {
           siteName,
         }}
       />
+
       <h1>{page.frontmatter.title}</h1>
       {page.frontmatter.description && (
         <TextLead>{page.frontmatter.description}</TextLead>
       )}
+      {page.frontmatter.ads !== false && <CarbonAds />}
       <MDXProvider components={components}>
         <MDXRenderer>{page.body}</MDXRenderer>
       </MDXProvider>
@@ -106,6 +109,7 @@ export const query = graphql`
         seo {
           description
         }
+        ads
       }
       body
       tableOfContents
