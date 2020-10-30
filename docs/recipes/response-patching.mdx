@@ -18,10 +18,11 @@ const worker = setupWorker(
   rest.get('https://api.github.com/users/:username', async (req, res, ctx) => {
     // Perform an original request to the intercepted request URL
     const originalResponse = await ctx.fetch(req)
+    const originalResponseData = await originalResponse.json()
 
     return res(
       ctx.json({
-        location: originalResponse.location,
+        location: originalResponseData.location,
         firstName: 'Not the real first name',
       }),
     )
