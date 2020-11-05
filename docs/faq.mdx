@@ -60,3 +60,14 @@ We **highly recommend committing** the `mockServiceWorker.js` file to Git. That 
 > Alternatively, you can generate the Service Worker file by executing `npx msw init` as a part of your development pipeline.
 
 [service-worker-api]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+
+## Why should I drop query parameters from a request handler URL?
+
+Request handler URL represents a server-side resource path, similar to how you would describe that resource on an actual server. Since query parameters do not describe the resource path, but rather provide additional data to a resource, they cannot affect request matching and must be omitted when providing a request URL.
+
+```diff
+- rest.get('/user?id=abc', resolver)
++ rest.get('/user', resolver)
+```
+
+It is still possible to [access query parameters](/docs/recipe/query-parameters) and build the mocking logic around them in the response resolver.
