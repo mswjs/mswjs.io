@@ -71,3 +71,29 @@ Request handler URL represents a server-side resource path, similar to how you w
 ```
 
 It is still possible to [access query parameters](/docs/recipes/query-parameters) and build the mocking logic around them in the response resolver.
+
+## Why do I get stale responses when using React Query/SWR/etc?
+
+Caching mechanism of some request clients may produce stale responses in your tests. Make sure you clear the cache before/after each test suite for your tests to remain predictable.
+
+### React Query
+
+```js
+import { queryCache } from 'react-query'
+
+beforeEach(() => {
+  queryCache.clear()
+})
+```
+
+### SWR
+
+```js
+import { cache } from 'swr'
+
+beforeEach(() => {
+  cache.clear()
+})
+```
+
+> The exact API for clearing cache may differ depending on your request client. Please refer to your request client's documentation for more details.
