@@ -110,7 +110,7 @@ Let say that your `package.json` has the following line:
 "homepage": "/login/"
 ```
 
-Your `src/index.js` or `src/index.tsx` should rewrite `windows.location.pathname` string using `/` at the end:
+Your development environment will automatically open using `localhost:3000/login`, without `/` at the end and your service worker will not work as expected. For this reason we have to update our `src/index.js` or `src/index.tsx` where we rewrite `windows.location.pathname` string with `/` at the end:
 
 ```js showLineNumbers focusedLines=8-17
 // src/index.js
