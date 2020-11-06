@@ -90,10 +90,59 @@ Any requests that match previously defined handlers will now be intercepted and 
 
 ## Troubleshooting
 
-If you have created a project using Create React App you should remove the following line
+### Create React App (version 3)
+
+If you have created a project using previous Create React App (version 3) you should remove the following line
 
 ```js
 serviceWorker.unregister()
 ```
 
 in your `src/index.js` file. Create React App unregisters all Service Workers by default, which would also unregister the mock Service Worker, resulting into broken requests interception.
+
+### Using `homepage` property in `package.json`
+
+If your project uses `homepage` [relative path configuration](https://create-react-app.dev/docs/deployment/#building-for-relative-paths), you have to make sure that your url is rewriten to use `/` at the end of the pathname, and the serviceWorker url should be adjusted as well.
+
+Let say that your `package.json` has the following line:
+
+```
+"homepage": "/login/"
+```
+
+Your `src/index.js` or `src/index.tsx` should rewrite `windows.location.pathname` string using `/` at the end:
+
+```js showLineNumbers focusedLines=8-17
+// src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+async function main() {
+  if (process.env.NODE_ENV === 'development') {
+    if (window.location.pathname === '/login') {
+      window.location.pathname = '/login/';
+      return;
+    }
+    
+    const { worker } = require('./mocks/browser')
+
+    await worker.start({
+      serviceWorker: {
+        url: '/login/mockServiceWorker.js',
+      },
+    });
+  }
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+}
+
+main();
+```
+
+Related discussions: [1](https://github.com/mswjs/msw/issues/369#issuecomment-720157918), [2](https://github.com/w3c/ServiceWorker/issues/1272)
