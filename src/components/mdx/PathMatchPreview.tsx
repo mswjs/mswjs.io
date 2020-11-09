@@ -14,6 +14,8 @@ const Input = styled.input`
 interface Props {
   path?: string
   url?: string
+  onPathChange?: (nextValue: string) => void
+  onUrlChange?: (nextValue: string) => void
 }
 
 const Result: React.FC<Props> = ({ path, url }) => {
@@ -32,19 +34,33 @@ const Result: React.FC<Props> = ({ path, url }) => {
     return output
   }, [path, url])
 
-  return <Code language="json">{result}</Code>
+  return (
+    <Code language="json" copyable={false}>
+      {result}
+    </Code>
+  )
 }
 
 export const PathMatchPreview: React.FC<Props> = ({
   path: initialPath,
   url: initialUrl,
+  onPathChange,
+  onUrlChange,
 }) => {
   const [path, setPath] = React.useState(initialPath)
   const [url, setUrl] = React.useState(initialUrl)
 
+  React.useEffect(() => {
+    onPathChange?.(path)
+  }, [path])
+
+  React.useEffect(() => {
+    onUrlChange?.(url)
+  }, [url])
+
   return (
     <Box as={InteractiveArea} marginVertical={32}>
-      <Composition templateCols="repeat(2, 1fr)" gap={16}>
+      <Composition templateColsMd="repeat(2, 1fr)" gap={16}>
         <Composition gap={4}>
           <label htmlFor="path">Request handler URL:</label>
           <Input
@@ -56,8 +72,9 @@ export const PathMatchPreview: React.FC<Props> = ({
           />
         </Composition>
         <Composition gap={4}>
-          <label htmlFor="path">Actual request URL:</label>
+          <label htmlFor="url">Actual request URL:</label>
           <Input
+            id="url"
             name="url"
             value={url}
             autoComplete="off"
