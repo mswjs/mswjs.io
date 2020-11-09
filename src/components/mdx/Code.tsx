@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Code as ReactCdxCode } from 'react-cdx'
 import { theme } from '../../codeTheme'
-import { CopyButton } from '../CopyButton'
+import { CopyTextButton } from '../CopyTextButton'
 import { query, useResponsiveValue } from 'atomic-layout'
 
 const StyledCode = styled(ReactCdxCode)`
@@ -14,7 +14,7 @@ const Container = styled.div`
   position: relative;
 `
 
-const CopyCodeButton = styled(CopyButton)`
+const CopyCodeButton = styled(CopyTextButton)`
   margin-top: -1rem;
   background-color: var(--color-black);
   border-color: var(--color-gray);

@@ -28,6 +28,7 @@ const Button = styled.button`
     background-color: var(--color-gray);
     border-color: var(--color-primary);
     box-shadow: 0 0 0 4px var(--color-primary-dim);
+    color: #fff;
   }
 
   span {
@@ -40,12 +41,19 @@ const Icon = styled.svg`
 `
 
 interface Props {
+  text: string
   showText?: boolean
 }
 
-export const CopyButton: React.FC<
+export const CopyTextButton: React.FC<
   Props & React.HTMLAttributes<HTMLButtonElement>
-> = ({ children, showText = false, onClick, ...restProps }) => {
+> = ({
+  children = 'Copy the code snippet',
+  showText = false,
+  text,
+  onClick,
+  ...restProps
+}) => {
   const [isCopied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -60,10 +68,11 @@ export const CopyButton: React.FC<
 
   const handleClick = useCallback(
     (event) => {
-      onClick(event)
+      navigator.clipboard.writeText(text)
       setCopied(true)
+      onClick?.(event)
     },
-    [onClick],
+    [text, onClick],
   )
 
   // Do not render the button on devices where the clipboard API doesn't exist.
@@ -78,11 +87,7 @@ export const CopyButton: React.FC<
       ) : (
         <Icon as={CopyIcon} size={16} />
       )}
-      {showText && (
-        <span>
-          {isCopied ? 'Copied to clipboard!' : 'Copy the code snippet'}
-        </span>
-      )}
+      {showText && <span>{isCopied ? 'Copied to clipboard!' : children}</span>}
     </Button>
   )
 }
