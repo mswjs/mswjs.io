@@ -1,0 +1,53 @@
+---
+title: Custom transformer
+---
+
+## Use case
+
+Sometimes the default response serializer isn't what you need and you're looking for a way to overwrite the default serialization for a response.
+
+For example, the default `JSON.stringify` implementation doesn't serialize `BigInt` values correctly, so you need to overwrite it with another serializer.
+
+## Defining a transformer
+
+Use the `createResponseComposition` API to create a custom transformer by defining a transformer.
+Assign the transformer to the `defaultTransformers` property, which can take multiple transformers.
+A transformer receives the response, optionally it modifies the response, and then it must return the (modified) response.
+
+The example below uses the `json-bigint` package to serialize the response body.
+
+```ts focusedLines=5-12
+import { createResponseComposition } from 'msw'
+import * as JSONbig from 'json-bigint'
+
+const customResponse = createResponseComposition({
+  defaultTransformers: [
+    (res) => {
+      if (res.body && res.headers?.get('content-type')?.endsWith('json')) {
+        res.body = JSONbig.stringify(res.body)
+      }
+      return res
+    },
+  ],
+})
+```
+
+## Using a transformer
+
+Once the custom response is defined, use it to return the response instead of using the default response method.
+
+```diff
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  rest.get('http://test.mswjs.io/me', (req, res, ctx) => {
+    const me = {
+      username: 'Sarah',
+      balance: BigInt(1597928668063727616),
+    }
+-    return res(ctx.json(me))
++    return customResponse(ctx.json(me))
+  }),
+)
+```
