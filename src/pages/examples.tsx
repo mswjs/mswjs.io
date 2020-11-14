@@ -14,6 +14,7 @@ import { ReactComponent as NextJsLogo } from '../images/logos/nextjs.svg'
 import { ReactComponent as StorybookLogo } from '../images/logos/storybook.svg'
 import { ReactComponent as AngularLogo } from '../images/logos/angular.svg'
 import reduxSagaLogo from '../images/logos/redux-saga.png'
+import karmaLogo from '../images/logos/karma.png'
 
 const ExampleList: React.FC = ({ children }) => {
   return (
@@ -114,6 +115,13 @@ const Examples = () => {
                 logo={(props) => <img {...props} src={reduxSagaLogo} />}
                 fill="#ff4785"
                 url="https://github.com/mswjs/examples/tree/master/examples/with-redux-saga"
+              />
+              <ExampleItem
+                mode="minimal"
+                title="Karma"
+                logo={(props) => <img {...props} src={karmaLogo} />}
+                fill="#ff4785"
+                url="https://github.com/mswjs/examples/tree/master/examples/with-karma"
               />
             </Composition>
           </section>

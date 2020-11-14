@@ -79,7 +79,7 @@ export const Footer: React.FC = () => {
                 <Link to="/docs/getting-started/install">Getting started</Link>
               </li>
               <li>
-                <a href="https://github.com/mswjs/examples">Examples</a>
+                <Link to="/examples">Examples</Link>
               </li>
               <li>
                 <Link to="/docs/api">API</Link>
