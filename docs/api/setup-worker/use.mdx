@@ -99,7 +99,7 @@ describe('Book detail', () => {
 
   test('handles server error in the UI', () => {
     cy.window().then((window) => {
-      const { worker, rest } = window
+      const { worker, rest } = window.msw
 
       worker.use(
         rest.get('/book/:bookId', (req, res, ctx) => {
