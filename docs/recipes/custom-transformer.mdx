@@ -4,9 +4,9 @@ title: Custom transformer
 
 ## Use case
 
-Sometimes the default response serializer isn't what you need and you're looking for a way to overwrite the default serialization for a response.
+Sometimes the default response serializer (`application/json`), provided by the default [response transformer](https://mswjs.io/docs/basics/response-transformer), isn't what you need and you're looking for a way to overwrite the default serialization for a response.
 
-For example, the default `JSON.stringify` implementation doesn't serialize `BigInt` values correctly, so you need to overwrite it with another serializer.
+In this recipe we are going to write a custom response transformer that serializes `BigInt` values that cannot be otherwise transformed using `JSON.stringify`.
 
 ## Defining a transformer
 
@@ -20,7 +20,7 @@ The example below uses the `json-bigint` package to serialize the response body.
 import { createResponseComposition } from 'msw'
 import * as JSONbig from 'json-bigint'
 
-const customResponse = createResponseComposition({
+export const customResponse = createResponseComposition({
   defaultTransformers: [
     (res) => {
       if (res.body && res.headers?.get('content-type')?.endsWith('json')) {
@@ -34,20 +34,21 @@ const customResponse = createResponseComposition({
 
 ## Using a transformer
 
-Once the custom response is defined, use it to return the response instead of using the default response method.
+Once the custom response transformer is defined, use it to return the response instead of using the default response method.
 
-```diff
+```ts
 import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import { customResponse } from './custom-response'
 
-const server = setupServer(
+export const handlers = [
   rest.get('http://test.mswjs.io/me', (req, res, ctx) => {
     const me = {
       username: 'Sarah',
       balance: BigInt(1597928668063727616),
     }
--    return res(ctx.json(me))
-+    return customResponse(ctx.json(me))
+
+    // use customResponse instead of res
+    return customResponse(ctx.json(me))
   }),
-)
+]
 ```
