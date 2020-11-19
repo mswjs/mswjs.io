@@ -29,7 +29,7 @@ describe('Book detail', () => {
 
   test('allows to submit a book review', () => {
     cy.window().then((window) => {
-      const { worker, rest } = window
+      const { worker, rest } = window.msw
 
       worker.use(
         rest.post('/book/:bookId/reviews', reviewResolver)
@@ -63,7 +63,7 @@ describe('Book detail', () => {
 
   test('handles different scenario', () => {
     cy.window().then((window) => {
-      const { worker, rest } = window
+      const { worker, rest } = window.msw
 
       worker.resetHandlers(
         rest.post('/login', (req, res, ctx) => {
