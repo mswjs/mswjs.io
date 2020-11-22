@@ -52,3 +52,23 @@ export const handlers = [
   }),
 ]
 ```
+
+## Asynchronous transformer
+
+Response transformer may also be an asynchronous function returning a `Promise` that resolves to the next mocked response instance.
+
+```js
+import { compose, context } from 'msw'
+
+async function jpeg(base64) {
+  // Converting a Base64 image to buffer via `fetch`
+  // is an asynchronous action.
+  const buffer = await fetch(base64).then((res) => res.arrayBuffer())
+
+  return compose(
+    context.set('Content-Length', buffer.byteLength.toString())
+    context.set('Content-Type', 'image/jpeg'),
+    context.body(buffer)
+  )
+}
+```
