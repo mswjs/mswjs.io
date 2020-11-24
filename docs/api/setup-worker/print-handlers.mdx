@@ -1,0 +1,35 @@
+---
+title: printHandlers()
+order: 516
+---
+
+Prints the list of currently active request handlers into the browser's console.
+
+## Example
+
+```js
+// handlers.js
+import { setupWorker, rest } from 'msw'
+
+const worker = setupWorker(
+  rest.get('/user/:userId', (req, res, ctx) => {
+    return res(ctx.json({ id: req.params.userId }))
+  }),
+)
+
+worker.start()
+```
+
+To list all the active request handlers run the following command:
+
+```js
+worker.printHandlers()
+```
+
+> Consider storing the worker instance on the global `window` object to access its methods anytime from the browser.
+
+Each request handler outputted into the console contains the following information:
+
+- Request method (`GET`) and path (`/user/:userId`).
+- Declaration frame (`handlers.js@5:8`) you can click to navitate to the place in your code where you declare this handler.
+- REPL preview link (`https://mswjs.io/repl?path=/user/:userId`) for REST API requests.
