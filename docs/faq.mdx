@@ -96,4 +96,14 @@ beforeEach(() => {
 })
 ```
 
+### Apollo Client 
+
+```js
+import { client } from '../lib/apolloClient';
+
+beforeEach(() => {
+  return client.cache.reset()
+})
+```
+
 > The exact API for clearing cache may differ depending on your request client. Please refer to your request client's documentation for more details.
