@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "mswjs.io",
+  "version": "0.1.0",
+  "description": "Official website and documentation for the Mock Service Worker library.",
+  "license": "MIT",
+  "author": "Artem Zakharchenko <kettanaito@gmail.com>",
+  "keywords": [
+    "msw"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mswjs/mswjs.io"
+  },
+  "bugs": {
+    "url": "https://github.com/mswjs/mswjs.io/issues"
+  },
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
