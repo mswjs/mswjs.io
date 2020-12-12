@@ -1,0 +1,1 @@
+# Mock Service Worker
