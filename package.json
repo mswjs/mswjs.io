@@ -15,7 +15,11 @@
   "bugs": {
     "url": "https://github.com/mswjs/mswjs.io/issues"
   },
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write ."
+  },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
 }
