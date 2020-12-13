@@ -22,8 +22,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@jensmeindertsma/next-mdx": "^0.1.5",
     "@mdx-js/loader": "^1.6.22",
-    "@next/mdx": "^10.0.3",
     "next": "^10.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
