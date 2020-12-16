@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/mswjs/msw/21d322197a9712f68f5abad6174122332a2de205/media/msw-logo.svg" alt="MSW logo" />
+<img src="./.github/msw.svg" alt="MSW logo" />
 </p>
 
 <h1 align="center">Mock Service Worker (Docs)</h1>
@@ -18,5 +18,5 @@
 > Would like your company to be featured as a sponsor? [Get in touch](https://twitter.com/kettanaito).
 
 <a href="https://vercel.com/?utm_source=artemz">
-  <img src="./media/vercel-logo-black.svg" height="32" alt="Vercel">
+  <img src="./.github/vercel.svg" height="32" alt="Vercel">
 </a>
