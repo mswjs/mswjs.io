@@ -1,61 +1,12 @@
 {
-  "name": "msw-website",
   "private": true,
+  "name": "msw-website",
+  "version": "1.0.0",
   "description": "Official website and documentation for the Mock Service Worker library.",
-  "version": "0.0.0",
-  "author": "Artem Zakharchenko <kettanaito@gmail.com>",
-  "dependencies": {
-    "@mdx-js/mdx": "^1.6.19",
-    "@mdx-js/react": "^1.6.19",
-    "@svgr/webpack": "^5.4.0",
-    "atomic-layout": "^0.16.2",
-    "dotenv": "^8.2.0",
-    "gatsby": "^2.24.85",
-    "gatsby-image": "^2.4.21",
-    "gatsby-plugin-google-analytics": "^2.3.19",
-    "gatsby-plugin-manifest": "^2.4.35",
-    "gatsby-plugin-mdx": "^1.2.51",
-    "gatsby-plugin-offline": "^3.2.37",
-    "gatsby-plugin-react-helmet": "^3.3.14",
-    "gatsby-plugin-sass": "^2.3.21",
-    "gatsby-plugin-sharp": "^2.6.43",
-    "gatsby-plugin-svgr": "^2.0.2",
-    "gatsby-plugin-typescript": "^2.4.24",
-    "gatsby-source-filesystem": "^2.3.35",
-    "gatsby-transformer-sharp": "^2.5.19",
-    "node-match-path": "^0.5.1",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-cdx": "^0.2.1",
-    "react-dom": "^17.0.1",
-    "react-helmet": "^6.1.0",
-    "react-icons": "^3.11.0",
-    "react-intersection-observer": "^8.29.1",
-    "rehype-slug": "^3.0.0",
-    "remark-validate-links": "^10.0.2",
-    "styled-components": "^5.2.0"
-  },
-  "devDependencies": {
-    "@open-draft/until": "^1.0.3",
-    "@types/react-helmet": "^6.1.0",
-    "@types/styled-components": "^5.1.4",
-    "apollo-fetch": "^0.7.0",
-    "babel-plugin-styled-components": "^1.11.1",
-    "gatsby-plugin-styled-components": "^3.3.14",
-    "node-sass": "^4.14.1",
-    "prettier": "^2.1.2"
-  },
-  "keywords": [
-    "msw"
-  ],
   "license": "MIT",
-  "scripts": {
-    "build": "yarn clean && gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write .",
-    "start": "yarn clean && yarn develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean"
+  "author": {
+    "name": "Artem Zakharchenko",
+    "email": "kettanaito@gmail.com"
   },
   "repository": {
     "type": "git",
@@ -63,5 +14,12 @@
   },
   "bugs": {
     "url": "https://github.com/mswjs/mswjs.io/issues"
+  },
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }
