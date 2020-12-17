@@ -79,7 +79,7 @@ When nothing is returned from a response resolver, MSW performed a captured requ
 
 ```js showLineNumbers focusedLines=7,15
 rest.get('/user', (req, res, ctx) => {
-  const { userId } = req.url.searchParams
+  const userId = req.url.searchParams.get('userId')
 
   if (userId === 'abc-123') {
     // Return a mocked response only if the `userId` query parameter
