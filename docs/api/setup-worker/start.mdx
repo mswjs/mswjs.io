@@ -124,14 +124,14 @@ Specifies how to handle a request that is not listed in the request handlers.
 
 ```js showLineNumbers focusedLines=8
 const worker = setupWorker(
-  rest.get('/books', (req, res, ctx) => {
-    return res(ctx.json({ title: 'The Lord of the Rings' }))
-  }),
-)
+  rest.get("/books", (req, res, ctx) => {
+    return res(ctx.json({ title: "The Lord of the Rings" }));
+  })
+);
 
 worker.start({
-  onUnhandledRequest: 'warn',
-})
+  onUnhandledRequest: "warn",
+});
 ```
 
 #### Custom callback
@@ -140,20 +140,20 @@ When passed a function as a value of this option, the library executes that func
 
 ```js showLineNumbers focusedLines=8
 const worker = setupWorker(
-  rest.get('/books', (req, res, ctx) => {
-    return res(ctx.json({ title: 'The Lord of the Rings' }))
-  }),
-)
+  rest.get("/books", (req, res, ctx) => {
+    return res(ctx.json({ title: "The Lord of the Rings" }));
+  })
+);
 
 worker.start({
   onUnhandledRequest(req) {
     console.error(
-      'Found an unhandled %s request to %s',
+      "Found an unhandled %s request to %s",
       req.method,
-      req.url.href,
-    )
+      req.url.href
+    );
   },
-})
+});
 ```
 
 ## Operation
@@ -182,8 +182,8 @@ Internally, the worker file keeps a map of all controlled `clients`. This allows
 
 ```js showLineNumbers
 // src/mocks.js
-import { setupWorker } from 'msw'
+import { setupWorker } from "msw";
 
-const worker = setupWorker(...mocks)
-worker.start()
+const worker = setupWorker(...mocks);
+worker.start();
 ```

@@ -10,7 +10,7 @@ Unlike a NodeJS `Request`, the request object in Mock Service Worker is a _parti
 <Hint mode="warning">
   The <code>req</code> object of the same response resolve will be different in
   browser and Node environment. Certain request properties are not available in
-  Node (i.e. <code>credentials</code>, <code>integrity</code> or{' '}
+  Node (i.e. <code>credentials</code>, <code>integrity</code> or{" "}
   <code>destination</code>). The values of such properties are set to sensible
   defaults when referenced in Node environment.
 </Hint>
@@ -49,22 +49,22 @@ When mocking a GraphQL API, the `req` object contains the following extra proper
 ### Path parameter
 
 ```js showLineNumbers focusedLines=2
-rest.post('/user/:userId/articles', (req, res, ctx) => {
-  const { userId } = req.params
-  return res(ctx.text(userId))
-})
+rest.post("/user/:userId/articles", (req, res, ctx) => {
+  const { userId } = req.params;
+  return res(ctx.text(userId));
+});
 ```
 
 ### GraphQL variable
 
 ```js showLineNumbers focusedLines=2
-graphql.mutation('Login', (req, res, ctx) => {
-  const { username } = req.variables
+graphql.mutation("Login", (req, res, ctx) => {
+  const { username } = req.variables;
 
   return res(
     ctx.data({
-      user: { name: 'John ' },
-    }),
-  )
-})
+      user: { name: "John " },
+    })
+  );
+});
 ```

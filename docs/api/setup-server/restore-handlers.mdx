@@ -8,45 +8,45 @@ Marks all used one-time request handlers as unused, allowing them to affect netw
 ## Examples
 
 ```js showLineNumbers focusedLines=21-24,40
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
-  rest.get('/book/:bookId', (req, res, ctx) => {
-    return res(ctx.json({ title: 'Lord of the Rings' }))
-  }),
-)
+  rest.get("/book/:bookId", (req, res, ctx) => {
+    return res(ctx.json({ title: "Lord of the Rings" }));
+  })
+);
 
 beforeAll(() => {
-  server.listen()
-})
+  server.listen();
+});
 
 afterAll(() => {
-  server.close()
-})
+  server.close();
+});
 
-test('handles server error gracefully', () => {
+test("handles server error gracefully", () => {
   server.use(
-    rest.get('/book/:bookId', (req, res, ctx) => {
+    rest.get("/book/:bookId", (req, res, ctx) => {
       return res.once(
         ctx.status(500),
-        ctx.json({ message: 'Internal server error' }),
-      )
-    }),
-  )
+        ctx.json({ message: "Internal server error" })
+      );
+    })
+  );
 
   // Assert your application's behavior given server error.
-})
+});
 
-test('renders book detail', () => {
+test("renders book detail", () => {
   // At this point the server error request handler has been used,
   // and will not affect network anymore.
-})
+});
 
-test('handles server error when I posted a book review', () => {
+test("handles server error when I posted a book review", () => {
   // Restore one-time request handlers.
   // A "GET /book/:bookId" request will return a mocked server error
   // only for the next book detail request.
-  server.restoreHandlers()
-})
+  server.restoreHandlers();
+});
 ```

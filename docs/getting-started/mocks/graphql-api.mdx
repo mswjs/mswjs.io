@@ -20,8 +20,8 @@ Any GraphQL client that complies with the GraphQL operations specification can b
 
 ```ts
 interface GraphQLRequest {
-  query: string
-  variables?: Record<string, any>
+  query: string;
+  variables?: Record<string, any>;
 }
 ```
 
@@ -40,7 +40,7 @@ In our `src/mocks/handlers.js` file let's import the essentials we need for mock
 
 ```js showLineNumbers
 // src/mocks/handlers.js
-import { graphql } from 'msw'
+import { graphql } from "msw";
 ```
 
 ## Request handler
@@ -59,15 +59,15 @@ In this tutorial we will be mocking a basic login flow for our user. This flow i
 
 ```js showLineNumbers focusedLines=6,9
 // src/mocks/handlers.js
-import { graphql } from 'msw'
+import { graphql } from "msw";
 
 export const handlers = [
   // Handles a "Login" mutation
-  graphql.mutation('Login', null),
+  graphql.mutation("Login", null),
 
   // Handles a "GetUserInfo" query
-  graphql.query('GetUserInfo', null),
-]
+  graphql.query("GetUserInfo", null),
+];
 ```
 
 ## Response resolver
@@ -107,37 +107,37 @@ query GetUserInfo() {
 
 ```js showLineNumbers focusedLines=10-16,25-30,34-41
 // src/mocks/handlers.js
-import { graphql } from 'msw'
+import { graphql } from "msw";
 
 export const handlers = [
   // Handles a "Login" mutation
-  graphql.mutation('Login', (req, res, ctx) => {
-    const { username } = req.variables
-    sessionStorage.setItem('is-authenticated', username)
+  graphql.mutation("Login", (req, res, ctx) => {
+    const { username } = req.variables;
+    sessionStorage.setItem("is-authenticated", username);
 
     return res(
       ctx.data({
         login: {
           username,
         },
-      }),
-    )
+      })
+    );
   }),
 
   // Handles a "GetUserInfo" query
-  graphql.query('GetUserInfo', (req, res, ctx) => {
-    const authenticatedUser = sessionStorage.getItem('is-authenticated')
+  graphql.query("GetUserInfo", (req, res, ctx) => {
+    const authenticatedUser = sessionStorage.getItem("is-authenticated");
 
     if (!authenticatedUser) {
       // When not authenticated, respond with an error
       return res(
         ctx.errors([
           {
-            message: 'Not authenticated',
-            errorType: 'AuthenticationError',
+            message: "Not authenticated",
+            errorType: "AuthenticationError",
           },
-        ]),
-      )
+        ])
+      );
     }
 
     // When authenticated, respond with a query payload
@@ -145,12 +145,12 @@ export const handlers = [
       ctx.data({
         user: {
           username: authenticatedUser,
-          firstName: 'John',
+          firstName: "John",
         },
-      }),
-    )
+      })
+    );
   }),
-]
+];
 ```
 
 > Utilize things like [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), or [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) to handle more complex API scenarios and user interactions.
@@ -159,6 +159,6 @@ export const handlers = [
 
 The request handlers are complete, yet there is one last step to perform: integrate the mocking.
 
-import * as IntegratePage from '../integrate/'
+import * as IntegratePage from "../integrate/";
 
 <PageLink page={IntegratePage} url="/docs/getting-started/integrate" />

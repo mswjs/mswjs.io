@@ -26,14 +26,14 @@ A call to the `res()` function creates a mocked response object. Each response t
 ### Standard usage
 
 ```js showLineNumbers
-rest.get('/users', (req, res, ctx) => {
+rest.get("/users", (req, res, ctx) => {
   return res(
     // This response transformer sets a custom status text on the response.
     ctx.status(301),
     // While this one appends a "Content-Type" response header.
-    ctx.set('Content-Type', 'application/json'),
-  )
-})
+    ctx.set("Content-Type", "application/json")
+  );
+});
 ```
 
 ### Raw usage
@@ -41,13 +41,13 @@ rest.get('/users', (req, res, ctx) => {
 The `res()` call can accept a function that modifies and returns a created mocked response instance. It's recommended, however, to use standard response transformers for faster reference and reliability.
 
 ```js showLineNumbers
-rest.get('/users', (req, res) => {
+rest.get("/users", (req, res) => {
   return res((res) => {
-    res.status = 301
-    res.headers.set('Content-Type', 'application/json')
-    return res
-  })
-})
+    res.status = 301;
+    res.headers.set("Content-Type", "application/json");
+    return res;
+  });
+});
 ```
 
 ### Custom response composition
@@ -58,12 +58,12 @@ You can do that by importing the `response` function from the `msw` package:
 
 ```js showLineNumbers focusedLines=2,7
 // src/mocks/res.js
-import { response, context } from 'msw'
+import { response, context } from "msw";
 
 export function res(...transformers) {
   // A custom response composition chain that embeds
   // a random realistic server response delay to each `res()` call.
-  return response(...transformers, context.delay())
+  return response(...transformers, context.delay());
 }
 ```
 
@@ -71,16 +71,16 @@ Such custom response composition can later be used when creating a mocked respon
 
 ```js showLineNumbers focusedLines=3,9
 // src/mocks/handlers.js
-import { setupWorker, rest } from 'msw'
-import { res } from './res'
+import { setupWorker, rest } from "msw";
+import { res } from "./res";
 
 const worker = setupWorker(
-  rest.get('/user', (req, _, ctx) => {
+  rest.get("/user", (req, _, ctx) => {
     // Notice how this response resolver is using a custom `res` function
     // imported at the top of this module.
-    return res(ctx.json({ firstName: 'John', lastName: 'Maverick' }))
-  }),
-)
+    return res(ctx.json({ firstName: "John", lastName: "Maverick" }));
+  })
+);
 
-worker.start()
+worker.start();
 ```

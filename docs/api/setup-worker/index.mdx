@@ -10,20 +10,20 @@ A function that configures a Service Worker instance with a given mock definitio
 The `setupWorker()` function is used for client-side mocking. You usually create a worker instance and activate it by calling the `start()` method on the returned API.
 
 ```js showLineNumbers focusedLines=3,16
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
   // Provide request handlers
-  rest.get('/user/:userId', (req, res, ctx) => {
+  rest.get("/user/:userId", (req, res, ctx) => {
     return res(
       ctx.json({
-        firstName: 'John',
-        lastName: 'Maverick',
-      }),
-    )
-  }),
-)
+        firstName: "John",
+        lastName: "Maverick",
+      })
+    );
+  })
+);
 
 // Start the Mock Service Worker
-worker.start()
+worker.start();
 ```

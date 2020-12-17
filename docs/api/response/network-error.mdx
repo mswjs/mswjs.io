@@ -16,7 +16,7 @@ Read more about exceptions handling on the [Mocking error responses](/docs/recip
 The request handler below produces a network error in response to the `GET /books` request:
 
 ```js showLineNumbers focusedLines=2
-rest.get('/books', (req, res, ctx) => {
-  return res.networkError('Failed to connect')
-})
+rest.get("/books", (req, res, ctx) => {
+  return res.networkError("Failed to connect");
+});
 ```

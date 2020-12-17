@@ -17,19 +17,19 @@ A transformer receives the response, optionally it modifies the response, and th
 The example below uses the `json-bigint` package to serialize the response body.
 
 ```ts focusedLines=5-12
-import { createResponseComposition } from 'msw'
-import * as JSONbig from 'json-bigint'
+import { createResponseComposition } from "msw";
+import * as JSONbig from "json-bigint";
 
 export const customResponse = createResponseComposition({
   defaultTransformers: [
     (res) => {
-      if (res.body && res.headers?.get('content-type')?.endsWith('json')) {
-        res.body = JSONbig.stringify(res.body)
+      if (res.body && res.headers?.get("content-type")?.endsWith("json")) {
+        res.body = JSONbig.stringify(res.body);
       }
-      return res
+      return res;
     },
   ],
-})
+});
 ```
 
 ## Using a transformer
@@ -37,20 +37,20 @@ export const customResponse = createResponseComposition({
 Once the custom response transformer is defined, use it to return the response instead of using the default response method.
 
 ```ts
-import { rest } from 'msw'
-import { customResponse } from './custom-response'
+import { rest } from "msw";
+import { customResponse } from "./custom-response";
 
 export const handlers = [
-  rest.get('http://test.mswjs.io/me', (req, res, ctx) => {
+  rest.get("http://test.mswjs.io/me", (req, res, ctx) => {
     const me = {
-      username: 'Sarah',
+      username: "Sarah",
       balance: BigInt(1597928668063727616),
-    }
+    };
 
     // use customResponse instead of res
-    return customResponse(ctx.json(me))
+    return customResponse(ctx.json(me));
   }),
-]
+];
 ```
 
 ## Asynchronous transformer

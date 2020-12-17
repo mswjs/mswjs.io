@@ -7,10 +7,10 @@ A function that sets up a request interception layer in NodeJS environment.
 
 <Hint>
   This function is designed for NodeJS environoment. If looking for a way to
-  apply API mocking in a browser environment, consider using{' '}
+  apply API mocking in a browser environment, consider using{" "}
   <a href="/sdg">
     <code>setupWorker</code>
-  </a>{' '}
+  </a>{" "}
   instead.
 </Hint>
 
@@ -36,33 +36,33 @@ Typically, `setupServer` is used for unit and integration tests, however, it wil
 Here's an example of the integration test using [Jest](https://jestjs.io/) and Mock Service Worker to provide a seamless API mocking:
 
 ```js showLineNumbers
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
   // Describe the requests to mock.
-  rest.get('/book/:bookId', (req, res, ctx) => {
+  rest.get("/book/:bookId", (req, res, ctx) => {
     return res(
       ctx.json({
-        title: 'Lord of the Rings',
-        author: 'J. R. R. Tolkien',
-      }),
-    )
-  }),
-)
+        title: "Lord of the Rings",
+        author: "J. R. R. Tolkien",
+      })
+    );
+  })
+);
 
 beforeAll(() => {
   // Establish requests interception layer before all tests.
-  server.listen()
-})
+  server.listen();
+});
 
 afterAll(() => {
   // Clean up after all tests are done, preventing this
   // interception layer from affecting irrelevant tests.
-  server.close()
-})
+  server.close();
+});
 
-test('renders a book data', () => {
+test("renders a book data", () => {
   // Render components, perform requests, API communication is covered.
-})
+});
 ```

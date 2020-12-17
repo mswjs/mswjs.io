@@ -11,29 +11,29 @@ A high-order request handler that scopes a [GraphQL API](/docs/api/graphql/) und
 
 ```ts
 interface graphql {
-  link(uri: string): GraphQLRequestHandlers
+  link(uri: string): GraphQLRequestHandlers;
 }
 ```
 
 ## Examples
 
 ```js showLineNumbers focusedLines=3-4,7-8
-import { setupWorker, graphql } from 'msw'
+import { setupWorker, graphql } from "msw";
 
-const github = graphql.link('https://api.github.com/v4')
-const stripe = graphql.link('https://api.stripe.com/graphql')
+const github = graphql.link("https://api.github.com/v4");
+const stripe = graphql.link("https://api.stripe.com/graphql");
 
 const worker = setupWorker(
-  github.query('GetUser', resolveGitHubUser),
-  stripe.mutation('Payment', resolveStripePayment),
+  github.query("GetUser", resolveGitHubUser),
+  stripe.mutation("Payment", resolveStripePayment),
 
   // Although this operation name is `GetUser`,
   // it will get captured only when the request is issued
   // against the current location (no link specified).
-  graphql.query('GetUser', (req, res, ctx) => {
-    return res()
-  }),
-)
+  graphql.query("GetUser", (req, res, ctx) => {
+    return res();
+  })
+);
 
-worker.start()
+worker.start();
 ```

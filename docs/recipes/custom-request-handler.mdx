@@ -11,7 +11,7 @@ When using an SDK you are provided with an interface that wraps request calls in
 ```js
 // A random "externalSDK" package
 // that allows us to list some resources.
-externalSDK.listResources()
+externalSDK.listResources();
 ```
 
 With SDK being an abstraction over requests, the exact method and endpoint used under the hood become its implementation details. It's highly discouraged to base your testing on such implementation details, as they are subjected to change and are not exposed publicly for a reason.
@@ -28,18 +28,18 @@ interface RequestHandler<
   PublicRequest,
   ResponseBodyType
 > {
-  parse?(req: RequestType): ParsedRequest | null
+  parse?(req: RequestType): ParsedRequest | null;
 
-  predicate(req: RequestType, parsedReq: ParsedRequest): boolean
+  predicate(req: RequestType, parsedReq: ParsedRequest): boolean;
 
   getPublicRequest?(
     req: RequesType,
-    parsedRequest: ParsedRequest,
-  ): PublicRequest
+    parsedRequest: ParsedRequest
+  ): PublicRequest;
 
-  resolver: ResponseResolver
+  resolver: ResponseResolver;
 
-  defineContext?(req: PublicRequest): ContextType
+  defineContext?(req: PublicRequest): ContextType;
 
   log(
     req: PublicRequest,
@@ -51,8 +51,8 @@ interface RequestHandler<
       PublicRequest,
       ResponseBodyType
     >,
-    parsedRequest: ParsedRequest,
-  ): void
+    parsedRequest: ParsedRequest
+  ): void;
 }
 ```
 
@@ -114,26 +114,26 @@ export const customHandler = (resolver) => {
       return {
         resource(payload) {
           return (res) => {
-            res.headers.set('content-type', 'application/json')
+            res.headers.set("content-type", "application/json");
             res.body = {
               ...payload,
               resourceId: getRandomId(),
-            }
-            return res
-          }
+            };
+            return res;
+          };
         },
-      }
+      };
     },
-  }
-}
+  };
+};
 ```
 
 The example above would expose the `ctx.resource()` function in the response resolver, allowing for a shorthand resource creation:
 
 ```js
 customHandler((req, res, ctx) => {
-  return res(ctx.resource({ title: 'Random resource' }))
-})
+  return res(ctx.resource({ title: "Random resource" }));
+});
 ```
 
 > You can utilize default contexts, such as `defaultContext`, `restContext` and `graphqlContext` exposed from the `msw` package.
@@ -188,14 +188,14 @@ export const sdk = (operation, resolver) => {
 Provide the custom `sdk` request handler to the `setupWorker`/`setupServer` calls, just as you would do with the standard handlers.
 
 ```js focusedLines=5-7
-import { setupWorker } from 'msw'
-import { sdk } from './handlers/sdk'
+import { setupWorker } from "msw";
+import { sdk } from "./handlers/sdk";
 
 const worker = setupWorker(
-  sdk('ListResources', (req, res, ctx) => {
-    return res(ctx.json({ id: 1 }))
-  }),
-)
+  sdk("ListResources", (req, res, ctx) => {
+    return res(ctx.json({ id: 1 }));
+  })
+);
 
-worker.start()
+worker.start();
 ```

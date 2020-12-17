@@ -26,11 +26,11 @@ In the `server.js` file we are going to create a server instance with our reques
 
 ```js showLineNumbers focusedLines=2,7-8
 // src/mocks/server.js
-import { setupServer } from 'msw/node'
-import { handlers } from './handlers'
+import { setupServer } from "msw/node";
+import { handlers } from "./handlers";
 
 // This configures a request mocking server with the given request handlers.
-export const server = setupServer(...handlers)
+export const server = setupServer(...handlers);
 ```
 
 ## Setup
@@ -47,16 +47,16 @@ In Create React App there is a `src/setupTests.js` module that is used in the Je
 
 ```js showLineNumbers
 // src/setupTests.js
-import { server } from './mocks/server.js'
+import { server } from "./mocks/server.js";
 // Establish API mocking before all tests.
-beforeAll(() => server.listen())
+beforeAll(() => server.listen());
 
 // Reset any request handlers that we may add during the tests,
 // so they don't affect other tests.
-afterEach(() => server.resetHandlers())
+afterEach(() => server.resetHandlers());
 
 // Clean up after the tests are finished.
-afterAll(() => server.close())
+afterAll(() => server.close());
 ```
 
 <Hint>
@@ -85,8 +85,8 @@ Open the `jest.setup.js` file and write there the same code as in the Create Rea
 ```js
 // jest.config.js
 module.exports = {
-  setupFilesAfterEnv: ['./jest.setup.js'],
-}
+  setupFilesAfterEnv: ["./jest.setup.js"],
+};
 ```
 
 > Create `jest.config.js`, if you don't have it already.
@@ -98,9 +98,9 @@ Since API mocking has been established in the tests setup, each test suite doesn
 ```js showLineNumbers
 // test/Login.test.js
 
-test('allows user to log in', async () => {
+test("allows user to log in", async () => {
   // Render components, perform requests, receive mocked responses.
-})
+});
 ```
 
 ## Direct usage
@@ -112,8 +112,8 @@ Bear in mind that without a DOM-like environment, like the jsdom from Jest, **yo
 ```js showLineNumbers focusedLines=2
 const server = setupServer(
   // NOT "/user", nothing to be relative to!
-  rest.get('https://api.backend.dev/user', (req, res, ctx) => {
-    return res(ctx.json({ firstName: 'John' }))
-  }),
-)
+  rest.get("https://api.backend.dev/user", (req, res, ctx) => {
+    return res(ctx.json({ firstName: "John" }));
+  })
+);
 ```

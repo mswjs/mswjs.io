@@ -12,25 +12,25 @@ Request handler added after the initial `setupServer` call is referred to as _ru
 ### Runtime request handler
 
 ```js showLineNumbers focusedLines=14-18
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
   // Request handlers given to the `setupServer` call
   // are referred to as initial request handlers.
-  rest.get('/book/:bookId', (req, res, ctx) => {
-    return res(ctx.json({ title: 'Lord of the Rings' }))
-  }),
-)
+  rest.get("/book/:bookId", (req, res, ctx) => {
+    return res(ctx.json({ title: "Lord of the Rings" }));
+  })
+);
 
-test('supports sign in user flow', () => {
+test("supports sign in user flow", () => {
   // Adds the "POST /login" request handler as a part of this test.
   server.use(
-    rest.post('/login', (req, res, ctx) => {
-      return res(ctx.json({ success: true }))
-    }),
-  )
-})
+    rest.post("/login", (req, res, ctx) => {
+      return res(ctx.json({ success: true }));
+    })
+  );
+});
 ```
 
 ### Permanent override
@@ -38,28 +38,28 @@ test('supports sign in user flow', () => {
 When a runtime request handler overlaps with an existing one (has the same predicate), the runtime handler always takes priority. Leverage this to provision API behavior overrides per test suite.
 
 ```js showLineNumbers focusedLines=12-17
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
   // Initial request handler for a book detail.
-  rest.get('/book/:bookId', (req, res, ctx) => {
-    return res(ctx.json({ title: 'Lord of the Rings' }))
-  }),
-)
+  rest.get("/book/:bookId", (req, res, ctx) => {
+    return res(ctx.json({ title: "Lord of the Rings" }));
+  })
+);
 
-test('handles server error gracefully', () => {
+test("handles server error gracefully", () => {
   server.use(
     // Runtime request handler override for the "GET /book/:bookId".
-    rest.get('/book/:bookId', (req, res, ctx) => {
-      return res(ctx.json({ title: 'A Game of Thrones' }))
-    }),
-  )
+    rest.get("/book/:bookId", (req, res, ctx) => {
+      return res(ctx.json({ title: "A Game of Thrones" }));
+    })
+  );
 
   // Any requests to "GET /book/:bookId" will return
   // the "A Game of Thrones" mocked response from
   // the runtime request handler override.
-})
+});
 ```
 
 ### One-time override
@@ -73,29 +73,29 @@ To declare a one-time request handler override make sure your handler responds u
 ```js showLineNumbers focusedLines=9-17
 const server = setupServer(
   // Initial request handler for a book detail.
-  rest.get('/book/:bookId', (req, res, ctx) => {
-    return res(ctx.json({ title: 'Lord of the Rings' }))
-  }),
-)
+  rest.get("/book/:bookId", (req, res, ctx) => {
+    return res(ctx.json({ title: "Lord of the Rings" }));
+  })
+);
 
-test('handles server error gracefully', () => {
+test("handles server error gracefully", () => {
   server.use(
-    rest.get('/book/:bookId', (req, res, ctx) => {
+    rest.get("/book/:bookId", (req, res, ctx) => {
       // The first matching "GET /book/:bookId" request
       // will receive this mocked response.
       return res.once(
         ctx.status(500),
-        ctx.json({ message: 'Internal server error' }),
-      )
-    }),
-  )
+        ctx.json({ message: "Internal server error" })
+      );
+    })
+  );
 
   // Request to "GET /book/:bookId" in this test will return
   // a mocked error response (500).
-})
+});
 
-test('renders a book detail', () => {
+test("renders a book detail", () => {
   // Request to "GET /book/:bookId" in this test will return
   // a mocked "Lord of the Rings" book detail.
-})
+});
 ```

@@ -19,12 +19,12 @@ Each method in this namespace represents a REST API request method:
 Using a method under this namespace automatically creates a request handler that matches any requests with the respective REST API method. Additionally, such request handler accepts a request URL as the first parameter to narrow the match.
 
 ```js showLineNumbers
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 setupWorker(
   // Match all "POST" requests to the given path
-  rest.post('/author/:authorId/:postId', responseResolver),
-)
+  rest.post("/author/:authorId/:postId", responseResolver)
+);
 ```
 
 Here are some examples of request URLs that would match the request handler above:
@@ -35,21 +35,21 @@ Here are some examples of request URLs that would match the request handler abov
 ## Examples
 
 ```js showLineNumbers
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.get('/users/:userId', (req, res, ctx) => {
-    const { userId } = req.params
+  rest.get("/users/:userId", (req, res, ctx) => {
+    const { userId } = req.params;
 
     return res(
       ctx.json({
         id: userId,
-        firstName: 'John',
-        lastName: 'Maverick',
-      }),
-    )
-  }),
-)
+        firstName: "John",
+        lastName: "Maverick",
+      })
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```

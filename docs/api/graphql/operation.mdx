@@ -9,7 +9,7 @@ A request handler that targets any GraphQL operation, regardless of type or name
 
 ```ts
 interface graphql {
-  operation(resolver: ResponseResolver): RequestHandler
+  operation(resolver: ResponseResolver): RequestHandler;
 }
 ```
 
@@ -18,18 +18,18 @@ interface graphql {
 ### Fixed response
 
 ```js focusedLines=3
-import { graphql } from 'msw'
+import { graphql } from "msw";
 
 graphql.operation((req, res, ctx) => {
   return res(
     ctx.errors([
       {
-        message: 'Access denied',
+        message: "Access denied",
         positions: [1, 92],
       },
-    ]),
-  )
-})
+    ])
+  );
+});
 ```
 
 ### Resolve against schema
@@ -37,20 +37,20 @@ graphql.operation((req, res, ctx) => {
 You can resolve any operation against a predefined schema, opposed to a fixed response. Here's an example of using the `graphql` package to resolve an operation against a predefined `schema`:
 
 ```js focusedLines=16
-import { graphql as graphqlRequest, buildSchema } from 'graphql'
-import { graphql } from 'msw'
+import { graphql as graphqlRequest, buildSchema } from "graphql";
+import { graphql } from "msw";
 
 const schema = buildSchema(`
   type Query {
     hello: String
   }
-`)
+`);
 
 const root = {
   hello: () => {
-    return 'Hello world!'
+    return "Hello world!";
   },
-}
+};
 
 graphql.operation(async (req, res, ctx) => {
   const payload = await graphqlRequest(
@@ -58,9 +58,9 @@ graphql.operation(async (req, res, ctx) => {
     req.body.query,
     root,
     null,
-    req.variables,
-  )
+    req.variables
+  );
 
-  return res(ctx.data(payload.data), ctx.errors(payload.errors))
-})
+  return res(ctx.data(payload.data), ctx.errors(payload.errors));
+});
 ```

@@ -7,10 +7,10 @@ A request handler that captures a GraphQL mutation by the given name.
 
 <Hint mode="warning">
   This request handler captures GraphQL mutations regardless of their endpoint.
-  See{' '}
+  See{" "}
   <a href="/docs/api/graphql/link">
     <code>graphql.link()</code>
-  </a>{' '}
+  </a>{" "}
   for the endpoint-based mocking.
 </Hint>
 
@@ -20,8 +20,8 @@ A request handler that captures a GraphQL mutation by the given name.
 interface graphql {
   mutation<MutationType, VariablesType>(
     name: string | RegExp,
-    resolver: ResponseResolver,
-  ): RequestHandler
+    resolver: ResponseResolver
+  ): RequestHandler;
 }
 ```
 
@@ -40,17 +40,17 @@ mutation Logout {
 To capture a GraphQL mutation provide its name as the first argument to the `graphql.mutation()` request handler. Using the mutation definition above, the request handler for it would look as follows:
 
 ```js focusedLines=3
-import { graphql } from 'msw'
+import { graphql } from "msw";
 
-graphql.mutation('Logout', (req, res, ctx) => {
+graphql.mutation("Logout", (req, res, ctx) => {
   return res(
     ctx.data({
       user: {
-        sessionId: 'abc-123',
+        sessionId: "abc-123",
       },
-    }),
-  )
-})
+    })
+  );
+});
 ```
 
 ### Mutation variables
@@ -68,19 +68,19 @@ mutation Login($username: String!, $password: String!) {
 Use `req.variables` object to access all the variables of the captured mutation.
 
 ```js focusedLines=4
-import { graphql } from 'msw'
+import { graphql } from "msw";
 
-graphql.mutation('Logout', (req, res, ctx) => {
-  const { username, password } = req.variables
+graphql.mutation("Logout", (req, res, ctx) => {
+  const { username, password } = req.variables;
 
   return res(
     ctx.data({
       login: {
-        sessionId: 'abc-123',
+        sessionId: "abc-123",
       },
-    }),
-  )
-})
+    })
+  );
+});
 ```
 
 ### Dynamic mutation name
@@ -102,17 +102,17 @@ mutation DeleteUser {
 ```
 
 ```js focusedLines=3
-import { graphql } from 'msw'
+import { graphql } from "msw";
 
 graphql.mutation(/^(.+?)User$/, (req, res, ctx) => {
   return res(
     ctx.errors([
       {
-        message: 'Not authorized',
+        message: "Not authorized",
       },
-    ]),
-  )
-})
+    ])
+  );
+});
 ```
 
 ### Usage with TypeScript
@@ -120,35 +120,35 @@ graphql.mutation(/^(.+?)User$/, (req, res, ctx) => {
 Annotate your mutations in TypeScript to get autocompletion and validation for mutation data and variables in your IDE.
 
 ```ts
-import { graphql } from 'msw'
+import { graphql } from "msw";
 
 interface LoginMutation {
   user: {
-    firstName: string
-    lastName: string
-  }
+    firstName: string;
+    lastName: string;
+  };
 }
 
 interface LoginMutationVariables {
-  username: string
-  password: string
+  username: string;
+  password: string;
 }
 
 graphql.mutation<LoginMutation, LoginMutationVariables>(
-  'Login',
+  "Login",
   (req, res, ctx) => {
-    const { username, password } = req.variables
+    const { username, password } = req.variables;
 
     return res(
       ctx.data({
         user: {
-          firstName: 'John',
-          lastName: 'Maverick',
+          firstName: "John",
+          lastName: "Maverick",
         },
-      }),
-    )
-  },
-)
+      })
+    );
+  }
+);
 ```
 
 > Consider tools like [GraphQL Code Generator](https://graphql-code-generator.com/) to annotate your mocks with the type definitions derived from the actual GraphQL schema.

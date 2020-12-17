@@ -3,7 +3,7 @@ title: Deferred mounting
 ---
 
 <Hint mode="warning">
-  This is <strong>not a default recommended setup</strong>. Please refer to the{' '}
+  This is <strong>not a default recommended setup</strong>. Please refer to the{" "}
   <a href="/docs/getting-started/integrate/browser">
     default browser integration
   </a>
@@ -22,20 +22,20 @@ Here's an example on how to defer application's mount in a React application:
 
 ```js showLineNumbers focusedLines=7-10,15-17
 // src/index.js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
 function prepare() {
-  if (process.env.NODE_ENV === 'development') {
-    const { worker } = require('./mocks/browser')
-    return worker.start()
+  if (process.env.NODE_ENV === "development") {
+    const { worker } = require("./mocks/browser");
+    return worker.start();
   }
 
-  return Promise.resolve()
+  return Promise.resolve();
 }
 
 prepare().then(() => {
-  ReactDOM.render(<App />, document.getElementById('root'))
-})
+  ReactDOM.render(<App />, document.getElementById("root"));
+});
 ```

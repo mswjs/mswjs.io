@@ -9,21 +9,21 @@ Prints the list of currently active request handlers into the browser's console.
 
 ```js
 // handlers.js
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.get('/user/:userId', (req, res, ctx) => {
-    return res(ctx.json({ id: req.params.userId }))
-  }),
-)
+  rest.get("/user/:userId", (req, res, ctx) => {
+    return res(ctx.json({ id: req.params.userId }));
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 To list all the active request handlers run the following command:
 
 ```js
-worker.printHandlers()
+worker.printHandlers();
 ```
 
 > Consider storing the worker instance on the global `window` object to access its methods anytime from the browser.

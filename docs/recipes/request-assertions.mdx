@@ -26,28 +26,28 @@ Validity of the response often, if not always, depends on the validity of the re
 For example, your application is making a `GET /search?type=ABC` request where the `type` parameter represents a search type, and should be either `product` or `user`. That query parameter value validation is a business logic, so reflect it in your response resolver to ensure your mocks respect that logic.
 
 ```js showLineNumbers focusedLines=6-14,16-21
-import { rest } from 'msw'
+import { rest } from "msw";
 
-rest.get('/search', (req, res, ctx) => {
-  const searchType = req.url.searchParams.get('type')
+rest.get("/search", (req, res, ctx) => {
+  const searchType = req.url.searchParams.get("type");
 
   // Successful response in case the "type" query parameter
   // passes the value validation.
-  if (['product', 'user'].includes(searchType)) {
+  if (["product", "user"].includes(searchType)) {
     return res(
       ctx.json({
         results: [1, 2, 3],
-      }),
-    )
+      })
+    );
   }
 
   // A failure scenario that ensures our mocks don't tolerate
   // unknown "type" query parameter values.
   return res(
     ctx.status(400),
-    ctx.json({ message: `Unknown search type: ${searchType}` }),
-  )
-})
+    ctx.json({ message: `Unknown search type: ${searchType}` })
+  );
+});
 ```
 
 By accounting on the failure scenario, you can rely on your application's output in your tests being a reflection of the request's validity.

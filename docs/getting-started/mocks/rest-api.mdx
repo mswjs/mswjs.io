@@ -13,7 +13,7 @@ In our `src/mocks/handlers.js` file let's import the essentials we need for mock
 
 ```js showLineNumbers
 // src/mocks/handlers.js
-import { rest } from 'msw'
+import { rest } from "msw";
 ```
 
 ## Request handler
@@ -32,15 +32,15 @@ In this tutorial we will be mocking a basic login flow for our user. This flow i
 
 ```js showLineNumbers focusedLines=6,9
 // src/mocks/handlers.js
-import { rest } from 'msw'
+import { rest } from "msw";
 
 export const handlers = [
   // Handles a POST /login request
-  rest.post('/login', null),
+  rest.post("/login", null),
 
   // Handles a GET /user request
-  rest.get('/user', null),
-]
+  rest.get("/user", null),
+];
 ```
 
 ## Response resolver
@@ -59,42 +59,42 @@ Response resolver is a function that accepts the following arguments:
 
 ```js showLineNumbers focusedLines=9-12,21-25,30-35
 // src/mocks/handlers.js
-import { rest } from 'msw'
+import { rest } from "msw";
 
 export const handlers = [
-  rest.post('/login', (req, res, ctx) => {
+  rest.post("/login", (req, res, ctx) => {
     // Persist user's authentication in the session
-    sessionStorage.setItem('is-authenticated', true)
+    sessionStorage.setItem("is-authenticated", true);
 
     return res(
       // Respond with a 200 status code
-      ctx.status(200),
-    )
+      ctx.status(200)
+    );
   }),
 
-  rest.get('/user', (req, res, ctx) => {
+  rest.get("/user", (req, res, ctx) => {
     // Check if the user is authenticated in this session
-    const isAuthenticated = sessionStorage.getItem('is-authenticated')
+    const isAuthenticated = sessionStorage.getItem("is-authenticated");
 
     if (!isAuthenticated) {
       // If not authenticated, respond with a 403 error
       return res(
         ctx.status(403),
         ctx.json({
-          errorMessage: 'Not authorized',
-        }),
-      )
+          errorMessage: "Not authorized",
+        })
+      );
     }
 
     // If authenticated, return a mocked user details
     return res(
       ctx.status(200),
       ctx.json({
-        username: 'admin',
-      }),
-    )
+        username: "admin",
+      })
+    );
   }),
-]
+];
 ```
 
 > Utilize things like [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), or [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) to handle more complex API scenarios and user interactions.
@@ -103,6 +103,6 @@ export const handlers = [
 
 The request handlers are complete, yet there is one last step to perform: integrate the mocking.
 
-import * as IntegratePage from '../integrate/'
+import * as IntegratePage from "../integrate/";
 
 <PageLink page={IntegratePage} url="/docs/getting-started/integrate" />

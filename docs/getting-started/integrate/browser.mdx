@@ -21,7 +21,7 @@ Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's p
 $ npx msw init public/
 ```
 
-import PublicDirSnippet from '../../snippets/public-dir.mdx'
+import PublicDirSnippet from "../../snippets/public-dir.mdx";
 
 <PublicDirSnippet />
 
@@ -46,11 +46,11 @@ In the `browser.js` file we are going to create a worker instance with our reque
 
 ```js showLineNumbers focusedLines=2,7-8
 // src/mocks/browser.js
-import { setupWorker } from 'msw'
-import { handlers } from './handlers'
+import { setupWorker } from "msw";
+import { handlers } from "./handlers";
 
 // This configures a Service Worker with the given request handlers.
-export const worker = setupWorker(...handlers)
+export const worker = setupWorker(...handlers);
 ```
 
 ## Start worker
@@ -68,16 +68,16 @@ In order for our mock definition to execute during the runtime, it needs to be i
 
 ```js showLineNumbers focusedLines=6-9
 // src/index.js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
-if (process.env.NODE_ENV === 'development') {
-  const { worker } = require('./mocks/browser')
-  worker.start()
+if (process.env.NODE_ENV === "development") {
+  const { worker } = require("./mocks/browser");
+  worker.start();
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 ## Verify & Inspect
@@ -93,7 +93,7 @@ Any requests that match previously defined handlers will now be intercepted and 
 If you have created a project using Create React App you should remove the following line
 
 ```js
-serviceWorker.unregister()
+serviceWorker.unregister();
 ```
 
 in your `src/index.js` file. Create React App unregisters all Service Workers by default, which would also unregister the mock Service Worker, resulting into broken requests interception.

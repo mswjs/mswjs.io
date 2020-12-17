@@ -10,27 +10,27 @@ In order to access a query parameter of the intercepted request, use the `search
 ### Single parameter
 
 ```js showLineNumbers focusedLines=5
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.get('/products', (req, res, ctx) => {
-    const productId = req.url.searchParams.get('id')
+  rest.get("/products", (req, res, ctx) => {
+    const productId = req.url.searchParams.get("id");
 
     return res(
       ctx.json({
         productId,
-      }),
-    )
-  }),
-)
+      })
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 <ResponsePreview
   request={{
-    method: 'GET',
-    url: '/products**?id=123**',
+    method: "GET",
+    url: "/products**?id=123**",
   }}
   response={{
     body: `
@@ -48,29 +48,29 @@ worker.start()
 Call `req.url.searchParams.getAll()` method to access all values assigned to a parameter.
 
 ```js showLineNumbers focusedLines=5
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.get('/products', (req, res, ctx) => {
-    const productIds = req.url.searchParams.getAll('id')
+  rest.get("/products", (req, res, ctx) => {
+    const productIds = req.url.searchParams.getAll("id");
 
     return res(
       ctx.json({
         productIds,
-      }),
-    )
-  }),
-)
+      })
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 > Read more in the [`URLSearchParams.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) specification.
 
 <ResponsePreview
   request={{
-    method: 'GET',
-    url: '/products**?id=1&id=2&id=3**',
+    method: "GET",
+    url: "/products**?id=1&id=2&id=3**",
   }}
   response={{
     body: `

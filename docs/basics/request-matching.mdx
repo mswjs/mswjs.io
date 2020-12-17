@@ -46,11 +46,11 @@ Provided an exact request URL string, only those request that strictly match tha
 
 ```js
 // Only "POST https://api.backend.dev/users" requests match this handler
-rest.post('https://api.backend.com/users', responseResolver)
+rest.post("https://api.backend.com/users", responseResolver);
 
 // Given your application runs on "http://localhost:8080",
 // this request handler URL gets resolved to "http://localhost:8080/invoices"
-rest.get('/invoices', invocesResolver)
+rest.get("/invoices", invocesResolver);
 ```
 
 > Note that relative URL are resolved against the current location (`location.origin`).
@@ -77,15 +77,15 @@ rest.get('/users/*', responseResolver),
 To add a parameter to your request path use the `:paramName` format. Parsed parameters values is available in the `req.params` object of the response resolver.
 
 ```js focusedLines=5
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 setupWorker(
   // Given "POST https://api.backend.dev/user/abc-123" request,
-  rest.post('https://api.backend.dev/user/:userId', (req, res, ctx) => {
+  rest.post("https://api.backend.dev/user/:userId", (req, res, ctx) => {
     // `userId` value becomes "abc-123"
-    const { userId } = req.params
-  }),
-)
+    const { userId } = req.params;
+  })
+);
 ```
 
 #### REPL
@@ -100,7 +100,7 @@ When provided a regular expression, all request URL that match that expression w
 // This request handler would match all these requests:
 // - DELETE http://localhost:8080/posts/
 // - DELETE https://backend.dev/user/posts/
-rest.delete(/\/posts\//, responseResolver)
+rest.delete(/\/posts\//, responseResolver);
 ```
 
 > Unlike paths, regular expressions use _weak_ comparison, supporting partial matches.
@@ -133,7 +133,7 @@ By default, all GraphQL operation names are matched _regardless of origin_.
 ```js
 // This will match a "GetUser" operation against any host
 // (i.e. both "https://api.github.com/v4" and "http://localhost:8080")
-graphql.query('GetUser', resolveUser)
+graphql.query("GetUser", resolveUser);
 ```
 
 > Use [`graphql.link`](/docs/api/graphql/link) to target GraphQL operations against a specific endpoint.
@@ -144,5 +144,5 @@ You can use a regular expression to match multiple GraphQL operation names.
 
 ```js
 // Matches all GraphQL queries that end with "User".
-graphql.query(/User$/, resolveAnyUserQuery)
+graphql.query(/User$/, resolveAnyUserQuery);
 ```

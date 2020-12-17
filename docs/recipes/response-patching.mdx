@@ -12,24 +12,24 @@ Pass the intercepted `request` object to the `ctx.fetch()` call to get the origi
 Below is an example of patching a response from a user detail endpoint of [GitHub API v3](https://developer.github.com/v3/).
 
 ```js showLineNumbers focusedLines=5,6
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.get('https://api.github.com/users/:username', async (req, res, ctx) => {
+  rest.get("https://api.github.com/users/:username", async (req, res, ctx) => {
     // Perform an original request to the intercepted request URL
-    const originalResponse = await ctx.fetch(req)
-    const originalResponseData = await originalResponse.json()
+    const originalResponse = await ctx.fetch(req);
+    const originalResponseData = await originalResponse.json();
 
     return res(
       ctx.json({
         location: originalResponseData.location,
-        firstName: 'Not the real first name',
-      }),
-    )
-  }),
-)
+        firstName: "Not the real first name",
+      })
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 > It is highly recommended to use `ctx.fetch()` instead of a regular `window.fetch()` within response resolvers, because it prevents actual requests **from being matched against the MSW mocks definition**.
@@ -38,8 +38,8 @@ worker.start()
 
 <ResponsePreview
   request={{
-    method: 'GET',
-    url: 'https://api.github.com**/users/octocat**',
+    method: "GET",
+    url: "https://api.github.com**/users/octocat**",
   }}
   statusCode={301}
   response={{
@@ -53,6 +53,6 @@ worker.start()
     `,
   }}
   codeProps={{
-    focusedLines: '2,3',
+    focusedLines: "2,3",
   }}
 />

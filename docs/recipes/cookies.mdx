@@ -14,35 +14,35 @@ However, since Mock Service Worker executes on the client side, it can provide a
 ### Access request cookies
 
 ```js showLineNumbers focusedLines=6
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.post('/login', (req, res, ctx) => {
+  rest.post("/login", (req, res, ctx) => {
     // Access the request's cookies.
-    const { authToken } = req.cookies
+    const { authToken } = req.cookies;
 
     if (isValidToken(authToken)) {
       return res(
         ctx.json({
-          id: 'abc-123',
-          firstName: 'John',
-        }),
-      )
+          id: "abc-123",
+          firstName: "John",
+        })
+      );
     }
 
     return res(
       ctx.status(403),
-      ctx.json({ message: 'Failed to authenticate!' }),
-    )
-  }),
-)
+      ctx.json({ message: "Failed to authenticate!" })
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 <Hint mode="warning">
-  The value of <code>req.cookies</code> respects the{' '}
-  <code>req.credentials</code>. Learn more about the{' '}
+  The value of <code>req.cookies</code> respects the{" "}
+  <code>req.credentials</code>. Learn more about the{" "}
   <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials">
     Request Credentials
   </a>
@@ -52,19 +52,19 @@ worker.start()
 ### Mock response cookies
 
 ```js showLineNumbers focusedLines=8
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.post('/login', (req, res, ctx) => {
+  rest.post("/login", (req, res, ctx) => {
     return res(
       // Calling `ctx.cookie()` sets given cookies
       // on `document.cookie` directly.
-      ctx.cookie('auth-token', 'abc-123'),
-    )
-  }),
-)
+      ctx.cookie("auth-token", "abc-123")
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 > Note that you still won't be able to access the `Set-Cookie` header on the response, as the cookie is set on the `document` directly, bypassing network.

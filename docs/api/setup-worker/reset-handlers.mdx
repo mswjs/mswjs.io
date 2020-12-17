@@ -52,31 +52,31 @@ describe('Book detail', () => {
 When provided with a list of request handlers, `.resetHandlers()` will additionally replace any initial request handlers with the explicitly provided ones.
 
 ```js showLineNumbers focusedLines=14-18
-describe('Book detail', () => {
+describe("Book detail", () => {
   before(() => {
-    cy.visit('/book/abc-123')
-  })
+    cy.visit("/book/abc-123");
+  });
 
-  test('renders book details', () => {
+  test("renders book details", () => {
     // Render the page, triggering "GET /book/:bookId"
-  })
+  });
 
-  test('handles different scenario', () => {
+  test("handles different scenario", () => {
     cy.window().then((window) => {
-      const { worker, rest } = window.msw
+      const { worker, rest } = window.msw;
 
       worker.resetHandlers(
-        rest.post('/login', (req, res, ctx) => {
-          return res(ctx.json({}))
-        }),
-      )
-    })
+        rest.post("/login", (req, res, ctx) => {
+          return res(ctx.json({}));
+        })
+      );
+    });
 
     // This, any any subsequent test suites, know nothing
     // about "GET /book/:bookId" handler, because it has been
     // replaced by "POST /login".
-  })
-})
+  });
+});
 ```
 
 > Be mindful when using `.resetHandlers()` with explicit next request handlers. It's important so that your tests remain deterministic and predictable.

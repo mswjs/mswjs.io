@@ -79,31 +79,31 @@ Caching mechanism of some request clients may produce stale responses in your te
 ### React Query
 
 ```js
-import { queryCache } from 'react-query'
+import { queryCache } from "react-query";
 
 beforeEach(() => {
-  queryCache.clear()
-})
+  queryCache.clear();
+});
 ```
 
 ### SWR
 
 ```js
-import { cache } from 'swr'
+import { cache } from "swr";
 
 beforeEach(() => {
-  cache.clear()
-})
+  cache.clear();
+});
 ```
 
 ### Apollo Client
 
 ```js
-import { client } from '../lib/apolloClient'
+import { client } from "../lib/apolloClient";
 
 beforeEach(() => {
-  return client.cache.reset()
-})
+  return client.cache.reset();
+});
 ```
 
 > The exact API for clearing cache may differ depending on your request client. Please refer to your request client's documentation for more details.

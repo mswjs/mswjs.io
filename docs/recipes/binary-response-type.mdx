@@ -11,26 +11,26 @@ Providing the `ctx.body()` utility function with a [`BufferSource`](https://deve
 Here is an example of a mocked response that sends a local image:
 
 ```js showLineNumbers focusedLines=6-9,12-15
-import { setupWorker, rest } from 'msw'
-import base64Image from 'url-loader!../fixtures/image.jpg'
+import { setupWorker, rest } from "msw";
+import base64Image from "url-loader!../fixtures/image.jpg";
 
 const worker = setupWorker(
-  rest.get('/images/:imageId', async (_, res, ctx) => {
+  rest.get("/images/:imageId", async (_, res, ctx) => {
     // Convert "base64" image to "ArrayBuffer".
     const imageBuffer = await fetch(base64Image).then((res) =>
-      res.arrayBuffer(),
-    )
+      res.arrayBuffer()
+    );
 
     return res(
-      ctx.set('Content-Length', imageBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'image/jpeg'),
+      ctx.set("Content-Length", imageBuffer.byteLength.toString()),
+      ctx.set("Content-Type", "image/jpeg"),
       // Respond with the "ArrayBuffer".
-      ctx.body(imageBuffer),
-    )
-  }),
-)
+      ctx.body(imageBuffer)
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 <Hint>
@@ -43,26 +43,26 @@ worker.start()
 Here is an example of a mocked response that reads an image from the file system and sends it in the mocked response:
 
 ```js showLineNumbers focusedLines=8-11,14-17
-import * as path from 'path'
-import * as fs from 'fs'
-import { setupServer } from 'msw/node'
-import { rest } from 'msw'
+import * as path from "path";
+import * as fs from "fs";
+import { setupServer } from "msw/node";
+import { rest } from "msw";
 
 const server = setupServer(
-  rest.get('/images/:imageId', (_, res, ctx) => {
+  rest.get("/images/:imageId", (_, res, ctx) => {
     // Read the image from the file system using the "fs" module.
     const imageBuffer = fs.readFileSync(
-      path.resolve(__dirname, '../fixtures/image.jpg'),
-    )
+      path.resolve(__dirname, "../fixtures/image.jpg")
+    );
 
     return res(
-      ctx.set('Content-Length', imageBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'image/jpeg'),
+      ctx.set("Content-Length", imageBuffer.byteLength.toString()),
+      ctx.set("Content-Type", "image/jpeg"),
       // Respond with the "ArrayBuffer".
-      ctx.body(imageBuffer),
-    )
-  }),
-)
+      ctx.body(imageBuffer)
+    );
+  })
+);
 
-server.listen()
+server.listen();
 ```

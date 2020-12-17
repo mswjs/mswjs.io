@@ -7,7 +7,7 @@ When it comes to mocking an error response, it's recommended to compose a valid 
 
 <Hint mode="warning">
   Exception originating from a request handler is gracefully handled as a 500
-  response from the Service Worker, but it's highly recommended{' '}
+  response from the Service Worker, but it's highly recommended{" "}
   <strong>to resolve it, as it indicates an error in your code</strong>.
 </Hint>
 
@@ -18,11 +18,11 @@ By treating an error response as an actual response, and not an exception, you r
 Here's an example on how to mock an error response for the login `POST` request:
 
 ```js showLineNumbers
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.post('/login', (req, res, ctx) => {
-    const { username } = req.body
+  rest.post("/login", (req, res, ctx) => {
+    const { username } = req.body;
 
     return res(
       // Send a valid HTTP status code
@@ -30,18 +30,18 @@ const worker = setupWorker(
       // And a response body, if necessary
       ctx.json({
         errorMessage: `User '${username}' not found`,
-      }),
-    )
-  }),
-)
+      })
+    );
+  })
+);
 
-worker.start()
+worker.start();
 ```
 
 <ResponsePreview
   request={{
-    method: 'POST',
-    url: '**/login**',
+    method: "POST",
+    url: "**/login**",
     body: `
 {
   "username": "admin"
@@ -50,7 +50,7 @@ worker.start()
   }}
   response={{
     statusCode: 403,
-    statusText: 'Forbidden',
+    statusText: "Forbidden",
     body: `
 {
   "errorMessage": "User 'admin' not found"

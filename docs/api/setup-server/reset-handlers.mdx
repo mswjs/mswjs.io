@@ -14,41 +14,41 @@ This function accepts an optional list of request handlers to override the initi
 The `.resetHandlers()` function is useful as a clean up mechanism between multiple test suites that leverage runtime request handlers.
 
 ```js showLineNumbers focusedLines=15
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
-  rest.get('/book/:bookId', (req, res, ctx) => {
-    return res(ctx.json({ title: 'Lord of the Rings' }))
-  }),
-)
+  rest.get("/book/:bookId", (req, res, ctx) => {
+    return res(ctx.json({ title: "Lord of the Rings" }));
+  })
+);
 
 beforeAll(() => {
-  server.listen()
-})
+  server.listen();
+});
 
 afterEach(() => {
-  server.resetHandlers()
-})
+  server.resetHandlers();
+});
 
 afterAll(() => {
-  server.close()
-})
+  server.close();
+});
 
-test('adds new book review', () => {
+test("adds new book review", () => {
   server.use(
     // Adds a runtime request handler for posting a new book review.
-    rest.post('/book/:bookId/reviews', bookReviewResolver),
-  )
+    rest.post("/book/:bookId/reviews", bookReviewResolver)
+  );
 
   // Performing a "POST /book/:bookId/reviews" request
   // will get the mocked response from `bookReviewResolver`.
-})
+});
 
-test('asserts another scenario', () => {
+test("asserts another scenario", () => {
   // Since we call `server.resetHandlers()` after each test,
   // this test suite will know nothing about "POST /book/:bookId/reviews".
-})
+});
 ```
 
 ### Replacing initial handlers
@@ -56,19 +56,19 @@ test('asserts another scenario', () => {
 When provided a list of request handlers, `.resetHandlers()` will additionally replace any initial request handlers with the explicitly provided ones.
 
 ```js showLineNumbers
-const server = setupServer(rest.get('/book/:bookId', bookDetailResolver))
+const server = setupServer(rest.get("/book/:bookId", bookDetailResolver));
 
-test('first test', () => {
+test("first test", () => {
   // Can handle "GET /book/:bookId".
-})
+});
 
-test('second test', () => {
-  server.resetHandlers(rest.post('/login', loginResolver))
+test("second test", () => {
+  server.resetHandlers(rest.post("/login", loginResolver));
 
   // This, any any subsequent tests, will NOT handle
   // "GET /book/:bookId", because it's been reset.
   // Only the "POST /login" request handler exists now.
-})
+});
 ```
 
 > Be mindful when using `.resetHandlers()` with explicit next request handlers. It's important so that your tests remain deterministic and predictable.

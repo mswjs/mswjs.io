@@ -16,22 +16,22 @@ To preserve a NodeJS compatibility, `ctx.fetch()` uses [`node-fetch`](https://gi
 ## Call signature
 
 ```ts
-function fetch(req: MockedRequest): Promise<any>
-function fetch(input: RequestInfo, init?: RequestInit)
+function fetch(req: MockedRequest): Promise<any>;
+function fetch(input: RequestInfo, init?: RequestInit);
 ```
 
 ## Examples
 
 ```js showLineNumbers focusedLines=2-3
-rest.get('https://api.github.com/users/:username', async (req, res, ctx) => {
+rest.get("https://api.github.com/users/:username", async (req, res, ctx) => {
   // Performs an original request to the GitHub API.
-  const originalResponse = await ctx.fetch(req)
+  const originalResponse = await ctx.fetch(req);
 
   return res(
     ctx.json({
-      name: 'John Maverick',
+      name: "John Maverick",
       location: originalResponse.location,
-    }),
-  )
-})
+    })
+  );
+});
 ```

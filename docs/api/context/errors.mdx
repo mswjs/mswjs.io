@@ -8,17 +8,17 @@ Returns one, or multiple GraphQL errors in the mocked response.
 ## Call signature
 
 ```ts
-function errors(errorsList: GraphQLError[]): MockedResponse
+function errors(errorsList: GraphQLError[]): MockedResponse;
 ```
 
 ## Examples
 
 ```js showLineNumbers focusedLines=3-11
-graphql.mutation('Login', (req, res, ctx) => {
+graphql.mutation("Login", (req, res, ctx) => {
   return res(
     ctx.errors([
       {
-        message: 'Failed to log in: username or password are invalid',
+        message: "Failed to log in: username or password are invalid",
         locations: [
           {
             line: 8,
@@ -26,7 +26,7 @@ graphql.mutation('Login', (req, res, ctx) => {
           },
         ],
       },
-    ]),
-  )
-})
+    ])
+  );
+});
 ```

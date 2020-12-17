@@ -8,13 +8,13 @@ Sets an XML response body. Appends a `Content-Type: text/xml` header on the resp
 ## Call signature
 
 ```ts
-function xml(data: string): MockedResponse
+function xml(data: string): MockedResponse;
 ```
 
 ## Examples
 
 ```js showLineNumbers focusedLines=3-9
-rest.get('/user', (req, res, ctx) => {
+rest.get("/user", (req, res, ctx) => {
   return res(
     ctx.xml(`
 <user>
@@ -22,7 +22,7 @@ rest.get('/user', (req, res, ctx) => {
   <firstName>John</firstName>
   <lastName>Maverick</lastName>
 </user>
-    `),
-  )
-})
+    `)
+  );
+});
 ```

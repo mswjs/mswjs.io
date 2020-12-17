@@ -53,31 +53,31 @@ Here's an example of a mock definition file that mocks a `POST /login` request:
 
 ```js showLineNumbers
 // src/mocks.js
-import { setupWorker, rest } from 'msw'
+import { setupWorker, rest } from "msw";
 
 const worker = setupWorker(
-  rest.post('/login', (req, res, ctx) => {
-    const isAuthenticated = sessionStorage.getItem('username')
+  rest.post("/login", (req, res, ctx) => {
+    const isAuthenticated = sessionStorage.getItem("username");
 
     if (!isAuthenticated) {
       return res(
         ctx.status(403),
         ctx.json({
-          errorMessage: 'Not authenticated',
-        }),
-      )
+          errorMessage: "Not authenticated",
+        })
+      );
     }
 
     return res(
       ctx.json({
-        firstName: 'John',
-      }),
-    )
-  }),
-)
+        firstName: "John",
+      })
+    );
+  })
+);
 
 // Register the Service Worker and enable the mocking
-worker.start()
+worker.start();
 ```
 
 Then this mock definition file is [imported conditionally](/docs/getting-started/integrate/browser#import-mocks) in your application. Done.
