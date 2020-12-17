@@ -22,6 +22,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "gray-matter": "^4.0.2",
     "next": "^10.0.3",
     "next-mdx-remote": "^1.0.1",
     "react": "^17.0.1",
