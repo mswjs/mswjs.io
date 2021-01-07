@@ -3,7 +3,7 @@ title: Life-cycle events
 order: 61
 ---
 
-Life-cycle events API is designed to execute arbitrary logic in response to internal MSW events, such as request start/end, or mocked/original response. This is primarily useful for third-party extensions developers and during request handlers debugging.
+The life-cycle events API is designed to execute arbitrary logic in response to internal MSW events, such as the start and end of a request, or the mocked/original response. This is primarily useful for third-party extension developers, or while debugging request handlers.
 
 <Hint>
   This API is <strong>not meant for mocking</strong>. Use{' '}
@@ -33,9 +33,9 @@ worker.on('request:end', (req) => {})
 ### Response events
 
 ```js
-// Mocked response has been sent to a request with given `reqId`.
+// Mocked response has been sent to a request with a given `reqId`.
 worker.on('response:mocked', (res, reqId) => {})
-// Original response has been sent to a request with given `reqId`.
+// Original response has been sent to a request with a given `reqId`.
 worker.on('response:bypass', (res, reqId) => {})
 ```
 
@@ -43,14 +43,14 @@ worker.on('response:bypass', (res, reqId) => {})
 
 ### Tracking a request
 
-Each life-cycle event emits in isolation. To connect multiple events with a single request the library exposes a request ID—a UUID that persist with a specific request.
+Each life-cycle event emits in isolation. To connect multiple events with a single request, the library exposes a request ID (`reqId`)—a UUID that persists with a specific request.
 
 ```js focusedLines=5-6,10-11
 const allRequests = new Map()
 
 worker.on('request:start', (req) => {
   const { id } = req
-  // Store this request by id in the internal Map.
+  // Store this request by id in an internal Map.
   allRequests.set(id, req)
 })
 
