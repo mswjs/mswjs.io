@@ -7,7 +7,7 @@ import { HeadingDiminished } from '../components/HeadingDiminished'
 import { ReactComponent as GoogleLogo } from '../images/logos/google.svg'
 import { ReactComponent as SpotifyLogo } from '../images/logos/spotify-text.svg'
 import { ReactComponent as RedwoodLogo } from '../images/logos/redwoodjs.svg'
-import { ReactComponent as LinodeLogo } from '../images/logos/linode.svg'
+import { ReactComponent as GatsbyLogo } from '../images/logos/gatsby.svg'
 
 const Container = styled.div`
   color: var(--color-gray);
@@ -38,8 +38,8 @@ export const Companies: React.FC = () => {
       >
         <GoogleLogo height={iconSize} />
         <SpotifyLogo height={iconSize} />
+        <GatsbyLogo height={iconSize} />
         <RedwoodLogo width={iconSize} height={iconSize} />
-        <LinodeLogo width={iconSize} />
       </Composition>
     </Grid>
   )
