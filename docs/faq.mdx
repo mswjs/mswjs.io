@@ -79,9 +79,11 @@ Caching mechanism of some request clients may produce stale responses in your te
 ### React Query
 
 ```js
-import { queryCache } from 'react-query'
+import { QueryCache } from 'react-query'
 
-beforeEach(() => {
+const queryCache = new QueryCache()
+
+afterEach(() => {
   queryCache.clear()
 })
 ```
@@ -96,10 +98,10 @@ beforeEach(() => {
 })
 ```
 
-### Apollo Client 
+### Apollo Client
 
 ```js
-import { client } from '../lib/apolloClient';
+import { client } from '../lib/apolloClient'
 
 beforeEach(() => {
   return client.cache.reset()
