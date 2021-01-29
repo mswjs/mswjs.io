@@ -155,6 +155,31 @@ export const handlers = [
 
 > Utilize things like [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), or [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) to handle more complex API scenarios and user interactions.
 
+<Hint mode="warning">
+  <p>
+    Some GraphQL clients (i.e.{' '}
+    <a href="https://www.apollographql.com/docs/">Apollo</a>) may require you to
+    include the <code>__typename</code> property on each individual type on the
+    mocked response:
+  </p>
+  <code
+    className="language-javascript"
+    children={`
+ctx.data({
+  user: {
+    firstName: 'John',
+    lastName: 'Maverick',
+    __typename: 'User'
+  }
+})
+  `}
+  />
+  <p>
+    Follow the response shape of your GraphQL client to ensure you produce a
+    compatible mocked response.
+  </p>
+</Hint>
+
 ## Next step
 
 The request handlers are complete, yet there is one last step to perform: integrate the mocking.
