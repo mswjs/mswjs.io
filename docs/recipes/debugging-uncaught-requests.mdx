@@ -1,0 +1,104 @@
+---
+title: Debugging uncaught requests
+---
+
+Whenever you are faced with a request that is not being intercepted, follow the suggestions on this page to debug the issue.
+
+## Enable `onUnhandledRequest` option
+
+- Applicable to: `setupWorker`/`setupServer`
+
+The library comes with a built-in mechanism to react to unhandled requests. You can configure the `onUnhandledRequest` option of your worker/server to warn or error whenever there's a request that does not have a corresponding request handler.
+
+Learn more about how to configure this option for your worker or server:
+
+<PageLink
+  title="start (setupWorker)"
+  url="/docs/api/setup-worker/start#onunhandledrequest"
+/>
+
+<PageLink
+  title="listen (setupServer)"
+  url="/docs/api/setup-server/listen#onunhandledrequest"
+/>
+
+## Examine the handlers
+
+- Applicable to: `setupWorker`/`setupServer`
+
+You can print out the list of current request handlers at any point of your application runtime or rest run. Browsing the list of handlers can help you figure out a request handler that doesn't get appended on runtime with `.use()`, or notice that the handler you thought is there is actually missing.
+
+<PageLink
+  title="printHandlers (setupWorker)"
+  url="/docs/api/setup-worker/print-handlers"
+/>
+
+<PageLink
+  title="printHandlers (setupServer)"
+  url="/docs/api/setup-server/print-handlers"
+/>
+
+## Verify the worker's scope
+
+- Applicable to: `setupWorker`
+
+A Service Worker can only intercept the requests under its scope. The maximum scope of the worker is its file location.
+
+For example, if you are registering the MSW Service Worker at a custom path:
+
+```js
+worker.start({
+  serviceWorker: {
+    url: '/assets/mockServiceWorker.js',
+  },
+})
+```
+
+Then MSW will only intercept the requests under `/assets/*` path. A request to `/user` or `/posts` will not be intercepted as they lie **outside of the worker's scope** (`/assets`).
+
+> The Service Worker distributed by MSW is a regular Service Worker like any other. While not mandatory, the more you are familiar with how Service Workers function, the fewer issues you will experience. Learn more about [Using Service Worker (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
+
+If you've confirmed that the worker's scope cannot capture the requests your application is making, there are a few ways to address that.
+
+### Register the worker at a higher scope
+
+We recommend registering the Service Worker at the root of your application. That is the default behavior of calling `worker.start()` without the custom `serviceWorker.url` option.
+
+You can verify that your Service Worker is registered at the root by accessing it:
+
+- `<SITE_URL>/mockServiceWorker.js`, where `SITE_URL` is the local URL of your application.
+
+By registering the worker at the root, it can intercept all requests that your application makes, which is often what you want.
+
+### Set the `Service-Worker-Allow` response header
+
+> This option is the last resort and is not generally recommended.
+
+If you are in control over the configuration of your development server, you can configure it to set the `Service-Worker-Allow` header on all responses of your application. Doing that will permit the worker to capture requests that lie outside of its scope.
+
+Here's an example of how to set the `Service-Worker-Allow` header on an Express server:
+
+```js focusedLines=6
+const express = require('express')
+
+const app = express()
+
+app.use((req, res, next) => {
+  res.setHeader('Service-Worker-Allow', '/')
+  next()
+})
+```
+
+## Run in debug mode
+
+- Applicable to: `setupServer`
+
+Mock Service Worker supports [`debug`](https://github.com/visionmedia/debug) when run in NodeJS. You can leverage this to look into the internals of requests interception, as well as provide the output logs to the library maintainers for more details.
+
+Append the `DEBUG` environmental variable to the command that runs your tests:
+
+```bash
+$ DEBUG=* npm test
+```
+
+With that variable set, you will see a bunch of messages in your terminal indicating various stages of request interception that can hint you at what may have gone wrong.
