@@ -26,7 +26,7 @@ Learn more about how to configure this option for your worker or server:
 
 - Applicable to: `setupWorker`/`setupServer`
 
-You can print out the list of current request handlers at any point of your application runtime or rest run. Browsing the list of handlers can help you figure out a request handler that doesn't get appended on runtime with `.use()`, or notice that the handler you thought is there is actually missing.
+You can print out the list of current request handlers at any point of your application runtime or during a test. Browsing the list of handlers can help you determine if a request handler that is not appended on runtime with `.use()`, or if the handler you thought is there is actually missing.
 
 <PageLink
   title="printHandlers (setupWorker)"
@@ -56,7 +56,7 @@ worker.start({
 
 Then MSW will only intercept the requests under `/assets/*` path. A request to `/user` or `/posts` will not be intercepted as they lie **outside of the worker's scope** (`/assets`).
 
-> The Service Worker distributed by MSW is a regular Service Worker like any other. While not mandatory, the more you are familiar with how Service Workers function, the fewer issues you will experience. Learn more about [Using Service Worker (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
+> The Service Worker distributed by MSW is a regular Service Worker like any other. While not mandatory, the more familiar you are with how Service Workers function, the fewer issues you will experience. Learn more about [Using Service Worker (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
 
 If you've confirmed that the worker's scope cannot capture the requests your application is making, there are a few ways to address that.
 
@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 
 - Applicable to: `setupServer`
 
-Mock Service Worker supports [`debug`](https://github.com/visionmedia/debug) when run in NodeJS. You can leverage this to look into the internals of requests interception, as well as provide the output logs to the library maintainers for more details.
+Mock Service Worker supports [`debug`](https://github.com/visionmedia/debug) when run in NodeJS. You can leverage this to look into the internals of how requests are intercepted, as well as provide the output logs to the library maintainers for more details.
 
 Append the `DEBUG` environmental variable to the command that runs your tests:
 
@@ -101,4 +101,4 @@ Append the `DEBUG` environmental variable to the command that runs your tests:
 $ DEBUG=* npm test
 ```
 
-With that variable set, you will see a bunch of messages in your terminal indicating various stages of request interception that can hint you at what may have gone wrong.
+With that variable set, you will see a many of messages in your terminal indicating various stages of request interception that can give you useful hints as to what may have gone wrong.
