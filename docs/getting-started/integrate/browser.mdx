@@ -12,14 +12,16 @@ Mock Service Worker operates client-side by registering a [Service Worker](https
 </Action>
 
 ```bash
-$ npx msw init <PUBLIC_DIR>
+$ npx msw init <PUBLIC_DIR> --save
 ```
 
 Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's public directory. For example, in a Create React App project this command would be:
 
 ```bash
-$ npx msw init public/
+$ npx msw init public/ --save
 ```
+
+> Note that we are using the `--save` option to save the given worker directory ("public") in the package.json. That way any updates to the worker script will be automatically applied when updating the `msw` package in the future.
 
 import PublicDirSnippet from '../../snippets/public-dir.mdx'
 
@@ -114,35 +116,35 @@ Your development environment will automatically open using `localhost:3000/login
 
 ```js showLineNumbers focusedLines=8-17
 // src/index.js
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
 
 async function main() {
   if (process.env.NODE_ENV === 'development') {
     if (window.location.pathname === '/login') {
-      window.location.pathname = '/login/';
-      return;
+      window.location.pathname = '/login/'
+      return
     }
-    
+
     const { worker } = require('./mocks/browser')
 
     await worker.start({
       serviceWorker: {
         url: '/login/mockServiceWorker.js',
       },
-    });
+    })
   }
 
   ReactDOM.render(
     <React.StrictMode>
       <App />
     </React.StrictMode>,
-    document.getElementById('root')
-  );
+    document.getElementById('root'),
+  )
 }
 
-main();
+main()
 ```
 
 Related discussions: [1](https://github.com/mswjs/msw/issues/369#issuecomment-720157918), [2](https://github.com/w3c/ServiceWorker/issues/1272)
