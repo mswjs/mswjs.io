@@ -81,18 +81,20 @@ async function getContributors(pages) {
       const page = pages[pageIndex]
       const { nodes: allContributors } = chunk.history
 
-      const uniqueContributors = allContributors.reduce((acc, node) => {
-        const isUnique = acc.every(
-          (existingContributor) =>
-            existingContributor.id !== node.author.user.id,
-        )
+      const uniqueContributors = allContributors
+        .filter((node) => !!node.author.user)
+        .reduce((acc, node) => {
+          const isUnique = acc.every(
+            (existingContributor) =>
+              existingContributor.id !== node.author.user.id,
+          )
 
-        if (!isUnique) {
-          return acc
-        }
+          if (!isUnique) {
+            return acc
+          }
 
-        return acc.concat(node.author.user)
-      }, [])
+          return acc.concat(node.author.user)
+        }, [])
 
       acc[page.node.id] = uniqueContributors
 
