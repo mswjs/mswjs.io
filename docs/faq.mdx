@@ -59,6 +59,31 @@ We **highly recommend committing** the `mockServiceWorker.js` file to Git. That 
 
 > Alternatively, you can generate the Service Worker file by executing `npx msw init` as a part of your development pipeline.
 
+## Why do I see "Detected outdated Service Worker" error in my console?
+
+The worker script (`mockServiceWorker.js`) that you've instantiated is a part of your application just as any other JavaScript module. However, it's also an artifact of the library and MSW may issue occasional updates and bug-fixes to the worker script. In order for you to see that the update is needed, we're running an integrity check between your currently active worker and the latest one (based on the installed version of `msw`).
+
+We understand that the integrity check error may be disruptive to your process, and **highly recommend** providing the worker directory path in your package.json under the `msw.workerDirectory` path:
+
+```json
+{
+  "name": "your-app",
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
+```
+
+When present, this property will be used whenever you install the `msw` package to automatically update the worker script at the specified directory.
+
+You can also use the `msw init` command to save the worker directory automatically:
+
+<PageLink
+  title="init (CLI)"
+  description="Instantiate a new worker script."
+  url="/docs/cli/init"
+/>
+
 [service-worker-api]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
 
 ## Why should I drop query parameters from a request handler URL?

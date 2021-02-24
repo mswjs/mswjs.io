@@ -8,8 +8,41 @@ Places the Service Worker file into a given public directory of your application
 ## Usage
 
 ```bash
-$ npx msw init <PUBLIC_DIR>
+$ npx msw init <PUBLIC_DIR> [options]
 ```
+
+### Positionals
+
+#### `PUBLIC_DIR`
+
+A relative path to the public directory of your application.
+
+```bash
+$ npx msw init ./public
+```
+
+### Options
+
+#### `--save`
+
+Save the given `PUBLIC_DIR` in your package.json for future use.
+
+```bash
+$ npx msw init ./public --save
+```
+
+Your public directory will be saved in package.json under the `msw.workerDirectory` path:
+
+```json
+{
+  "name": "your-app",
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
+```
+
+> You can also use `--no-save` to prevent the prompt and never save your public directory.
 
 import PublicDirSnippet from '../snippets/public-dir'
 
