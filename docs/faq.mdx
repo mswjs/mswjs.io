@@ -59,9 +59,9 @@ We **highly recommend committing** the `mockServiceWorker.js` file to Git. That 
 
 > Alternatively, you can generate the Service Worker file by executing `npx msw init` as a part of your development pipeline.
 
-## Why do I see "Detected outdated Service Worker" error in my console?
+## Why do I see the "Detected outdated Service Worker" error in my console?
 
-The worker script (`mockServiceWorker.js`) that you've instantiated is a part of your application just as any other JavaScript module. However, it's also an artifact of the library and MSW may issue occasional updates and bug-fixes to the worker script. In order for you to see that the update is needed, we're running an integrity check between your currently active worker and the latest one (based on the installed version of `msw`).
+The worker script (`mockServiceWorker.js`) that you've instantiated is a part of your application just as any other JavaScript module. However, it's also an artifact of the library and MSW may issue occasional updates and bug-fixes to the worker script. In order for you to see that the update is needed, we're running an integrity check between your currently active worker and the latest one (based on the installed version of MSW).
 
 We understand that the integrity check error may be disruptive to your process, and **highly recommend** providing the worker directory path in your package.json under the `msw.workerDirectory` path:
 
