@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/mswjs/msw/21d322197a9712f68f5abad6174122332a2de205/media/msw-logo.svg" alt="MSW logo" />
+  <img src="https://raw.githubusercontent.com/mswjs/msw/a41665157111d5ddc194f82cfd377597aece2049/media/msw-logo.svg" width="120" alt="Mock Service Worker logo" />
 </p>
 
 <h1 align="center">Mock Service Worker (Docs)</h1>
