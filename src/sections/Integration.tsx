@@ -14,7 +14,7 @@ import { ReactComponent as AgnosticIllustration } from '../images/msw-agnostic.s
 const Parent = styled.div`
   position: relative;
 
-  [class$='connection'] {
+  #connection line {
     stroke-dasharray: 14;
     stroke: var(--color-gray-light);
 

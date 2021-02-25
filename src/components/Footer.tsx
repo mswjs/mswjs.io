@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <Box as={StyledFooter} paddingVertical={48}>
+    <Box as={StyledFooter} paddingVertical={64} paddingVerticalLg={100}>
       <Grid>
         <Composition
           templateCols="1fr 1fr"

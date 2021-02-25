@@ -17,8 +17,8 @@ export const Section: React.FC<CompositionProps> = ({
         gap={48}
         gapMd={64}
         paddingVertical={64}
-        paddingVerticalMd={80}
-        paddingVerticalLg={120}
+        paddingVerticalMd={100}
+        paddingVerticalLg={200}
         maxWidth="100%"
         marginHorizontal="auto"
         {...gridProps}
