@@ -12,7 +12,7 @@ Here is an example of a mocked response that sends a local image:
 
 ```js showLineNumbers focusedLines=6-9,12-15
 import { setupWorker, rest } from 'msw'
-import base64Image from 'url-loader!../fixtures/image.jpg'
+import base64Image from '!url-loader!../fixtures/image.jpg'
 
 const worker = setupWorker(
   rest.get('/images/:imageId', async (_, res, ctx) => {
