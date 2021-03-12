@@ -18,7 +18,7 @@ worker.start()
 
 // Write the stop method on the window
 // to access during runtime.
-window.__mswStop = worker.stop()
+window.__mswStop = worker.stop
 ```
 
 Calling `window.__mswStop()` in the browser would disable the mocking for the current page.
