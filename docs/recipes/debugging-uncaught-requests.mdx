@@ -70,13 +70,13 @@ You can verify that your Service Worker is registered at the root by accessing i
 
 By registering the worker at the root, it can intercept all requests that your application makes, which is often what you want.
 
-### Set the `Service-Worker-Allow` response header
+### Set the `Service-Worker-Allowed` response header
 
 > This option is the last resort and is not generally recommended.
 
-If you are in control over the configuration of your development server, you can configure it to set the `Service-Worker-Allow` header on all responses of your application. Doing that will permit the worker to capture requests that lie outside of its scope.
+If you are in control over the configuration of your development server, you can configure it to set the `Service-Worker-Allowed` header on all responses of your application. Doing that will permit the worker to capture requests that lie outside of its scope.
 
-Here's an example of how to set the `Service-Worker-Allow` header on an Express server:
+Here's an example of how to set the `Service-Worker-Allowed` header on an Express server:
 
 ```js focusedLines=6
 const express = require('express')
@@ -84,7 +84,7 @@ const express = require('express')
 const app = express()
 
 app.use((req, res, next) => {
-  res.setHeader('Service-Worker-Allow', '/')
+  res.setHeader('Service-Worker-Allowed', '/')
   next()
 })
 ```
