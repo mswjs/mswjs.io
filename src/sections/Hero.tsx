@@ -11,7 +11,7 @@ import { FullUsageExample } from '../components/FullUsageExample'
 
 const Container = styled.section`
   position: relative;
-  background-image: linear-gradient(hsl(210, 32%, 97%), transparent);
+  background-image: linear-gradient(hsl(210, 32%, 97%), #fff);
 
   &:before {
     content: '';
