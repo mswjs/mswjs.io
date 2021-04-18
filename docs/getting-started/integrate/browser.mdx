@@ -82,6 +82,8 @@ if (process.env.NODE_ENV === 'development') {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
+> Starting the worker is an asynchronous action, which may create a race condition with your application making requests on mount. **If that's the case**, please refer to the [Deferred mounting](/docs/recipes/deferred-mounting) recipe to enforce your application mount when the worker is ready.
+
 ## Verify & Inspect
 
 After importing the mock definition, you should see a successful activation message from Mock Service Worker in your browser's console:
