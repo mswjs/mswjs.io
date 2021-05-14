@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useMemo } from 'react'
+import styled, { css } from 'styled-components'
 import { IoMdArrowRoundForward as Icon } from 'react-icons/io'
-import { Link } from 'gatsby'
+import { Link as RouterLink } from 'gatsby'
 import { Box } from 'atomic-layout'
 
-const StyledLink = styled(Link)`
+const linkStyle = css`
   margin: 2rem 0;
   padding: 1rem;
 
@@ -33,6 +33,14 @@ const StyledLink = styled(Link)`
     box-shadow: 0 0 0 4px
       ${({ theme }) => theme.utils.alpha(theme.colors.secondary, 0.4)};
   }
+`
+
+const StyledGatsbyLink = styled(RouterLink)`
+  ${linkStyle}
+`
+
+const StyledExternalLink = styled.a`
+  ${linkStyle}
 `
 
 const UrlPreview = styled.span`
@@ -65,8 +73,11 @@ export const PageLink: React.FC<PageLinksProps> = ({
   page,
   url,
 }) => {
+  const isExternal = /https?:\/\//.test(url)
+  const Link = isExternal ? StyledExternalLink : StyledGatsbyLink
+  const hrefProp = isExternal ? { href: url } : { to: url }
   return (
-    <Box as={StyledLink} to={url} flex alignItems="flex-start">
+    <Box as={Link} {...hrefProp} flex alignItems="flex-start">
       <Box as={Icon} size={16} marginTop={1} marginRight={8} />
       <Box className="title" flex flexDirection="column">
         <span>{title || page._frontmatter.title}</span>
