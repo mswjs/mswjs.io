@@ -1,0 +1,50 @@
+---
+title: Custom response composition
+---
+
+Sometimes the default response serializer (`application/json`), provided by the default [response transformer](/docs/basics/response-transformer), isn't what you need and you're looking for a way to overwrite the default serialization for a response.
+
+In this recipe we are going to write a custom response transformer that serializes `BigInt` values that cannot be otherwise transformed using `JSON.stringify`.
+
+## Creating a composition
+
+Use the `createResponseComposition` API to create a custom response composition.
+
+```js
+// src/mocks/res/delayed-response.js
+import { createResponseComposition, context } from 'msw'
+
+export const delayedResponse = createResponseComposition(null, [
+  context.delay('real'),
+])
+```
+
+The `createResponseComposition` accepts two arguments:
+
+- Response overrides. An object of [response properties](/docs/api/response) to override on each mocked response.
+- List of [response transformers](/docs/basics/response-transformer) to modify the mocked response.
+
+In the example above we've created a custom `delayedResponse` composition that attaches a realistic delay time to every mocked response. We're using an existing `context.delay` function as opposed to `createResponseComposition({ delay: 123 })` because it comes with the behavior with need out of the box.
+
+## Using a composition
+
+Once the custom response transformer is defined, use it to return the response instead of using the default response method.
+
+```ts
+// src/mocks/handlers.js
+import { rest } from 'msw'
+import { delayedResponse } from './res/delayed-response'
+
+export const handlers = [
+  rest.get('/user', (req, res, ctx) => {
+    // This mocked response has realistic
+    // response time automatically.
+    return delayedResponse(
+      ctx.json({
+        firstName: 'John',
+        lastName: 'Maverick',
+      }),
+    )
+  }),
+]
+```
