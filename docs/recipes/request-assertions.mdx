@@ -19,6 +19,12 @@ Mock Service Worker gives you a guarantee over network communication.
 
 Your application fetches data for a reason, so prefer testing that reason as the outcome of the request. If a request's method, headers, or body are invalid, your application is likely to get an invalid response back. Below we are going to take a look at some recommended strategies to request testing.
 
+### Special cases
+
+There are, however, some special cases where asserting on network requests is the only option. These include, for example, polling, where no other side effect can be asserted upon.
+
+For such cases, Mock Service Worker allows tracking of network requests through the [Life-cycle events API](https://mswjs.io/docs/extensions/life-cycle-events#tracking-a-request).
+
 ## Include failure scenarios
 
 Validity of the response often, if not always, depends on the validity of the request. Include any necessary validation and utilize [conditional mocking](/docs/basics/response-resolver#conditional-response) to reflect a request's integrity in your response resolvers.
