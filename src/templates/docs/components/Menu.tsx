@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import { Link } from 'gatsby'
 import styled, { css } from 'styled-components'
 import { Box, query } from 'atomic-layout'
@@ -77,12 +77,12 @@ const Scrollable = styled.div`
   }
 `
 
-const PagesList = styled.ul<{ nested?: boolean }>`
+const PagesList = styled.ul<{ nested?: boolean; showChildren?: boolean }>`
   margin: 0;
   padding: 0;
   list-style: none;
 
-  ${({ nested }) =>
+  ${({ nested, showChildren }) =>
     nested &&
     css`
       position: relative;
@@ -103,6 +103,11 @@ const PagesList = styled.ul<{ nested?: boolean }>`
         height: 0;
         width: 0;
       }
+
+      ${showChildren &&
+        css`
+          display: block;
+        `}
 
       .active + & {
         display: block;
@@ -125,24 +130,31 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
   align-items: center;
   line-height: 1.25;
 
-  ${({ isRootSection }) =>
-    !isRootSection &&
-    css`
-      text-indent: 20px;
+  ${({ isRootSection, hasChildren }) => {
+    if (!isRootSection && !hasChildren) {
+      return css`
+        text-indent: 20px;
+      `
+    }
 
-      svg {
-        position: absolute;
-        margin-left: -5px;
+    if (!isRootSection) {
+      return css`
+        padding-left: 0;
 
-        .active & {
-          transform: rotate(90deg);
+        svg {
+          position: absolute;
+
+          .active & {
+            transform: rotate(90deg);
+          }
         }
-      }
 
-      [aria-current='page'] &:before {
-        background-color: var(--color-black);
-      }
-    `}
+        [aria-current='page'] &:before {
+          background-color: var(--color-black);
+        }
+      `
+    }
+  }}
 
   ${({ isRootSection, theme }) =>
     isRootSection &&
@@ -155,6 +167,12 @@ const PageTitle = styled.span<{ isRootSection: boolean; hasChildren: boolean }>`
     `}
 `
 
+const StyledButton = styled.button`
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+`
+
 const PageListItem: React.FC<{
   displayName: string
   url: string
@@ -162,6 +180,12 @@ const PageListItem: React.FC<{
   childPages: MenuTree[]
   isRoot: boolean
 }> = ({ childPages, displayName, url, isHomapge, isRoot }) => {
+  const [toggleSubMenu, isToggleSubMenu] = useState(false)
+
+  const ManagedIconSubMenu = () => {
+    isToggleSubMenu(!toggleSubMenu)
+  }
+
   const isRootSection = useMemo(() => {
     return isRoot && !!childPages
   }, [isRoot, childPages])
@@ -171,12 +195,21 @@ const PageListItem: React.FC<{
       return null
     }
 
-    return <SectionIcon />
-  }, [isRootSection, childPages])
+    return (
+      <Box
+        as={StyledButton}
+        onClick={ManagedIconSubMenu}
+        flex
+        justifyContent="center"
+        alignItems="center"
+      >
+        <SectionIcon />
+      </Box>
+    )
+  }, [isRootSection, childPages, toggleSubMenu])
 
   const Title = (
     <PageTitle isRootSection={isRootSection} hasChildren={!!childPages}>
-      {Icon}
       <span>{displayName}</span>
     </PageTitle>
   )
@@ -184,18 +217,21 @@ const PageListItem: React.FC<{
   return (
     <StyledPageListItem isRootSection={isRootSection}>
       {url ? (
-        <Link
-          to={url}
-          partiallyActive={!isHomapge && !isRootSection}
-          activeClassName="active"
-        >
-          {Title}
-        </Link>
+        <Box flex>
+          {Icon}
+          <Link
+            to={url}
+            partiallyActive={!isHomapge && !isRootSection}
+            activeClassName="active"
+          >
+            {Title}
+          </Link>
+        </Box>
       ) : (
         Title
       )}
       {childPages && (
-        <PagesList nested={!isRootSection}>
+        <PagesList nested={!isRootSection} showChildren={toggleSubMenu}>
           {renderTreeItem(childPages, false)}
         </PagesList>
       )}
