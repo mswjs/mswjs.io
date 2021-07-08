@@ -16,11 +16,14 @@ Specifies how to handle a request that is not listed in the request handlers.
 
 #### Pre-defined behaviors
 
+With these options, the unhandled request gets performed and a message is logged. If you want to prevent the request altogether, you can use a custom callback.
+
 | Option name | Description                                            |
 | ----------- | ------------------------------------------------------ |
-| `"bypass"`  | Performs an unhandled request as-is.                   |
+| `"bypass"`  | Does not print anything.                   |
 | `"warn"`    | Prints a warning into `stdout` of the current process. |
 | `"error"`   | Prints an error into `stderr` of the current process.  |
+
 
 ```js showLineNumbers focusedLines=8
 const server = setupServer(
