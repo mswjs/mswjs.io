@@ -1,0 +1,46 @@
+---
+title: Using local HTTPS
+---
+
+When using Mock Service Worker on a local HTTPS server, you'll encounter issues during the worker script registration in the browser:
+
+```txt copyable=false
+SecurityError: Failed to register a ServiceWorker: An SSL certificate error occurred when fetching the script.
+```
+
+Such error is **expected** and is thrown by **the browser** whenever you attempt to register a Service Worker over insecure HTTPS. That limitation is implemented according to the Service Worker specification and serves to prevent security vulnurabilities when intercepting a network traffic on insecure connections.
+
+<Hint mode="warning">
+  This issue is caused by how <strong>your application is served</strong>, not
+  what resources it requests.
+</Hint>
+
+## Solutions
+
+Connections signed by invalid or self-signed certificates are automatically considered insecure. Below you can see a few suggestions on how to enable API mocking on a local HTTPS environment.
+
+### (Recommended) Use a signed SSL certificate
+
+Always favor signed SSL certificates, even when developing locally. Use services like [Let's Encrypt](https://letsencrypt.org/) to sign your SSL certificate and enable Service Workers in your application.
+
+### Trust the self-signed sertificate
+
+This is a system-wide option. You can configure your OS to trust the self-signed certificate you're using for development. Please refer to the respective instructions depending on your OS.
+
+### Trust insecure localhost
+
+Alternatively, you can configure your browser to trust `https://localhost` despite it using an invalid certificate. Please resort to this option as a **last measure**, since adjusting the default browser security rules may lead to unexpected behavior and security vulnerabilities if handled poorly.
+
+#### Chrome
+
+1. Go to `chrome://flags`
+1. Locate the `allow-insecure-localhost` flag in the list.
+1. Select the "Enabled" option from the flag's dropdown.
+
+#### Firefox
+
+1. Open your local HTTPS application.
+1. On the "_Connection is not secture_" screen click the "_Advanced_" buttom.
+1. In the section below, click the "_Add Exception_" button.
+1. Specify your application's URL as the "_Location_" input value.
+1. Click the "_Confirm Security Exception_" button to enable the exception.
