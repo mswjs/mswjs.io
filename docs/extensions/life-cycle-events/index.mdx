@@ -3,7 +3,9 @@ title: Life-cycle events
 order: 61
 ---
 
-The life-cycle events API is designed to execute arbitrary logic in response to internal MSW events, such as the start and end of a request, or the mocked/original response. This is primarily useful for third-party extension developers, or while debugging request handlers.
+The life-cycle events API allows you to attach listeners to the internal library events, such as when a new request is made or a mocked response is sent. This API is primarily designed for third-party extensions or for debugging request handlers.
+
+> Life-cycle events happen post-factum and **cannot affect** related requests/responses.
 
 <Hint>
   This API is <strong>not meant for mocking</strong>. Use{' '}
@@ -15,47 +17,275 @@ The life-cycle events API is designed to execute arbitrary logic in response to 
   </a> instead.
 </Hint>
 
-## Events list
+## Usage
 
-### Request events
-
-```js
-// A new request has been dispatched.
-worker.on('request:start', (req) => {})
-// Request has a corresponding request handler.
-worker.on('request:match', (req) => {})
-// Request doesn't have any corresponding request handlers.
-worker.on('request:unhandled', (req) => {})
-// Request has concluded (regardless of the response).
-worker.on('request:end', (req) => {})
-```
-
-### Response events
+The life-cycle events API is exposed under the `.events` property of the `worker`/`server` instance:
 
 ```js
-// Mocked response has been sent to a request with a given `reqId`.
-worker.on('response:mocked', (res, reqId) => {})
-// Original response has been sent to a request with a given `reqId`.
-worker.on('response:bypass', (res, reqId) => {})
+const worker = setupWorker(...handlers)
+worker.events
+
+// or
+
+const server = setupServer(...handlers)
+server.events
 ```
 
-> The same events can be listened to on a `server` instance of `setupServer`.
+The API itself resembles the [EventEmitter](https://nodejs.org/docs/latest/api/events.html) but is stripped down to the following methods:
+
+- `on`, to react to a given event;
+- `removeListener`, to remove a listener for a given event;
+- `removeAllListeners`, to remove all listeners.
+
+> Such limitation is intended, as you mustn't emit internal events—that is done for you by the library.
+
+## Methods
+
+### `on`
+
+Use the `.on` method to add an event listener to a given life-cycle event.
+
+```js
+worker.events.on('request:start', (req) => {
+  console.log(req.method, req.url.href)
+})
+```
+
+### `removeListener`
+
+Removes the listener for the given life-cycle event.
+
+Removing listeners is particularly handy to reset the events introspection during tests.
+
+```js
+// Previously attached listener.
+const listener = () => console.log('new request')
+worker.events.on('request:start', listener)
+
+worker.events.removeListener('request:start', listener)
+```
+
+### `removeAllListeners`
+
+Removes all life-cycle events listeners.
+
+```js
+worker.events.removeAllListeners()
+```
+
+Optionally, accepts a life-cycle event name to specify which group of listeners to remove, in case there are multiple.
+
+```js
+// Removes all listeners for the "request:start" event,
+// but keeps all the other listeners.
+worker.events.removeAllListeners('request:start')
+```
+
+## Events
+
+### `request:start`
+
+A new request has been dispatched.
+
+| Parameter name | Type            | Description               |
+| -------------- | --------------- | ------------------------- |
+| `req`          | `MockedRequest` | A request representation. |
+
+```js
+worker.events.on('request:start', (req) => {
+  console.log('new request:', req.method, req.url.href)
+})
+```
+
+### `request:match`
+
+A dispatched request has a corresponding request handler.
+
+| Parameter name | Type            | Description               |
+| -------------- | --------------- | ------------------------- |
+| `req`          | `MockedRequest` | A request representation. |
+
+```js
+worker.events.on('request:match', (req) => {
+  console.log('%s %s has a handler!', req.method, req.url.href)
+})
+```
+
+### `request:unhandled`
+
+A dispatched request doesn't have any corresponding request handler.
+
+| Parameter name | Type            | Description               |
+| -------------- | --------------- | ------------------------- |
+| `req`          | `MockedRequest` | A request representation. |
+
+```js
+worker.events.on('request:unhandled', (req) => {
+  console.log('%s %s has no handler', req.method, req.url.href)
+})
+```
+
+### `request:end`
+
+A request has ended. Emits for all requests regardless if their responses were mocked or bypassed.
+
+| Parameter name | Type            | Description               |
+| -------------- | --------------- | ------------------------- |
+| `req`          | `MockedRequest` | A request representation. |
+
+```js
+worker.events.on('request:end', (req) => {
+  console.log('%s %s ended', req.method, req.url.href)
+})
+```
+
+### `response:mocked`
+
+A mocked response has been sent.
+
+| Parameter name | Type                                               | Description                     |
+| -------------- | -------------------------------------------------- | ------------------------------- |
+| `res`          | `Response` (worker), `IsomorphicResponse` (server) | The response that's been sent.  |
+| `reqId`        | `string`                                           | UUID of the associated request. |
+
+```js
+worker.events.on('response:mocked', async (res, reqId) => {
+  const responseText = await res.text()
+  console.log('sent a mocked response', reqId, responseText)
+})
+```
+
+<Hint>
+  Note that the <code>res</code> instance differs between the browser and
+  Node.js. Take this difference into account when operating with it.
+</Hint>
+
+```js
+server.events.on('response:mocked', (res, reqId) => {
+  const responseText = res.body
+  console.log('sent a mocked response', reqId, responseText)
+})
+```
+
+### `response:bypass`
+
+An original response has been sent.
+
+| Parameter name | Type                                               | Description                     |
+| -------------- | -------------------------------------------------- | ------------------------------- |
+| `res`          | `Response` (worker), `IsomorphicResponse` (server) | The response that's been sent.  |
+| `reqId`        | `string`                                           | UUID of the associated request. |
+
+```js
+worker.events.on('response:bypass', async (res, reqId) => {
+  const responseText = await res.text()
+  console.log('sent an original response', reqId, responseText)
+})
+```
+
+Just as with the `response:mocked` event, the `res` instance is different between the browser and Node.js.
+
+```js
+server.events.on('response:bypass', (res, reqId) => {
+  const responseText = res.body
+  console.log('sent an original response', reqId, responseText)
+})
+```
+
+## Examples
 
 ### Tracking a request
 
-Each life-cycle event emits in isolation. To connect multiple events with a single request, the library exposes a request ID (`reqId`)—a UUID that persists with a specific request.
+Although each life-cycle events emits in isolation, it includes a request ID (`reqId`) parameter to connect related requests and responses.
 
 ```js focusedLines=5-6,10-11
 const allRequests = new Map()
 
-worker.on('request:start', (req) => {
+worker.events.on('request:start', (req) => {
   const { id } = req
   // Store this request by id in an internal Map.
   allRequests.set(id, req)
 })
 
-worker.on('response:mocked', (res, reqId) => {
+worker.events.on('response:mocked', (res, reqId) => {
   // Get a request associated with this response.
   const req = allRequests.get(reqId)
+})
+```
+
+### Asserting request payload
+
+The life-cycle events API can be used for retrieving a request reference and writing request assertions (i.e. whether the correct request payload was sent).
+
+<Hint mode="warning">
+  Request assertions should <strong>be avoided</strong> whenever possible.
+  Always prefer testing the logic/UI dependent on the response to ensure
+  request/response validity. Read more about{' '}
+  <a href="/docs/recipes/request-assertions">Request assertions</a>.
+</Hint>
+
+```js
+import { matchRequestUrl } from 'msw'
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+const server = setupServer(...handlers)
+
+function waitForRequest(method: string, url: string) {
+  let requestId = ''
+
+  return new Promise((resolve, reject) => {
+    server.events.on('request:start', (req) => {
+      const matchesMethod = req.method.toLowerCase() === method.toLowerCase()
+      const matchesUrl = matchRequestUrl(url, req.url)
+
+      if (matchesMethod && matchRequestUrl) {
+        requestId = req.id
+      }
+    })
+
+    server.events.on('request:match', (req) => {
+      if (req.id === requestId) {
+        resolve(req)
+      }
+    })
+
+    server.events.on('request:unhandled', (req) => {
+      if (req.id === requestId) {
+        reject(
+          new Error(`The ${req.method} ${req.url.href} request was unhandled.`),
+        )
+      }
+    })
+  })
+}
+
+beforeAll(() => server.listen())
+afterAll(() => server.close())
+
+it('sends the user credentials to the backend', async () => {
+  // Establish a request listener but don't resolve it yet.
+  const pendingRequest = waitForRequest('POST', '/login')
+
+  // Perform the request itself.
+  // Here you would use any tested code that makes a request.
+  await fetch('/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: 'user@example.com',
+      password: 'super+secret123',
+    }),
+  })
+
+  // Await the request and get its reference.
+  const request = await pendingRequest
+
+  expect(request.body).toEqual({
+    email: 'user@example.com',
+    password: 'super+secret123',
+  })
 })
 ```
