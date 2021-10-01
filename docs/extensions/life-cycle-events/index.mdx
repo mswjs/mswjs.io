@@ -239,7 +239,7 @@ function waitForRequest(method: string, url: string) {
       const matchesMethod = req.method.toLowerCase() === method.toLowerCase()
       const matchesUrl = matchRequestUrl(req.url, url)
 
-      if (matchesMethod && matchRequestUrl) {
+      if (matchesMethod && matchesUrl) {
         requestId = req.id
       }
     })
