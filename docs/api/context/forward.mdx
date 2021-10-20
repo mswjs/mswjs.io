@@ -1,0 +1,25 @@
+---
+title: forward()
+order: 5711
+---
+
+Forwards the currently captured request to its original destination (bypass).
+
+## Call signature
+
+```ts
+function forward(): ResponseTransformer
+```
+
+## Examples
+
+```js
+
+rest.get('https://api.github.com/users/:username', (req, res, ctx) => {
+  if (anything) {
+    return ctx.forward()
+  }
+
+  return res(ctx.text('mocked'))
+})
+```
