@@ -8,7 +8,7 @@ Places the Service Worker file into a given public directory of your application
 ## Usage
 
 ```bash
-$ npx msw init <PUBLIC_DIR> [options]
+npx msw init <PUBLIC_DIR> [options]
 ```
 
 ### Arguments
@@ -18,7 +18,7 @@ $ npx msw init <PUBLIC_DIR> [options]
 A relative path to the public directory of your application.
 
 ```bash
-$ npx msw init ./public
+npx msw init ./public
 ```
 
 ### Options
@@ -28,7 +28,7 @@ $ npx msw init ./public
 Save the given `PUBLIC_DIR` in your package.json for future use.
 
 ```bash
-$ npx msw init ./public --save
+npx msw init ./public --save
 ```
 
 Your public directory will be saved in package.json under the `msw.workerDirectory` path:
