@@ -19,7 +19,6 @@ import { Heading } from '../../components/mdx/Heading'
 import { ResponsePreview } from '../../components/mdx/ResponsePreview'
 import { Action } from '../../components/mdx/Action'
 import { ConsoleMessage } from '../../components/mdx/ConsoleMessage'
-import { PathMatchPreview } from '../../components/mdx/PathMatchPreview'
 import { Table } from '../../components/mdx/Table'
 import { VideoEmbed } from '../../components/mdx/VideoEmbed'
 import DocsLayout from './DocsLayout'
@@ -48,7 +47,6 @@ const components = {
   ConsoleMessage,
   TextLead,
   ResponsePreview,
-  PathMatchPreview,
   table: Table,
   VideoEmbed,
 }
