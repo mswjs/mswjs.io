@@ -87,9 +87,6 @@ export const Footer: React.FC = () => {
               <li>
                 <Link to="/docs/faq">Help</Link>
               </li>
-              <li>
-                <Link to="/repl">Path matching REPL</Link>
-              </li>
             </ul>
           </section>
           <section>

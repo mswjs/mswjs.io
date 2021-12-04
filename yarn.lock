@@ -9891,11 +9891,6 @@ node-gyp@^7.1.0:
     tar "^6.0.2"
     which "^2.0.2"
 
-node-match-path@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/node-match-path/-/node-match-path-0.6.1.tgz#63570f8e60f726e75d6d9f016d08cbac609ec7d5"
-  integrity sha512-5KjUxG0fUqiIB4HXVatTYGNXf0fD/ZIC88P2w5izFrk6jz45hgavoVuIERsTqb+lMPMuvvL3rxvFWwpnJzN/wQ==
-
 node-object-hash@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/node-object-hash/-/node-object-hash-2.0.0.tgz#9971fcdb7d254f05016bd9ccf508352bee11116b"
