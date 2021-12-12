@@ -8,7 +8,7 @@ When using Mock Service Worker on a local HTTPS server, you'll encounter issues 
 SecurityError: Failed to register a ServiceWorker: An SSL certificate error occurred when fetching the script.
 ```
 
-Such error is **expected** and is thrown by **the browser** whenever you attempt to register a Service Worker over insecure HTTPS. That limitation is implemented according to the Service Worker specification and serves to prevent security vulnurabilities when intercepting a network traffic on insecure connections.
+Such error is **expected** and is thrown by **the browser** whenever you attempt to register a Service Worker over insecure HTTPS. That limitation is implemented according to the Service Worker specification and serves to prevent security vulnerabilities when intercepting a network traffic on insecure connections.
 
 <Hint mode="warning">
   This issue is caused by how <strong>your application is served</strong>, not
