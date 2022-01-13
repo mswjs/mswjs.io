@@ -237,7 +237,7 @@ function waitForRequest(method: string, url: string) {
   return new Promise((resolve, reject) => {
     server.events.on('request:start', (req) => {
       const matchesMethod = req.method.toLowerCase() === method.toLowerCase()
-      const matchesUrl = matchRequestUrl(req.url, url)
+      const matchesUrl = matchRequestUrl(req.url, url).matches
 
       if (matchesMethod && matchesUrl) {
         requestId = req.id
