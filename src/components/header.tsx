@@ -13,17 +13,15 @@ const StyledHeader = styled.header`
   position: sticky;
   top: 0;
 
-  color: var(--color-gray);
+  background-color: #000;
+  color: #fff;
   font-size: 0.9rem;
   font-weight: 600;
 
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   z-index: 2;
 `
 
 const LibraryName = styled.span`
-  color: var(--color-black);
   font-weight: 800;
 `
 
@@ -35,11 +33,11 @@ const HeaderLink = styled.a`
   transition: color 0.1s ease;
 
   &:hover {
-    color: var(--color-black);
+    opacity: 0.7;
   }
 
   &.active {
-    color: var(--color-black);
+    opacity: 0.7;
 
     ::before {
       content: '';
@@ -62,11 +60,11 @@ const BurgerMenuButton = styled.button`
   background: transparent;
   border: 0;
   cursor: pointer;
-  color: var(--color-gray);
+  color: #fff;
   z-index: 11;
 
   :hover {
-    color: var(--color-black);
+    opacity: 0.7;
   }
 `
 
@@ -88,7 +86,7 @@ const Header: React.FC<Props> = ({ className, withMenu, onMenuClick }) => {
       >
         <Box flex justify="flex-start" alignItems="center">
           <Box as={Link} to="/" alt="Mock Service Worker logo" flex>
-            <Logo height="48" width="48" />
+            <Logo height="40" width="40" />
           </Box>
           <ShowOnly from="md" as="span" marginLeft={8}>
             <LibraryName>Mock Service Worker</LibraryName>
