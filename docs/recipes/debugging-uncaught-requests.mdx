@@ -89,6 +89,19 @@ app.use((req, res, next) => {
 })
 ```
 
+After setting the header on the server, initialize your worker with the corresponding scope by using the options object:
+
+```js focusedLines=8
+worker.start({
+  serviceWorker: {
+    url: '/your/custom/path/mockServiceWorker.js',
+    options: {
+      scope: '/',
+    },
+  },
+});
+```
+
 ## Run in debug mode
 
 - Applicable to: `setupServer`
