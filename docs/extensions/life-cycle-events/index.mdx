@@ -234,7 +234,7 @@ const server = setupServer(...handlers)
 function waitForRequest(method: string, url: string) {
   let requestId = ''
 
-  return new Promise<MockedRequest<DefaultRequestBody>>((resolve, reject) => {
+  return new Promise<MockedRequest>((resolve, reject) => {
     server.events.on('request:start', (req) => {
       const matchesMethod = req.method.toLowerCase() === method.toLowerCase()
       const matchesUrl = matchRequestUrl(req.url, url).matches
