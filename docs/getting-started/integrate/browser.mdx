@@ -12,13 +12,13 @@ Mock Service Worker operates client-side by registering a [Service Worker](https
 </Action>
 
 ```bash
-$ npx msw init <PUBLIC_DIR> --save
+npx msw init <PUBLIC_DIR> --save
 ```
 
 Replace the `<PUBLIC_DIR>` placeholder with the relative path to your server's public directory. For example, in a Create React App project this command would be:
 
 ```bash
-$ npx msw init public/ --save
+npx msw init public/ --save
 ```
 
 > Note that we are using the `--save` option to save the given worker directory ("public") in the package.json. That way any updates to the worker script will be automatically applied when updating the `msw` package in the future.
@@ -36,7 +36,7 @@ Let's create a file in our mock definition directory (`src/mocks`) where we woul
 </Action>
 
 ```bash
-$ touch src/mocks/browser.js
+touch src/mocks/browser.js
 ```
 
 In the `browser.js` file we are going to create a worker instance with our request handlers defined earlier.
