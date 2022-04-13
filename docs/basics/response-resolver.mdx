@@ -75,7 +75,7 @@ worker.start()
 
 ### Conditional response
 
-When nothing is returned from a response resolver, MSW performed a captured request as-is, hitting the actual endpoint returning the response. Leverage this behavior to perform conditional mocking, for example based on the request's payload.
+When a response resolver returns the `req.passthrough` call, MSW will perform the captured request as-is, hitting the actual endpoint and returning its response. Leverage this behavior to perform conditional mocking, for example based on the request's payload.
 
 ```js showLineNumbers focusedLines=7,15
 rest.get('/user', (req, res, ctx) => {
@@ -92,7 +92,8 @@ rest.get('/user', (req, res, ctx) => {
     )
   }
 
-  // No return statement, perform the request as-is.
+  // Otherwise, explicitly state that you wish to perform this request as-is.
+  return req.passthrough()
 })
 ```
 
@@ -105,7 +106,7 @@ rest.post('/login', (req, res, ctx) => {
   if (username === 'real-user') {
     // Bypass this request, returning an actual response
     // only when the `username` equals to a specific value.
-    return
+    return req.passthrough()
   }
 
   // Otherwise, always respond with a mocked response.
