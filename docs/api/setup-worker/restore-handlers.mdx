@@ -17,7 +17,7 @@ describe('Book detail', () => {
         rest.get('/book/:bookId', (req, res, ctx) => {
           return res.once(
             ctx.status(500),
-            ctx.json({ message: 'Internal server erro' }),
+            ctx.json({ message: 'Internal server error' }),
           )
         }),
       )
