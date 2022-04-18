@@ -10,6 +10,7 @@ import { TableOfContents } from './components/TableOfContents'
 import { DocsPageFooter } from './components/DocsPageFooter'
 import { BaseLayout } from '../../components/BaseLayout'
 import { Footer } from '../../components/Footer'
+import { Banner } from '../../components/Banner'
 
 interface Props {
   page?: any
@@ -78,6 +79,7 @@ const DocsLayout: React.FC<Props> = ({
 
   return (
     <BaseLayout>
+      <Banner />
       <Header withMenu={true} onMenuClick={handleBurgerClick} />
       <Grid>
         <Composition
