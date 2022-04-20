@@ -114,14 +114,19 @@ afterEach(() => {
 ```
 
 ### SWR
-
+To reset the SWR cache between test cases, simply wrap your application with an empty cache provider. Here's an example with Jest (copied from the [SWR docs](https://swr.vercel.app/docs/advanced/cache#reset-cache-between-test-cases)):
 ```js
-import { cache } from 'swr'
-
-beforeEach(() => {
-  cache.clear()
+describe('test suite', async () => {
+  it('test case', async () => {
+    render(
+      <SWRConfig value={{ provider: () => new Map() }}>
+        <App/>
+      </SWRConfig>
+    )
+  })
 })
 ```
+It's recommended to integrate the `<SWRConfig />` provider into a [custom render](https://testing-library.com/docs/react-testing-library/setup/#custom-render) function to avoid unnecessary code duplication.
 
 ### Apollo Client
 
