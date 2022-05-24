@@ -1,0 +1,24 @@
+---
+title: passthrough
+---
+
+Use the `req.passthrough` method of the intercepted request to explicitly state that you wish for the library to bypass this request (perform as-is).
+
+<Hint>Since version 0.40.0, returning <code>undefined</code>/<code>null</code> from a response resolver will consider the intercepted request as unhandled.</Hint>
+
+```js
+import { rest } from 'msw'
+
+export const handlers = [
+  rest.post('/user', (req, res, ctx) => {
+    // Perform the intercepted "POST /user" request as-is
+    // if its query string has the "id" parameter.
+    if (req.url.searchParams.has('id')) {
+      return req.passthrough()
+    }
+
+    // Otherwise, return a mocked "text/plain" response.
+    return res(ctx.text('hello'))
+  })
+]
+```
