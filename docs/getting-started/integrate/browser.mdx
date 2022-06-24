@@ -71,7 +71,6 @@ In order for our mock definition to execute during the runtime, it needs to be i
 ```js showLineNumbers focusedLines=6-9
 // src/index.js
 import React from 'react'
-import ReactDOM from 'react-dom'
 import App from './App'
 
 if (process.env.NODE_ENV === 'development') {
@@ -79,7 +78,7 @@ if (process.env.NODE_ENV === 'development') {
   worker.start()
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+/* render your app here */
 ```
 
 > Starting the worker is an asynchronous action, which may create a race condition with your application making requests on mount. **If that's the case**, please refer to the [Deferred mounting](/docs/recipes/deferred-mounting) recipe to enforce your application mount when the worker is ready.
@@ -119,7 +118,6 @@ Your development environment will automatically open using `localhost:3000/login
 ```js showLineNumbers focusedLines=8-17
 // src/index.js
 import React from 'react'
-import ReactDOM from 'react-dom'
 import App from './App'
 
 async function main() {
@@ -138,12 +136,7 @@ async function main() {
     })
   }
 
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById('root'),
-  )
+  /* render your app here */
 }
 
 main()
