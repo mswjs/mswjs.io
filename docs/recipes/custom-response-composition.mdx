@@ -24,7 +24,7 @@ The `createResponseComposition` accepts two arguments:
 - Response overrides. An object of [response properties](/docs/api/response) to override on each mocked response.
 - List of [response transformers](/docs/basics/response-transformer) to modify the mocked response.
 
-In the example above we've created a custom `delayedResponse` composition that attaches a realistic delay time to every mocked response. We're using an existing `context.delay` function as opposed to `createResponseComposition({ delay: 123 })` because it comes with the behavior with need out of the box.
+In the example above we've created a custom `delayedResponse` composition that attaches a realistic delay time to every mocked response. We're using an existing `context.delay` function as opposed to `createResponseComposition({ delay: 123 })` because it comes with the behavior we need out of the box.
 
 ## Using a composition
 
