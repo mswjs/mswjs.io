@@ -7,7 +7,7 @@ The `rest` namespace contains a set of [Request handlers](/docs/basics/request-h
 
 ## Methods
 
-Each method in this namespace represents a REST API request method:
+Methods of this namespace represents REST API request methods:
 
 - `rest.get()`
 - `rest.post()`
@@ -31,6 +31,28 @@ Here are some examples of request URLs that would match the request handler abov
 
 - `POST /author/1/2`
 - `POST /author/123-abc/456-def`
+
+### Custom methods
+
+There are also custom methods that do not strictly represent REST API methods but provide a more convenient way to create request handlers.
+
+- `rest.all()`
+
+Intercept any REST API request to a given path regardless of its method.
+
+```js showLineNumbers
+import { rest } from 'msw'
+
+export const handlers = [
+  // Intercept all requests to the "/user" endpoint
+  // regardless of their method, and respond with a "403 Forbidden" response.
+  rest.all('/user', (req, res, ctx) => {
+    return res(ctx.status(403))
+  }),
+]
+```
+
+> The path provided to `rest.all()` abides by the [request matching](/docs/basics/request-matching) algorithm, meaning you can also use patterns and regular experssions.
 
 ## Examples
 
