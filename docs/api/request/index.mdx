@@ -20,7 +20,6 @@ Unlike a NodeJS `Request`, the request object in Mock Service Worker is a _parti
 | Property         | Type                                                                                                |
 | ---------------- | --------------------------------------------------------------------------------------------------- |
 | `url`            | [`URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL)                                   |
-| `body`           | `string`, `Record<string, any>`                                                                     |
 | `method`         | [`Request.method`](https://developer.mozilla.org/en-US/docs/Web/API/Request/method)                 |
 | `headers`        | [`Request.headers`](https://developer.mozilla.org/en-US/docs/Web/API/Request/headers)               |
 | `cookies`        | `Record<string, string>`                                                                            |
@@ -38,7 +37,11 @@ Unlike a NodeJS `Request`, the request object in Mock Service Worker is a _parti
 
 ## Methods
 
-- [`req.passthrough`](./passthrough)
+- [`req.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Request/clone)
+- [`req.text()`](https://developer.mozilla.org/en-US/docs/Web/API/Request/text)
+- [`req.json()`](https://developer.mozilla.org/en-US/docs/Web/API/Request/json)
+- [`req.arrayBuffer()`](https://developer.mozilla.org/en-US/docs/Web/API/Request/arrayBuffer)
+- [`req.passthrough()`](./passthrough)
 
 ### GraphQL
 

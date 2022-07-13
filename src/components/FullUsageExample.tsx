@@ -120,8 +120,8 @@ const examples = [
 import { setupWorker, rest } from 'msw'
 
 const worker = setupWorker(
-  rest.post('/login', (req, res, ctx) => {
-    const { username } = req.body
+  rest.post('/login', async (req, res, ctx) => {
+    const { username } = await req.json()
 
     return res(
       ctx.json({
@@ -159,8 +159,8 @@ interface LoginResponse {
 }
 
 const worker = setupWorker(
-  rest.post<LoginBody, LoginResponse>('/login', (req, res, ctx) => {
-    const { username } = req.body
+  rest.post<LoginBody, LoginResponse>('/login', async (req, res, ctx) => {
+    const { username } = await req.json()
 
     return res(
       ctx.json({

@@ -100,8 +100,8 @@ rest.get('/user', (req, res, ctx) => {
 Alternatively, you can use an explicit `return` statement without the `res()` call to achieve the same behavior.
 
 ```js showLineNumbers
-rest.post('/login', (req, res, ctx) => {
-  const { username } = req.body
+rest.post('/login', async (req, res, ctx) => {
+  const { username } = await req.json()
 
   if (username === 'real-user') {
     // Bypass this request, returning an actual response
