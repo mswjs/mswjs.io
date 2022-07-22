@@ -74,11 +74,11 @@ Below you can find an unbiased comparison between Mock Service Worker and other 
 | Environments   | Browser                                                                                                                                                | Node / Browser                                                                       |
 | Implementation | Registers a Service Worker. Resolves mocked responses as a part of the worker.                                                                         | Registers a Service Worker. Resolves mocked responses on the client side.            |
 | Integration    | Requires to have the build worker file at the proper scope. May require `sw-loader`, or configuring the `Service-Worker-Allowed` header on the server. | Does not require any changes to the build setup.                                     |
-| Definition     | Mocking logic is written in a separate `server.js` file (in a Service Worker's context), dettached from your app's logic.                              | Mocks are defined in a client-side JavaScript, allowing to reuse actual app's logic. |
+| Definition     | Mocking logic is written in a separate `server.js` file (in a Service Worker's context), detached from your app's logic.                              | Mocks are defined in a client-side JavaScript, allowing to reuse actual app's logic. |
 
 ### Service Worker operation
 
-Since both libraries operate using Service Worker, it's resonable to compare the difference in how they handle their worker instance.
+Since both libraries operate using Service Worker, it's reasonable to compare the difference in how they handle their worker instance.
 
 #### Scope
 
