@@ -10,8 +10,17 @@ Delays the response by the given duration (in ms). When no duration is provided,
 ## Call signature
 
 ```ts
-function delay(duration?: number): MockedResponse
+function delay(durationOrMode?: "real" | "infinite" | number): ResponseTransformer
 ```
+
+#### Duration options
+
+| Option name | Description                                            |
+| ----------- | ------------------------------------------------------ |
+| `"real"`    | Emulate realistic server response time.                |
+| `"infinite"`| Delay response infinitely.                             |
+| `number`    | Delay response by a number of milliseconds.            |
+
 
 ## Examples
 
