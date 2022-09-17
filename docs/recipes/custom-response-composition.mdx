@@ -39,7 +39,7 @@ export const handlers = [
   rest.get('/user', (req, res, ctx) => {
     // This mocked response has realistic
     // response time automatically.
-    return delayedResponse(
+    return delayedResponse(() =>
       ctx.json({
         firstName: 'John',
         lastName: 'Maverick',
