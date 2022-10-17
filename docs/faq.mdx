@@ -29,11 +29,11 @@ Mock Service Worker provides a Node-compatible API to allow you to reuse the sam
 
 ## Can I use it with React Native?
 
-Yes, but only for NodeJS integration.
+Yes, but because MSW relies on running a Node process, it can only be used for local development in the simulator or running unit/integration tests.
 
-Since React Native does not execute in a browser environment, you cannot run a Service Worker alongside your application.
+Since React Native does not support certain Node.js globals, like `URL`, you will need to add polyfills to patch the global environment by adding `react-native-url-polyfill` and `import { setupServer } from 'msw/native'`.
+For running unit/integration tests, use `import { setupServer } from 'msw/node'`.
 
-However, you can use Mock Service Worker in your React Native project for unit and integration tests that run in Node.
 Please see the following page for the integration steps:
 
 <PageLink
