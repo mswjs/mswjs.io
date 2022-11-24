@@ -31,7 +31,7 @@ describe('Book detail', () => {
  afterEach(() => {
     return cy.window().then((window) => {
       const { worker } = window
-      worker.resetHandlers()
+      worker.restoreHandlers()
     })
   })
   
