@@ -113,7 +113,7 @@ Bear in mind that without a DOM-like environment, like the jsdom from Jest, **yo
 const server = setupServer(
   // NOT "/user", nothing to be relative to!
   rest.get('https://api.backend.dev/user', (req, res, ctx) => {
-    return res(ctx.json({ firstName: 'John' }))
+    return res(ctx.data({ firstName: 'John' }))
   }),
 )
 ```
