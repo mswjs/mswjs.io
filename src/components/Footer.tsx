@@ -70,7 +70,7 @@ export const Footer: React.FC = () => {
             justify="center"
             justifyMd="flex-start"
           >
-            <Logo height={48} fill="#fff" />
+            <Logo width={48} fill="#fff" />
           </Box>
           <section>
             <HeadingDiminished>Documentation</HeadingDiminished>
