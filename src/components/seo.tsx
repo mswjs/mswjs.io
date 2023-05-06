@@ -2,7 +2,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 
-import ogImageUrl from '../../static/og-image.png'
+import ogImageUrl from '../../static/og-image.jpg'
 
 const GET_METADATA = graphql`
   query {
