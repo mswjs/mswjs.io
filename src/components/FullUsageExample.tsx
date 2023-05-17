@@ -248,10 +248,8 @@ const worker = setupWorker(
 
     return res(
       ctx.data({
-        user: {
-          username,
-          firstName: 'John'
-        }
+        username,
+        firstName: 'John'
       })
     )
   })
