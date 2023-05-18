@@ -238,8 +238,10 @@ interface Variables {
 }
 
 interface Response {
-  username: string
-  firstName: string
+  user: {
+    username: string
+    firstName: string
+  }
 }
 
 const worker = setupWorker(
