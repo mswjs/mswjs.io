@@ -48,7 +48,7 @@ export const handlers = [
   // Intercept all requests to the "/user" endpoint
   // regardless of their method, and respond with a "403 Forbidden" response.
   rest.all('/user', (req, res, ctx) => {
-    return res(ctx.status(403))
+    return res(ctx.status(403), ctx.text("Forbidden!"))
   }),
 ]
 ```
