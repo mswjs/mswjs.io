@@ -29,6 +29,23 @@ rest.post('/login', (req, res, ctx) => {
 })
 ```
 
+### Infinite response delay
+
+You can give `'infinite'` instead of a duration (in ms). Mock Service Worker will never response anything virtually.
+
+
+```js showLineNumbers focusedLines=3-4
+rest.post('/login', (req, res, ctx) => {
+  return res(
+    // Delays response infinitely.
+    ctx.delay('infinite'),
+    ctx.json({
+      message: 'This message will never be read...',
+    }),
+  )
+})
+```
+
 ### Implicit response delay
 
 When no delay duration is explicitly provided, Mock Service Worker uses a random realistic server response time on the particular mocked response.
