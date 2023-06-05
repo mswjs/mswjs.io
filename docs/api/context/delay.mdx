@@ -48,7 +48,7 @@ rest.post('/login', (req, res, ctx) => {
 
 ### Implicit response delay
 
-When no delay duration is explicitly provided, Mock Service Worker uses a random realistic server response time on the particular mocked response.
+When no delay duration is explicitly provided or `'real'` is given, Mock Service Worker uses a random realistic server response time on the particular mocked response.
 
 ```js showLineNumbers focusedLines=3
 rest.delete('/post/:postId', (req, res, ctx) => {
