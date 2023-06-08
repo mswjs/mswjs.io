@@ -65,7 +65,7 @@ test('first test', () => {
 test('second test', () => {
   server.resetHandlers(rest.post('/login', loginResolver))
 
-  // This, any any subsequent tests, will NOT handle
+  // This, and any subsequent tests, will NOT handle
   // "GET /book/:bookId", because it's been reset.
   // Only the "POST /login" request handler exists now.
 })
