@@ -10,7 +10,7 @@
     "@svgr/webpack": "^5.5.0",
     "atomic-layout": "^0.16.2",
     "dotenv": "^8.2.0",
-    "gatsby": "^3.0.4",
+    "gatsby": "^4.25.7",
     "gatsby-image": "^3.0.0",
     "gatsby-plugin-google-analytics": "^3.0.0",
     "gatsby-plugin-manifest": "^3.0.0",
