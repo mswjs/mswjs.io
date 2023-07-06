@@ -97,7 +97,7 @@ export const Teaching: React.FC = () => {
           Let your students <em>and</em> yourself focus on the topic, while{' '}
           <span className="no-wrap">Mock Service Worker</span> provides a
           reliable API substitution that you don't need to run, and that behaves
-          the same between different OS.
+          the same between different OSs.
         </Text>
         <ReadmoreLink
           href="https://epicreact.dev/"
