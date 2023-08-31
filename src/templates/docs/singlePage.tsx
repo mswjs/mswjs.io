@@ -22,7 +22,7 @@ import { ConsoleMessage } from '../../components/mdx/ConsoleMessage'
 import { Table } from '../../components/mdx/Table'
 import { VideoEmbed } from '../../components/mdx/VideoEmbed'
 import DocsLayout from './DocsLayout'
-import { CarbonAds } from '../../components/CarbonAds'
+import { Ads } from '../../components/Ads'
 
 const createHeading = (level: 1 | 2 | 3 | 4): React.FC => {
   return (props) => <Heading level={level} {...props} />
@@ -86,7 +86,7 @@ const DocumentationPage = ({ data, pageContext }) => {
       {page.frontmatter.description && (
         <TextLead>{page.frontmatter.description}</TextLead>
       )}
-      {page.frontmatter.ads !== false && <CarbonAds />}
+      {page.frontmatter.ads !== false && <Ads />}
       <MDXProvider components={components}>
         <MDXRenderer>{page.body}</MDXRenderer>
       </MDXProvider>
