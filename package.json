@@ -64,6 +64,6 @@
     "url": "https://github.com/mswjs/mswjs.io/issues"
   },
   "engines": {
-    "node": "16"
+    "node": "18"
   }
 }
