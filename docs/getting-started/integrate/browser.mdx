@@ -68,6 +68,8 @@ In order for our mock definition to execute during the runtime, it needs to be i
   of the examples below:
 </Action>
 
+Method One - CJS Applications
+
 ```js showLineNumbers focusedLines=6-9
 // src/index.js
 import React from 'react'
@@ -80,6 +82,24 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+Method Two - ES6 Applications
+
+```js
+// src/index.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+
+import { setupWorker } from 'msw'
+import { handlers } from './mocks/handlers.ts'
+
+export const worker = process.env.NODE_ENV === "development" ? setupWorker(...handlers) : undefined;
+
+if (process.env.NODE_ENV === 'development') {
+  worker?.start();
+}
 ```
 
 > Starting the worker is an asynchronous action, which may create a race condition with your application making requests on mount. **If that's the case**, please refer to the [Deferred mounting](/docs/recipes/deferred-mounting) recipe to enforce your application mount when the worker is ready.
