@@ -1,0 +1,97 @@
+---
+order: 2
+title: Query parameters
+description: Read and write request query parameters.
+keywords:
+  - query
+  - search
+  - parameters
+  - url
+---
+
+To read the intercepted request's URL query parameters, first construct a `URL` instance out of the `request.url` string. The `URL` instance provides you with the [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) that you can use to read the query parameters.
+
+import { Info } from '../../../components/react/info'
+
+<Info>
+  Although you can use `URLSearchParams` to modify query parameters, it will
+  have no effect because by the time request reaches your handler it has already
+  happened and cannot be modified.
+</Info>
+
+Do not confuse _query parameters_ with _path parameters_ of the request:
+
+- Query parameters: `?a=1&b=2`;
+- Path parameters: `GET /user/:id`, where `id` is a path parameter.
+
+## Read a single parameter
+
+```js {4,8}
+export const handlers = [
+  http.get('/product', ({ request }) => {
+    // Construct a URL instance out of the intercepted request.
+    const url = new URL(request.url)
+
+    // Read the "id" URL query parameter using the "URLSearchParams" API.
+    // Given "/product?id=1", "productId" will equal "1".
+    const productId = url.searchParams.get('id')
+
+    // Note that query parameters are potentially undefined.
+    // Make sure to account for that in your handlers.
+    if (!productId) {
+      return new HttpResponse(null, { status: 404 })
+    }
+
+    return HttpResponse.json({ productId })
+  }),
+]
+```
+
+## Read multi-value parameter
+
+Use the [`URLSearchParams.prototype.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) function to get a list of values for multi-value query parameters.
+
+```js {7}
+export const handlers = [
+  http.get('/products', ({ request }) => {
+    const url = new URL(request.url)
+
+    // Given "/products?id=1&id=2&id=3",
+    // "productIds" will equal ["1", "2", "3"].
+    const productIds = url.searchParams.getAll('id')
+
+    return HttpResponse.json({ productIds })
+  }),
+]
+```
+
+## Write query parameters
+
+The `request` instance you get in the response resolver represents a request that _has already happened_. While you can use the `.set()` and `.append()` methods on its query parameters, that will have no effect on the request.
+
+You can, however, _construct a new request_ with modified query paramers in scenarios like proxying.
+
+```js {4}
+export const handlers = [
+  http.get('/user', ({ request }) => {
+    const url = new URL(request.url)
+    url.searchParams.set('debug', 'true')
+
+    // Construct a proxy request based on the intercepted request
+    // but provide a new URL that contains modified query parameters.
+    const proxyRequest = new Request(url, request)
+  }),
+]
+```
+
+> Learn more about performing proxy requests and patching responses in this recipe:
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CpuChipIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CpuChipIcon}
+  url="/docs/recipes/response-patching"
+  title="Response patching"
+  description="Augment original responses"
+/>

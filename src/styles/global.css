@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --orange: #ff6a33;
+}
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @apply scroll-pt-20;
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-neutral-900 font-sans text-white;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+a {
+  @apply hover:text-white;
+}
+
+.header {
+  -ms-layout-grid: white;
+}
+
+.grid > * {
+  @apply min-w-0;
+}
+
+.footer a {
+  @apply hover:underline;
+}
+
+/* Typography */
+h1 {
+  @apply mb-10 text-4xl md:text-5xl font-extrabold tracking-tight;
+}
+
+h2 {
+  @apply mb-5 text-4xl font-extrabold tracking-tight;
+}
+
+h3 {
+  @apply mb-2 text-xl font-bold tracking-tight;
+}
+
+h3:not(:first-child) {
+  @apply mt-8;
+}
+
+hr {
+  @apply border-neutral-800;
+}
+
+blockquote em {
+  @apply text-orange border-dotted border-b border-orange not-italic;
+}
+
+.em-border {
+  @apply border-b border-dotted border-orange;
+}
+
+[role='alert'] p {
+  @apply my-0;
+}
+
+.hero-gradient {
+  background: radial-gradient(#ffffff04 50%, transparent 70%);
+}
+
+/* Buttons */
+.button {
+  @apply px-6 py-3 font-bold rounded-lg select-none text-center;
+}
+.button-primary {
+  @apply bg-neutral-700 text-white bg-opacity-40 border border-neutral-700;
+  @apply hover:bg-opacity-70;
+}
+.button-secondary {
+  @apply border border-neutral-600 text-white;
+  @apply hover:border-neutral-500 hover:bg-white hover:bg-opacity-5;
+}
+
+/* Code */
+code:not([data-language]) {
+  /* Prevent inline code snippets from wrappig to new line */
+  @apply font-normal sm:whitespace-nowrap;
+}
+
+.astro-code,
+pre[data-language] {
+  @apply my-5 py-3 rounded-lg text-sm border border-neutral-700;
+
+  background-color: #171717 !important;
+  line-height: 1.5;
+}
+
+pre[data-language] {
+  @apply overflow-x-auto max-w-full;
+}
+
+pre[data-language] code {
+  counter-reset: line;
+}
+
+[data-line] {
+  @apply px-4;
+}
+
+[data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+
+  @apply inline-block w-[3ch] text-neutral-500;
+}
+
+span[style='color:#6A737D'] {
+  @apply font-mono italic;
+}
+
+code[data-line-numbers-max-digits='2'] > [data-line]::before {
+  width: 2rem;
+}
+
+code[data-line-numbers-max-digits='3'] > [data-line]::before {
+  width: 3rem;
+}
+
+[data-highlighted-line] {
+  @apply bg-neutral-800 bg-opacity-60 border-l border-orange;
+}
+
+[data-highlighted-line][data-line]::before {
+  @apply text-neutral-400 -mr-px;
+}
+
+[data-highlighted-chars] {
+  @apply px-0.5 bg-amber-700 bg-opacity-40 border-b-2 border-amber-500 font-bold rounded-sm !text-amber-200;
+}
+
+/* Sections */
+#mobile-menu-container {
+  @apply z-[3];
+}
+#mobile-menu-container > div {
+  @apply p-5;
+}
+#mobile-menu a {
+  @apply block border-b border-neutral-800 hover:bg-neutral-800;
+}
+#mobile-menu .menu-link-active {
+  @apply mb-0 bg-neutral-800 bg-opacity-50 border-orange;
+}
+
+.companies-list {
+  position: relative;
+  overflow: hidden;
+}
+
+.companies-list:before,
+.companies-list:after {
+  @apply from-black to-transparent;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  content: '';
+  width: 15%;
+}
+.companies-list:before {
+  @apply bg-gradient-to-r;
+  left: 0;
+}
+.companies-list:after {
+  @apply bg-gradient-to-l;
+  right: 0;
+}
+
+.integration-usage {
+  @apply relative;
+}
+.integration-usage:before {
+  content: '';
+  @apply absolute -inset-10 bg-neutral-900 -z-10;
+}
+
+.integration-line:before,
+.integration-line:after {
+  content: '';
+  @apply absolute left-0 right-0 h-1 w-[50vw] bg-neutral-800 -translate-x-1/2;
+  @apply hidden lg:block;
+}
+.integration-line:before {
+  @apply top-0;
+}
+.integration-line:after {
+  @apply bottom-0;
+}
+
+/* Docs */
+.prose h2 a,
+.prose h3 a,
+.prose h4 a {
+  @apply text-white no-underline;
+  font-weight: inherit;
+}
+
+.prose h2 a::after,
+.prose h3 a::after,
+.prose h4 a::after {
+  @apply hidden ml-1 text-neutral-500;
+  content: '#';
+}
+
+.prose h2 a:hover::after,
+.prose h3 a:hover::after,
+.prose h4 a:hover::after {
+  @apply inline;
+}
+
+.docs-group-item > summary {
+  @apply list-none;
+}
+.docs-group-item > summary::-webkit-details-marker {
+  @apply hidden;
+}
+.docs-group-item .icon {
+  @apply w-4 inline-block text-neutral-400;
+}
+.docs-group-item[open] .icon {
+  @apply text-white rotate-90;
+}

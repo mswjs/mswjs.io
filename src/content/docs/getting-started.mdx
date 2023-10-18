@@ -1,0 +1,110 @@
+---
+order: 2
+title: Getting started
+description: Three steps to get started with Mock Service Worker.
+---
+
+Developers come to MSW for various reasons: to establish proper testing boundaries, to prototype applications, debug network-related issues, or monitor production traffic. This makes it all the more challenging to write a single tutorial that would suit all those needs at the same time. In the end, it is your choice how you utilize the capabilities of the library, and we believe it should be _you_ who decides on the right path to follow in this tutorial.
+
+## Step 1: Install
+
+Install MSW as a dependency by running the following command in your project:
+
+```
+npm install msw --save-dev
+```
+
+> If you need to, you can also [install MSW from a CDN](/docs/recipes/using-cdn).
+
+## Step 2: Write network behavior
+
+To describe the network behavior you need, you have to understand how to intercept requests and how to mock their responses.
+
+import { PageCard } from '../../components/react/pageCard'
+import { NewspaperIcon } from '@heroicons/react/24/outline'
+
+<div className="grid md:grid-cols-2 gap-8">
+  <PageCard
+    icon={NewspaperIcon}
+    url="/docs/basics/intercepting-requests"
+    title="Intercepting requests"
+    description="Learn about request interception and how to capture REST and GraphQL requests."
+  />
+  <PageCard
+    icon={NewspaperIcon}
+    url="/docs/basics/mocking-responses"
+    title="Mocking responses"
+    description="Learn about response resolvers and the different ways to respond to a request."
+  />
+</div>
+
+Once you are comfortable with those concepts, learn more about the `http` and `graphql` namespaces you will be using to describe resources for REST and GraphQL APIs respectively.
+
+import { NodejsIcon } from '../../components/react/icons/nodejs'
+import { GraphQLIcon } from '../../components/react/icons/graphql'
+
+<div className="md:grid md:grid-cols-2 gap-8">
+  <PageCard
+    icon={NodejsIcon}
+    url="/docs/network-behavior/rest"
+    title="Describing REST API"
+    description="Learn about describing RESTful APIs."
+  />
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/network-behavior/graphql"
+    title="Describing GraphQL API"
+    description="Learn about describing GraphQL APIs."
+  />
+</div>
+
+## Step 3: Integrate anywhere
+
+There are many frameworks, libraries, and tools out there but all of them run either in the browser or in Node.js (speaking about the JavaScript ecosystem). You will not find specific instructions on integrating MSW with those tools because there aren't any. Instead, you will create environment-based integration points that work with any tool you used, are using now, or will use in the future.
+
+**Follow the integration guides for the environment(s) you need:**
+
+import { WindowIcon, CommandLineIcon } from '@heroicons/react/24/outline'
+
+<div className="grid md:grid-cols-2 gap-8">
+  <PageCard
+    icon={WindowIcon}
+    url="/docs/integrations/browser"
+    title="Browser"
+    description="Integrate MSW in a browser environment, such as a React application or Storybook."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/integrations/node"
+    title="Node.js"
+    description="Integrate MSW in Node.js, such as an Express application or a test runner."
+  />
+</div>
+
+> It's possible and encouraged to have both integration points in your project to so could get a consistent control over the network across the entire stack.
+
+## Need help?
+
+Starting with a new tool can be difficult but you don't have go through that alone. Whenever you encounter an issue, the best place to go is our Debugging runbook:
+
+import { BugAntIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={BugAntIcon}
+  url="/docs/runbook"
+  title="Debugging runbook"
+  description="Steps to debug common issues with the library."
+/>
+
+We are always happy to help you with any questions you might have. There are multiple ways you can reach out to us or other community members to get help:
+
+import { DISCORD_URL } from '../../consts'
+import { DiscordIcon } from '../../components/react/icons/discord'
+
+- <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
+    <DiscordIcon className="inline mr-1.5 w-5 align-text-top" />
+    <strong>Join MSW Discord</strong>
+  </a>
+- [Start a discussion on GitHub](https://github.com/mswjs/msw/discussions)
+
+And remember, there is always a person who's one problem behind you. Be kind and offer help when you can.

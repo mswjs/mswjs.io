@@ -1,0 +1,40 @@
+---
+import type { DocsItem } from '../../utils/buildNavTree';
+import DocsRootSection from './DocsRootSection.astro';
+import DocsNavGroup from './DocsNavGroup.astro';
+import DocsMenuLink from './DocsMenuLink.astro';
+
+type Props = {
+  items: Array<DocsItem>
+  itemKind?: DocsItem['kind']
+  className?: string
+}
+
+const { items, itemKind, className } = Astro.props
+---
+
+<ul class:list={[
+  { 'pl-3 ml-1 border-l border-neutral-700': itemKind === 'group' },
+  className,
+  'text-sm font-medium'
+]}>
+  {items.map((item) => (
+    <li>
+      {item.kind === 'group' ? (
+        <DocsRootSection
+          title={item.title}
+          items={item.children}
+        />
+      ) : ('children' in item) ? (
+        <DocsNavGroup item={item} />
+      ) : (
+        <DocsMenuLink
+          href={item.publicUrl}
+          standalone={item.mdx.frontmatter.standalone}
+        >
+          {item.mdx.frontmatter.title}
+        </DocsMenuLink>
+      )}
+    </li>
+  ))}
+</ul>

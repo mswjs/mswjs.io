@@ -1,0 +1,27 @@
+---
+import './ads.css'
+import { Warning } from './react/warning';
+---
+
+<div id="ethical-container">
+  <script
+    async
+    src="https://media.ethicalads.io/media/client/ethicalads.min.js"
+    onerror="showWarning()"
+  ></script>
+  <div
+    class="horizontal dark flat"
+    data-ea-publisher="mswjsio"
+    data-ea-type="text"
+  />
+</div>
+<div id="adblocker-warning" style="display:none">
+  <Warning><strong>Please disable AdBlocker.</strong></Warning>
+</div>
+
+<script is:inline>
+  window.showWarning = () => {
+    const adBlockerWarning = document.getElementById('adblocker-warning')
+    adBlockerWarning.style.display = 'block'
+  }
+</script>

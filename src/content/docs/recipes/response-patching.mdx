@@ -1,0 +1,72 @@
+---
+order: 4
+title: Response patching
+description: Combine original and mocked responses.
+keywords:
+  - patch
+  - patching
+  - augment
+  - original
+  - bypass
+---
+
+**Response patching** is a technique to combine a mocked response with the real response. This technique is particularly useful when working with existing API (including third-party API) as it allows to augment its responses on the fly.
+
+To get the original response to the intercepted request you have to perform it as-is. If you use the plain `fetch()` function in the handler, it will dispatch a request that will again match the same handler, causing an infinite request loop. Instead, use the `bypass()` utility function that will make a particular `fetch()` request _bypass_ any otherwise matching request handlers.
+
+```js /bypass/ {6,11-13}
+import { http, bypass, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('https://api.github.com/user/:username', async ({ request }) => {
+    // Fetch the original response from the GitHub API.
+    const gitHubUser = await bypass(request).then((response) => response.json())
+
+    // Respond with a mocked response that combines
+    // the actual and mock data.
+    return HttpResponse.json({
+      id: gitHubUser.id,
+      login: gitHubUser.login,
+      location: 'London',
+    })
+  }),
+]
+```
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/bypass"
+  title="bypass"
+  description="API reference for the `bypass` function."
+/>
+
+## Proxying requests
+
+You can proxy outgoing requests by constructing a designed proxy `Request` instance.
+
+```js /bypass/ {9-14,17}
+import { http, bypass } from 'msw'
+
+export const handlers = [
+  http.get('/resource', async ({ request }) => {
+    const originalUrl = new URL(request.url)
+    const proxyUrl = new URL('/proxy', location.origin)
+
+    // Construct a proxy request.
+    const proxyRequest = new Request(proxyUrl, {
+      headers: {
+        'Content-Type': request.headers.get('Content-Type'),
+        'X-Proxy-Header': 'true',
+      },
+    })
+
+    // Perform the proxy request.
+    const originalResponse = await bypass(proxyRequest)
+
+    // Return the mocked response...
+  }),
+]
+```

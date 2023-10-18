@@ -1,0 +1,43 @@
+---
+order: 1
+title: Introduction
+description: Welcome to the Mock Service Worker documentation!
+---
+
+import { EggheadCourseBanner } from '../../components/react/eggheadCourseBanner'
+
+Mock Service Worker (MSW) is an API mocking library for browser and Node.js. With MSW, you can intercept outgoing requests, observe them, and respond to them using mocked responses.
+
+What sets MSW apart is that it heavily advocates for a standalone API mocking layer, creating a single source of truth for your network behavior and integrating it across whichever tools you're using. This leads to a more resilient setup and, paired with other library features, creates a truly seamless API mocking experience.
+
+<EggheadCourseBanner />
+
+## Features
+
+### Agnostic
+
+MSW is designed to be fully environment-, framework- and tool-agnostic. You can use it in any browser or Node.js process without additional configurations, adapters, or plugins. It works with all request clients, be it a native `window.fetch()` or third-party libraries like Axios, React Query, or Apollo.
+
+### Seamless
+
+MSW uses the Service Worker API to intercept actual production requests on the network level. Instead of patching `fetch` and meddling with your appliaction's integrity, MSW bets on the platform, utilizing the standard browser API to implement a revolutionary request interception logic.
+
+Even in Node.js, where there are no standard means to intercept requests, MSW uses _class extension_ instead of module patching to ensure your tests run in the environment as close to production as possible.
+
+### Reusable
+
+By treating API mocking as a standalone layer, MSW can integrate throughout your entire stack, allowing you to reuse and customize network behavior on demand. Imagine using the same API mocks during development, integration and end-to-end testing, and then in your Storybook or during a live demo. Well, with MSW, you can.
+
+## Start here
+
+If you have never tried MSW before or unsure where to start, look no further than the Getting started tutorial:
+
+import { PageCard } from '../../components/react/pageCard'
+import { WindowIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  url="/docs/getting-started"
+  icon={WindowIcon}
+  title="Getting started"
+  description="Three steps to get started with Mock Service Worker."
+/>

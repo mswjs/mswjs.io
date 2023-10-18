@@ -1,0 +1,207 @@
+---
+title: Introducing MSW 2.0
+slug: introducing-msw-2.0
+description: The biggest library release is finally here! Learn more about the changes, motivation behind them, and how to upgrade to the next version today.
+publishedAt: 2023-10-15
+author:
+  name: Artem Zakharchenko
+  twitterHandle: kettanaito
+keywords:
+  - new
+  - msw
+  - '2.0'
+  - v2
+  - fetch
+  - api
+---
+
+This November marks five years since Mock Service Worker has been first added to a `package.json`. Over that time, I have learned a lot about building libraries, designing APIs, and cultivating communities, which makes today's announcement all the more special.
+
+Version 2.0 marks a monumental chapter for MSW. A year in development, dozens of contributors, and thousands of lines changed, this update brings a refined public API with the first-class support for Fetch API primitives and all the features and bug fixes that it unlocks as a side effect. Let's have a quick look at what changed and why.
+
+> If you prefer consuming changes hands-on, feel free to dive into the [Migration guide](/docs/migrations/1.x-to-2.x) for version 2.0. But if you'd like to learn more about the motivation, the challenges, behind-the-scenes, sweat and tears, and all that, then keep on reading.
+
+I'm also extremely excited to have partnered with Egghead to bring you the most complete introduction to Mock Service Worker. I'm talking about 20+ lessons covering more than 40 minutes of educational material strictly focused on how to describe various network scenarios with MSW. **There is no better place to start with the library than our official course:**
+
+import { EggheadCourseBanner } from '../../components/react/eggheadCourseBanner'
+
+<EggheadCourseBanner />
+
+## The beginnings
+
+If you've been using MSW, you are well familiar with this call signature:
+
+```js
+(req, res, ctx) => res(...)
+```
+
+This is a function called _response resolver_ in MSW, and it acts as a callback that receives the intercepted request and decides how to handle it. The shape of the response resolver hasn't change a bit since I first wrote it in 2018. Back in the day, I was rather inspired by functional programming and function composition in particular, which you can clearly see in the way you declare mocked responses in MSW:
+
+```js
+// Constructing a response is a matter of
+// composing various response utilities,
+// like "ctx.status" and "ctx.json".
+res(
+  ctx.status(201),
+  ctx.json({
+    id: 'abc-123',
+    title: 'Introducing MSW 2.0',
+  })
+)
+```
+
+From the practical standpoint, the `res()` composition API achieves its goals: it allows for response declaration, it's readable, it scales and abstracts well. But years of shipping open-source software have taught me there are more aspects to your code than practicality. Despite its apparent benefits, this composition API failed to achieve a rather important characteristic.
+
+**It failed to educate**.
+
+The degree of abstraction in the `res()` function is far too high to teach you, the developer, anything about actual responses on the web. As a maintainer with thousands of projects depending on the software I build, I feel it's my responsibility to care about what developers learn from that software. I want them to achieve their goals but I also want them to learn concepts and APIs they can apply even outside of MSW because I firmly believe that's what a good software does.
+
+## The essence
+
+MSW allows you to treat each response as a function of request, and that has been precisely what was going on under the hood.
+
+```js
+// An abstract representation of the request -> response flow.
+responseSource.on('request', (request) => {
+  const isomorphicRequest = toIsomorphicRequest(request)
+  const response = resolver(isomorphicRequest, responseComposition, context)
+  return respondWith(response)
+})
+```
+
+While in the browser we receive the Fetch API `Request` instance to represent a request, things become more tangled once we step into Node.js.
+
+Before version 2.0, MSW supported Node.js v14 - v16, which is a huge spectre of versions. There is no `fetch` present in those versions, which means we couldn't rely on the Fetch API to represent outgoing requests. To account for that request class difference, the library coerced all requests to a single isomoprhic request instance, and that is precisely what you got as the `req` argument in the response resolver.
+
+But that isomorphic request is entirely contrived. Worse still, extending it or adding new features required to manually implement them for every request module the developer could have used in Node.js. That was extremely tedious and lead to all sorts of bugs.
+
+The effort behind v2.0 is precisely to eradicate those contrived APIs and fully embrace JavaScript standards.
+
+### Polyfills
+
+_Why won't you just use a `fetch` polyfill?_ That's precisely what I tried at first. It wasn't long until I realized relying on polyfills won't work at all.
+
+See, as a developer, you can polyfill `fetch` in your project in many ways, most likely relying on third-party packages. You may be using `whatwg-fetch`, or `node-fetch`, or `isomorphic-fetch`, or `undici`. But MSW **had to use just one package**. And it's not a problem of choice but a problem of interoperability.
+
+Every `fetch` polyfill locks the identity of its internal classes like `Request`, `Response` and `Headers`. This means that none of those classes would pass the `instanceof` check, as one example, unless both you and MSW use the same polyfill, which is virtually impossible to predict.
+
+```js
+// somewhere/in/msw.js
+import { Request } from 'polyfill-that-msw-uses'
+
+function isRequest(request: Request) {
+  // This will produce a lot of false negatives
+  // if you provide a `request` constructed by
+  // a different polyfill than "polyfill-that-msw-uses".
+  return request instanceof Request
+}
+```
+
+Inferring the polyfilled classes isn't a reliable route either. It implies that the polyfill is set globally but it may not be the case. It also makes TypeScript definitions insanely difficult to get right as some polyfills deviate from the specification.
+
+I've spent almost a month fighting this to arrive at the simple conclusion: this was clearly not the way forward.
+
+## The way forward
+
+I took a call to deprecate support for Node.js ≤ v16 with the new version of MSW and I am glad I did that. By the time I was finished with the rewrite, Node.js v14 has already reached the end-of-life, Node.js v16 reaches the end of life this fall, and Node.js v18 itself goes into maintenance.
+
+> The day I removed Node.js v14 support from MSW will go in history as one of my happiest days as an engineer.
+
+Node.js evolves fast, and it is thanks fo that evolution that MSW can rely on the standard Fetch API both in the browser and Node.js to represent requests and responses from version 2.0!
+
+## The new API
+
+Starting from 2.0, the way you declare request handlers (and response resolvers) will change. Here's how the new API looks like:
+
+```js
+import { http } from 'msw'
+
+http.get('/resource', async ({ request }) => {
+  const user = await request.json()
+  return new Response(`Hello, ${user.name}`)
+})
+```
+
+And you've guessed it, both `request` and `Response` are the standard Fetch API instances! This means feature-rich, standard way of handling requests and defining responses, end-to-end. This may not look like a big deal at first but that changes once you dive deeper.
+
+Let's say you wish to read the intercepted request's body as `FormData`. This used to be a big point of friction in the past, but it's a matter of using the platform now:
+
+```js {2-3}
+http.post('/user', async ({ request }) => {
+  const data = await request.formData()
+  const email = data.get('email')
+})
+```
+
+This change also means that MSW (and **you**!) doesn't need to rely on any polyfills to get all that functionality. It doesn't have to keep internal request/response representations or contrive support for features that have been present in the platform for years. This is indeed the future and it has never been brighter.
+
+To make this point stick, let me show you a request handler that emulates a video stream and injects server-side latency between _each individual chunk_ of that stream.
+
+```js
+import { http } from 'msw'
+
+http.get('/movie', async () => {
+  // Fetch a video stream.
+  const response = await fetch(
+    'https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4'
+  )
+  const videoStream = response.body
+
+  // Create a transform stream that will delay
+  // each chunk before writing it back to stream.
+  const latencyStream = new TransformStream({
+    read() {},
+    async transform(chunk, controller) {
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      controller.enqueue(chunk)
+    },
+  })
+
+  // Pipe the original video stream through the latency stream.
+  return new Response(videoStream.pipeThrough(latencyStream), response)
+})
+```
+
+There is a lot going on in this request handler! But you know what's the best part about it? The only MSW-specific part of this entire code snippet is this:
+
+```js
+http.get('/movie', async () => {})
+```
+
+**Everything else is standard JavaScript API**. You can literally copy-paste that entire response resolver to your browser's console and it will fetch the video and return you the transformed response. I hope you begin to realize how powerful this is.
+
+MSW has already set a new threshold of reusability by allowing you to use the same request handlers across any environment and any tool. With 2.0, that threshold has been pushed through the roof. Use the platform, learn the platform, write code that makes sense even outside of request handlers.
+
+## One more thing
+
+Well, honestly, quite a bunch of things! The Fetch API support may be in the spotlight with this release but it also includes a dozen of bug fixes and improvements. MSW now ships with full compatibility with ESM, has proper code splitting, improves its internal architecture and refines its interception algorithm in Node.js.
+
+You can see the full list of changes in the [Release notes](https://github.com/mswjs/msw/releases/tag/v2.0.0).
+
+## Migration guide
+
+This release contains quite a number of breaking changes as the public API of the library has been reworked and improved. I know it will take you some time to adopt those changes but, trust me, you will absolutely love how your request handlers will look once you do.
+
+Please follow these detailed migration guidelines to address each and every breaking change relevant to your setup:
+
+import { CommandLineIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../components/react/pageCard'
+
+<PageCard
+  icon={CommandLineIcon}
+  url="/docs/migrations/1.x-to-2.x"
+  title="1.x - 2.x"
+  description="Migration guidelines for version 2.0"
+/>
+
+## Closing thoughts
+
+MSW went a long way from an overweekend prototype to one of the most used API mocking solutions in JavaScript. Today, it becomes **the first solution to fully rely on the Fetch API primitives**. I can't wait for you to explore all the possibilities that unlocks. To many of you, MSW is already an inseparable part of their testing and development workflow, and with this release it will become the same for many more.
+
+Working on the library full-time would be my dream. Unfortunately, it is quite far from becoming the reality. But **you** can change that. If you believe in what I'm doing, if you want to see MSW improve and evolve, please [Sponsor the project](https://github.com/sponsors/mswjs). Every contribution brings me a step closer to my dream. Thank you.
+
+## Special thanks
+
+This release would not be possible without the incredible contributors who submitted issues, tried out the release candidate versions, shared their feedback, and believed in MSW. I will do my best to list everyone involved in this release below, in alphabetical order. Rest assured, these are the true heroes.
+
+[95th](https://github.com/95th), [Kosai106](https://github.com/Kosai106), [TeChn4K](https://github.com/TeChn4K), [WesleyYue](https://github.com/WesleyYue), [Xayer](https://github.com/Xayer), [alawiii521](https://github.com/alawiii521), [christoph-fricke](https://github.com/christoph-fricke), [cmolina](https://github.com/cmolina), [colinsullivan](https://github.com/colinsullivan), [committomaster](https://github.com/committomaster), [committomaster](https://github.com/committomaster), [csantos1113](https://github.com/csantos1113), [cwagner22](https://github.com/cwagner22), [danny-does-stuff](https://github.com/danny-does-stuff), [dbritto-dev](https://github.com/dbritto-dev), [ddolcimascolo](https://github.com/ddolcimascolo), [dkobierski](https://github.com/dkobierski), [dxlbnl](https://github.com/dxlbnl), [ealejandrootalvaro](https://github.com/ealejandrootalvaro), [elliotgonzalez123](https://github.com/elliotgonzalez123), [felipefreitag](https://github.com/felipefreitag), [jonnedeprez](https://github.com/jonnedeprez), [jonnedeprez](https://github.com/jonnedeprez), [koddsson](https://github.com/koddsson), [laryro](https://github.com/laryro), [lee-reinhardt](https://github.com/lee-reinhardt), [lee-reinhardt](https://github.com/lee-reinhardt), [lemcii](https://github.com/lemcii), [luisr-carrillo](https://github.com/luisr-carrillo), [markwhitfeld](https://github.com/markwhitfeld), [mattcosta7](https://github.com/mattcosta7), [mattrodak](https://github.com/mattrodak), [mscottnelson](https://github.com/mscottnelson), [negabaro](https://github.com/negabaro), [nickrttn](https://github.com/nickrttn), [piotr-cz](https://github.com/piotr-cz), [ricardocosta](https://github.com/ricardocosta), [skvale](https://github.com/skvale), [the-ult](https://github.com/the-ult), [thepassle](https://github.com/thepassle), [thomasbertet](https://github.com/thomasbertet), [thw0rted](https://github.com/thw0rted), [tomdglenn91](https://github.com/tomdglenn91), [tsteckenborn](https://github.com/tsteckenborn), [wKovacs64](https://github.com/wKovacs64), [weyert](https://github.com/weyert), [xmlking](https://github.com/xmlking), [xxleyi](https://github.com/xxleyi), [zkochan](https://github.com/zkochan).

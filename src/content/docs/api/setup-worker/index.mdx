@@ -1,0 +1,50 @@
+---
+order: 1
+title: setupWorker
+description: Configure the interception of requests in a browser.
+keywords:
+  - worker
+  - setup
+  - browser
+  - service worker
+---
+
+The `setupWorker()` function prepares the client-worker communication channel to enable API mocking in the browser.
+
+## Call signature
+
+The `setupWorker()` function expects an optional list of [Request handlers](/docs/concepts/request-handler) spread as its arguments and returns a [Worker instance](#worker-instance).
+
+When called without any arguments, the function will return you a worker instance that has no network description (i.e. no requets handlers). Use the methiosd like [`worker.use()`](/docs/api/setup-worker/use) and [`worker.resetHandlers()`](/docs/api/setup-worker/reset-handlers) to add and remove _runtime_ request handlers to the worker instance.
+
+```js
+import { setupWorker } from 'msw/browser'
+
+const worker = setupWorker()
+// worker.start()
+// worker.use(...handlers)
+```
+
+However, if you provide request handlers as the spread argument to the `setupWorker()` function, those handlers will be considered _initial_ and will always persist on the worker instance even when resetting the handlers (learn how to opt-out from this [here](/docs/api/setup-worker/reset-handlers)).
+
+```js
+import { http, HttpResponse } from 'msw'
+import { setupWorker } from 'msw/browser'
+
+const worker = setupWorker(
+  http.get('/resource', () => HttpResponse.json({ id: 'abc-123' }))
+)
+```
+
+## Worker instance
+
+The `setupWorker()` function returns you a _worker instance_ that is an object you can use to control API mocking in the current browser environment. Below, you can see the list of methods available on the worker instance.
+
+### Methods
+
+- [`start(options)`](/docs/api/setup-worker/start)
+- [`stop()`](/docs/api/setup-worker/stop)
+- [`use(...handlers)`](/docs/api/setup-worker/use)
+- [`resetHandlers(...handlers)`](/docs/api/setup-worker/reset-handlers)
+- [`restoreHandlers()`](/docs/api/setup-worker/restore-handlers)
+- [`printHandlers()`](/docs/api/setup-worker/print-handlers)

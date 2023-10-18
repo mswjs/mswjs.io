@@ -1,0 +1,40 @@
+---
+title: Using CDN
+keywords:
+  - install
+  - installation
+  - alternative
+  - cdn
+---
+
+The best way to use Mock Service Worker is by installing it from the NPM registry. We highly encourage you to follow the Getting Started tutorial first before resorting to alternative installation methods:
+
+import { PageCard } from '../../../components/react/pageCard'
+import { AcademicCapIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={AcademicCapIcon}
+  url="/docs/getting-started"
+  title="Getting started"
+  description="Three steps to get started with Mock Service Worker."
+/>
+
+There are, however, other ways to install the library if you can't use NPM.
+
+## CDN
+
+You can add MSW to your application using a CDN. To do that, include a script tag that loads the IIFE build target (`lib/iife/index.js`) of the library on your page.
+
+Below, you can find some examples of how to include Mock Service Worker using popular CDN providers.
+
+### unpkg
+
+```html
+<script src="https://unpkg.com/msw/lib/iife/index.js"></script>
+```
+
+### jsDelivr
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/msw/lib/iife/index.js"></script>
+```

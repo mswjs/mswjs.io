@@ -1,0 +1,30 @@
+---
+order: 3
+title: use()
+description: Prepend request handlers to the current worker instance.
+---
+
+## Call signature
+
+```js {6}
+import { http } from 'msw'
+import { worker } from './mocks/browser'
+
+// Prepend a list of new handlers to this worker instance.
+// Past this point, they extend the network behavior.
+worker.use(http.get('/resource'), http.post('/resource'))
+```
+
+import { Info } from '../../../../components/react/info'
+
+<Info>
+  Similar to `worker.start()`, you can spread a list of request handlers as
+  arguments to the `worker.use()` method. No need to call it multiple times!
+</Info>
+
+The prepended request handlers persist on the worker as long as the current runtime exists (thus, they are often referred to as "runtime request handlers").
+
+## Related materials
+
+- Runtime request handlers (part of a new `docs/basics/request-handler#runtime-request-handlers` section)
+- [Network behavior overrides](/docs/best-practices/network-behavior-overrides)

@@ -1,0 +1,32 @@
+---
+import {
+  ChevronRightIcon as ArrowRightIcon,
+  ChevronDownIcon as ArrowDownIcon,
+} from '@heroicons/react/24/solid'
+import type { DocsPageWithChildren } from '../../utils/buildNavTree'
+import DocsMenuLink from './DocsMenuLink.astro';
+import DocsNavTree from './DocsNavTree.astro';
+import { isPartiallyActiveUrl } from '../../utils/isPartiallyActiveUrl'
+
+type Props = {
+  item: DocsPageWithChildren
+}
+
+const { pathname } = Astro.url
+const { item } = Astro.props
+
+const isOpen = isPartiallyActiveUrl(item.publicUrl, pathname, { standalone: item.mdx.frontmatter.standalone })
+---
+
+<details class="docs-group-item" open={isOpen}>
+  <summary class="flex items-center justify-between gap-3">
+    <DocsMenuLink href={item.publicUrl} standalone={item.mdx.frontmatter.standalone}>
+      {item.mdx.frontmatter.title}
+    </DocsMenuLink>
+    <ArrowRightIcon className="icon" />
+  </summary>
+  <DocsNavTree
+    items={item.children}
+    itemKind="group"
+  />
+</details>
