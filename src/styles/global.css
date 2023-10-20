@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  @apply bg-neutral-900 font-sans text-white;
+  @apply bg-neutral-900 text-white;
 
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -90,6 +90,10 @@ blockquote em {
 }
 
 /* Code */
+code {
+  @apply font-mono;
+}
+
 code:not([data-language]) {
   /* Prevent inline code snippets from wrappig to new line */
   @apply font-normal sm:whitespace-nowrap;
@@ -123,7 +127,7 @@ pre[data-language] code {
 }
 
 span[style='color:#6A737D'] {
-  @apply font-mono italic;
+  @apply italic;
 }
 
 code[data-line-numbers-max-digits='2'] > [data-line]::before {

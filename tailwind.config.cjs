@@ -18,7 +18,7 @@ module.exports = {
       mono: [
         ['"Mono Lisa"', ...defaultTheme.fontFamily.mono],
         {
-          fontFeatureSettings: '"ss02"',
+          fontFeatureSettings: '"ss02", "ss03"',
         },
       ],
     },
