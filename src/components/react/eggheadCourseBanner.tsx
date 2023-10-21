@@ -3,6 +3,10 @@ import courseCover from '../../images/egghead-msw-course.png'
 import { EGGHEAD_COURSE_URL } from '../../consts'
 
 export function EggheadCourseBanner() {
+  if (import.meta.env.PUBLIC_HIDE_EGGHEAD_COURSE === 'true') {
+    return <></>
+  }
+
   return (
     <LinkExternal
       href={EGGHEAD_COURSE_URL}
