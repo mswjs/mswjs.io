@@ -11,7 +11,7 @@ import { Avatar } from '../components/react/avatar';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, publishedAt, updatedAt, author, keywords } = Astro.props;
+const { title, description, thumbnailUrl, publishedAt, author, keywords } = Astro.props;
 ---
 
 <html lang="en" data-theme="dark">
@@ -41,6 +41,7 @@ const { title, description, publishedAt, updatedAt, author, keywords } = Astro.p
 							</a>
 						</aside>
 						<header class="my-16 lg:my-32 lg:text-center">
+							<img src={thumbnailUrl} alt={title} class="w-80 inline-flex drop-shadow-xl" />
 							<h1 class="mb-4">{title}</h1>
 							<p class="mb-10 text-neutral-400 font-medium font-mono">
 								<FormattedDate date={publishedAt} />

@@ -44,27 +44,30 @@ const posts = allBlogPosts.sort(
 						<ul class="mb-16 space-y-5 md:space-y-10">
 							{posts.map((post) => (
 								<li>
-									<article class="p-10 bg-neutral-800 bg-opacity-40 border border-neutral-800 rounded-lg">
-										<a href={`/blog/${post.slug}`}
-										class="mb-2 inline-block text-2xl font-bold text-white hover:underline"
-										>{post.data.title}</a>
-										<p class="text-sm text-neutral-400 font-medium font-mono italic">
-                      <FormattedDate
-                        date={post.data.publishedAt}
-                      />
-                    </p>
-										{post.data.description ? (
-                      <p class="mt-5 text-neutral-300">
-                        {post.data.description}
-                      </p>
-                    ) : null}
-										<a
-                      href={`/blog/${post.slug}`}
-                      class="button button-secondary inline-flex items-center mt-8 group"
-                    >
-                      Read more
-                      <ArrowRightIcon className="w-3 ml-2 transition-transform group-hover:translate-x-1.5" />
-                    </a>
+									<article class="p-10 flex items-start gap-5 bg-neutral-800 bg-opacity-40 border border-neutral-800 rounded-lg">
+										<img src={post.data.thumbnailUrl} alt={post.data.title} class="inline-flex w-48 drop-shadow-md" />
+										<div>
+											<a href={`/blog/${post.slug}`}
+											class="mb-2 inline-block text-2xl font-bold text-white hover:underline"
+											>{post.data.title}</a>
+											<p class="text-sm text-neutral-400 font-medium font-mono italic">
+												<FormattedDate
+													date={post.data.publishedAt}
+												/>
+											</p>
+											{post.data.description ? (
+												<p class="mt-5 text-neutral-300">
+													{post.data.description}
+												</p>
+											) : null}
+											<a
+												href={`/blog/${post.slug}`}
+												class="button button-secondary inline-flex items-center mt-8 group"
+											>
+												Read more
+												<ArrowRightIcon className="w-3 ml-2 transition-transform group-hover:translate-x-1.5" />
+											</a>
+											</div>
 									</article>
 								</li>
 							))}
