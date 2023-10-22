@@ -3,7 +3,7 @@ title: Introducing MSW 2.0
 slug: introducing-msw-2.0
 description: The biggest library release is finally here! Learn more about the changes, motivation behind them, and how to upgrade to the next version today.
 publishedAt: 2023-10-23
-thumbnailUrl: /thumbnails/01.png
+thumbnailUrl: /thumbnails/introducing-msw-2.0.png
 author:
   name: Artem Zakharchenko
   twitterHandle: kettanaito
@@ -36,7 +36,7 @@ If you've been using MSW, you are well familiar with this call signature:
 (req, res, ctx) => res(...)
 ```
 
-This is a function called _response resolver_ in MSW, and it acts as a callback that receives the intercepted request and decides how to handle it. The shape of the response resolver hasn't change a bit since I first wrote it in 2018. Back in the day, I was rather inspired by functional programming and function composition in particular, which you can clearly see in the way you declare mocked responses in MSW:
+This is a function called _response resolver_, and it acts as a callback that receives the intercepted request and decides how to handle it. The shape of the response resolver hasn't changed a bit since I first wrote it in 2018. Back in the day, I was rather inspired by functional programming paradigms and function composition in particular, which you can clearly see in the way you declare mocked responses using the `res` function:
 
 ```js
 // Constructing a response is a matter of
