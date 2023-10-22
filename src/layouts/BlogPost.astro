@@ -11,10 +11,11 @@ import { Avatar } from '../components/react/avatar';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, publishedAt, updatedAt, author, keywords } = Astro.props;
+const { title, description, publishedAt, author, keywords } = Astro.props;
 ---
 
-<html lang="en" data-theme="dark">
+<!doctype html>
+<html lang="en" data-theme="dark" transition:animate="none">
 	<head>
 		<BaseHead
 			title={title}
