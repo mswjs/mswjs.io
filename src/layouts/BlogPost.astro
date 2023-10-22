@@ -14,7 +14,8 @@ type Props = CollectionEntry<'blog'>['data'];
 const { title, description, thumbnailUrl, publishedAt, author, keywords } = Astro.props;
 ---
 
-<html lang="en" data-theme="dark">
+<!doctype html>
+<html lang="en" data-theme="dark" transition:animate="none">
 	<head>
 		<BaseHead
 			title={title}
