@@ -1,4 +1,6 @@
 ---
+import '../components/ads.css'
+
 import { type CollectionEntry } from "astro:content";
 import BaseHead from '../components/BaseHead.astro'
 import Header from '../components/Header.astro'
@@ -13,7 +15,7 @@ import type { MarkdownHeading } from 'astro';
 import { buildHeadings } from '../utils/buildHeadings';
 import { DocsSidebarLinks } from "../components/react/docsSidebarLinks";
 import { FeedbackWidget } from "../components/react/feedbackWidget";
-import Ads from '../components/Ads.astro'
+import AdsContainer from '../components/AdsContainer.astro'
 import { DocsMovileNav } from "../components/react/docsMobileNav";
 import { SITE_TITLE } from "../consts";
 
@@ -71,7 +73,7 @@ const navTree: Array<DocsItem> = [
   }
 ]
 
-const { props: page } = Astro
+const { props: page, url } = Astro
 
 const nestedHeadings = buildHeadings(page.headings || [], {
   maxDepth: page.tableOfContents?.maxDepth
@@ -119,7 +121,7 @@ const shouldDisplayAds = import.meta.env.ADS
                   <p class="mb-6 text-lg text-neutral-400 font-medium">{page.description}</p>
                 ) : null}
                 {shouldDisplayAds ? (
-                  <Ads />
+                  <AdsContainer url={url.pathname} />
                 ) : null}
               </header>
               <div class="prose max-w-none">

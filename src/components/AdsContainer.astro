@@ -1,0 +1,15 @@
+---
+import './ads.css'
+import { Ads } from './react/ads'
+
+type Props = {
+  url: string
+}
+
+const { url } = Astro.props
+---
+
+<div id="ethical-container">
+  <Ads url={url} client:only="react" />
+</div>
+
