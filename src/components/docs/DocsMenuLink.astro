@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import { isPartiallyActiveUrl } from '../../utils/isPartiallyActiveUrl'
+type Props = HTMLAttributes<'a'> & {
+  href: string
+  standalone?: boolean
+}
+
+const { pathname } = Astro.url
+const { standalone, ...props } = Astro.props
+
+const isActive = isPartiallyActiveUrl(props.href, pathname, { standalone })
+---
+
+<a {...props} class:list={[
+  props.class,
+  'inline-block py-1.5 leading-5 hover:text-white',
+  { 'text-neutral-400': !isActive },
+  { 'docs-link-active': isActive },
+  { 'text-white font-bold': isActive }
+]}
+  aria-current={isActive}
+>
+  <slot />
+</a>

@@ -12,8 +12,6 @@
 - [**Documentation**](https://mswjs.io/docs)
 - [**Getting started**](https://mswjs.io/docs/getting-started)
 - [Examples](https://github.com/mswjs/examples)
-- [Recipes](https://mswjs.io/docs/recipes)
-- [API](https://mswjs.io/docs/api)
 
 ## Sponsors
 

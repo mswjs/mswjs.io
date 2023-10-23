@@ -1,0 +1,189 @@
+---
+order: 3
+title: http
+description: Intercept HTTP requests.
+keywords:
+  - http
+  - rest
+  - handler
+  - namespace
+standalone: true
+---
+
+The `http` namespace helps you create request handlers to intercept HTTP requests. This namespace is primarily useful for working with REST APIs since you can use its methods, like [`http.get()`](#httpget) and [`http.post()`](#httppost), to describe resource operations.
+
+## Call signature
+
+```ts
+http.get<PathParams, RequestBodyType, ResponseBodyType>(
+  predicate: string | RegExp,
+  resolver: ResponseResolver<
+    HttpRequestResolverExtras<Params>,
+    RequestBodyType,
+    ResponseBodyType
+  >,
+  options?: RequestHandlerOptions
+)
+```
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CodeBracketSquareIcon}
+  url="https://github.com/mswjs/msw/tree/main/src/core/http.ts"
+  title="http.ts"
+  description="Source code for the `http` namespace."
+/>
+
+## Standard methods
+
+The `http` namespace contains keys that represent [WHATWG Fetch API HTTP methods](https://fetch.spec.whatwg.org/#methods). Use them to capture outgoing requests with the respective method.
+
+### `http.get()`
+
+```js
+http.get('/user/:id', ({ params }) => {
+  const { id } = params
+  console.log('Fetching user with ID "%s"', id)
+})
+```
+
+### `http.head()`
+
+```js
+http.head('/resource', () => {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': 1270,
+      'Last-Modified': 'Mon, 13 Jul 2020 15:00:00 GMT',
+    },
+  })
+})
+```
+
+### `http.post()`
+
+```js
+http.post('/login', async ({ request }) => {
+  const info = await request.formData()
+  console.log('Logging in as "%s"', info.get('username'))
+})
+```
+
+### `http.put()`
+
+```js
+http.put('/post/:id', async ({ request, params }) => {
+  const { id } = params
+  const nextPost = await request.json()
+  console.log('Updating post "%s" with:', id, nextPost)
+})
+```
+
+### `http.patch()`
+
+```js
+http.patch('/cart/:cartId/order/:orderId', async ({ request, params }) => {
+  const { cartId, orderId } = params
+  const orderUpdates = await request.json()
+
+  console.log(
+    'Updating order "%s" in cart "%s":',
+    orderId,
+    cartId,
+    orderUpdates
+  )
+})
+```
+
+### `http.delete()`
+
+```js
+http.delete('/user/:id', ({ params }) => {
+  const { id } = params
+  console.log('Deleting user with ID "%s"', id)
+})
+```
+
+### `http.options()`
+
+```js
+http.options('https://api.example.com', () => {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      Allow: 'GET,HEAD,POST',
+    },
+  })
+})
+```
+
+## Custom methods
+
+The `http` namespace also contains special keys that provide you with additional functionality but do not correspond to any HTTP methods:
+
+### `http.all()`
+
+Creates a request handler that intercepts any request to a given endpoint _regardless of its method_.
+
+```js
+import { http } from 'msw'
+
+export const handlers = [
+  // This handler will capture ALL requests to the
+  // "/user" endpoint: GET, POST, DELETE, etc.
+  http.all('/user', () => {
+    // Handle the request.
+  }),
+]
+```
+
+> Using `http.all()` is also preferred when mocking custom HTTP methods.
+
+## Resolver argument
+
+The response resolver function for every `http.*` method has the following keys in its argument object:
+
+| Name      | Type                                                                  | Description                                                                       |
+| --------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `request` | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                                         |
+| `params`  | `object`                                                              | Request's [path parameters](/docs/network-behavior/rest#reading-path-parameters). |
+| `cookies` | `object`                                                              | Request's [cookies](/docs/network-behavior/rest#reading-request-cookies).         |
+
+You access these arguments on the response resolver argument object.
+
+```js
+http.get('/user/:id', ({ request, params, cookies }) => {})
+```
+
+## Handler options
+
+All methods of the `http` namespace accept an optional third argument representing request handler options. See blow for the list of supported properties on that options object.
+
+### `once`
+
+- `boolean`
+
+If set to `true`, marks this request handler as used after the first successful match. Used request handlers have no effect on the outgoing traffic and will be ignored during request interception.
+
+```js {2}
+http.get('/greeting', () => HttpResponse.text('Hello world'), {
+  once: true,
+})
+```
+
+> Use the `.restoreHandlers()` method on the `worker`/`server` instance to mark all used request handlers as unused.
+
+## Related materials
+
+import { NodejsIcon } from '../../../components/react/icons/nodejs'
+
+<PageCard
+  icon={NodejsIcon}
+  url="/docs/network-behavior/rest"
+  title="Describing REST API"
+  description="Learn about describing RESTful APIs."
+/>

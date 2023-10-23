@@ -1,0 +1,21 @@
+---
+import '@docsearch/css/dist/style.css';
+import './Search.css'
+import { MagnifyingGlassIcon as SearchIcon } from '@heroicons/react/24/outline'
+import { DocSearch } from './react/docSearch'
+
+const { ALGOLIA_APP_ID, PUBLIC_ALGOLIA_SEARCH_API_KEY } = import.meta.env
+---
+
+<button id="docsearch-search-button" class="DocSearch DocSearch-Button flex items-center gap-1.5 w-full px-2.5 py-1.5 font-medium border border-neutral-700 rounded-md text-neutral-400 hover:border-neutral-600 hover:bg-neutral-800" tabindex={1}>
+  <div class="DocSearch-Button-Container">
+    <SearchIcon className='mr-1.5 w-[18px] text-neutral-500' aria-label="Search" />
+    Search
+  </div>
+  <kbd class="DocSearch-Button-Key" aria-hidden="true">/</kbd>
+</button>
+<DocSearch
+  appId={ALGOLIA_APP_ID!}
+  apiKey={PUBLIC_ALGOLIA_SEARCH_API_KEY!}
+  client:only="react"
+/>

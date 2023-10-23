@@ -1,0 +1,78 @@
+---
+import NavLink from './NavLink.astro';
+import { Container } from './react/container';
+import mswLogo from '../images/msw.svg'
+import Search from './Search.astro';
+import { MobileMenu } from './react/mobileMenu';
+import { SponsorLink } from './react/sponsorLink';
+
+type Props = {
+  isFluid?: boolean
+}
+
+const { isFluid } = Astro.props
+---
+
+<header class="header sticky top-0 z-10 text-sm h-[60px] font-semibold bg-neutral-900 border-b h-15 border-neutral-800">
+  <Container isFluid={isFluid} className="h-full">
+    <div class="grid items-center h-full xl:grid-cols-12 gap-6 md:gap-16 grid-cols-[auto_1fr_auto]">
+      <div class="xl:col-span-2 flex">
+        <a
+          href="/"
+          title="Mock Service Worker"
+          class="hover:opacity-70 inline-flex"
+        >
+          <img src={mswLogo.src} class="w-9 h-9" />
+        </a>
+      </div>
+      <div class:list={[
+        'xl:col-span-3 pl-3 xl:p-0',
+        {'xl:col-start-4': isFluid }
+      ]}>
+        <Search />
+      </div>
+      <nav
+        aria-label="Main navigation"
+        class:list={[
+          '-mb-px text-neutral-400 justify-self-end',
+          { 'xl:col-span-7': !isFluid },
+          { 'xl:col-span-6': isFluid },
+        ]}
+      >
+        <ul class="flex items-center gap-4 list-none">
+          <li class="hidden md:block">
+            <NavLink href="/docs">
+              Docs
+            </NavLink>
+          </li>
+          <li class="hidden lg:block">
+            <NavLink href="/blog">
+              Blog
+            </NavLink>
+          </li>
+          <li>
+            <SponsorLink />
+          </li>
+          <li class="flex w-[38px] lg:hidden items-center -mr-2">
+            <MobileMenu client:only="react">
+              <nav id="mobile-menu">
+                <ul>
+                  <li>
+                    <NavLink href="/docs">
+                      Documentation
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/blog">
+                      Blog
+                    </NavLink>
+                  </li>
+                </ul>
+              </nav>
+            </MobileMenu>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </Container>
+</header>

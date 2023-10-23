@@ -1,0 +1,42 @@
+---
+title: Higher-order resolver
+---
+
+Creating a higher-order resolver is a good way of managing the dynamic, and often repetitive, nature of the mocked responses. Since [Response resolver](/docs/concepts/response-resolver) is a regular function, you can _return_ it from a higher-order function that can customize the resolver's behavior.
+
+For example, this is how you can describe protected routes:
+
+```js
+// mocks/middleware.js
+import { HttpResponse } from 'msw'
+
+// A higher-order response resolver that validates
+// the request authorization header before proceeding
+// with the actual response resolver.
+export function withAuth(resolver) {
+  return ({ request }) => {
+    if (!request.headers.get('Authorization')) {
+      return new HttpResponse(null, { status: 401 })
+    }
+
+    return resolver(input)
+  }
+}
+```
+
+```js {3,10} /withAuth/1,3
+// mocks/handlers.js
+import { http, HttpResponse } from 'msw'
+import { withAuth } from './middleware'
+
+export const handlers = [
+  // Using the "withAuth" higher-order response resolver
+  // will require the outgoing requests to "POST /comment"
+  // to have the "Authorization" header set before it returns
+  // a mocked JSON response.
+  http.post('/comment', withAuth(({ request }) => {
+    const { author, text } = await request.json()
+    return HttpResponse.json({ author, text }, { status: 201 })
+  }))
+]
+```

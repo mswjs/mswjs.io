@@ -1,0 +1,143 @@
+---
+order: 1
+title: start()
+description: Register the Service Woorker and starts the request interception.
+---
+
+## Call signature
+
+The `worker.start()` method accepts an optional [Options](#options) object that you can use to customize the worker registration.
+
+By default, when called without any arguments, the `worker.start()` method registers the Service Worker served under `./mockServiceWorker.js` and starts the request interception.
+
+```js {5}
+import { setupWorker } from 'msw/browser'
+import { handlers } from './handlers'
+
+const worker = setupWorker(...handlers)
+await worker.start() // Promise<{ pending }>
+```
+
+import { Warning } from '../../../../components/react/warning'
+
+<Warning>
+  Note that registering and activating the Service Worker is an asynchronous
+  action. The `worker.start()` returns you a promise that resolves when the
+  worker is ready. Do not forget to await it to prevent race conditions between
+  the worker registration and your network-dependent code.
+</Warning>
+
+You can see a confirmation message printed in the browser's console when MSW is active.
+
+```sh
+[MSW] Mocking enabled.
+```
+
+## Options
+
+### `serviceWorker`
+
+#### `url`
+
+- _String_, default: `"/mockServiceWorker.js"`
+
+Custom Service Worker registration URL. Use this option if you are serving the worker script under a custom path.
+
+```js
+worker.start({
+  serviceWorker: {
+    url: '/assets/mockServiceWorker.js',
+  },
+})
+```
+
+<Warning>
+  Keep in mind that a Service Worker can only control the network from the
+  clients (pages) hosted at its level or down. You likely always want to
+  register the worker at the root.
+</Warning>
+
+#### `options`
+
+- [_Service Worker registration options_](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register#parameters)
+
+These options modify the Service Worker registration itself and are not related to MSW directly.
+
+```js
+worker.start({
+  serviceWorker: {
+    options: {
+      // Narrow down the scope of the pages that the worker can control.
+      scope: '/product',
+    },
+  },
+})
+```
+
+### `findWorker`
+
+- _Function_, expected return type: _Boolean_
+
+A custom function to locate the worker script on the server. You may want to use this option if your application runs behind a proxy or has a dynamic hostname that otherwise prevents the library from locating the worker script at `<HOSTNAME>/mockServiceWorker.js`.
+
+```js
+worker.start({
+  findWorker(scriptUrl, mockServiceWorkerUrl) {
+    return scriptUrl.includes('mockServiceWorker')
+  },
+})
+```
+
+### `quiet`
+
+- _Boolean_, default: `false`
+
+Disables all the logging from the library (e.g. the activation message, the intercepted requests' messages).
+
+```js
+worker.start({
+  quiet: true,
+})
+```
+
+### `onUnhandledRequest`
+
+- _String_, default: `"warn"`
+- _Function_
+
+Decide how to react to unhandled requests (i.e. thoes that do not have a matching request handler).
+
+#### Standard modes
+
+| Handling mode    | Description                                                                    |
+| ---------------- | ------------------------------------------------------------------------------ |
+| `warn` (Default) | Prints a warning message to the browser's console, performs the request as-is. |
+| `error`          | Throws an error, aborts the request.                                           |
+| `bypass`         | Prints nothing, performs the request as-is.                                    |
+
+#### Custom `onUnhandledRequest` function
+
+```js
+worker.start({
+  onUnhandledRequest(request, print) {
+    // Ignore any requests containing "cdn.com" in their URL.
+    if (request.url.includes('cdn.com')) {
+      return
+    }
+
+    // Otherwise, print an unhandled request warning.
+    print.warning()
+  },
+})
+```
+
+### `waitUntilReady`
+
+- _Boolean_, default: `true`
+
+Defers any application requests that happen during the Service Worker registration.
+
+<Warning>
+  Disabling this option is **not recommended** as this will create a race
+  condition between the worker registration and your application's runtime.
+</Warning>

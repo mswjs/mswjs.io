@@ -1,0 +1,221 @@
+---
+order: 3
+title: Network behavior overrides
+keywords:
+  - use
+  - runtime
+  - initial
+  - override
+  - reset
+  - restore
+---
+
+The nature of the network can be highly dynamic, which makes it challenging to describe it completely in a fixed list of request handlers. MSW provides you the means to override any particular network behaior using the designated `.use()` API.
+
+- [`worker.use()`](/docs/api/setup-worker/use)
+- [`server.use()`](/docs/api/setup-server/use)
+
+With the `.use()`, you can _prepend_ any list of request handlers to the initial request handlers provided to `setupWorker()`/`setupServer()`, making them take priority when handling requests. Since this is a runtime API, you can invoke it after the API mocking has been enabled, for example, on the indivcidual test basis.
+
+## Initial vs runtime handlers
+
+The list of request handlers provided to the `setupWorker()`/`setupServer()` function calls is called _initial request handlers_.
+
+```js {5-8}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  // These are the initial request handlers.
+  http.get('/resource', () => {
+    return HttpResponse.text('Fallback')
+  })
+)
+```
+
+Any request handlers added past this point are referred to as _runtime request handlers_. This is the kind of request handlers you are adding with the `.use()` function:
+
+```js {12-15}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  // These are the initial request handlers.
+  http.get('/resource', () => {
+    return HttpResponse.text('Fallback')
+  })
+)
+
+server.use(
+  // These are the runtime request handlers.
+  http.post('/login', () => {
+    return new HttpResponse()
+  })
+)
+```
+
+This distinction is important because you can add and exhause runtime request handlers while relying on the initial handlers as the fallback network description.
+
+## Network override types
+
+The `.use()` API allow you to establish different types of network overrides depending on your needs.
+
+### Permanent override
+
+By default, calling `.use()` will create a _permanent_ override.
+
+```js /.use/ {10-14}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  http.get('/resource', () => {
+    return HttpResponse.text('Fallback')
+  })
+)
+
+server.use(
+  http.get('/resource', () => {
+    return HttpResponse.text('Override')
+  })
+)
+```
+
+In this example, the `GET /resource` request will always receive the `"Override"` plain text response because the request handler attached with `.use()` takes precedence.
+
+### One-time override
+
+You can add a one-time network override by providing the `{ once: true }` option on any request handler.
+
+```js {7}
+const server = setupServer(
+  http.get('/resource', () => {
+    return HttpResponse.text('Fallback')
+  })
+)
+
+server.use(
+  http.get(
+    '/resource',
+    () => {
+      return HttpResponse.text('One-time override')
+    },
+    { once: true }
+  )
+)
+```
+
+With this setup, only _the first_ `GET /resource` request will receive the `"One-time override"` plain text response. As soon as the override request handler gets used, it will mark itself as exhausted, and won't affect the outgoing traffic anymore. Any subsequent requests to `GET /resource` will receive the `"Fallback"` plain text response as per the initial request handler provided to the `setupServer()` call.
+
+## Resetting request handlers
+
+You can remove any request handlers added via `.use()` at any point in time by calling the `.resetHandlers()` method on the same `worker`/`server` object that called `.use()`.
+
+This is particularly useful to clean up any runtime request handlers introduced in individual tests so they don't affect unrelated tests.
+
+```js {15-17}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  http.get('/user', () => {
+    return HttpResponse.json({ name: 'John Maverick' })
+  })
+)
+
+beforeAll(() => {
+  server.listen()
+})
+
+afterEach(() => {
+  // This will remove any runtime request handlers
+  // after each test, ensuring isolated network behavior.
+  server.resetHandlers()
+})
+
+afterAll(() => {
+  server.close()
+})
+
+it('handles a 500 server error response', () => {
+  server.use(
+    http.get('/user', () => {
+      return new HttpResponse(null, { status: 500 })
+    })
+  )
+
+  // Your application in this test will always receive
+  // a 500 error response when requesting "GET /user".
+})
+
+it('displays a greeting message', () => {
+  // This test, however, will use the network description
+  // as provided in the initial request handlers of the
+  // "setupServer()" call above. This means a 200 OK
+  // application/json response to the "GET /user" requests.
+})
+```
+
+### Resetting initial request handlers
+
+You can use the `.resetHandlers()` method to replace the initial request handlers and introduce entirely new network description if you provide a list of next initial handlers as the argument to the `.resetHandlers()` function call.
+
+```js {8-10}
+const server = setupServer(
+  http.get('/resource', () => {
+    return HttpResponse.text('Fallback')
+  })
+)
+
+server.resetHandlers(
+  http.post('/login', () => {
+    return new HttpResponse()
+  })
+)
+```
+
+In this example, once you call the `.resetHandlers()` method with the list of next initial request handlers, any previous request handlers, both initial and runtime, will be wiped out. This means that there will be no request handler for the `GET /resource` request, only for the `POST /login` request.
+
+> Mutating the initial request handlers is generally not recommended because it harms the predictability of the network. It can be useful, however, in certian situations, like testing different behaviors while developing in the browser.
+
+## Restoring request handlers
+
+You can restore any used one-time request handler by calling `.restoreHandlers()` on the `worker`/`server` object.
+
+```js {25}
+const server = setupServer(
+  http.get('/resource', () => {
+    return HttpResponse.text('Fallback')
+  })
+)
+
+server.use(
+  http.get(
+    '/resource',
+    () => {
+      return HttpResponse.text('One-time')
+    },
+    { once: true }
+  )
+)
+
+await fetch('/resource')
+// 200 OK
+// "One-time"
+
+await fetch('/resource')
+// 200 OK
+// "Fallback"
+
+server.restoreHandlers()
+
+await fetch('/resource')
+// 200 OK
+// "One-time"
+
+await fetch('/resource')
+// 200 OK
+// "Fallback"
+```
+
+> Note that if you [reset the runtime request handlers](#resetting-request-handlers), they will be removed before they can be restored.

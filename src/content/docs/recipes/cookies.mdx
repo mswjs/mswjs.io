@@ -1,0 +1,56 @@
+---
+order: 1
+title: Cookies
+description: Handle request and response cookies.
+keywords:
+  - cookie
+  - cookies
+  - set-cookie
+  - auth
+  - authentication
+---
+
+## Read request cookies
+
+You can access the intercepted request cookies using the `cookies` argument of the response resolver:
+
+```js /cookies/ {5}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('/api/user', ({ cookies }) => {
+    if (!cookies.authToken) {
+      return new HttpResponse(null, { status: 403 })
+    }
+
+    return HttpResponse.json({ name: 'John' })
+  }),
+]
+```
+
+> Note that the value of `cookies` respects [Request credentials](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials), and may contain more data than originally sent in the request (e.g. when the `credentials` property of the request was set to `"include"`).
+
+## Mock response cookies
+
+Mocking response cookies is often challenging because the Fetch specification [forbids](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name) setting `Set-Cookie` and `Set-Cookie2` headers on manually constructed responses for security reasons.
+
+Since Mock Service Worker executes on the client, it can work around this limitation by setting mocked response cookies directly on the `document.cookie`, as if they were received from the server. This approach doesn't compromise response security while still allowing you to test your application's cookie handling logic.
+
+```js {6-11}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.post('/login', () => {
+    return new HttpResponse(null, {
+      headers: {
+        // Setting the "Set-Cookie" mocked response header
+        // will forward these cookies onto "document" as if they
+        // were sent from the server.
+        'Set-Cookie': 'authToken=abc-123',
+      },
+    })
+  }),
+]
+```
+
+> Note that you must use the [`HttpResponse`](/docs/api/http-response) class in order to set mocked response cookies. This way MSW can detect response cookies because they cannot be accessed in JavaScript once set.

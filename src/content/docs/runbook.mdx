@@ -1,0 +1,135 @@
+---
+order: 5
+title: Debugging runbook
+description: Debug common issues with MSW.
+---
+
+Below you can find the most common issues that developers experience when integrating Mock Service Worker into their applications. Please read through this page before opening an issue on GitHub as there's a decent chance there is an answer to your issue below.
+
+## Before you begin
+
+### Check Node.js version
+
+Check the version of Node.js your project is using:
+
+```sh
+node -v
+```
+
+If it's lower than Node.js v18, [upgrade to the latest Node.js version](https://nodejs.org/). **We do not look into issues happening on unsupported versions of Node.js.**
+
+### Check MSW version
+
+First, check what version of the `msw` package you have installed:
+
+```sh
+npm ls msw
+```
+
+Then, check the latest publish version:
+
+```sh
+npm view msw version
+```
+
+If these two differ, upgrade the `msw` version in your project and see if the issue persists.
+
+## Common issues
+
+### ReferenceError: `fetch` is not defined
+
+This error indicates that the global `fetch` function is not defined in the current process. This may happen for two reasons:
+
+1. You are using an older version of Node.js (< v17);
+1. Your environment suppresses that global function.
+
+#### Upgrading Node.js
+
+First, check what version of Node.js you are using by running this command in the same terminal you received the `fetch` error:
+
+```sh
+node -v
+```
+
+import { Success } from '../../components/react/success'
+
+<Success>
+  If the version printed is lower than v17, [upgrade to the latest Node.js
+  version](https://nodejs.org/)
+</Success>
+
+The newer Node.js versions ship with the global Fetch API, which includes the global `fetch` function.
+
+#### Fixing environment
+
+Some tools, like Jest, meddle with your Node.js environment, forcefully removing present globals. If you are using such tools, make sure you add those globals back in their configurations.
+
+<Success>Configure your tools to include the Fetch API globals</Success>
+
+Here's an example of `jest.config.js` that adds back the global Fetch API functions and classes:
+
+```js {3-10}
+// jest.config.js
+module.exports = {
+  globals: {
+    fetch,
+    Headers,
+    Request,
+    Response,
+    FormData,
+    Blob,
+  },
+}
+```
+
+Alternatively, consider migrating to a modern tooling that doesn't exhibit such behavior.
+
+---
+
+### Mock responses don't arrive at tests
+
+HTTP requests have asynchronous nature. When testing code that depends on the resolution of those requests, like a UI element that renders once the response is received, you need to account for that asynchronicity. This often means using the right tools of your testing framework to properly await UI elements.
+
+```js /await/ {11}
+// test/suite.test.ts
+import { render, screen } from '@testing-library/react'
+import { Welcome } from '../components/Welcome'
+
+it('renders the welcome text', async () => {
+  render(<Welcome />)
+
+  // Make sure to use "findBy*" methods that will attempt
+  // to look up an element multiple times before throwing.
+  // You can also use "waitFor" as an alternative.
+  await screen.findByText('Hello, Jack')
+})
+```
+
+<Success>
+  Use your testing framework's recommended way of awaiting asynchronous code
+</Success>
+
+Do not introduce arbitrary `setTimeout`/`sleep` functions because they subject your tests to race conditions! The only reliable way to await asynchronous code is to await the state that derives from it (i.e. that a certain UI element has appeared in the DOM).
+
+---
+
+### Receiving stale mock responses
+
+Modern request libraries, like SWR, React Query, or Apollo, often introduce cache to guarantee great user experience and optimal runtime performance. Note that caching is not automatically disabled while testing, which may lead to your tests receiving stale/wrong data across different test suites.
+
+<Success>Disable cache in your request library in tests</Success>
+
+> Please refer to your request library's documentation on how to correctly disable cache in tests.
+
+For example, here's how to disable cache using SWR:
+
+```js {2,7}
+// test/suite.test.ts
+import { cache } from 'swr'
+
+beforeEach(() => {
+  // Reset the cache before each new test so there are
+  // no stale responses when requesting same endpoints.
+  cache.clear()
+})
+```

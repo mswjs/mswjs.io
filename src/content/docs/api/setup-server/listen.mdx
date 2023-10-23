@@ -1,0 +1,71 @@
+---
+order: 1
+title: listen()
+---
+
+Enables the interception of requests in the current process.
+
+## Usage
+
+It's common to enable the interception in the `beforeAll` hook of your testing framework. Below yuo can find an example of how to do that with Jest.
+
+```js {7}
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+const server = setupServer(...handlers)
+
+beforeAll(() => {
+  server.listen()
+})
+```
+
+> Unlike `worker.start()`, the `.listen()` method is synchronous because there are no workers to register or actual connections to establish.
+
+## Options
+
+### `onUnhandledRequest`
+
+- _Predefined stategy_ or _Custom strategy_ (default: `"warn"`).
+
+Specifies how to react to requests that are not handled by any request handlers.
+
+#### Predefined strategies
+
+| Strategy name | Description                                    |
+| ------------- | ---------------------------------------------- |
+| `"bypass"`    | B                                              |
+| `"warn"`      | Print a warning but perform the request as-is. |
+| `"error"`     | Print an error and halt request execution.     |
+
+```js
+server.listen({
+  onUnhandledRequest: 'error',
+})
+```
+
+#### Custom strategy
+
+```js
+server.listen({
+  onUnhandledRequest(request) {
+    console.log('Unhandled %s %s', request.method, request.url.href)
+  },
+})
+```
+
+The pre-defined strategies are available as the second argument of the custom callback so you could reuse them. Here's an example of how you can utilize that to bypass static assets but still warn on other unhandled requests:
+
+```js
+server.listen({
+  onUnhandledRequest(request, print) {
+    // Ignore requests to fetch static assets.
+    if (request.url.pathname.includes('/assets/')) {
+      return
+    }
+
+    // Otherwise, print a warning for any unhandled request.
+    print.warning()
+  },
+})
+```

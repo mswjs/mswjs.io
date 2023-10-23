@@ -1,0 +1,48 @@
+---
+title: Keeping mocks in sync
+---
+
+You write mocks to describe a server behavior fixed in time. But as time goes on, that behavior may change, potentially rendering your mocks obsolete.
+
+There are multiple ways to keep your mock definitions in-sync with the actual backend.
+
+## Use specification (Recommended)
+
+It's recommended to rely on a specification file that both backend and frontend can use as the source of truth. Treating the backend runtime as the truth is prone to issues as the backend may introduce faulty runtime behavior that violates the intended specification.
+
+### OpenAPI (Swagger)
+
+If you have an OpenAPI specification file, consider using the [`msw-auto-mock`](https://github.com/zoubingwu/msw-auto-mock) package to generate request handlers from it.
+
+### GraphQL schema
+
+In the case of a GraphQL server, consider using [GraphQL Code Generator](https://www.the-guild.dev/graphql/codegen) and its [`typescript-msw`](https://www.the-guild.dev/graphql/codegen/plugins/typescript/typescript-msw) plugin to automatically create request handlers from your GraphQL queries.
+
+## Use network snapshots
+
+In the case when there is no API specification available, you can record network behavior in the browser and store it in a `*.har` file. Then, it becomes a fixed source of truth you can use to generate handlers from.
+
+In the example below we'are going to use a community-authored [`msw-webarchive`](https://github.com/Tapico/tapico-msw-webarchive) package to generate request handlers from an HAR file on runtime.
+
+```js
+// mocks/browser.js
+import { setupWorker } from 'msw'
+import { setRequestHandlersByWebarchive } from '@tapico/webarchive'
+import * as snapshot from './snapshort.har'
+
+export const worker = setupWorker()
+
+// Augment the worker with request handlers
+// generated from the given network snapshot
+setRequestHandlersByWebarchive(worker, snapshot)
+```
+
+import { Warning } from '../../../components/react/warning'
+
+<Warning>
+  The `msw-webarchive` package currently doesn't support Node.js.
+</Warning>
+
+## Automate the process
+
+Regardless of the approach you chose, consider automating the process by configuring your CI to regularly update the specification/network snapshots. That way we can ensure that the mocks remain relevant over time.

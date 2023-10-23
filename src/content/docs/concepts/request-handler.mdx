@@ -1,0 +1,175 @@
+---
+order: 2
+title: Request handler
+keywords:
+  - handler
+  - request
+---
+
+**Request handler** is a function that describes which requests to intercept and how to handle them.
+
+You should think of request handlers as route handlers you define on the server. For example, here's a route handler written using [Express](https://expressjs.com/):
+
+```js {7-9}
+import express from 'express'
+
+const app = express()
+
+// This route handler instructs Experss to handle
+// a "GET /user" request by returning a JSON response.
+app.get('/user', (req, res) => {
+  res.json({ name: 'John' })
+})
+```
+
+And here's a _request_ handler for the same resource using Mock Service Worker:
+
+```js {7-9}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  // And here's a request handler with MSW
+  // for the same "GET /user" request that
+  // responds with a mock JSON response.
+  http.get('/user', ({ request }) => {
+    return HttpResponse.json({ name: 'John' })
+  }),
+]
+```
+
+You can spot a few similarities between these two examples:
+
+1. They describe the request's method (`app.get`/`http.get`) and the resource path (`"/user"`);
+1. They accept a resolver function that handles incoming requests.
+
+Those are precisely two things needed to describe the network behavior with MSW. This similarity with the server-side routes, however, is not coincidental. When using the library, you describe how to handle requests from the _server's perspective_ because in the actual application it's the server layer that controls request resolution. Of course, there are no servers when using MSW.
+
+## Using request handlers
+
+You use request handlers to describe the network you want. MSW comes with built-in `http` and `graphql` namespaces to create request handlers for HTTP and GraphQL requests respectively.
+
+Learn more about using those namespaces by following the links below:
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../components/react/pageCard'
+import { NodejsIcon } from '../../../components/react/icons/nodejs'
+import { GraphQLIcon } from '../../../components/react/icons/graphql'
+
+<div className="md:grid md:grid-cols-2 gap-x-8">
+  <PageCard
+    icon={NodejsIcon}
+    url="/docs/network-behavior/rest"
+    title="Describing REST API"
+    description="Learn about describing RESTful APIs."
+  />
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/network-behavior/graphql"
+    title="Describing GraphQL API"
+    description="Learn about describing GraphQL APIs."
+  />
+  <PageCard
+    icon={CubeTransparentIcon}
+    url="/docs/api/http"
+    title="http"
+    description="API reference for the `http` namespace."
+  />
+  <PageCard
+    icon={CubeTransparentIcon}
+    url="/docs/api/graphql"
+    title="graphql"
+    description="API reference for the `graphql` namespace."
+  />
+</div>
+
+## Execution order
+
+Request handlers execute in the order they have been defined, left-to-right. If multiple request handlers match the same request, MSW will keep iterating over them until any handler returns an [explicit instruction](/docs/concepts/response-resolver#resolver-instructions) on how to handle that request.
+
+```js
+import { http, HttpResponse, passthrough } from 'msw'
+
+export const handlers = [
+  // This handler will be called first but since
+  // it doesn't return anything from its resolver,
+  // MSW will continue looking for a handler that does.
+  http.get('/user', ({ request }) => {
+    console.log('Just observing:', request.method, request.url)
+  }),
+
+  // This handler is called next (2nd), and it returns
+  // a JSON response from its resolver. MSW will stop looking
+  // for handlers and will consider this one to be relevant
+  // to the intercepted request.
+  http.get('/user', () => {
+    return HttpResponse.json({ name: 'John' })
+  }),
+
+  // Although this handler also matches the request,
+  // it will never be called because the previous handler
+  // returned a mocked response.
+  http.get('/user', () => passthrough()),
+]
+```
+
+Understanding the handler execution order is important when declaring your network behavior. You can declare handlers that will trigger first, observing the traffic, followed by the handlers responsible for yielding responses.
+
+Correctly structuring your request handlers is the key to differentiate between ambiguous resources:
+
+```js /messages/ /*/2 {6}
+export const handlers = [
+  // By placing a more specific pathname first,
+  // the "GET /user/messages" request will be handled
+  // properly, despite it also matching a more permissive
+  // handler below.
+  http.get('/user/messages', messagesResolver)
+  http.get('/user/*', resolverOne),
+]
+```
+
+## Custom request handlers
+
+In certain situations, you may want a more fine-tuned request handling experience. You can create custom request handlers to cover those situations.
+
+Please see the following `RequestHandler` API to learn more about creating custom request handlers:
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/request-handler"
+  title="RequestHandler"
+  description="API reference for the `RequestHandler` class."
+/>
+
+## Related materials
+
+import {
+  NewspaperIcon,
+  Bars2Icon as ConceptsIcon,
+} from '@heroicons/react/24/outline'
+
+<div className="md:grid md:grid-cols-2 gap-x-8">
+  <PageCard
+    icon={ConceptsIcon}
+    url="/docs/concepts/request-namespace"
+    title="Request namespace"
+    description="Learn more about request namespaces."
+  />
+  <PageCard
+    icon={ConceptsIcon}
+    url="/docs/concepts/response-resolver"
+    title="Response resolver"
+    description="Learn more about response resolvers."
+  />
+  <PageCard
+    icon={NewspaperIcon}
+    url="/docs/basics/intercepting-requests"
+    title="Intercepting requests"
+    description="Learn how to intercept outgoing requests."
+  />
+  <PageCard
+    icon={NewspaperIcon}
+    url="/docs/basics/mocking-responses"
+    title="Mocking responses"
+    description="Learn how to mock HTTP responses."
+  />
+</div>

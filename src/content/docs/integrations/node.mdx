@@ -1,0 +1,110 @@
+---
+order: 2
+title: Node.js integration
+description: Set up Mock Service Worker in Node.js.
+keywords:
+  - integrate
+  - integration
+  - setup
+  - node
+  - server
+---
+
+In Node.js, MSW enables API mocking by patching native request-issuing modules, like `http` and `https`, which gives it the means to observe and affect the outgoing traffic for the current process.
+
+## Setup
+
+Import the `setupServer` function from `msw/node` and call it, providing your request handlers as an argument.
+
+```js
+// src/mocks/node.js
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+export const server = setupServer(...handlers)
+```
+
+You then use the returned `server` object to control API mocking in the current Node.js process.
+
+> Learn more about the [`setupServer` API](/docs/api/setup-server).
+
+## Enable mocking
+
+### Node.js application
+
+Import the `server` anywhere in your Node.js application and call the `.listen()` method to enable API mocking. We recommend doing this as the first thing in your application's entry module so MSW would affect all the requests early on.
+
+```js {4}
+// src/index.js
+import { server } from './mocks/node'
+
+server.listen()
+
+// ...the rest of your Node.js application.
+```
+
+> `server.listen()` is a _synchronous_ API so you don't have to await it.
+
+### Test runner
+
+One of the most common uses of MSW in Node.js is with test runners like Jest or Vitest. While the general principles of MSW in Node.js still apply there, the test runners expose a convenient setup API to enable mocking in the right phases of the test run.
+
+**There are three key steps to integrating MSW with any test runner:**
+
+1. Enable mocking _before_ all tests run (`server.listen()`);
+1. Reset any request handlers _between_ tests (`server.resetHandlers()`);
+1. Restore native request-issuing modules _after_ all tests run (`server.close()`).
+
+import { Info } from '../../../components/react/info'
+
+<Info>
+  Consult your test runner's documentation on the correct API to implement those
+  steps.
+</Info>
+
+For example, this is how you would set up MSW in Vitest, using its `beforeAll`, `afterEach`, and `afterAll` hooks:
+
+```js
+// vitest.setup.js
+import { beforeAll, afterEach, afterAll } from 'vitest'
+import { server } from './src/mocks/node'
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
+```
+
+## Confirmation
+
+To confirm a successful setup, create a simple outgoing request listener on the `server` object:
+
+```js
+server.events.on('request:start', ({ request }) => {
+  console.log('MSW intercepted:', request.method, request.url)
+})
+```
+
+> What you've used just now is called [Life-cycle events](/docs/api/life-cycle-events), and they are a powerful tool to observe the network traffic without affecting it.
+
+Get to the state of your application that performs any HTTP requests and confirm you can see that console message printed in your terminal.
+
+## Related materials
+
+import { PageCard } from '../../../components/react/pageCard'
+import { NodejsIcon } from '../../../components/react/icons/nodejs'
+import { GraphQLIcon } from '../../../components/react/icons/graphql'
+
+<div className="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon={NodejsIcon}
+    url="/docs/network-behavior/rest"
+    title="Describing REST API"
+    description="Learn about describing RESTful APIs."
+  />
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/network-behavior/graphql"
+    title="Describing GraphQL API"
+    description="Learn about describing GraphQL APIs."
+  />
+</div>

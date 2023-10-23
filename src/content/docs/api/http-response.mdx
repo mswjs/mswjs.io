@@ -1,0 +1,163 @@
+---
+order: 5
+title: HttpResponse
+keywords:
+  - response
+  - http
+---
+
+The `HttpResponse` class is a drop-in replacement for the Fetch API Response designed to allow for more convenient response declaration and support otherwise unavailable features, like mocking response cookies.
+
+## Why not native `Response`?
+
+You can absolutely use the native Fetch API `Response` instances in your response resolvers. MSW is built on top of the standard request and response primitives, so you can use them any time instead.
+
+However, the `HttpResponse` class enables certain features, like mocking response cookies, which are not available when using the standard `Response` class. For the sake of consistency, we highly recommend using the `HttpResponse` class on a daily basis. We acknowledge that it is a library-specific API and we are decicated to make it teach you about the web fundamentals through respecting the default `Response` constructor signature and methods as well as minimizing the amount of library-specific features this class ships.
+
+> Historically, the choice was between implicitly patching the global `Response` and `Headers` classes to establish a proxy setter whenever a `Set-Cookie` header is set, since it cannot be read afterward. We've decided not to meddle with the globals because we respect the integrity of your application and the environment it runs in, and want to prove that API mocking can be built on best practices and standard APIs instead.
+
+## Call signature
+
+The `HttpResponse` class has the identical constructor signature to the Fetch API [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) class. This includes the static response methods like `Response.json()` and `Response.error()` too.
+
+```ts
+class HttpResponse {
+  constructor(
+    body:
+      | Blob
+      | ArrayBuffer
+      | TypedArray
+      | DateView
+      | FormData
+      | ReadableStream
+      | URLSearchParams
+      | string,
+    options?: {
+      status?: number
+      statusText?: string
+      headers?: HeadersInit
+    }
+  )
+}
+```
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CodeBracketSquareIcon}
+  url="https://github.com/mswjs/msw/tree/main/src/core/HttpResponse.ts"
+  title="HttpResponse.ts"
+  description="Source code for the `HttpResponse` class."
+/>
+
+## Standard methods
+
+### `new HttpResponse(body, init)`
+
+Constructs a new `Response` instance with the given response body and options.
+
+```js
+const response = new HttpResponse('Hello world!')
+```
+
+Similar to the regular `Response` constructor, you can provide `HttpResponse` with response options to customize the response instance:
+
+```js
+// This is synonymous to "new Response()".
+new HttpResponse('Not found', {
+  status: 404,
+  headers: {
+    'Content-Type': 'text/plain',
+  },
+})
+```
+
+> Please see the [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/Response) API to learn more about constructing responses.
+
+### `HttpResponse.json(body, init)`
+
+A static method that creates a new response with the JSON body.
+
+```js
+http.get('/resource', () => {
+  // This is synonymous to "Response.json(body)".
+  return HttpResponse.json({
+    id: 'abc-123',
+    title: 'Modern Testing Practices',
+  })
+})
+```
+
+### `HttpResponse.error()`
+
+A static method that creates a new network error response instance.
+
+```js
+http.get('/resource', () => {
+  // This is synonymous to "Response.error()".
+  return HttpResponse.error()
+})
+```
+
+> Note that neither `HttpResponse.error()` nor `Response.error()` allow customizing the network error response. If you wish to customize it, consider throwing inside the response resolver—that will also produce a network error similar to the server throwing a runtime error.
+
+## Custom methods
+
+The `HttpResponse` class also comes with a set of custom static methods to simplify response declaration. These methods do not have alternatives in the Fetch API specification and are entirely library-specific.
+
+### `HttpResponse.text(body, init)`
+
+Creates a `Response` instance with the `Content-Type: text/plain` header and given response body.
+
+```js
+HttpResponse.text('Hello world!')
+```
+
+### `HttpResponse.xml(body, init)`
+
+Creates a `Response` instance with the `Content-Type: application/xml` header and given response body.
+
+```js
+HttpResponse.xml(`
+<post>
+  <id>abc-123</id>
+  <title>Modern Testing Practices</title>
+</post>
+`)
+```
+
+### `HttpResponse.formData(body, init)`
+
+Creates a `Response` instance with the `Content-Type: multipart/form-data` header and given response body.
+
+```js
+const form = new FormData()
+form.append('id', 'abc-123')
+form.append('title', 'Modern Testing Practices')
+
+HttpResponse.formData(form)
+```
+
+### `HttpResponse.arrayBuffer(body, init)`
+
+Creates a new `Response` instance with the given `ArrayBuffer` body. Automatically sets the `Content-Length` response header based on the buffer's byte length. Does not set any additional headers like `Content-Type`.
+
+```js
+HttpResponse.arrayBuffer(buffer, {
+  headers: {
+    'Content-Type': 'application/octet-stream',
+  },
+})
+```
+
+## Related materials
+
+import { NewspaperIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={NewspaperIcon}
+  url="/docs/basics/mocking-responses"
+  title="Mocking responses"
+  description="Learn about response resolvers and the different ways to respond to a request."
+/>
