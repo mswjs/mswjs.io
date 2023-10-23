@@ -44,7 +44,7 @@ const posts = allBlogPosts.sort(
 						<ul class="mb-16 space-y-5 md:space-y-10">
 							{posts.map((post) => (
 								<li>
-									<article class="p-10 flex items-start gap-8 bg-neutral-800 bg-opacity-40 border border-neutral-800 rounded-lg">
+									<article class="p-10 flex items-center md:items-start flex-col gap-4 md:flex-row md:gap-8 bg-neutral-800 bg-opacity-40 border border-neutral-800 rounded-lg">
 										<img src={post.data.thumbnailUrl} alt={post.data.title} class="inline-flex w-32 drop-shadow-md" />
 										<div>
 											<a href={`/blog/${post.slug}`}
