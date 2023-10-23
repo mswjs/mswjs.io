@@ -7,20 +7,21 @@ import { Warning } from './react/warning';
   <script
     async
     src="https://media.ethicalads.io/media/client/ethicalads.min.js"
+    onerror="showWarning()"
   ></script>
   <div
     class="horizontal dark flat"
     data-ea-publisher="mswjsio"
     data-ea-type="text"
   />
-</div>
-<div id="adblocker-warning" style="display:none">
-  <Warning><strong>Please disable AdBlocker.</strong></Warning>
+  <div id="adblocker-warning" style="display:none">
+    <Warning><strong>Please enable ads on this website.</strong> Thank you.</Warning>
+  </div>
 </div>
 
-<!-- <script is:inline>
+<script is:inline>
   window.showWarning = () => {
     const adBlockerWarning = document.getElementById('adblocker-warning')
     adBlockerWarning.style.display = 'block'
   }
-</script> -->
+</script>
