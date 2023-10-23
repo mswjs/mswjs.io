@@ -7,7 +7,6 @@ import { Warning } from './react/warning';
   <script
     async
     src="https://media.ethicalads.io/media/client/ethicalads.min.js"
-    onerror="showWarning()"
   ></script>
   <div
     class="horizontal dark flat"
@@ -19,9 +18,9 @@ import { Warning } from './react/warning';
   <Warning><strong>Please disable AdBlocker.</strong></Warning>
 </div>
 
-<script is:inline>
+<!-- <script is:inline>
   window.showWarning = () => {
     const adBlockerWarning = document.getElementById('adblocker-warning')
     adBlockerWarning.style.display = 'block'
   }
-</script>
+</script> -->
