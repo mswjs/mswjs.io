@@ -159,7 +159,7 @@ import { Warning } from '../../../components/react/warning'
 <Warning>
   Prefer _named queries_ in order to use the `graphql.query()` and
   `graphql.mutation()` request handlers. For anonymous GraphQL queries, use the
-  [`graphql.operation()`](/docs/api/graphql#graphloperationresolver) API
+  [`graphql.operation()`](/docs/api/graphql#graphqloperationresolver) API
   instead.
 </Warning>
 
@@ -291,7 +291,7 @@ The `query` object is useful if you want to resolve the intercepted GraphQL oper
 
 One of the reasons to adopt GraphQL is to fetch only the data the client needs. When mocking the GraphQL responses with MSW, however, the entire mock data will be sent to the client as-is, regardless of the fields it queries.
 
-For example, if the client decides to dorp the `title` field on the `ListPosts` query, it will still receive that field if it's sent in the mock response. That is because MSW does no field matching that a regular GraphQL server would do when resolving the incoming queries.
+For example, if the client decides to drop the `title` field on the `ListPosts` query, it will still receive that field if it's sent in the mock response. That is because MSW does no field matching that a regular GraphQL server would do when resolving the incoming queries.
 
 You can match the behavior of an actual GraphQL server more closely by resolving the intercepted queries using the `graphql` package. This approach requires you to define the GraphQL schema and forward the operation name, query, and variables of the intercepted GraphQL operations to be resolved against a mock root value.
 
