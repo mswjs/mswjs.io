@@ -108,11 +108,11 @@ export function Footer({ isCompact }: { isCompact?: boolean }): JSX.Element {
                 </li>
                 <li>
                   <a
-                    href="https://youtube.com/c/MockServiceWorker"
+                    href={DISCORD_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    YouTube
+                    Discord
                   </a>
                 </li>
               </ul>
