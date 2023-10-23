@@ -9,7 +9,7 @@ keywords:
 
 When [describing GraphQL APIs](/docs/network-behavior/graphql), the responses returned from response resolvers will be sent to the client as-is, even if they include extra properties not present in the original query. While this allows to get started with a GraphQL API without having to define schemas and resolvers, such behavior is not what one would expect from an actual GraphQL server.
 
-You can resolve intercepted GraphQL operations against a mocked GraphQL schema using the [`graphql`](npmjs.com/package/graphql) package. In the example below, we will also use the [`graphql.operation()`](/docs/api/graphql#graphloperationresolver) request handler to resolve them against the schema.
+You can resolve intercepted GraphQL operations against a mocked GraphQL schema using the [`graphql`](npmjs.com/package/graphql) package. In the example below, we will also use the [`graphql.operation()`](/docs/api/graphql#graphqloperationresolver) request handler to resolve them against the schema.
 
 ```js {2,4-13,24-33}
 import { graphql } from 'msw'
