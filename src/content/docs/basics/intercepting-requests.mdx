@@ -183,7 +183,7 @@ import { graphql } from 'msw'
 const github = graphql.link('https://api.github.com/graphql')
 const stripe = graphql.link('https://api.stripe.com')
 
-export const handers = [
+export const handlers = [
   github.query('GetUser', githubUserResolver),
   stripe.query('GetUser', stripeUserResolver),
 ]
