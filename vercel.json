@@ -74,6 +74,11 @@
       "statusCode": 301
     },
     {
+      "source": "/docs/api/response",
+      "destination": "/docs/basics/mocking-responses",
+      "statusCode": 301
+    },
+    {
       "source": "/docs/api/response/once",
       "destination": "/docs/api/http#once",
       "statusCode": 301
