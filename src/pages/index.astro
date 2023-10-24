@@ -50,8 +50,6 @@ import konnaBuraunAvatar from '../images/people/konna-buraun.jpg'
 import derekDeHartAvatar from '../images/people/derek-de-hart.jpg'
 import heitorLessaAvatar from '../images/people/heitor-lessa.jpg'
 import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
-
-const { PUBLIC_HIDE_EGGHEAD_COURSE } = import.meta.env
 ---
 
 <!doctype html>
@@ -66,11 +64,10 @@ const { PUBLIC_HIDE_EGGHEAD_COURSE } = import.meta.env
 			<Container>
         <section class="hero-gradient max-w-screen-md py-16 md:py-24 mx-auto md:text-center lg:py-48">
           <div class="lg:-mt-16">
-            {PUBLIC_HIDE_EGGHEAD_COURSE === 'true' ? null : (
-              <AnnouncementBanner
-                actionText="Watch now"
-                actionUrl={EGGHEAD_COURSE_URL}
-              >
+            <AnnouncementBanner
+              actionText="Watch now"
+              actionUrl={EGGHEAD_COURSE_URL}
+            >
               <div class="flex items-center">
                 <EggheadIcon
                   className="absolute w-8"
@@ -80,8 +77,7 @@ const { PUBLIC_HIDE_EGGHEAD_COURSE } = import.meta.env
                   Learn MSW with our official Egghead course!
                 </span>
               </div>
-              </AnnouncementBanner>
-            )}
+            </AnnouncementBanner>
           </div>
 
           <h1 class="mb-8 md:text-6xl font-black">
