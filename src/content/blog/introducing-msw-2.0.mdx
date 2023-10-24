@@ -70,9 +70,9 @@ responseSource.on('request', (request) => {
 
 While in the browser we receive the Fetch API `Request` instance to represent a request, things become more tangled once we step into Node.js.
 
-Before version 2.0, MSW supported Node.js v14 - v16, which is a huge spectre of versions. There is no `fetch` present in those versions, which means we couldn't rely on the Fetch API to represent outgoing requests. To account for that request class difference, the library coerced all requests to a single isomoprhic request instance, and that is precisely what you got as the `req` argument in the response resolver.
+Before version 2.0, MSW supported Node.js v14 - v16, which is a huge spectrum of versions. There is no `fetch` present in those versions, which means we couldn't rely on the Fetch API to represent outgoing requests. To account for that request class difference, the library coerced all requests to a single isomoprhic request instance, and that is precisely what you got as the `req` argument in the response resolver.
 
-But that isomorphic request is entirely contrived. Worse still, extending it or adding new features required to manually implement them for every request module the developer could have used in Node.js. That was extremely tedious and lead to all sorts of bugs.
+But that isomorphic request is entirely contrived. Worse still, extending it or adding new features required to manually implement them for every request module the developer could have used in Node.js. That was extremely tedious and led to all sorts of bugs.
 
 The effort behind v2.0 is precisely to eradicate those contrived APIs and fully embrace JavaScript standards.
 
@@ -102,7 +102,7 @@ I've spent almost a month fighting this to arrive at the simple conclusion: this
 
 ## The way forward
 
-I took a call to deprecate support for Node.js ≤ v16 with the new version of MSW and I am glad I did that. By the time I was finished with the rewrite, Node.js v14 has already reached the end-of-life, Node.js v16 reaches the end of life this fall, and Node.js v18 itself goes into maintenance.
+I made the call to deprecate support for Node.js ≤ v16 with the new version of MSW and I am glad I did that. By the time I was finished with the rewrite, Node.js v14 has already reached the end-of-life, Node.js v16 reaches the end of life this fall, and Node.js v18 itself goes into maintenance.
 
 > The day I removed Node.js v14 support from MSW will go in history as one of my happiest days as an engineer.
 
