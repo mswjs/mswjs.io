@@ -16,12 +16,14 @@ import { FeedbackWidget } from "../components/react/feedbackWidget";
 import Ads from '../components/Ads.astro'
 import { DocsMovileNav } from "../components/react/docsMobileNav";
 import { SITE_TITLE } from "../consts";
+import PageBanner from "../components/PageBanner.astro";
 
 type Props = CollectionEntry<'docs'>['data'] & {
   lastModifiedAt: Date
   editUrl: URL
   headings: Array<MarkdownHeading>
   isFluid?: boolean
+  displayV1DocsBanner?: boolean
 }
 
 const allPages = await Astro.glob<DocsFrontmatter>('../content/docs/**/*.mdx')
@@ -92,6 +94,11 @@ const shouldDisplayAds = import.meta.env.ADS
     />
   </head>
   <body>
+    {page.displayV1DocsBanner ? (
+      <PageBanner>
+        <p>You are viewing the docs for <strong>MSW 2.0</strong>. To access the 1.x docs <a href="https://v1.mswjs.io/" class="text-orange hover:underline" target="_blank" rel="noopener noreferrer">click here</a>.</p>
+      </PageBanner>
+    ) : null}
     <Header isFluid={page.isFluid} />
     <main>
       <Container isFluid={page.isFluid}>
