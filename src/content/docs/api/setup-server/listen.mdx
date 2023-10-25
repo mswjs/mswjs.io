@@ -60,7 +60,7 @@ The pre-defined strategies are available as the second argument of the custom ca
 server.listen({
   onUnhandledRequest(request, print) {
     // Ignore requests to fetch static assets.
-    if (request.url.pathname.includes('/assets/')) {
+    if (request.url.includes('/assets/')) {
       return
     }
 
