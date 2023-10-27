@@ -714,7 +714,7 @@ Create a `jest.polyfills.js` file next to your `jest.config.js` with the followi
 // jest.polyfills.js
 const { TextEncoder, TextDecoder } = require('node:util')
 
-Reflect.set(globalThis, 'TextEncoder', TextDecoder)
+Reflect.set(globalThis, 'TextEncoder', TextEncoder)
 Reflect.set(globalThis, 'TextDecoder', TextDecoder)
 
 const { Blob } = require('node:buffer')
