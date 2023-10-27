@@ -700,35 +700,52 @@ In addition to the breaking changes, this release introduces a list of new APIs.
 
 ## Frequent issues
 
-### `Request`/`Response` is not defined
+### `Request`/`Response`/`TextEncoder` is not defined (Jest)
 
-**Cause:** Your code runs in the environment that doesn't support the global Fetch API.
+<Warning>
+  Make sure you are using Node.js v18 or newer before reading further.
+</Warning>
 
-**Solution:** There are a couple of things you can do to resolve this.
+This issue is caused by your environment not having the Node.js globals for one reason or another. This commonly happens in Jest because it intentionally robs you of Node.js globals and fails to re-add them in their entirely. As the result, you have to explicitly add them yourself.
 
-#### Upgrade your Node.js version
+Create a `jest.polyfills.js` file next to your `jest.config.js` with the following content:
 
-Make sure you are using Node.js v18 or later. Run `node -v` and see the current Node.js version. If it's lower than 18, upgrade.
+```js
+// jest.polyfills.js
+const { TextEncoder, TextDecoder } = require('node:util')
 
-#### Remap Fetch API globals
+Reflect.set(globalThis, 'TextEncoder', TextDecoder)
+Reflect.set(globalThis, 'TextDecoder', TextDecoder)
 
-Make sure the global Fetch API classes are available in your environment. Some third-party tools, like Jest, intentionally strip Node.js globals when executing your code. If that's the case, make sure to explicitly add those globals back using the appropriate means provided by those third-party tools.
+const { Blob } = require('node:buffer')
+const { fetch, Request, Response, Headers, FormData } = require('undici')
 
-Here's an example of how to do that in Jest:
+Reflect.set(globalThis, 'fetch', fetch)
+Reflect.set(globalThis, 'Blob', Blob)
+Reflect.set(globalThis, 'Request', Request)
+Reflect.set(globalThis, 'Respose', Respose)
+Reflect.set(globalThis, 'Headers', Headers)
+Reflect.set(globalThis, 'FormData', FormData)
+```
 
-```js {3-10}
+> Make sure to install `undici` as a dev dependency in your project. Undici is the official implementation of global `fetch` in Node.js.
+
+Then, set the `setupFiles` option in `jest.config.js` to point to the newly created `jest.polyfills.js`:
+
+```js {3}
 // jest.config.js
 module.exports = {
-  globals: {
-    fetch,
-    Request,
-    Response,
-    Headers,
-    FormData,
-    ReadableStream,
-  },
+  setupFiles: ['./jest.polyfills.js'],
 }
 ```
+
+<Warning>
+  Pay attention it's the `setupFiles` option, and _not_ `setupFilesAfterEnv`.
+  The missing Node.js globals must be injected _before_ the environment (e.g.
+  JSDOM).
+</Warning>
+
+If you find this setup cumbersome, consider migrating to a modern testing framework, like [Vitest](https://vitest.dev/), which has none of the Node.js globals issues and provides native ESM support out of the box.
 
 ### Cannot find module 'msw/node' (JSDOM)
 
