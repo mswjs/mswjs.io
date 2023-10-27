@@ -34,7 +34,7 @@ You don't need to import the `Response` class because it's a part of the global 
 
 ### Using `HttpResponse` class
 
-Although you can ues plain Fetch API responses, it's highly recommended you use the custom `HttpResponse` class provided by the library. There are two reasons to prefer `HttpResponse` over the native `Response`:
+Although you can use plain Fetch API responses, it's highly recommended you use the custom `HttpResponse` class provided by the library. There are two reasons to prefer `HttpResponse` over the native `Response`:
 
 1. The `HttpResponse` class encapsulates useful shorthand methods for declaring responses, like `HttpResponse.json()`, `HttpResponse.xml()`, `HttpResponse.formData()`, etc.
 1. Unlike the native `Response` class, the `HttpResponse` class enables support for mocking response cookies by setting the `Set-Cookie` header on the mocked response.
