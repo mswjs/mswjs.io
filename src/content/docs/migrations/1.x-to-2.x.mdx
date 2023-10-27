@@ -730,6 +730,23 @@ module.exports = {
 }
 ```
 
+### Cannot find module 'msw/node' (JSDOM)
+
+This error is thrown by your test runner because JSDOM uses the `browser` export condition by default. This means that when you import any third-party packages, like MSW, JSDOM forces its `browser` export to be used as the entrypoint. This is incorrect and dangerous because _JSDOM still runs in Node.js_ and cannot guarantee full browser compatibility by design.
+
+To fix this, set the `testEnvironmentOptions.customExportConditions` option in your `jest.config.js` to `['']`:
+
+```js {3-5}
+// jest.config.js
+module.exports = {
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
+}
+```
+
+This will force JSDOM to use the default export condition when importing `msw/node`, resulting in correct imports.
+
 ### `multipart/form-data is not supported` Error in Node.js
 
 Earlier versions of Node.js, like v18.8.0, didn't have official support for `request.formData()`. Please upgrade to the latest Node.js 18.x where such a support has been added.
