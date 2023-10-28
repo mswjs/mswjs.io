@@ -178,6 +178,28 @@ const shouldDisplayAds = import.meta.env.ADS
 </html>
 
 <script is:inline>
+  const theme = (() => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    // If the user hasn't explicitly chosen light or dark, we use the prefers-color-scheme media query
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  })();
+
+  if (theme === "light") {
+    document.documentElement.classList.remove("dark");
+  } else {
+    document.documentElement.classList.add("dark");
+  }
+  
+  window.localStorage.setItem("theme", theme);
+</script>
+
+
+<script is:inline>
 	{
     const NAV_TREE_SCROLL_KEY = 'nav-tree-scroll'
 
