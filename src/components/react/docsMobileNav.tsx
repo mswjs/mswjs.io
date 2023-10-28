@@ -42,7 +42,7 @@ export function DocsMovileNav({ children }: { children: ReactNode }) {
   return (
     <div>
       <button
-        className="fixed z-[6] flex items-center justify-center w-16 h-16 text-black bg-white border-4 border-black rounded-full bottom-5 right-5 xl:hidden"
+        className="fixed z-[6] flex items-center justify-center w-16 h-16 b text-black bg-white border-4 border-black rounded-full bottom-5 right-5 xl:hidden"
         tabIndex={2}
         onClick={handleMenuButtonClick}
         aria-label="Docs menu"
@@ -114,7 +114,7 @@ export const MobileMenuContainer = forwardRef<
       ref={ref}
       {...props}
       className={cls(
-        'fixed block top-[60px] bg-neutral-950 inset-0 max-h-[100vh] z-[5]',
+        'fixed block top-[60px] bg-neutral-50 dark:bg-neutral-950 inset-0 max-h-[100vh] z-[5]',
         props.className,
       )}
       style={{ display: isOpen ? 'block' : 'none' }}

@@ -1,12 +1,12 @@
 .DocSearch-Button {
-  @apply m-0 border-neutral-700 rounded-md bg-transparent text-neutral-400;
+  @apply m-0  rounded-md bg-transparent dark:text-neutral-400 dark:border-neutral-700 text-neutral-500 border-neutral-400;
   border-width: 1px !important;
   border-style: solid;
 }
 
 .DocSearch-Button:hover,
 .DocSearch-Button:focus {
-  @apply !bg-neutral-800 !border-neutral-700;
+  @apply dark:!bg-neutral-800 dark:!border-neutral-700 dark:!text-white bg-white text-black;
   box-shadow: none;
 }
 

@@ -18,6 +18,7 @@ export function ThemeToggle() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+    document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 

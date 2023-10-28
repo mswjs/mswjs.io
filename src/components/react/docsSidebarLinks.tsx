@@ -1,19 +1,19 @@
-import { NewspaperIcon } from '@heroicons/react/24/solid'
-import { DiscordIcon } from './icons/discord'
-import { GitHubIcon } from './icons/github'
-import { DISCORD_URL } from '../../consts'
+import { NewspaperIcon } from "@heroicons/react/24/solid";
+import { DiscordIcon } from "./icons/discord";
+import { GitHubIcon } from "./icons/github";
+import { DISCORD_URL } from "../../consts";
 
 export function DocsSidebarLinks() {
   return (
     <section>
-      <h4 className="text-xs mb-2 font-bold tracking-widest text-white uppercase">
+      <h4 className="text-xs mb-2 font-bold tracking-widest text-black dark:text-white uppercase">
         Community
       </h4>
       <ul>
         <li>
           <a
             href="https://github.com/mswjs/msw"
-            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-400 hover:text-white"
+            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-500 dark:text-neutral-400  hover:text-black dark:hover:text-white"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -24,7 +24,7 @@ export function DocsSidebarLinks() {
         <li>
           <a
             href={DISCORD_URL}
-            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-400 hover:text-white"
+            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-500 dark:text-neutral-400  hover:text-black dark:hover:text-white"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -35,7 +35,7 @@ export function DocsSidebarLinks() {
         <li>
           <a
             href="/blog"
-            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-400 hover:text-white"
+            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-500 dark:text-neutral-400  hover:text-black dark:hover:text-white"
             target="_blank"
             ref="noopener noreferrer"
           >
@@ -45,5 +45,5 @@ export function DocsSidebarLinks() {
         </li>
       </ul>
     </section>
-  )
+  );
 }
