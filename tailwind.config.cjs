@@ -63,14 +63,6 @@ module.exports = {
             },
             'code::before': null,
             'code::after': null,
-            blockquote: {
-              color: theme('colors.neutral.400'),
-              borderColor: theme('colors.neutral.700'),
-              borderLeftWidth: 2,
-              fontStyle: 'normal',
-              fontWeight: theme('font.semibold'),
-              lineHeight: 1.5,
-            },
             'blockquote p:first-of-type::before': null,
             'blockquote p:first-of-type::after': null,
             hr: {
@@ -79,9 +71,7 @@ module.exports = {
             thead: {
               borderColor: theme('colors.neutral.600'),
             },
-            th: {
-              color: theme('colors.neutral.300'),
-            },
+        
             tr: {
               borderColor: theme('colors.neutral.700'),
             },
