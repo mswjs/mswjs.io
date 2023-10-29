@@ -42,7 +42,7 @@ export function FeedbackWidget({ pageTitle }: { pageTitle: string }) {
   };
 
   return (
-    <aside className="mt-10 px-5 py-4 border-neutral-200 bg-white border dark:border-neutral-700 dark:bg-neutral-800 bg-opacity-40 rounded-md">
+    <aside className="mt-10 px-5 py-4 border-neutral-300 bg-white border dark:border-neutral-700 dark:bg-neutral-800 bg-opacity-40 rounded-md">
       <header className="flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-center mb-0 font-bold">Was this helpful?</p>
         <ol className="flex items-center justify-center gap-5 text-2xl">

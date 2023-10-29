@@ -102,7 +102,7 @@ hr {
   @apply px-6 py-3 font-bold rounded-lg select-none text-center;
 }
 .button-primary {
-  @apply bg-neutral-700 text-white bg-opacity-40 border border-neutral-700;
+  @apply bg-neutral-950 text-white dark:bg-neutral-700 dark:text-white dark:bg-opacity-40 border dark:border-neutral-700;
   @apply hover:bg-opacity-70;
 }
 .button-secondary {
@@ -214,13 +214,13 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 }
 .integration-usage:before {
   content: "";
-  @apply absolute -inset-10 bg-neutral-900 -z-10;
+  @apply absolute -inset-10 bg-neutral-50 dark:bg-neutral-900 -z-10;
 }
 
 .integration-line:before,
 .integration-line:after {
   content: "";
-  @apply absolute left-0 right-0 h-1 w-[50vw] bg-neutral-800 -translate-x-1/2;
+  @apply absolute left-0 right-0 h-1 w-[50vw] bg-neutral-200 dark:bg-neutral-800 -translate-x-1/2;
   @apply hidden lg:block;
 }
 .integration-line:before {
@@ -284,7 +284,7 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 }
 
 .prose th code {
-  @apply bg-neutral-100 border-neutral-200 text-neutral-600;
+  @apply bg-neutral-100 border-neutral-300 text-neutral-600;
 }
 
 .dark .prose th code {
@@ -292,7 +292,7 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 }
 
 .prose td code {
-  @apply bg-neutral-100 border-neutral-200 text-neutral-600;
+  @apply bg-neutral-100 border-neutral-300 text-neutral-600;
 }
 
 .dark .prose td code {
@@ -301,7 +301,7 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 
 
 .prose p code {
-  @apply bg-neutral-100 border-neutral-200 text-neutral-600;
+  @apply bg-neutral-100 border-neutral-300 text-neutral-600;
 }
 
 .dark .prose p code {
@@ -309,7 +309,7 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 }
 
 .prose a code {
-  @apply bg-neutral-100 border-neutral-200 text-neutral-600;
+  @apply bg-neutral-100 border-neutral-300 text-neutral-600;
 }
 
 .dark .prose a code {
@@ -318,7 +318,7 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 
 
 .prose li code {
-  @apply bg-neutral-100 border-neutral-200 text-neutral-600;
+  @apply bg-neutral-100 border-neutral-300 text-neutral-600;
 }
 
 .dark .prose li code {
@@ -328,8 +328,8 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 
 /* Blockquote / Callouts */
 
-blockquote {
-  @apply dark:!text-neutral-400 !text-neutral-500 !border-l-2 dark:!border-neutral-700 !border-neutral-200 !not-italic !font-semibold !leading-normal;
+.prose blockquote {
+  @apply dark:!text-neutral-400 !text-neutral-500 !border-l-2 dark:!border-neutral-700 !border-neutral-300 !not-italic !font-semibold !leading-normal;
 }
 
 blockquote em {

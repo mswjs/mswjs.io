@@ -53,7 +53,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark" transition:animate="none">
+<html lang="en" transition:animate="none">
 	<head>
 		<BaseHead title={SITE_TITLE} displayTitle={`${SITE_TITLE} - ${SITE_DESCRIPTION}`} description={SITE_DESCRIPTION} />
 	</head>
@@ -85,8 +85,8 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
             <br />
             API mocking for JavaScript.
           </h1>
-          <p class="text-xl md:text-2xl md:leading-9 text-neutral-400 tracking-tight">
-            <span class="text-white">Mock Service Worker</span> is an API
+          <p class="text-xl md:text-2xl md:leading-9 text-neutral-500 dark:text-neutral-500 dark:text-neutral-400 tracking-tight">
+            <span class="text-black dark:text-white">Mock Service Worker</span> is an API
             mocking library that allows you to write client-agnostic mocks and
             reuse them across any frameworks, tools, and environments.
           </p>
@@ -100,7 +100,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
 						</a>
             <a
               href="https://github.com/mswjs/msw"
-              class="inline-block text-center text-neutral-300 w-full md:w-auto hover:text-white"
+              class="inline-block text-center text-neutral-600 dark:text-neutral-300 w-full md:w-auto hover:text-black dark:hover:text-white"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -112,7 +112,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
         <div class="py-16 md:py-40 text-center">
           <UppercaseLabel>Making tests better at</UppercaseLabel>
           <Grid className="relative">
-            <div class="col-span-full lg:col-start-3 lg:col-span-8 grid grid-cols-3 md:grid-cols-6 items-center justify-items-center gap-x-6 gap-y-6 md:gap-y-10 fill-white max-w-full md:max-w-6xl overflow-hidden">
+            <div class="col-span-full lg:col-start-3 lg:col-span-8 grid grid-cols-3 md:grid-cols-6 items-center justify-items-center gap-x-6 gap-y-6 md:gap-y-10 fill-black dark:fill-white max-w-full md:max-w-6xl overflow-hidden">
               <MicrosoftIcon
                 className="h-9 max-w-full"
                 aria-label="Microsoft"
@@ -129,9 +129,9 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
                 aria-label="CodeSandbox"
               />
               <GitHubIcon className="h-9 max-w-full" aria-label="GitHub" />
-              <VercelIcon className="h-9 max-w-full" aria-label="Vercel" />
+              <VercelIcon className="h-9 max-w-full mix-blend-difference dark:mix-blend-normal" aria-label="Vercel" />
               <CloudflareIcon
-                className="h-9 max-w-full"
+                className="h-9 max-w-full mix-blend-difference dark:mix-blend-norma"
                 aria-label="Cloudflare"
               />
               <SpotifyIcon className="h-9 max-w-full" aria-label="Spotify" />
@@ -166,18 +166,18 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <ul class="space-y-14">
                 <li>
                   <h3>Omit implementation details</h3>
-                  <p class="text-neutral-400">
+                  <p class="text-neutral-500 dark:text-neutral-500 dark:text-neutral-400">
                     Intercept both{' '}
                     <a
                       href="/docs/network-behavior/rest"
-                      class="text-white hover:underline"
+                      class="text-black dark:text-white hover:underline"
                     >
                       REST
                     </a>{' '}
                     and{' '}
                     <a
                       href="/docs/network-behavior/graphql"
-                      class="text-white hover:underline"
+                      class="text-black dark:text-white hover:underline"
                     >
                       GraphQL API
                   </a>{' '}
@@ -188,7 +188,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
                 </li>
                 <li>
                   <h3>Use the platform</h3>
-                  <p class="text-neutral-400">
+                  <p class="text-neutral-500 dark:text-neutral-500 dark:text-neutral-400">
                     Handle requests and responses using the standard Fetch API.
                     Respect the web standards and invest your time into learning
                     the platform, not the tools.
@@ -196,7 +196,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
                 </li>
                 <li>
                   <h3>Reuse like never before</h3>
-                  <p class="text-neutral-400">
+                  <p class="text-neutral-500 dark:text-neutral-500 dark:text-neutral-400">
                     No configurations, adapters, or plugins. Reuse the same mocks across environments and tools, be it an
                     integration test with Vitest, an automated browser test with
                     Playwright, a demo showcase in Storybook, or a React Native
@@ -237,21 +237,21 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
             </PageHeaderSubtitle>
           </PageHeaderWrapper>
           <div class="relative grid lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2 gap-x-10 gap-y-32 max-w-xl md:max-w-none mx-auto">
-            <div class="integration-line absolute inset-0 m-auto w-1 h-full lg:h-1/2 bg-neutral-800 -z-10" />
+            <div class="integration-line absolute inset-0 m-auto w-1 h-full lg:h-1/2 bg-neutral-200 dark:bg-neutral-800 -z-10" />
             {/* Local development */}
             <div class="integration-usage lg:self-end">
               <div class="lg:flex lg:justify-end">
                 <ComponentExample />
               </div>
               <div class="mt-8 lg:text-right">
-                <p class="text-xl font-bold">Local development</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg ml-auto">
+                <p class="text-xl font-bold text-black dark:text-white">Local development</p>
+                <p class="text-lg mt-2 text-neutral-500 dark:text-neutral-400 lg:max-w-lg ml-auto">
                   Create, change, and debug fast by augmenting existing
                   APIs—both third-party and local—or designing them as you go.
                 </p>
               </div>
             </div>
-            <div class="-order-1 lg:order-none lg:row-span-2 flex px-10 self-center justify-self-center bg-neutral-900">
+            <div class="-order-1 lg:order-none lg:row-span-2 flex px-10 self-center justify-self-center bg-transparent dark:bg-neutral-900">
               <MswBlockItem />
             </div>
             {/* Vitest */}
@@ -259,7 +259,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <VitestRunner />
               <div class="mt-8">
                 <p class="text-xl font-bold">Integration tests</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg">
+                <p class="text-lg mt-2 text-neutral-500 dark:text-neutral-400 lg:max-w-lg">
                   Test happy paths and override network behavior on a per-test
                   basis to test even the most trickest of edge cases.
                 </p>
@@ -270,18 +270,18 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <CypressRunnerIntegration />
               <div class="mt-8 lg:text-right">
                 <p class="text-xl font-bold">End-to-end tests</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg ml-auto">
+                <p class="text-lg mt-2 text-neutral-500 dark:text-neutral-400 lg:max-w-lg ml-auto">
                   Take any HTTP call out of your test's equation and focus on
                   the user experience, mocking local or external APIs.
                 </p>
               </div>
             </div>
             {/* Styorybook */}
-            <div class="integration-usage bg-neutral-900">
+            <div class="integration-usage bg-neutral-50 dark:bg-neutral-900">
               <StorybookShowcase />
               <div class="mt-8">
                 <p class="text-xl font-bold">Storybook showcase</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg">
+                <p class="text-lg mt-2 text-neutral-500 dark:text-neutral-400 lg:max-w-lg">
                   Emulate the precise network state to share how your components
                   handle it with the entire team.
                 </p>
@@ -294,12 +294,12 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <em class="text-orange not-italic">ever will be</em>
             </UppercaseLabel>
             <div class="inline-grid grid-cols-6 gap-10 items-center text-neutral-500">
-              <ReactIcon className="w-10 text-white" />
-              <VueIcon className="w-10 text-white" />
-              <AngularIcon className="w-10 text-white" />
-              <SvelteIcon className="w-10 text-white" />
-              <NextJsIcon className="w-10 text-white" />
-              <RemixIcon className="w-8 text-white" />
+              <ReactIcon className="w-10 text-black dark:text-white" />
+              <VueIcon className="w-10 text-black dark:text-white" />
+              <AngularIcon className="w-10 text-black dark:text-white" />
+              <SvelteIcon className="w-10 text-black dark:text-white" />
+              <NextJsIcon className="w-10 text-black dark:text-white" />
+              <RemixIcon className="w-8 text-black dark:text-white" />
             </div>
           </footer>
         </Container>
