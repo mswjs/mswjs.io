@@ -15,7 +15,7 @@ const { title, description, thumbnailUrl, publishedAt, author, keywords } = Astr
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark" transition:animate="none">
+<html lang="en" transition:animate="none">
 	<head>
 		<BaseHead
 			title={title}
@@ -32,10 +32,10 @@ const { title, description, thumbnailUrl, publishedAt, author, keywords } = Astr
 			<Container>
 				<Grid>
 					<article class="lg:col-span-8 lg:col-start-3">
-						<aside class="sticky z-[2] py-2 text-sm font-medium bg-neutral-900 border-b border-neutral-800 top-[60px]">
+						<aside class="sticky z-[2] py-2 text-sm font-medium bg-neutral-50 border-neutral-200 dark:bg-neutral-900 border-b dark:border-neutral-800 top-[60px]">
 							<a
 								href="/blog"
-								class="inline-flex items-center gap-2 font-medium text-neutral-400 hover:text-white"
+								class="inline-flex items-center gap-2 font-medium text-neutral-500 hover:text-black dark:text-neutral-400 dark:hover:text-white"
 							>
 								<ArrowLeftIcon className="w-3" />
 								Back to Blog
@@ -46,7 +46,7 @@ const { title, description, thumbnailUrl, publishedAt, author, keywords } = Astr
 								<img src={thumbnailUrl} alt={title} class="hidden w-24 sm:block sm:w-32 md:w-64 drop-shadow-xl" />
 								<div>
 									<h1 class="mb-4">{title}</h1>
-									<p class="mb-10 text-neutral-400 font-medium font-mono">
+									<p class="mb-10 text-neutral-500 dark:text-neutral-400 font-medium font-mono">
 										<FormattedDate date={publishedAt} />
 									</p>
 									<div class="flex md:justify-center text-left">

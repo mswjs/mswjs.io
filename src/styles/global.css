@@ -266,6 +266,15 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
   @apply text-white;
 }
 
+.prose p {
+  @apply text-neutral-800;
+}
+
+.dark .prose p {
+  @apply text-neutral-200
+}
+
+
 .prose th {
   @apply text-neutral-600;
 }
@@ -298,8 +307,6 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 .dark .prose p code {
   @apply bg-neutral-800 border-neutral-700 text-neutral-300;
 }
-
-
 
 .prose a code {
   @apply bg-neutral-100 border-neutral-200 text-neutral-600;

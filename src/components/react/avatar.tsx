@@ -14,11 +14,11 @@ export function Avatar({ url, name, children, className }: Props): JSX.Element {
       <img
         src={url}
         alt={name}
-        className={cls('p-1 border-4 border-stone-700 rounded-full', className)}
+        className={cls('p-1 border-2 dark:border-4 border-neutral-200 dark:border-neutral-700 rounded-full', className)}
       />
       <div>
-        <p className="font-semibold leading-5 mb-1.5 text-white">{name}</p>
-        <p className="text-neutral-400 leading-5">{children}</p>
+        <p className="font-semibold leading-5 mb-1.5 text-black dark:text-white">{name}</p>
+        <p className="text-neutral-500 dark:text-neutral-400 leading-5">{children}</p>
       </div>
     </div>
   )
