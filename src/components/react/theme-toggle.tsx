@@ -25,13 +25,13 @@ export function ThemeToggle() {
   return (
     <button
       onClick={handleClick}
-      className="  px-3 inline-flex py-1 h-[36px] w-[36px] justify-center items-center space-x-1 border rounded-md border-orange text-orange hover:bg-orange hover:text-black dark:bg-orange dark:text-black"
+      className="px-3 inline-flex py-1 h-[36px] w-[36px] justify-center items-center space-x-1 border rounded-md border-orange text-orange hover:bg-orange hover:text-black dark:bg-orange dark:text-black"
     >
       <span>
         {theme === "light" ? (
-          <MoonIcon className="w-5 h-5" />
+          <MoonIcon className="w-3 h-3 lg:w-5 lg:h-5" />
         ) : (
-          <SunIcon className="w-5 h-5" />
+          <SunIcon className="w-3 h-3 lg:w-5 lg:h-5" />
         )}
       </span>
     </button>
