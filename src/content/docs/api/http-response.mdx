@@ -31,7 +31,9 @@ class HttpResponse {
       | FormData
       | ReadableStream
       | URLSearchParams
-      | string,
+      | string
+      | null
+      | undefined
     options?: {
       status?: number
       statusText?: string
