@@ -49,7 +49,7 @@ export const worker = setupWorker(...handlers)
 
 Lastly, we need to start the worker by calling `worker.start()`, which will register and activate the Service Worker. We also only want to enable API mocking in development so our production traffic is unaffected.
 
-Because regsitering the Service Worker is an asynchronous operation, it's a good idea to defer the rendering of your application until the registration Promise resolves.
+Because registering the Service Worker is an asynchronous operation, it's a good idea to defer the rendering of your application until the registration Promise resolves.
 
 ```js /deferRender/ {6-16}
 // src/index.jsx
