@@ -9,7 +9,7 @@ description: Reset request handlers to the initial list.
 The `worker.resetHandlers()` method can be called without any arguments. When done so, all the [Runtime request handlers](/docs/concepts/request-handler#runtime-request-handler) (those prepended via `worker.use()`) will be removed.
 
 ```js {4}
-const worker = setupWorker(http.get('/resource', resolevr))
+const worker = setupWorker(http.get('/resource', resolver))
 worker.use(http.post('/user', resolver))
 
 worker.resetHandlers()
