@@ -15,7 +15,7 @@ The `setupWorker()` function prepares the client-worker communication channel to
 
 The `setupWorker()` function expects an optional list of [Request handlers](/docs/concepts/request-handler) spread as its arguments and returns a [Worker instance](#worker-instance).
 
-When called without any arguments, the function will return you a worker instance that has no network description (i.e. no requets handlers). Use the methiosd like [`worker.use()`](/docs/api/setup-worker/use) and [`worker.resetHandlers()`](/docs/api/setup-worker/reset-handlers) to add and remove _runtime_ request handlers to the worker instance.
+When called without any arguments, the function will return you a worker instance that has no network description (i.e. no requets handlers). Use the methods like [`worker.use()`](/docs/api/setup-worker/use) and [`worker.resetHandlers()`](/docs/api/setup-worker/reset-handlers) to add and remove _runtime_ request handlers to the worker instance.
 
 ```js
 import { setupWorker } from 'msw/browser'
