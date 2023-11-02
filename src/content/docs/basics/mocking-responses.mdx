@@ -180,11 +180,9 @@ Use the `Response.error()` or `HttpResponse.error()` static method to raise a ne
 
 ```js {2}
 http.post('/checkout/cart', () => {
-  return HttpResponse.error('Failed to save the cart')
+  return HttpResponse.error()
 })
 ```
-
-> Note that it's up to the request client you're using to display the custom network error messages. Some clients will while others won't. Consult your request client's documentation to see if they forward network error messages.
 
 ## Related materials
 
