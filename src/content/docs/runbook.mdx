@@ -133,3 +133,22 @@ beforeEach(() => {
   cache.clear()
 })
 ```
+
+---
+
+### Requests are not resolving when using `jest.useFakeTimers`
+
+When configuring `useFakeTimers` in jest, all timer apis are mocked including `queueMicrotask`. `queueMicrotask` is used internally by unidici (the modern nodejs fetch library) while parsing response bodies. Because of this, when using `useFakeTimers` with the default configuration, body reading methods like `await request.text()` and `await request.json()` will not resolve properly.
+
+<Success>Configure jest not to mock calls to `queueMicrotask`</Success>
+
+> Please refer to jest's [documentation on fake timers](https://jestjs.io/docs/timer-mocks#selective-faking)
+
+For example, here's how to disable faking of `queueMicrotask` when using jest fake timers
+
+```js {3}
+jest.useFakeTimers({
+  // configure jest to not fake `queueMicrotask` calls
+  doNotFake: ['queueMicrotask']
+})
+```
