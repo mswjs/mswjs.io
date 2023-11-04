@@ -15,7 +15,7 @@ The nature of the network can be highly dynamic, which makes it challenging to d
 - [`worker.use()`](/docs/api/setup-worker/use)
 - [`server.use()`](/docs/api/setup-server/use)
 
-With the `.use()`, you can _prepend_ any list of request handlers to the initial request handlers provided to `setupWorker()`/`setupServer()`, making them take priority when handling requests. Since this is a runtime API, you can invoke it after the API mocking has been enabled, for example, on the indivcidual test basis.
+With the `.use()`, you can _prepend_ any list of request handlers to the initial request handlers provided to `setupWorker()`/`setupServer()`, making them take priority when handling requests. Since this is a runtime API, you can invoke it after the API mocking has been enabled, for example, on the individual test basis.
 
 ## Initial vs runtime handlers
 
@@ -176,7 +176,7 @@ server.resetHandlers(
 
 In this example, once you call the `.resetHandlers()` method with the list of next initial request handlers, any previous request handlers, both initial and runtime, will be wiped out. This means that there will be no request handler for the `GET /resource` request, only for the `POST /login` request.
 
-> Mutating the initial request handlers is generally not recommended because it harms the predictability of the network. It can be useful, however, in certian situations, like testing different behaviors while developing in the browser.
+> Mutating the initial request handlers is generally not recommended because it harms the predictability of the network. It can be useful, however, in certain situations, like testing different behaviors while developing in the browser.
 
 ## Restoring request handlers
 
