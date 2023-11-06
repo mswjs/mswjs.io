@@ -39,7 +39,7 @@ const worker = setupWorker(...runtimeScenarios, ...handlers)
 
 > Note that the order of handlers is important: the left-most handlers take precedence during request resolution.
 
-Now, if you wish to see how your application behaves if the `GET /user` endpoint returns a `500 Internal Server Error` response, simlpy navigate to the page you need with the proper `scenario` query parameter:
+Now, if you wish to see how your application behaves if the `GET /user` endpoint returns a `500 Internal Server Error` response, simply navigate to the page you need with the proper `scenario` query parameter:
 
 ```txt /?scenario=error/
 http://localhost:3000/dashboard?scenario=error
