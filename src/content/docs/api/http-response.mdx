@@ -12,7 +12,7 @@ The `HttpResponse` class is a drop-in replacement for the Fetch API Response des
 
 You can absolutely use the native Fetch API `Response` instances in your response resolvers. MSW is built on top of the standard request and response primitives, so you can use them any time instead.
 
-However, the `HttpResponse` class enables certain features, like mocking response cookies, which are not available when using the standard `Response` class. For the sake of consistency, we highly recommend using the `HttpResponse` class on a daily basis. We acknowledge that it is a library-specific API and we are decicated to make it teach you about the web fundamentals through respecting the default `Response` constructor signature and methods as well as minimizing the amount of library-specific features this class ships.
+However, the `HttpResponse` class enables certain features, like mocking response cookies, which are not available when using the standard `Response` class. For the sake of consistency, we highly recommend using the `HttpResponse` class on a daily basis. We acknowledge that it is a library-specific API and we are dedicated to make it teach you about the web fundamentals through respecting the default `Response` constructor signature and methods as well as minimizing the amount of library-specific features this class ships.
 
 > Historically, the choice was between implicitly patching the global `Response` and `Headers` classes to establish a proxy setter whenever a `Set-Cookie` header is set, since it cannot be read afterward. We've decided not to meddle with the globals because we respect the integrity of your application and the environment it runs in, and want to prove that API mocking can be built on best practices and standard APIs instead.
 
