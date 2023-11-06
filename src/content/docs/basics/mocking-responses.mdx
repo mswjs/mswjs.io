@@ -30,7 +30,7 @@ export const handlers = [
 ]
 ```
 
-You don't need to import the `Response` class because it's a part of the global Fetch API in the browser and moden versions of Node.js (v17+). The library supports any variations of the `Response` instances, including shorthand responses created via methods like `Response.json()` or `Response.error()`.
+You don't need to import the `Response` class because it's a part of the global Fetch API in the browser and modern versions of Node.js (v17+). The library supports any variations of the `Response` instances, including shorthand responses created via methods like `Response.json()` or `Response.error()`.
 
 ### Using `HttpResponse` class
 
@@ -117,7 +117,7 @@ export const handler = [
 
 ### JSON responses
 
-A much more common response body type is JSON. Provide the JSON you wish to respond with as an argument to the `HttpResponse.json()` statis method to create a mocked JSON response:
+A much more common response body type is JSON. Provide the JSON you wish to respond with as an argument to the `HttpResponse.json()` static method to create a mocked JSON response:
 
 ```js /HttpResponse.json/ {7-10}
 import { http, HttpResponse } from 'msw'
