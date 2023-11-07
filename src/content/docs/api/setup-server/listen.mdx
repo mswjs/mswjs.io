@@ -32,11 +32,11 @@ Specifies how to react to requests that are not handled by any request handlers.
 
 #### Predefined strategies
 
-| Strategy name | Description                                    |
-| ------------- | ---------------------------------------------- |
-| `"bypass"`    | B                                              |
-| `"warn"`      | Print a warning but perform the request as-is. |
-| `"error"`     | Print an error and halt request execution.     |
+| Strategy name        | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| `"warn"` (_Default_) | Print a warning but perform the request as-is.         |
+| `"error"`            | Print an error and halt request execution.             |
+| `"bypass"`           | Does not print anything and perform the request as-is. |
 
 ```js
 server.listen({
