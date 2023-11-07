@@ -49,7 +49,7 @@ server.listen({
 ```js
 server.listen({
   onUnhandledRequest(request) {
-    console.log('Unhandled %s %s', request.method, request.url.href)
+    console.log('Unhandled %s %s', request.method, request.url)
   },
 })
 ```
