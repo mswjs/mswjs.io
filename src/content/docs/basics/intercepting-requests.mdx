@@ -106,7 +106,7 @@ http.delete(/\/settings\/(sessions|messages)/, resolver)
 
 ## GraphQL API requests
 
-GraphQL servers are often implemented via HTTP so you can use the same `http` request namespace to intercept and resolve them. However, MSW provides a first-class support for intercepting GraphQL APIs using a designated [`graphql`](/docs/api/graphql) request namespace. Methods of that namespace represents GraphQL operation types (`graphql.queryh()`, `graphql.mutation()`) and have the same function call signature expecting the following arguments:
+GraphQL servers are often implemented via HTTP so you can use the same `http` request namespace to intercept and resolve them. However, MSW provides a first-class support for intercepting GraphQL APIs using a designated [`graphql`](/docs/api/graphql) request namespace. Methods of that namespace represents GraphQL operation types (`graphql.query()`, `graphql.mutation()`) and have the same function call signature expecting the following arguments:
 
 - `predicate`, (`string | RegExp | TypedDocumentNode`);
 - `resolver`, ([`Response resolver`](/docs/concepts/response-resolver)).
