@@ -1,0 +1,42 @@
+---
+title: Jest missing globals
+---
+
+import { Warning } from '../../../components/react/warning'
+
+<Warning>
+  Make sure you are using Node.js v18 or newer before reading further.
+</Warning>
+
+This issue is caused by your environment not having the Node.js globals for one reason or another. This commonly happens in Jest because it intentionally robs you of Node.js globals and fails to re-add them in their entirely. As the result, you have to explicitly add them yourself.
+
+Create a `jest.polyfills.js` file next to your `jest.config.js` with the following content:
+
+```js
+// jest.polyfills.js
+Reflect.set(globalThis, 'TextEncoder', TextEncoder)
+Reflect.set(globalThis, 'TextDecoder', TextDecoder)
+Reflect.set(globalThis, 'fetch', fetch)
+Reflect.set(globalThis, 'Blob', Blob)
+Reflect.set(globalThis, 'Request', Request)
+Reflect.set(globalThis, 'Response', Response)
+Reflect.set(globalThis, 'Headers', Headers)
+Reflect.set(globalThis, 'FormData', FormData)
+```
+
+Then, set the `setupFiles` option in `jest.config.js` to point to the newly created `jest.polyfills.js`:
+
+```js {3}
+// jest.config.js
+module.exports = {
+  setupFiles: ['./jest.polyfills.js'],
+}
+```
+
+<Warning>
+  Pay attention it's the `setupFiles` option, and _not_ `setupFilesAfterEnv`.
+  The missing Node.js globals must be injected _before_ the environment (e.g.
+  JSDOM).
+</Warning>
+
+If you find this setup cumbersome, consider migrating to a modern testing framework, like [Vitest](https://vitest.dev/), which has none of the Node.js globals issues and provides native ESM support out of the box.

@@ -60,33 +60,11 @@ This error means that the version of Node.js you're using doesn't support the gl
 
 Resolve this by upgrading to Node.js version 18 or higher. MSW does not support Node.js versions below version 18.
 
-## ReferenceError: `Request` is not defined in Jest
+## `Request`/`Response`/`TextEncoder` is not defined (Jest)
 
-This error means that the global `Request` class is not available in your current environment.
+import JestMissingGlobals from './shared/jest-missing-globals.mdx'
 
-First, make sure you're running Node.js version 18 or higher:
-
-```bash
-node -v
-# v18.14.0
-```
-
-Once you do, you have to explicitly tell Jest to allow Fetch API globals in your test run:
-
-```js
-// jest.config.js
-module.exports = {
-  globals: {
-    Request,
-    Response,
-    Headers,
-    Blob,
-    FormData,
-  },
-}
-```
-
-> You don't have to import any of those globals—they ship with Node.js.
+<JestMissingGlobals />
 
 ## Why should I drop query parameters from the request handler URL?
 
