@@ -20,7 +20,7 @@ MSW is designed to be fully environment-, framework- and tool-agnostic. You can 
 
 ### Seamless
 
-MSW uses the Service Worker API to intercept actual production requests on the network level. Instead of patching `fetch` and meddling with your appliaction's integrity, MSW bets on the platform, utilizing the standard browser API to implement a revolutionary request interception logic.
+MSW uses the Service Worker API to intercept actual production requests on the network level. Instead of patching `fetch` and meddling with your application's integrity, MSW bets on the platform, utilizing the standard browser API to implement a revolutionary request interception logic.
 
 Even in Node.js, where there are no standard means to intercept requests, MSW uses _class extension_ instead of module patching to ensure your tests run in the environment as close to production as possible.
 
