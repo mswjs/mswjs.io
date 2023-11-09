@@ -51,13 +51,13 @@ Lastly, we need to start the worker by calling `worker.start()`, which will regi
 
 Because registering the Service Worker is an asynchronous operation, it's a good idea to defer the rendering of your application until the registration Promise resolves.
 
-```js /deferRender/ {6-16}
+```js /enableMocking/ {6-16}
 // src/index.jsx
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { App } from './App'
 
-async function deferRender() {
+async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
     return
   }
@@ -69,7 +69,7 @@ async function deferRender() {
   return worker.start()
 }
 
-deferRender().then(() => {
+enableMocking().then(() => {
   ReactDOM.render(<App />, rootElement)
 })
 ```
