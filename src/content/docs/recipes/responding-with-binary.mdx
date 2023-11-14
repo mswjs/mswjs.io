@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 9
 title: Responding with binary
 ---
 
@@ -49,8 +49,8 @@ export const handlers = [
     )
 
     return HttpResponse.arrayBuffer(buffer, {
-      'Content-Type': 'video/mp4'
+      'Content-Type': 'video/mp4',
     })
-  })
+  }),
 ]
 ```
