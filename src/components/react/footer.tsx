@@ -17,7 +17,7 @@ export function Footer({ isCompact }: { isCompact?: boolean }): JSX.Element {
       className={cls(
         'footer',
         'py-10 text-sm font-medium text-neutral-400',
-        !isCompact && 'border-t border-neutral-800',
+        !isCompact && 'border-t border-neutral-800'
       )}
     >
       <Container isFluid={isCompact}>
@@ -29,13 +29,13 @@ export function Footer({ isCompact }: { isCompact?: boolean }): JSX.Element {
         <Grid className="sm:grid-cols-6 gap-y-16">
           <div
             className={cls(
-              isCompact ? 'xl:col-span-3 xl:col-start-4' : 'sm:col-span-6',
+              isCompact ? 'xl:col-span-3 xl:col-start-4' : 'sm:col-span-6'
             )}
           >
             <p className="text-neutral-200 font-medium">
               &copy; {currentYear} Mock Service Worker
             </p>
-            <p className="font-normal">
+            <p className="font-normal" aria-hidden="true">
               Created with <HeartIcon className="w-3.5 inline text-orange" /> by{' '}
               <a href="https://twitter.com/kettanaito" target="_blank">
                 kettanaito
@@ -125,7 +125,7 @@ export function Footer({ isCompact }: { isCompact?: boolean }): JSX.Element {
 }
 
 export function SocialLinksBlock(
-  props: React.HTMLAttributes<HTMLUListElement>,
+  props: React.HTMLAttributes<HTMLUListElement>
 ) {
   return (
     <ul className={cls('flex items-center gap-1 mt-5 -ml-2', props.className)}>
