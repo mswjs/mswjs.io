@@ -407,7 +407,7 @@ page.route('/fruits', async (route) => {
 import { bypass } from 'msw'
 
 http.post('/fruits', async ({ request }) => {
-  const response = await fetch(...bypass(request))
+  const response = await fetch(bypass(request))
   const json = await response.json()
   json.push({ name: 'Mock Service Worker' })
 

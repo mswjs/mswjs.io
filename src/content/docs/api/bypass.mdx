@@ -14,10 +14,7 @@ keywords:
 The same as the `globalThis.fetch()` function, the `bypass` function expects two arguments: `RequestInput` and `RequestInit`. It returns a _tuple_ of modified input and init arguments to then be provided on the regular `globalThis.fetch()` call.
 
 ```ts
-function bypass(
-  input: RequestInput,
-  init?: RequestInit,
-): [RequestInput, RequestInit | undefined] {}
+function bypass(input: RequestInput, init?: RequestInit): Request {}
 ```
 
 import { PageCard } from '../../../components/react/pageCard'
@@ -41,7 +38,7 @@ export const handlers = [
   http.get('/user', async ({ request }) => {
     // Perform the intercepted "GET /user" request as-is
     // by passing its "request" reference to the "bypass" function.
-    const response = await fetch(...bypass(request))
+    const response = await fetch(bypass(request))
     const realUser = await response.json()
 
     // Return a mocked JSON response by patching the original response

@@ -12,7 +12,7 @@ keywords:
 
 **Response patching** is a technique to combine a mocked response with the real response. This technique is particularly useful when working with existing API (including third-party API) as it allows to augment its responses on the fly.
 
-To get the original response to the intercepted request you have to perform it as-is. If you use the plain `fetch()` function in the handler, it will dispatch a request that will again match the same handler, causing an infinite request loop. Instead, use the `bypass()` utility function that will make a particular `fetch()` request _bypass_ any otherwise matching request handlers.
+To get the original response to the intercepted request you have to perform it as-is. If you use the plain `fetch()` function in the handler, it will dispatch a request that will again match the same handler, causing an infinite request loop. Instead, use the `bypass()` utility function that will mark any given `Request` instance as the one to be _bypassed_ by any otherwise matching request handlers.
 
 ```js /bypass/ {6,11-13}
 import { http, bypass, HttpResponse } from 'msw'
@@ -20,7 +20,9 @@ import { http, bypass, HttpResponse } from 'msw'
 export const handlers = [
   http.get('https://api.github.com/user/:username', async ({ request }) => {
     // Fetch the original response from the GitHub API.
-    const gitHubUser = await bypass(request).then((response) => response.json())
+    const gitHubUser = await fetch(bypass(request)).then((response) =>
+      response.json()
+    )
 
     // Respond with a mocked response that combines
     // the actual and mock data.
@@ -64,7 +66,7 @@ export const handlers = [
     })
 
     // Perform the proxy request.
-    const originalResponse = await bypass(proxyRequest)
+    const originalResponse = await fetch(bypass(proxyRequest))
 
     // Return the mocked response...
   }),
