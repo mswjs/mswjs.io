@@ -28,7 +28,7 @@ In React Native, MSW works similarly to Node.js, but omits certain request inter
 MSW relies on standard JavaScript classes that are not present in React Native, like `URL`. Please install the polyfills below to guarantee proper MSW execution in React Native.
 
 ```sh
-npm install react-native-url-polyfill
+npm install react-native-url-polyfill text-encoding
 ```
 
 Create a new `msw.polyfills.js` file with the following content:
@@ -36,6 +36,9 @@ Create a new `msw.polyfills.js` file with the following content:
 ```js
 // msw.polyfills.js
 import 'react-native-url-polyfill/auto'
+import { TextEncoder } from 'text-encoding';
+
+global.TextEncoder = TextEncoder;
 ```
 
 We will import this file later, when [Enabling mocking](#enable-mocking).
