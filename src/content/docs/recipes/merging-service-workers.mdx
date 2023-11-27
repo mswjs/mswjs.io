@@ -1,0 +1,65 @@
+---
+title: Merging Service Workers
+description: Use MSW with an existing Service Worker.
+keywords:
+  - existing
+  - merge
+  - importScripts
+  - custom
+  - multiple
+---
+
+import { Action } from '../../../components/react/action'
+import { Warning } from '../../../components/react/warning'
+
+The browser can only register a single Service Worker per scope. This means that if your application already registers a Service Worker, it cannot register another one for MSW in parallel. You can still use both your custom Service Worker and MSW by _merging the two worker scripts_.
+
+<Action>Import MSW's worker in your existing worker</Action>
+
+First, modify your existing worker script to conditionally import `/mockServiceWorker.js`. Use the [`importScripts()` API](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts) available globally in the worker's scope.
+
+```js {4-6}
+// public/existing-worker.js
+const url = new URL(location.href)
+
+if (url.searchParams.get('enableApiMocking') === 'true') {
+  importScripts('/mockServiceWorker.js')
+}
+
+// The rest of your Service Worker script here.
+// self.addEventListener('fetch', listener)
+```
+
+<Warning>
+  Make sure to complete the [Browser integration](/docs/integrations/browser) to
+  have the `mockServiceWorker.js` script generated in your public directory and
+  thus available from the root of your application.
+</Warning>
+
+<Action>Enable API mocking conditionally</Action>
+
+```js {4-9}
+// src/app.js
+const workerUrl = new URL('/existing-worker.js', location.origin)
+
+// In your application code, set the "enableApiMocking" search parameter
+// on the worker script URL. This way the client lets the worker know
+// whether it should import MSW's worker script based on the environment.
+if (process.env.NODE_ENV === 'development') {
+  workerUrl.searchParams.set('enableApiMocking', 'true')
+}
+
+navigator.serviceWorker.register(workerUrl.href)
+```
+
+<Action>Set up MSW to use your worker</Action>
+
+Lastly, provide your worker script URL as the `serviceWorker.url` option on the `worker.start()` call. Since the only Service Worker you register is your custom worker, let MSW know that it should use it to control the network.
+
+```js {3}
+worker.start({
+  serviceWorker: {
+    url: '/existing-worker.js',
+  },
+})
+```
