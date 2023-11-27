@@ -27,12 +27,11 @@ You can add your self-signed certificate to the system's trusted certificates. P
 ### Chrome / Brave
 
 1. Open `chrome://flags` (or `brave://flags` if using Brave);
-1. Search for `allow-insecure-localhost` flag in the list;
+1. Search for `unsafely-treat-insecure-origin-as-secure` flag in the list;
 1. Select the "Enabled" option next to the flag.
+1. Enter your local host into the field.
 
 > If encountering certificate fetching/validation issues, set the `ignore-certificate-errors` flag to "Enabled".
-
-> If encountering insecure origin issues, set the `unsafely-treat-insecure-origin-as-secure` flag to `https://localhost`.
 
 ### Firefox
 
