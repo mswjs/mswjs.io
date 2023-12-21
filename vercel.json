@@ -69,6 +69,11 @@
     },
 
     {
+      "source": "/docs/api/setup-worker/print-handlers",
+      "destination": "/docs/api/setup-worker/list-handlers",
+      "statusCode": 301
+    },
+    {
       "source": "/docs/api/rest",
       "destination": "/docs/api/http",
       "statusCode": 301
