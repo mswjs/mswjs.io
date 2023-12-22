@@ -392,7 +392,7 @@ page.route('/fruits', async (route) => {
   if (request.method === 'POST') {
     const response = await route.fetch()
     const json = await response.json()
-    json.push({ name: 'Playwright })
+    json.push({ name: 'Playwright' })
 
     return route.fulfill({ response, json })
   }
