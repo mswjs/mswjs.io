@@ -383,7 +383,7 @@ MSW gives you a more advanced control over the requests through its `passthrough
 
 #### `page.route()`
 
-It utilizes custom methods like `route.fulfill()` and `route.continue()` to give you more control over the request.
+The `page.route()` function in Playwright utilizes custom methods like `route.fulfill()` and `route.continue()` to give you more control over the request.
 
 ```js
 page.route('/fruits', async (route) => {
@@ -415,6 +415,6 @@ http.post('/fruits', async ({ request }) => {
 })
 ```
 
-> The alternative for `route.continue()` in MSW is simply returning nothing from a request handler. But since we can narrow down the request interception to both the method (`POST`) and path (`/fruits`), our request handler never concerns itself with other requests.
+> The alternative for `route.continue()` in MSW is simply returning nothing from a response resolver. But since we can narrow down the request interception to both the method (`POST`) and path (`/fruits`), our request handler never concerns itself with other requests.
 
 MSW uses the custom [`bypass()`](/docs/api/bypass) function that wraps any given `Request` instance to prevent it from being affected by any other otherwise matching request handlers.
