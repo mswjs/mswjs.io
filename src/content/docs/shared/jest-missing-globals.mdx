@@ -24,11 +24,12 @@ Create a `jest.polyfills.js` file next to your `jest.config.js` with the followi
  * you don't want to deal with this.
  */
 
-const { TextDecoder, TextEncoder } = require('node:util')
+const { TextDecoder, TextEncoder, ReadableStream } = require('node:util')
 
 Object.defineProperties(globalThis, {
   TextDecoder: { value: TextDecoder },
   TextEncoder: { value: TextEncoder },
+  ReadableStream: { value: ReadableStream },
 })
 
 const { Blob, File } = require('node:buffer')
