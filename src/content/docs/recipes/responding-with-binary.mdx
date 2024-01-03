@@ -49,7 +49,9 @@ export const handlers = [
     )
 
     return HttpResponse.arrayBuffer(buffer, {
-      'Content-Type': 'video/mp4',
+      headers: {
+        'Content-Type': 'video/mp4',
+      },
     })
   }),
 ]
