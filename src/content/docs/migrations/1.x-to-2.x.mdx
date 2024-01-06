@@ -307,6 +307,30 @@ http.get(
 )
 ```
 
+### `res.networkError()`
+
+To mock a network error, call the `HttpResponse.error()` static method and return it from the response resolver.
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res.networkError('Custom error message')
+})
+```
+
+**After:**
+
+```js
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return HttpResponse.error()
+})
+```
+
+> Note that the [`Response.error()`](https://developer.mozilla.org/en-US/docs/Web/API/Response/error_static) doesn't accept a custom error message. Previously, MSW did its best to coerce the custom error message you provided to the underlying request client but it never worked reliably because it's up to the request client to handle or disregard the network error message.
+
 ### Context utilities
 
 With this release we are deprecating the `ctx` utilities object. Instead, use the `HttpResponse` class to declare mocked response properties, like status, headers, or body.
