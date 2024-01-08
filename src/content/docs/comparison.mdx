@@ -270,7 +270,7 @@ db.toHandlers('graphql')
 | ------------- | ---------------- | ------------------- |
 | REST API      | ✅               | ✅                  |
 | GraphQL API   | ❌<sup>1</sup>   | ✅                  |
-| WebSocket API | ???              | ❌                  |
+| WebSocket API | ❌               | ❌                  |
 
 > <sup>1</sup>—Although it is possible to work with GraphQL requests through
 > custom aliasing, it still requires a lot of additional setup. Cypress achieves
@@ -290,9 +290,9 @@ db.toHandlers('graphql')
 
 ### Implementation
 
-| Environment | `cy.intercept()` | Mock Service Worker                                                  |
-| ----------- | ---------------- | -------------------------------------------------------------------- |
-| Browser     | —                | Uses a Service Worker to seamlessly intercept the outgoing requests. |
+| Environment | `cy.intercept()`                                                                                                             | Mock Service Worker                                                  |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Browser     | Uses a browser-wide HTTP proxy to route outgoing requests through the custom server Cypress spawns as a part of its runtime. | Uses a Service Worker to seamlessly intercept the outgoing requests. |
 
 ### Integration
 
@@ -308,12 +308,10 @@ db.toHandlers('graphql')
 Cypress uses a custom matcher signature and a route handler function to intercept and handle requests. It utilizes custom methods like `req.reply()`, `req.continue()` or `req.redirect()` for more detailed request control.
 
 ```js
-cy.intercept('POST', '/users', (req) => {
-  req.reply({
-    statusCode: 201,
-    body: req.body,
-    delay: 100,
-  })
+cy.intercept('POST', '/users', {
+  statusCode: 201,
+  body: req.body,
+  delay: 100,
 })
 ```
 
