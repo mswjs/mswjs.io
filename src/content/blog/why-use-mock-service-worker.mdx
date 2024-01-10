@@ -62,7 +62,7 @@ fetch('/resource', { body: 'Hello world' })
 Request with GET/HEAD method cannot have body.
 ```
 
-This is the Fetch API trying to warn you about a mistake you're making. Warning by crashing your app, that is. You shouldn't be making requests like that but if you stub `window.fetch`, suddenly, you can. To make things worse, you will never know about this mistake until you disable the mocks. Until your app craches in production and makes your users angry.
+This is the Fetch API trying to warn you about a mistake you're making. Warning by crashing your app, that is. You shouldn't be making requests like that but if you stub `window.fetch`, suddenly, you can. To make things worse, you will never know about this mistake until you disable the mocks. Until your app crashes in production and makes your users angry.
 
 Let's take a look at another example. Imagine you made a typo in the request URL:
 
