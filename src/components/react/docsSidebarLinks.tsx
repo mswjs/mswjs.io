@@ -13,7 +13,7 @@ export function DocsSidebarLinks() {
         <li>
           <a
             href="https://github.com/mswjs/msw"
-            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-400 hover:text-white"
+            className="py-1.5 inline-flex items-center gap-1.5 leading-5 text-neutral-400 hover:text-white"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -24,7 +24,7 @@ export function DocsSidebarLinks() {
         <li>
           <a
             href={DISCORD_URL}
-            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-400 hover:text-white"
+            className="py-1.5 inline-flex items-center gap-1.5 leading-5 text-neutral-400 hover:text-white"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -35,7 +35,7 @@ export function DocsSidebarLinks() {
         <li>
           <a
             href="/blog"
-            className="py-1.5 inline-flex items-center gap-1 leading-5 text-neutral-400 hover:text-white"
+            className="py-1.5 inline-flex items-center gap-1.5 leading-5 text-neutral-400 hover:text-white"
             target="_blank"
             ref="noopener noreferrer"
           >
