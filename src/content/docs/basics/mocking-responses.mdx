@@ -201,7 +201,7 @@ import { http, HttpResponse } from 'msw'
 
 http.post('/login', ({ request }) => {
   if (!request.headers.has('cookie')) {
-    throw HttpResponse.json({}, { status: 400 })
+    throw new HttpResponse(null, { status: 400 })
   }
 })
 ```
@@ -211,7 +211,7 @@ This is particularly handy to implement a middleware pattern when handling reque
 ```js
 async function isAuthenticated(request) {
   if (!request.headers.has('cookie')) {
-    throw HttpResponse.json({}, { status: 400 })
+    throw new HttpResponse(null, { status: 400 })
   }
 }
 
