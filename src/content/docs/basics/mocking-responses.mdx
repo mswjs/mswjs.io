@@ -106,7 +106,7 @@ The most basic response in HTTP is a text response. Provide the text string you 
 ```js {5}
 import { http, HttpResponse } from 'msw'
 
-export const handler = [
+export const handlers = [
   http.get('/name', () => {
     return new HttpResponse('John')
   }),
@@ -168,21 +168,66 @@ import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 Construct and return a valid error response from a response resolver to emulate an error response.
 
 ```js /status: 401/
-http.get('/user', () => {
-  // Respond with "401 Unauthorized" to "GET /user" requests.
-  return new HttpResponse(null, { status: 401 })
-})
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('/user', () => {
+    // Respond with "401 Unauthorized" to "GET /user" requests.
+    return new HttpResponse(null, { status: 401 })
+  }),
+]
 ```
 
 ## Mocking network errors
 
 Use the `Response.error()` or `HttpResponse.error()` static method to raise a network error. Unlike an error response, a network error will halt the request execution and will mark that request as failed. In practice, you may experience network errors when constructing an invalid request or requesting hostnames that cannot be resolved.
 
-```js {2}
-http.post('/checkout/cart', () => {
-  return HttpResponse.error()
+```js {5}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.post('/checkout/cart', () => {
+    return HttpResponse.error()
+  }),
+]
+```
+
+## Throwing responses
+
+You can throw a `Response` instance at any point in the response resolver. When that happens, the request handling short-circuits, and the thrown response is returned as the mocked response.
+
+```js {5}
+import { http, HttpResponse } from 'msw'
+
+http.post('/login', ({ request }) => {
+  if (!request.headers.has('cookie')) {
+    throw HttpResponse.json({}, { status: 400 })
+  }
 })
 ```
+
+This is particularly handy to implement a middleware pattern when handling requests.
+
+```js
+async function isAuthenticated(request) {
+  if (!request.headers.has('cookie')) {
+    throw HttpResponse.json({}, { status: 400 })
+  }
+}
+
+http.post('/login', async ({ request }) => {
+  await isAuthenticated(request)
+
+  return new HttpResponse(null, {
+    status: 302,
+    headers: {
+      Location: '/dashboard',
+    },
+  })
+})
+```
+
+> Note that any non-response exceptions will be translated to `500 Internal Server Error` responses, similar to an unhandled rejection happening on server runtime.
 
 ## Related materials
 
