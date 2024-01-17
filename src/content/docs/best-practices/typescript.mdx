@@ -110,7 +110,7 @@ graphql.mutation<AddCommentQuery, AddCommentVariables>(
         commentUrl: `/post/${postId}?commentId=${crypto.randomUUID()}`,
       },
     })
-  },
+  }
 )
 ```
 
@@ -121,7 +121,7 @@ graphql.mutation<AddCommentQuery, AddCommentVariables>(
 Use the `HttpHandler` and `GraphQLHandler` types to annotate higher-order request handlers.
 
 ```ts
-import { HttpHandler, HttpResponseResolver, http, HttpResponse } from 'msw'
+import { http, HttpResponseResolver, HttpResponse } from 'msw'
 
 type SdkRequest = {
   transactionId: string
@@ -133,8 +133,8 @@ type SdkResponse = {
 }
 
 function handleSdkRequest(
-  resolver: HttpResponseResolver,
-): HttpHandler<never, SdkRequest, SdkResponse> {
+  resolver: HttpResponseResolver<never, SdkRequest, SdkResponse>
+) {
   return http.post('https://some-sdk.com/internal/request', resolver)
 }
 
@@ -173,7 +173,7 @@ function withDelay<
   // so the arguments passed to "http.get" propagate here.
   Params extends PathParams,
   RequestBodyType extends DefaultBodyType,
-  ResponseBodyType extends DefaultBodyType,
+  ResponseBodyType extends DefaultBodyType
 >(durationMs: number, resolver: HttpResponseResolver): HttpResponseResolver {
   return async (...args) => {
     await delay(durationMs)
@@ -189,7 +189,7 @@ export const handlers = [
       // to the "http.get()" request handler propagates
       // through the custom "withDelay" response resolver.
       return HttpResponse.text('hello world')
-    }),
+    })
   ),
 ]
 ```
