@@ -118,7 +118,9 @@ graphql.mutation<AddCommentQuery, AddCommentVariables>(
 
 ## Higher-order request handlers
 
-Use the `HttpHandler` and `GraphQLHandler` types to annotate higher-order request handlers.
+Annotating custom request handlers will depend on the call signature of your higher-order functions. Here are a few examples.
+
+First, let's see how you can abstract away a `resolver` function while locking its types within the higher-order handler, using the `HttpResponseResolver` type:
 
 ```ts
 import { http, HttpResponseResolver, HttpResponse } from 'msw'
@@ -153,6 +155,8 @@ export const handlers = [
   }),
 ]
 ```
+
+> Learn more about the [Higher-order response resolvers](#higher-order-response-resolvers) below.
 
 The library also exposes the `HttpRequestHandler` and `GraphQLRequestHandler` types to annotate custom functions that are meant to have the call signature identical to that of `http.*` and `graphql.*` request handlers:
 
