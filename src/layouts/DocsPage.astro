@@ -111,7 +111,7 @@ const shouldDisplayAds = import.meta.env.ADS
         </DocsMovileNav>
 
         <article>
-          <Grid>
+          <Grid className="relative">
             <!-- Nav tree -->
             <section class="hidden xl:block xl:w-1/5 xl:col-span-3 xl:fixed xl:top-[60px]">
               <nav id="docs-nav-tree" class="py-10 pr-10 overflow-y-auto h-[calc(100vh_-_60px)]">
@@ -156,24 +156,24 @@ const shouldDisplayAds = import.meta.env.ADS
 
             <!-- Table of contents -->
             <aside class="hidden py-10 pl-5 text-sm font-medium text-neutral-400 lg:block sm:col-span-3 xl:col-span-2">
-              <div class="sticky top-28 space-y-8">
-                {nestedHeadings.length > 0 ? (
-                  <section>
-                    <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
-                      Contents
-                    </h4>
-                    <TableOfContents headings={nestedHeadings}  />
-                  </section>
-                ) : null}
-
-                <DocsSidebarLinks />
-
-
-                <div>
-                  <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
-                    Partners
-                  </h4>
-                  <DocsSidebarSponsors />
+              <div class="sticky top-28">
+                <div class="flex flex-col gap-8 h-[calc(100vh_-_2.5rem_-_60px)] pb-12 overflow-x-hidden">
+                  {nestedHeadings.length > 0 ? (
+                    <section class="min-h-0 overflow-y-auto">
+                      <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
+                        Contents
+                      </h4>
+                      <TableOfContents headings={nestedHeadings}  />
+                    </section>
+                  ) : null}
+  
+                    <DocsSidebarLinks />
+                    <div>
+                      <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
+                        Partners
+                      </h4>
+                      <DocsSidebarSponsors />
+                    </div>
                 </div>
               </div>
             </aside>
