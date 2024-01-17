@@ -231,6 +231,8 @@ http.post('/login', async ({ request }) => {
 
 ## Related materials
 
+import { NewspaperIcon } from '@heroicons/react/24/outline'
+
 <div className="md:grid md:grid-cols-2 md:gap-x-5">
   <PageCard
     icon={CubeTransparentIcon}
@@ -243,5 +245,11 @@ http.post('/login', async ({ request }) => {
     url="/docs/api/http-response"
     title="HttpResponse"
     description="API reference for the `HttpResponse` class."
+  />
+  <PageCard
+    icon={NewspaperIcon}
+    url="/docs/best-practices/typescript"
+    title="Using with TypeScript"
+    description="Embrace type-safe API mocking with TypeScript."
   />
 </div>

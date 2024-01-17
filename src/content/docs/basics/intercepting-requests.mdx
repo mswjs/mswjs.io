@@ -51,7 +51,7 @@ http.get(
   // intercepted request, and decides how to handle it.
   ({ request, params, cookies }) => {
     return HttpResponse.json(['Tom', 'Jerry', 'Spike'])
-  }
+  },
 )
 ```
 
@@ -202,3 +202,4 @@ You don't. In Node.js, there is nothing to be relative to. If you are describing
 - [Browser integration](/docs/integrations/browser)
 - [Node.js integration](/docs/integrations/node)
 - [Structuring request handlers](/docs/best-practices/structuring-handlers)
+- [Using with TypeScript](/docs/best-practices/typescript)
