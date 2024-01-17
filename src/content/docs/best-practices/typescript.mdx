@@ -154,6 +154,28 @@ export const handlers = [
 ]
 ```
 
+The library also exposes the `HttpRequestHandler` and `GraphQLRequestHandler` types to annotate custom functions that are meant to have the call signature identical to that of `http.*` and `graphql.*` request handlers:
+
+```ts
+import { http, graphql, HttpRequestHandler, GraphQLRequestHandler } from 'msw'
+
+const myHttpHandler: HttpRequestHandler<Params, RequestBody, ResponseBody> = (
+  path,
+  resolver,
+  options
+) => {
+  return http.get(path, resolver, options)
+}
+
+const myGraphQLHandler: GraphQLRequestHandler<Query, Variables> = (
+  operationName,
+  resolver,
+  options
+) => {
+  return graphql.query(operationName, resolver, options)
+}
+```
+
 ## Higher-order response resolvers
 
 Use the `HttpResponseResolver` and `GraphQLResponseResolver` types to annotate custom response resolvers.
