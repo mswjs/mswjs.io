@@ -1,0 +1,43 @@
+---
+order: 10
+title: getResponse
+description: Resolve a request against request handlers programmatically.
+---
+
+The `getResponse` function is designed for programmatic resolution of requests. You don't need this function to use MSW for development and testing. You may need this function when building custom packages and functionality on top of MSW. You may also need this function for more complex request flows, such as mocking [batched GraphQL queries](/docs/recipes/graphql-query-batching).
+
+## Call signature
+
+```ts
+function getResponse(
+  handlers: Array<RequestHandler>,
+  request: Request
+): Promise<Response | undefined>
+```
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CodeBracketSquareIcon}
+  url="https://github.com/mswjs/msw/tree/main/src/core/getResponse.ts"
+  title="getResponse.ts"
+  description="Source code for the `getResponse` function."
+/>
+
+## Usage
+
+```js /getResponse/ {10}
+import { http, HttpResponse, getResponse } from 'msw'
+
+const handlers = [
+  http.get('/user', () => {
+    return HttpResponse.json({ name: 'John' })
+  }),
+]
+const request = new Request('/user')
+
+const response = await getResponse(handlers, request)
+const user = response?.json()
+// {"name":"John"}
+```
