@@ -226,7 +226,7 @@ export const handlers = [
     const { post } = variables
 
     // Push the new post to the list of all posts.
-    allPosts.push(post)
+    allPosts.set(post.id, post)
 
     // Respond with the body matching the mutation.
     return HttpResponse.json({
