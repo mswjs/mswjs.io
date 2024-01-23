@@ -39,9 +39,9 @@ http.post('/post/:postId', async ({ request, params, cookies }) => {
 The data below is available for every intercepted request, regardless if it's a REST API or a GraphQL request.
 
 | Name        | Type                                                                          | Description                                                  |
-| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------ | --- |
+| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | `request`   | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) | Fetch API Request representation of the intercepted request. |
-| `requestId` | `string`                                                                      | A UUID string identifier for the intercepted request.        | .   |
+| `requestId` | `string`                                                                      | A UUID string identifier for the intercepted request.        |
 | `cookies`   | `Record<string, string>`                                                      | Request cookies.                                             |
 | `params`    | `Record<string, string[] \| string>`                                          | Request path parameters.                                     |
 
