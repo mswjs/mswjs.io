@@ -139,6 +139,33 @@ export const handlers = [
   description="Handle the intercepted request by performing it as-is."
 />
 
+### Fallthrough the request
+
+If a response resolver returns nothing, it stops execution and tells MSW to keep looking for any other matching request handlers that may return instruction on how to handle the intercepted request.
+
+```js {8-10}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('/user', ({ request }) => {
+    // If the intercepted request has a particular
+    // "Accept" header value, skip this request handler
+    // and let MSW "fallthrough" to the next one.
+    if (request.headers.get('Accept') === 'text/csv') {
+      return
+    }
+
+    return HttpResponse.json({ name: 'John' })
+  }),
+  http.get('/user', () => {
+    // Since this request handler also matches the
+    // "GET /user" request, it will be used instead
+    // when the "Accept" request header is "text/csv".
+    return HttpResponse.text('John')
+  }),
+]
+```
+
 ### Combining instructions
 
 A single response resolver may handle the intercepted request differently based on a certain criteria.
