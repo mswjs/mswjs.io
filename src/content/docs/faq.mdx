@@ -131,3 +131,24 @@ beforeEach(() => {
 ## Light theme when?
 
 Whenever you have time to [open a pull request](https://github.com/mswjs/mswjs.io).
+
+## MSW doesn't work in concurrent tests
+
+If your test suite features multiple concurrent test that modify the network behavior (i.e. have `.use()` calls), you must scope the network to each test by using the `server.boundary()` API.
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/setup-server/boundary"
+  title="server.boundary()"
+  description="Scope the network interception to the given boundary."
+/>
+
+import { Warning } from '../../components/react/warning'
+
+<Warning>
+  You can only use `server.boundary()` with `setupServer()`. Browser tests do
+  not suffer from concurrency issues because the client runtime provides the
+  network isolation automatically.
+</Warning>
