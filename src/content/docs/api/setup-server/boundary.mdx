@@ -162,7 +162,7 @@ Although each test case relies on a particular network state, using the `server.
 
 ### Nested boundaries
 
-Whenever a server boundary is created, it takes whichever existing request handlers from the higher scope as the initial request handlers.
+Whenever a server boundary is created, it treats whichever existing request handlers from the higher scope as the initial request handlers.
 
 ```js /server.boundary/
 const server = setupServer(
