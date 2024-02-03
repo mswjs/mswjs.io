@@ -32,7 +32,7 @@ import { Warning } from '../../../../components/react/warning'
 
 The `server.boundary()` API is designed to provide the network behavior isolation. Any modifications to the request interception made within a boundary will only affect that boundary and nothing else.
 
-```js {10-18} /server.boundary/
+```js {10-20} /server.boundary/
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
