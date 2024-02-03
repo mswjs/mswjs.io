@@ -62,6 +62,23 @@ In the example above, the first `fetch()` call will be handled by whichever requ
 
 The `server.boundary()` API utilizes `AsyncLocalStorage`, which means that all the network in the current scope _and child scopes_ of the boundary will be affected by request handler overrides.
 
+The server boundary accepts whichever arguments passed to the callback function and returns whatever that function returns. With that in mind, you can use it even in situations when the callback is expected to return something.
+
+```js {9-11}
+// Let's imagine you are using a server boundary
+// in a backend framework that expects route handlers
+// to return Fetch API Response instances.
+router.get(
+  '/resource',
+  // This boundary will accept whatever arguments
+  // were given to it by "router.get", and return a
+  // new Response instance to the router.
+  server.boundary((request) => {
+    return new Response('Hello world')
+  })
+)
+```
+
 ### Standalone
 
 This API can be used standalone for various purposes, like a scoped network introspection, debugging, and development. In the example below, the `server.boundary()` is used to introspect all the network requests that are happening as a part of the `POST /resource` route handling in Express.
