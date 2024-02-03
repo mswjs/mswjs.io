@@ -181,7 +181,7 @@ server.boundary(async () => {
 
 Any request handler overrides within the boundary are prepended to the initial list of request handlers, similar to how they are in the regular `.use()` usage.
 
-When a server boundary is nested within another server boundary, whichever request handler state the upper boundary has is taken as the initial state for the nested boundary.
+When a server boundary is nested within another server boundary, whichever request handler state the upper boundary has is treated as the initial state for the nested boundary.
 
 ```js /server.boundary/
 const server = setupServer(
