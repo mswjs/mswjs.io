@@ -4,6 +4,7 @@
 
 :root {
   --orange: #ff6a33;
+  --main-code-color: #e1e4e8;
   color-scheme: attr(data-theme);
 }
 
@@ -94,7 +95,7 @@ blockquote em {
   @apply border-b border-dotted border-orange;
 }
 
-[role='alert'] p {
+[role="alert"] p {
   @apply my-0;
 }
 
@@ -128,9 +129,82 @@ code:not([data-language]) {
 .astro-code,
 pre[data-language] {
   @apply my-5 py-3 rounded-lg text-sm border border-neutral-700;
-
-  background-color: #171717 !important;
   line-height: 1.5;
+}
+/* Light theme styles */
+html[data-theme="light"] .astro-code,
+html[data-theme="light"] pre[data-language] {
+  background-color: #f7f7f7 !important;
+  border-color: #e1e4e8 !important; /** border-neutral-200 */
+}
+
+/**
+* The following styles are used to override the default syntax highlighting colors
+* In case we found a span with a specific color (which is in general the color of the main text) we override it
+* with the color of the main text in the light theme
+*/
+html[data-theme="light"] span[style="color:#E1E4E8"],
+html[data-theme="light"] span[style="color:#e1e4e8"] {
+  color: #52525b !important; /** text-neutral-600 */
+}
+
+/**
+* Highlighted lines and characters
+*/
+html[data-theme="light"] span[data-highlighted-line],
+html[data-theme="light"] span[data-highlighted-chars] {
+  background-color: #e5e5e5 !important; /** bg-neutral-200 */
+}
+
+/**
+* Regex
+*/
+html[data-theme="light"] span[style="color:#DBEDFF"] {
+  color: #ec4899 !important; /** text-pink-500 */
+}
+/**
+* String colors
+*/
+html[data-theme="light"] span[style="color:#9ECBFF"] {
+  color: #06b6d4 !important; /** text-cyan-500 */
+}
+
+/**
+* Variables colors
+*/
+html[data-theme="light"] span[style="color:#79B8FF"] {
+  color: #3b82f6 !important; /** text-blue-500 */
+}
+
+/**
+* Functions colors
+*/
+html[data-theme="light"] span[style="color:#B392F0"] {
+  color: #8b5cf6 !important; /** text-violet-500 */
+}
+
+/**
+* Keywords colors
+*/
+html[data-theme="light"] span[style="color:#F97583"] {
+  color: #ef4444 !important; /** text-red-500 */
+}
+
+/**
+* Params colors
+*/
+html[data-theme="light"] span[style="color:#FFAB70"] {
+  color: #f59e0b !important; /** text-amber-500 */
+}
+
+/* Dark theme styles */
+html[data-theme="dark"] .astro-code,
+html[data-theme="dark"] span[style="color:#E1E4E8"] {
+  color: #e1e4e8 !important; /** text-neutral-50 */
+}
+
+html[data-theme="dark"] {
+  --main-code-color: #e1e4e8 !important;
 }
 
 pre[data-language] {
@@ -152,15 +226,15 @@ pre[data-language] code {
   @apply inline-block w-[3ch] text-neutral-500;
 }
 
-span[style='color:#6A737D'] {
+span[style="color:#6A737D"] {
   @apply italic;
 }
 
-code[data-line-numbers-max-digits='2'] > [data-line]::before {
+code[data-line-numbers-max-digits="2"] > [data-line]::before {
   width: 2rem;
 }
 
-code[data-line-numbers-max-digits='3'] > [data-line]::before {
+code[data-line-numbers-max-digits="3"] > [data-line]::before {
   width: 3rem;
 }
 
@@ -202,7 +276,7 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
   position: absolute;
   top: 0;
   bottom: 0;
-  content: '';
+  content: "";
   width: 15%;
 }
 .companies-list:before {
@@ -218,13 +292,13 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
   @apply relative;
 }
 .integration-usage:before {
-  content: '';
+  content: "";
   @apply absolute -inset-10 bg-white dark:bg-neutral-900 -z-10;
 }
 
 .integration-line:before,
 .integration-line:after {
-  content: '';
+  content: "";
   @apply absolute left-0 right-0 h-1 w-[50vw] bg-neutral-200 dark:bg-neutral-800 -translate-x-1/2;
   @apply hidden lg:block;
 }
@@ -274,7 +348,7 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
 }
 
 .dark .prose p {
-  @apply text-neutral-200
+  @apply text-neutral-200;
 }
 
 .prose p code {
@@ -285,8 +359,6 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
   @apply bg-neutral-800 border-neutral-700 text-neutral-300;
 }
 
-
-
 .prose a code {
   @apply bg-neutral-100 border-neutral-200 text-neutral-600;
 }
@@ -294,7 +366,6 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
 .dark .prose a code {
   @apply bg-neutral-800 border-neutral-700 text-neutral-300;
 }
-
 
 .prose li code {
   @apply bg-neutral-100 border-neutral-200 text-neutral-600;
@@ -304,13 +375,10 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
   @apply bg-neutral-800 border-neutral-700 text-neutral-300;
 }
 
-
 /* Blockquote / Callouts */
 .prose blockquote {
   @apply dark:!text-neutral-400 !text-neutral-500 !border-l-2 dark:!border-neutral-700 !border-neutral-300 !not-italic !font-semibold !leading-normal;
 }
-
-
 
 blockquote em {
   @apply text-orange border-dotted border-b border-orange not-italic;
@@ -333,7 +401,7 @@ blockquote em {
 .prose h3 a::after,
 .prose h4 a::after {
   @apply hidden ml-1 text-neutral-400 dark:text-neutral-500;
-  content: '#';
+  content: "#";
 }
 
 .prose h2 a:hover::after,
