@@ -66,6 +66,10 @@ import JestMissingGlobals from './shared/jest-missing-globals.mdx'
 
 <JestMissingGlobals />
 
+## `Request`/`Response`/`TextEncoder`/`structuredClone` is not defined (Jest)
+
+[Improved Jest Environment to solve these Errors](https://github.com/mswjs/msw/issues/1916#issuecomment-1919965699)
+
 ## Why should I drop query parameters from the request handler URL?
 
 Query parameters do not describe RESTful resources. Instead, they provide additional _data_ to the server. Query parameters will be automatically stripped by MSW during the request matching and will have no effect.
