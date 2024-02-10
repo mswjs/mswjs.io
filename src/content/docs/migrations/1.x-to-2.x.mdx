@@ -736,6 +736,12 @@ import JestMissingGlobals from '../shared/jest-missing-globals.mdx'
 
 <JestMissingGlobals />
 
+## `Request`/`Response`/`TextEncoder`/`structuredClone` is not defined (Jest)
+
+import JestMissingGlobalsSolution from './shared/jest-missing-globals-solution.mdx'
+
+<JestMissingGlobalsSolution />
+
 ### Cannot find module 'msw/node' (JSDOM)
 
 This error is thrown by your test runner because JSDOM uses the `browser` export condition by default. This means that when you import any third-party packages, like MSW, JSDOM forces its `browser` export to be used as the entrypoint. This is incorrect and dangerous because _JSDOM still runs in Node.js_ and cannot guarantee full browser compatibility by design.
