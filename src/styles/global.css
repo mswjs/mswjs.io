@@ -242,3 +242,10 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
 .docs-group-item[open] .icon {
   @apply text-white rotate-90;
 }
+
+.action {
+  @apply my-5;
+}
+.action p {
+  @apply m-0;
+}
