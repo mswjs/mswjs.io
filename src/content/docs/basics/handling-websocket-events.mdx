@@ -1,0 +1,239 @@
+---
+order: 3
+title: Handling WebSocket events
+description: Learn how to intercept and mock WebSocket events.
+keywords:
+  - websocket
+  - event
+  - ws
+---
+
+MSW supports intercepting and mocking WebSocket connections using its designated [`ws` API](/docs/api/ws). This page will guide you through the basics of handling WebSocket events, explain the mental model behind MSW when intercepting duplex connections, and elaborate on the defaults the library ships to promote good developer experience.
+
+## Respecting standards
+
+Mock Service Worker is dedicated to respecting, promoting, and teaching you about the web standards. The way you intercept and mock WebSocket communications will be according to the [WHATWG WebSocket Standard](https://websockets.spec.whatwg.org/), which means treating clients as `EventTarget`, listening to events like `"message"` and `"close"`, and reading the sent and received data from the `MessageEvent` objects.
+
+**We do not plan to support custom WebSocket protocols**, such as those using HTTP polling. Those are proprietary to the third-party tooling that implements them, and there is no reliable way for MSW to intercept such protocols without introducing non-standard, library-specific logic.
+
+That being said, we acknowledge that the standard `WebSocket` interface is rarely used in production systems as-is. Often, it's used as the underlying implementation detail for more convenient third-party abstractions like SocketIO or PartyKit. We firmly believe in mock-as-you-use philosophy and want to provide you with the mocking experience that resembles the actual usage of the third-party libraries you may be relying on through the concept of [Bindings](#bindings).
+
+## Event types
+
+Unlike HTTP, a WebSocket communication is _duplex_, which means that the client and the server may send events independently. There are two types of events you can handle with MSW:
+
+- **Outgoing client events**. These are the events the client sends via `.send()`;
+- **Incoming server events**. These are the events the server sends and the client receives via its `"message"` event listener.
+
+## Intercepting connections
+
+To support the duplex nature of the WebSocket communication and allow you to intercept both client-sent and server-sent events, MSW effectively acts as a middleware layer that sits between your client and a WebSocket server.
+
+```
+client ⇄ MSW ⇄ server
+```
+
+You are in control of how you want to utilize MSW. It can become a full substitute for a WebSocket server in a mock-first development, act as a proxy to observe and modify the events coming from the production server, or emulate client-sent events to test various server behaviors.
+
+Handling WebSocket events starts by defining the server URL that the client connects to. This is done using the `ws.link()` method.
+
+```js /ws/1,2
+import { ws } from 'msw'
+
+const chat = ws.link('wss://chat.example.com')
+```
+
+> You can use the same URL predicate for WebSocket as you use for the `http` handlers: relative and absolute URLs, regular expressions, and paths with parameters and wildcards.
+
+Next, add an event handler to the list of your handlers:
+
+```js {2-4}
+export const handlers = [
+  chat.on('connection', () => {
+    console.log('outgoing WebSocket connection')
+  }),
+]
+```
+
+You will be handling both client-sent and server-sent events within the `"connection"` event listener.
+
+## Important defaults
+
+MSW implements a set of default behaviors to ensure good developer experience in different testing and development scenarios concerning WebSockets. You can opt-out from all of those, and fine-tune the interception behavior to suit your needs.
+
+### Client-to-server event forwarding
+
+By default, **outgoing client events _are not_ forwarded to the original server**. In fact, no connection to the original server is ever established. This allows for mock-first development, where the original server may not yet exist.
+
+> Learn how to opt-out from this behavior and [enable client-to-server forwarding](#client-to-server-forwarding).
+
+### Server-to-client event forwarding
+
+By default, once you [establish the actual server connection](#connecting-to-the-server), **all incoming server events _are_ forwarded to the client.** This combines nicely with the explicit intention to connect to the actual server, as there's little reason to do so without also wishing to receive the server events.
+
+> Learn how to opt-out from this behavior and [modify or prevent server events](#preventing-server-events).
+
+## Client events
+
+### Intercepting client events
+
+To intercept an outgoing client event, grab the `client` object from the `"connection"` event listener argument and add a `"message"` listener on that object.
+
+```js /client/1,2 {2-4}
+chat.on('connection', ({ client }) => {
+  client.addEventListener('message', (event) => {
+    console.log('from client:', event.data)
+  })
+})
+```
+
+Now, whenever a WebSocket client sends data via the `.send()` method, the `"message"` listener in this handler will be called. The listener exposes a single `event` argument, which is a [`MessageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent) received from the client, with the sent data available as `event.data`.
+
+### Sending data to the client
+
+To send data to the connected client, grab the `client` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send.
+
+```js /client/1,2 {2}
+chat.on('connection', ({ client }) => {
+  client.send('Hello from the server!')
+})
+```
+
+> MSW supports sending strings, `Blob`, and `ArrayBuffer`.
+
+### Broadcasting data to clients
+
+To broadcast data to all connected clients, use the `.broadcast()` method on the event handler object (the one returned from the `ws.link()` call) and provide it with the data you wish to broadcast.
+
+```js /chat/2 {2}
+chat.on('connection', () => {
+  chat.broadcast('Hello everyone!')
+})
+```
+
+You can also broadcast data to all clients except a subset of clients by using the `.boardcastExcept()` method on the event handler object.
+
+```js {3,6}
+chat.on('connection', ({ client }) => {
+  // Broadcast data to all clients except the current one.
+  chat.broadcastExcept(client, 'Hello everyone except you!')
+
+  // Broadcast data to all the clients matching a predicate.
+  chat.boardcastExcept(chat.clients.filter((client) => {
+    return client
+  }, "Hello to some of you!")
+})
+```
+
+## Server events
+
+### Connecting to the server
+
+import { Warning } from '../../../components/react/warning'
+
+<Warning>To handle any events from the actual WebSocket server, you must _connect_ to that server first.</Warning>
+
+To establish the connection to the actual WebSocket server, grab the `server` object from the `"connection"` event listener argument and call its `.connect()` method.
+
+```js /server/ {2}
+chat.on('connection', ({ server }) => {
+  server.connect()
+})
+```
+
+### Intercepting server events
+
+To intercept an incoming event from the actual sever, grab the `server` object from the `"connection"` event listener argument and add a `"message"` event listener on that object.
+
+```js /server/1,2 {2-4}
+chat.on('connection', ({ server }) => {
+  server.addEventListener('message', (event) => {
+    console.log('from server:', event.data)
+  })
+})
+```
+
+Now, whenever the actual server sends data, the `"message"` listener in this handler will be called. The listener exposes a single `event` argument, which is a [`MessageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent) received from the client, with the sent data available as `event.data`.
+
+### Preventing server events
+
+By default, all server events are forwarded to the connected client. You can opt-out from this behavior by preventing the received server `"message"` event. This is handy if you wish to modify the server-sent data before it reaches the client or prevent some server events from arriving at the client completely.
+
+```js {4}
+chat.on('connection', ({ client, server }) => {
+  server.addEventListener('message', (event) => {
+    // Prevent the default server-to-client forwarding.
+    event.preventDefault()
+
+    // Modify the original server-sent data and send
+    // it to the client instead.
+    client.send(event.data + 'mocked')
+  })
+})
+```
+
+### Sending data to the server
+
+To send data to the actual server, grab the `server` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send to the server.
+
+```js /server/ {2}
+chat.on('connection', ({ server }) => {
+  server.send('hello from client!')
+}
+```
+
+This is equivalent to a client sending that data to the server.
+
+### Client-to-server forwarding
+
+By default, the actual server will not receive any outgoing client events—they will short-circuit on your event handler's level. If you wish to forward client-to-server events, establish the actual server connection by calling `server.connect()`, listen to the outgoing events via the `"message"` event listener on the `client` object, and use the `server.send()` method to forward the data.
+
+```js {2-3,5-9}
+chat.on('connection', ({ client, server }) => {
+  // Establish the actual server connection.
+  server.connect()
+
+  // Listen to all outgoing client events.
+  client.addEventListener('message', (event) => {
+    // And send them to the actual server as-is.
+    server.send(event.data)
+  })
+})
+```
+
+> You can control what messages to forward to the actual server in the `"message'` event listener on the `client` object. Feel free to introduce conditions, analyze the message, or modify the data to forward.
+
+## Bindings
+
+To provide a more familiar experience when mocking third-party WebSocket clients, MSW uses _bindings_. A binding is a wrapper over the standard `WebSocket` class that encapsulates the third-party-specific behaviors, such as message parsing, and gives you a public API similar to that of the bound third-party library.
+
+For example, here's how to handle SocketIO communication using MSW and a designated SocketIO binding:
+
+```js /bind/1,3 {2,8}
+import { ws } from 'msw'
+import { bind } from '@mswjs/socket.io-binding'
+
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.on('connection', (connection) => {
+    const io = bind(connection)
+
+    io.client.on('hello', (username) => {
+      io.client.emit('message', `hello, ${username}!`)
+    })
+  }),
+]
+```
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CodeBracketSquareIcon}
+  url="https://github.com/mswjs/socket.io-binding"
+  title="@mswjs/socket.io-binding"
+  description="Connection wrapper for mocking Socket.IO with MSW."
+/>
+
+> Note that binding is not meant to cover all the public APIs of the respective third-party library. Unless the binding is shipped by that library, maintaining full compatibility is not feasible.
