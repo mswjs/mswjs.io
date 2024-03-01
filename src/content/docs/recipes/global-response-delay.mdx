@@ -1,0 +1,91 @@
+---
+title: Global response delay
+description: Delay all responses in the application.
+keywords:
+  - response
+  - delay
+  - timing
+  - global
+  - reuse
+  - consistent
+---
+
+While you can control the response time (i.e. delay) of individual responses using the [`delay()`](/docs/api/delay) API, sometimes you want to apply a delay consistently to _all_ mocked responses. There are a couple of ways you can do that with MSW.
+
+## Option 1: A delay passthrough handler
+
+The request handlers you define are executed in order, which means that a single intercepted request can execute multiple request handlers (until there's one that returns a mocked response).
+
+You can take advantage of that execution order and introduce a passthrough request handler that matches all outgoing requests and adds a delay in its response resolver without returning a mocked response.
+
+```js {4-6} /http.all/
+import { http, delay, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.all('*', async () => {
+    await delay(1000)
+  }),
+  http.get('/user', () => {
+    return HttpResponse.json({ id: 'abc-123' })
+  }),
+  http.post('/cart/:cartId', () => {
+    return new HttpResponse(null, { status: 201 })
+  }),
+]
+```
+
+In the example above, both `GET /user` and `POST /cart/:cartId` requests will match the `http.all('*')` request handler, which will delay their eventual resolution by 1000ms.
+
+This option provides you with a consistent delay across all request handlers but makes it harder to opt-out from this behavior for specific handlers (you'd have to put those _before_ the all-matching `http.all('*')`).
+
+## Option 2: Higher-order response resolver
+
+You can create a higher-order response resolver that encapsulates the delay logic while giving you the flexibility over which responses to delay.
+
+```ts {6} /delay/
+// withDelay.ts
+import { delay, HttpResponseResolver } from 'msw'
+
+export async function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
+  return async (...args) => {
+    await delay(1000)
+    return resolver(...args)
+  }
+}
+```
+
+> You can design the `withDelay()` function as you wish. For example, instead of hard-coding the delay duration, you can expose it as an argument to the `withDelay()` function for each individual request handler to specify.
+
+```ts /withDelay/1,3,4
+// handlers.ts
+import { http, HttpResponse } from 'msw'
+import { withDelay } from './withDelay'
+
+export const handlers = [
+  http.get('/user', withDelay(({ request }) => {
+    return HttpResponse.json({ id: 'abc-123' })
+  }),
+  http.post('/cart/:cartId', withDelay(({ request }) => {
+    return new HttpResponse(null, { status: 201 })
+  }),
+  http.get('/products', () => {
+    return HttpResponse.json([1, 2, 3])
+  })
+]
+```
+
+In the example above, the `GET /user` and `POST /cart/:cartId` requests will be delayed by 1000ms because their response resolvers are wrapped in the `withDelay()` higher-order resolver. Note that the `GET /products` request _will no have any delay_, respectively.
+
+This option gives you more control over which responses to delay while encapsulating the delay logic within the higher-order response resolver for consistency.
+
+Learn more about creating higher-order response resolvers:
+
+import { PageCard } from '../../../components/react/pageCard'
+import { BeakerIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+icon={BeakerIcon}
+url="/docs/recipes/higher-order-resolver"
+title="Higher order resolver"
+description="Perform an additional request outside of the interception algorithm."
+/>
