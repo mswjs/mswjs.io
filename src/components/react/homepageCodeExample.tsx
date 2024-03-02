@@ -98,6 +98,8 @@ export function HomepageCodeExample() {
           <span style={{ color: '#E1E4E8' }}>{`handlers)`}</span>
         </span>
         <span data-line="">
+          <span style={{ color: '#F97583' }}>await</span>
+          <span style={{ color: '#E1E4E8' }}> </span>
           <span style={{ color: '#E1E4E8' }}>worker.</span>
           <span style={{ color: '#B392F0' }}>start</span>
           <span style={{ color: '#E1E4E8' }}>()</span>
