@@ -1,21 +1,25 @@
 ---
 import { CommandLineIcon } from '@heroicons/react/24/outline'
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import { Footer } from '../components/react/footer';
-import { SITE_TITLE, SITE_DESCRIPTION, EGGHEAD_COURSE_URL } from '../consts';
-import { Container } from '../components/react/container';
-import { Grid } from '../components/react/grid';
-import { Section } from '../components/react/section';
-import { PageHeaderWrapper, PageHeaderPrefix, PageHeaderSubtitle } from '../components/react/pageHeader';
-import { AnnouncementBanner } from '../components/react/announcementBanner';
-import { UppercaseLabel } from '../components/react/uppercaseLabel';
-import { ComponentExample } from '../components/react/app';
+import BaseHead from '../components/BaseHead.astro'
+import Header from '../components/Header.astro'
+import { Footer } from '../components/react/footer'
+import { SITE_TITLE, SITE_DESCRIPTION, EGGHEAD_COURSE_URL } from '../consts'
+import { Container } from '../components/react/container'
+import { Grid } from '../components/react/grid'
+import { Section } from '../components/react/section'
+import {
+  PageHeaderWrapper,
+  PageHeaderPrefix,
+  PageHeaderSubtitle,
+} from '../components/react/pageHeader'
+import { AnnouncementBanner } from '../components/react/announcementBanner'
+import { UppercaseLabel } from '../components/react/uppercaseLabel'
+import { ComponentExample } from '../components/react/app'
 import { MswBlockItem } from '../components/react/mswBlockItem'
-import { HomepageCodeExample } from '../components/react/homepageCodeExample';
-import { HeroQuote } from '../components/react/heroQuote';
-import { Quote } from '../components/react/quote';
-import { GettingStarted } from '../components/react/gettingStarted';
+import { HomepageCodeExample } from '../components/react/homepageCodeExample'
+import { HeroQuote } from '../components/react/heroQuote'
+import { Quote } from '../components/react/quote'
+import { GettingStarted } from '../components/react/gettingStarted'
 
 import { CypressRunnerIntegration } from '../components/react/integrations/cypressRunner'
 import { StorybookShowcase } from '../components/react/integrations/storybookShowcase'
@@ -54,15 +58,21 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
 
 <!doctype html>
 <html lang="en" data-theme="dark" transition:animate="none">
-	<head>
-		<BaseHead title={SITE_TITLE} displayTitle={`${SITE_TITLE} - ${SITE_DESCRIPTION}`} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
+  <head>
+    <BaseHead
+      title={SITE_TITLE}
+      displayTitle={`${SITE_TITLE} - ${SITE_DESCRIPTION}`}
+      description={SITE_DESCRIPTION}
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
       {/* Hero */}
-			<Container>
-        <section class="hero-gradient max-w-screen-md py-16 md:py-24 mx-auto md:text-center lg:py-48">
+      <Container>
+        <section
+          class="hero-gradient mx-auto max-w-screen-md py-16 md:py-24 md:text-center lg:py-48"
+        >
           <div class="lg:-mt-16">
             <AnnouncementBanner
               actionText="Watch now"
@@ -80,27 +90,31 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
             </AnnouncementBanner>
           </div>
 
-          <h1 class="mb-8 md:text-6xl font-black">
+          <h1 class="mb-8 font-black md:text-6xl">
             <span class="text-orange">Industry standard</span>
             <br />
             API mocking for JavaScript.
           </h1>
-          <p class="text-xl md:text-2xl md:leading-9 text-neutral-400 tracking-tight">
-            <span class="text-white">Mock Service Worker</span> is an API
-            mocking library that allows you to write client-agnostic mocks and
-            reuse them across any frameworks, tools, and environments.
+          <p
+            class="text-xl tracking-tight text-neutral-400 md:text-2xl md:leading-9"
+          >
+            <span class="text-white">Mock Service Worker</span> is an API mocking
+            library that allows you to write client-agnostic mocks and reuse them
+            across any frameworks, tools, and environments.
           </p>
-          <footer class="mt-14 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 text-lg font-semibold">
+          <footer
+            class="mt-14 flex flex-col items-center justify-center gap-6 text-lg font-semibold md:flex-row md:gap-10"
+          >
             <a
               href="/docs/getting-started"
-              class="button button-primary inline-flex items-center justify-center gap-2 w-full md:w-auto md:px-8"
+              class="button button-primary inline-flex w-full items-center justify-center gap-2 md:w-auto md:px-8"
             >
-            <CommandLineIcon className='w-[24px] text-orange' />
+              <CommandLineIcon className="text-orange w-[24px]" />
               Get started
-						</a>
+            </a>
             <a
               href="https://github.com/mswjs/msw"
-              class="inline-block text-center text-neutral-300 w-full md:w-auto hover:text-white"
+              class="inline-block w-full text-center text-neutral-300 hover:text-white md:w-auto"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -109,10 +123,12 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
           </footer>
         </section>
 
-        <div class="py-16 md:py-40 text-center">
+        <div class="py-16 text-center md:py-40">
           <UppercaseLabel>Making tests better at</UppercaseLabel>
           <Grid className="relative">
-            <div class="col-span-full lg:col-start-3 lg:col-span-8 grid grid-cols-3 md:grid-cols-6 items-center justify-items-center gap-x-6 gap-y-6 md:gap-y-10 fill-white max-w-full md:max-w-6xl overflow-hidden">
+            <div
+              class="col-span-full grid max-w-full grid-cols-3 items-center justify-items-center gap-x-6 gap-y-6 overflow-hidden fill-white md:max-w-6xl md:grid-cols-6 md:gap-y-10 lg:col-span-8 lg:col-start-3"
+            >
               <MicrosoftIcon
                 className="h-9 max-w-full"
                 aria-label="Microsoft"
@@ -138,7 +154,10 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <GitLabIcon className="h-9 max-w-full" aria-label="GitLab" />
               <MozillaIcon className="h-9 max-w-full" aria-label="Mozilla" />
             </div>
-            <div class="absolute md:hidden left-0 bottom-0 w-full h-40 bg-gradient-to-t from-neutral-900 to-transparent" />
+            <div
+              class="absolute bottom-0 left-0 h-40 w-full bg-gradient-to-t from-neutral-900 to-transparent md:hidden"
+            >
+            </div>
           </Grid>
         </div>
       </Container>
@@ -146,18 +165,20 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
       {/* Control the network */}
       <section class="my-24 md:my-48">
         <Container>
-          <PageHeaderWrapper className='mt-0'>
+          <PageHeaderWrapper className="mt-0">
             <h2 class="mb-8 capitalize">Control the network</h2>
             <PageHeaderSubtitle className="md:w-3/6">
               Focus on describing how the network should behave instead of
               thinking how to mock your request client.
             </PageHeaderSubtitle>
-          </PageHeader>
+          </PageHeaderWrapper>
           <Grid>
-            <div class="col-span-6 text-md">
+            <div class="text-md col-span-6">
               <div class="relative md:pb-[105px]">
                 <HomepageCodeExample />
-                <div class="hidden md:block absolute right-0 bottom-0 md:w-[384px]">
+                <div
+                  class="absolute bottom-0 right-0 hidden md:block md:w-[384px]"
+                >
                   <ComponentExample />
                 </div>
               </div>
@@ -180,10 +201,9 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
                       class="text-white hover:underline"
                     >
                       GraphQL API
-                  </a>{' '}
-                    requests regardless of how they were made. Use request
-                    clients that suit your product, not your API mocking tool of
-                    choice.
+                    </a>{' '}
+                    requests regardless of how they were made. Use request clients
+                    that suit your product, not your API mocking tool of choice.
                   </p>
                 </li>
                 <li>
@@ -197,10 +217,12 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
                 <li>
                   <h3>Reuse like never before</h3>
                   <p class="text-neutral-400">
-                    No configurations, adapters, or plugins. Reuse the same mocks across environments and tools, be it an
-                    integration test with Vitest, an automated browser test with
-                    Playwright, a demo showcase in Storybook, or a React Native
-                    app. <strong>Or all of them at once</strong>.
+                    No configurations, adapters, or plugins. Reuse the same
+                    mocks across environments and tools, be it an integration
+                    test with Vitest, an automated browser test with Playwright,
+                    a demo showcase in Storybook, or a React Native app. <strong
+                      >Or all of them at once</strong
+                    >.
                   </p>
                 </li>
               </ul>
@@ -228,16 +250,21 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
       </Section>
 
       {/* Integrate anywhere */}
-      <section class="my-24 md:my-48 overflow-hidden">
+      <section class="my-24 overflow-hidden md:my-48">
         <Container>
-          <PageHeaderWrapper className='mt-0'>
+          <PageHeaderWrapper className="mt-0">
             <h2 class="mb-8 capitalize">Integrate anywhere</h2>
             <PageHeaderSubtitle className="md:w-3/6">
               A single source of truth for your network across the entire stack.
             </PageHeaderSubtitle>
           </PageHeaderWrapper>
-          <div class="relative grid lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2 gap-x-10 gap-y-32 max-w-xl md:max-w-none mx-auto">
-            <div class="integration-line absolute inset-0 m-auto w-1 h-full lg:h-1/2 bg-neutral-800 -z-10" />
+          <div
+            class="relative mx-auto grid max-w-xl gap-x-10 gap-y-32 md:max-w-none lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2"
+          >
+            <div
+              class="integration-line absolute inset-0 -z-10 m-auto h-full w-1 bg-neutral-800 lg:h-1/2"
+            >
+            </div>
             {/* Local development */}
             <div class="integration-usage lg:self-end">
               <div class="lg:flex lg:justify-end">
@@ -245,13 +272,15 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               </div>
               <div class="mt-8 lg:text-right">
                 <p class="text-xl font-bold">Local development</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg ml-auto">
+                <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
                   Create, change, and debug fast by augmenting existing
                   APIs—both third-party and local—or designing them as you go.
                 </p>
               </div>
             </div>
-            <div class="-order-1 lg:order-none lg:row-span-2 flex px-10 self-center justify-self-center bg-neutral-900">
+            <div
+              class="-order-1 flex self-center justify-self-center bg-neutral-900 px-10 lg:order-none lg:row-span-2"
+            >
               <MswBlockItem />
             </div>
             {/* Vitest */}
@@ -259,7 +288,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <VitestRunner />
               <div class="mt-8">
                 <p class="text-xl font-bold">Integration tests</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg">
+                <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
                   Test happy paths and override network behavior on a per-test
                   basis to test even the most trickest of edge cases.
                 </p>
@@ -270,7 +299,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <CypressRunnerIntegration />
               <div class="mt-8 lg:text-right">
                 <p class="text-xl font-bold">End-to-end tests</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg ml-auto">
+                <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
                   Take any HTTP call out of your test's equation and focus on
                   the user experience, mocking local or external APIs.
                 </p>
@@ -281,7 +310,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               <StorybookShowcase />
               <div class="mt-8">
                 <p class="text-xl font-bold">Storybook showcase</p>
-                <p class="text-lg mt-2 text-neutral-400 lg:max-w-lg">
+                <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
                   Emulate the precise network state to share how your components
                   handle it with the entire team.
                 </p>
@@ -293,7 +322,9 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
               Works with any tool there is or{' '}
               <em class="text-orange not-italic">ever will be</em>
             </UppercaseLabel>
-            <div class="inline-grid grid-cols-6 gap-10 items-center text-neutral-500">
+            <div
+              class="inline-grid grid-cols-6 items-center gap-10 text-neutral-500"
+            >
               <ReactIcon className="w-10 text-white" />
               <VueIcon className="w-10 text-white" />
               <AngularIcon className="w-10 text-white" />
@@ -333,7 +364,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
             <PageHeaderSubtitle>
               What developers are saying.
             </PageHeaderSubtitle>
-          </PageHeader>
+          </PageHeaderWrapper>
           <Grid className="items-start lg:grid-cols-2 xl:grid-cols-3">
             <div class="space-y-10">
               <Quote author="Alffrey Chemmannoor" imageUrl={noAvatar.src}>
@@ -347,7 +378,9 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
                 imageUrl={michaelHaglundAvatar.src}
                 position="Engineering Manager"
               >
-                We've switched our tests over to use Mock Service Worker and we{' '}
+                We've switched our tests over to use Mock Service Worker and we{
+                  ' '
+                }
                 <em>haven't looked back ever since</em>.
               </Quote>
               <Quote
@@ -355,9 +388,8 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
                 position="Maintainer of React Bootstrap"
                 imageUrl={bradyPascoeAvatar.src}
               >
-                <em>I don't think I can use anything other than MSW</em> after
-                picking it up for a project at my previous workplace, to be
-                honest.
+                <em>I don't think I can use anything other than MSW</em> after picking
+                it up for a project at my previous workplace, to be honest.
               </Quote>
             </div>
             <div class="space-y-10">
@@ -411,8 +443,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
       </Container>
 
       <GettingStarted />
-
-		</main>
-		<Footer />
-	</body>
+    </main>
+    <Footer />
+  </body>
 </html>
