@@ -110,7 +110,7 @@ graphql.mutation<AddCommentQuery, AddCommentVariables>(
         commentUrl: `/post/${postId}?commentId=${crypto.randomUUID()}`,
       },
     })
-  },
+  }
 )
 ```
 
@@ -118,10 +118,12 @@ graphql.mutation<AddCommentQuery, AddCommentVariables>(
 
 ## Higher-order request handlers
 
-Use the `HttpHandler` and `GraphQLHandler` types to annotate higher-order request handlers.
+Annotating custom request handlers will depend on the call signature of your higher-order functions. Here are a few examples.
+
+First, let's see how you can abstract away a `resolver` function while locking its types within the higher-order handler, using the `HttpResponseResolver` type:
 
 ```ts
-import { HttpHandler, HttpResponseResolver, http, HttpResponse } from 'msw'
+import { http, HttpResponseResolver, HttpResponse } from 'msw'
 
 type SdkRequest = {
   transactionId: string
@@ -133,8 +135,8 @@ type SdkResponse = {
 }
 
 function handleSdkRequest(
-  resolver: HttpResponseResolver,
-): HttpHandler<never, SdkRequest, SdkResponse> {
+  resolver: HttpResponseResolver<never, SdkRequest, SdkResponse>
+) {
   return http.post('https://some-sdk.com/internal/request', resolver)
 }
 
@@ -152,6 +154,30 @@ export const handlers = [
     })
   }),
 ]
+```
+
+> Learn more about the [Higher-order response resolvers](#higher-order-response-resolvers) below.
+
+The library also exposes the `HttpRequestHandler` and `GraphQLRequestHandler` types to annotate custom functions that are meant to have the call signature identical to that of `http.*` and `graphql.*` request handlers:
+
+```ts
+import { http, graphql, HttpRequestHandler, GraphQLRequestHandler } from 'msw'
+
+const myHttpHandler: HttpRequestHandler<Params, RequestBody, ResponseBody> = (
+  path,
+  resolver,
+  options
+) => {
+  return http.get(path, resolver, options)
+}
+
+const myGraphQLHandler: GraphQLRequestHandler<Query, Variables> = (
+  operationName,
+  resolver,
+  options
+) => {
+  return graphql.query(operationName, resolver, options)
+}
 ```
 
 ## Higher-order response resolvers
@@ -173,7 +199,7 @@ function withDelay<
   // so the arguments passed to "http.get" propagate here.
   Params extends PathParams,
   RequestBodyType extends DefaultBodyType,
-  ResponseBodyType extends DefaultBodyType,
+  ResponseBodyType extends DefaultBodyType
 >(durationMs: number, resolver: HttpResponseResolver): HttpResponseResolver {
   return async (...args) => {
     await delay(durationMs)
@@ -189,7 +215,7 @@ export const handlers = [
       // to the "http.get()" request handler propagates
       // through the custom "withDelay" response resolver.
       return HttpResponse.text('hello world')
-    }),
+    })
   ),
 ]
 ```

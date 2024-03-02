@@ -32,6 +32,11 @@
       "statusCode": 301
     },
     {
+      "source": "/docs/api/graphql/operation",
+      "destination": "/docs/api/graphql#graphqloperationresolver",
+      "statusCode": 301
+    },
+    {
       "source": "/docs/getting-started/integrate",
       "destination": "/docs/getting-started#step-3-integrate-anywhere",
       "statusCode": 301

@@ -19,7 +19,7 @@ The `setupServer` function acts as a bridge to apply the same request handlers i
 
 ### Precautions
 
-Reusing the same handlers between the browser and Node.js may have certain limitations. The browser-specific API you may use in your handlers, like `fetch` or `localStorage`, will not be available in Node.js. It would be your responsibility to polyfill any unsupported API as a part of your test setup.
+Reusing the same handlers between the browser and Node.js may have certain limitations. The browser-specific API you may use in your handlers, like `location` or `localStorage`, will not be available in Node.js. It is your responsibility to polyfill those APIs in tests or use an appropriate testing environment that provides them.
 
 ## Usage
 
@@ -78,4 +78,4 @@ afterAll(() => {
 })
 ```
 
-> While we commend setting up request interception globally, as a part of your testing setup, you may also use `setupSever` in individual tests, if you want to. Just make sure to choose _one_ pattern and follow it throughout your tests—multiple `setupServer` calls is **not** a good idea!
+> While we commend setting up request interception globally, as a part of your testing setup, you may also use `setupServer` in individual tests, if you want to. Just make sure to choose _one_ pattern and follow it throughout your tests—multiple `setupServer` calls is **not** a good idea!

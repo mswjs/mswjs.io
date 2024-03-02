@@ -164,23 +164,11 @@ Some tools, like Jest, meddle with your Node.js environment, forcefully removing
 
 <Success>Configure your tools to include the Fetch API globals</Success>
 
-Here's an example of `jest.config.js` that adds back the global Fetch API functions and classes:
+Here's an example of how to configure Jest to work with the global Fetch API in Node.js.
 
-```js {3-10}
-// jest.config.js
-module.exports = {
-  globals: {
-    fetch,
-    Headers,
-    Request,
-    Response,
-    FormData,
-    Blob,
-  },
-}
-```
+import JestMissingGlobals from './shared/jest-missing-globals.mdx'
 
-Alternatively, consider migrating to a modern tooling that doesn't exhibit such behavior.
+<JestMissingGlobals />
 
 ---
 

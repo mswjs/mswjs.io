@@ -1,0 +1,291 @@
+---
+title: Introducing Server Boundary
+slug: introducing-server-boundary
+description: Read about the new API that enables concurrent test runs with Mock Service Worker.
+publishedAt: 2024-02-12
+author:
+  name: Artem Zakharchenko
+  twitterHandle: kettanaito
+thumbnailUrl: /thumbnails/introducing-server-boundary.png
+keywords:
+  - server
+  - boundary
+  - concurrent
+  - parallel
+  - asynclocalstorage
+---
+
+Support for [concurrent test runs](https://github.com/mswjs/msw/issues/474) in Mock Service Worker has been one of the most anticipated features for years. Today, we are announcing a brand new API to provide that support called _server boundary_.
+
+But first, let's talk about parallelism, concurrency, and how is it MSW has a problem with one but not the other.
+
+## Parallel vs Concurrent
+
+Modern test frameworks draw a difference between the terms “parallel” and “concurrent” when it comes to running your tests. In a nutshell:
+
+- **Parallel** means running multiple _test suites_ at the same time.
+- **Concurrent** means running multiple _test cases_ within the same test suite at the same time.
+
+Parallelism is usually achieved by distributing test suites across spawned workers in Node.js and is often enabled by default in your test framework. Concurrent mode, however, is an opt-in choice because running tests concurrently demands more careful test setup and execution to produce reliable results.
+
+MSW supported parallel test runs since it shipped the `setupServer` API. When it came to concurrency though, the library fell flat. Here's why.
+
+## Request handlers
+
+There are two ways to provide request handlers to a `setupServer` instance:
+
+1. Pass them as the arguments to the `setupServer()` function call;
+2. Pass them as the arguments to the `server.use()` call.
+
+Internally, MSW keeps the list of current request handlers in-memory, and resolves any outgoing requests against that list, iterating over the request handlers in chronological order. We can represent that logic using this simplified code:
+
+```js {8}
+class SetupServerApi {
+  construtor(...initialHandlers) {
+    this.initialHandlers = initialHandlers
+    this.currentHandlers = [...this.initialHandlers]
+  }
+
+  use(...runtimeHandlers) {
+    this.currentHandlers.unshift(...runtimeHandlers)
+  }
+
+  resetHandlers() {
+    this.currentHandlers = [...this.initialHandlers]
+  }
+}
+```
+
+Another thing to notice is that unlike similar tools, MSW provides request interception on the process level, not the individual test level. You can certainly control the network behavior on a per-test basis but the interceptor (i.e. `setupServer` ) and its `this.currentHandlers` are still stored in one place “outside” the test's scope.
+
+It is that “outside” part that quickly becomes problematic in concurrent test runs. Consider the following:
+
+```js {25-29,35-39}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  // The request handlers provided to the "setupServer"
+  // call are considered initial, or "happy path" handlers.
+  http.get('https://example.com/user', () => {
+    return HttpResponse.json({ name: 'John' })
+  })
+)
+
+beforeAll(() => server.listen())
+afterAll(() => server.close()
+
+it.concurrent('fetches the user', async () => {
+  // This test expects the outgoing requests to be
+  // resolved against the initial request handlers.
+  const user = await fetch('https://example.com/user').then(res => res.json())
+  expect(user).toEqual({ name: 'John' })
+})
+
+it.concurrent('handles requesting a non-existing user', async () => {
+  // This test provides a request handler "override",
+  // which makes all user requests result in a 404 Not Found response.
+  server.use(
+    http.get('https://example.com/user', () => {
+      return new HttpResponse(null, { status: 404 })
+    })
+  )
+})
+
+it.concurrent('handles network errors', async () => {
+  // And this test provides yet another override,
+  // this time making all user requests produce a network error.
+  server.use(
+    http.get('https://example.com/user', () => {
+      return HttpResponse.error()
+    })
+  )
+})
+```
+
+This is a fairly common test suite featuring both “happy path” network behaviors as well as the runtime request handlers (`server.use()`) to change how the network behaves in individual tests.
+
+Running this test suite will fail. Since those `server.use()` calls prepend different request handlers concurrently, the `this.currentHandlers` list kept by `setupServer` becomes a _global state_ shared between all tests. Suddenly, fetching the user in the first test case fails because the request handler override for a 404 response from the second test leaks into the first.
+
+Managing global state in concurrent systems is a difficult problem to solve. It makes me all the more happier that we are addressing it with the latest MSW release, and doing so in a few lines of code, using plain Node.js APIs.
+
+## Server boundary
+
+The solution to the concurrency problem is to prevent the `setupServer` from introducing any sort of global state. Ideally, it would be great to tell MSW: “This is the request handler overrides I want but make sure they never affect anything outside this test.” That is precisely what the new Server Boundary API does!
+
+The Server Boundary API is a Node.js-specific API that looks like this:
+
+```js
+const server = setupServer()
+
+const boundCallback = server.boundary(callback)
+```
+
+You call the `server.boundary()` function and provide it a callback function as the argument. Any changes to the network behavior made within that callback, like calling a bunch of `server.use()`, are scoped to the boundary and never affect anything outside the callback's scope.
+
+Let's take a closer look at how this API solves the concurrency issue:
+
+```js {11,13,18,24}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer()
+
+beforeAll(() => server.listen())
+afterAll(() => server.close())
+
+it.concurrent(
+  'fetches the user',
+  server.boundary(async () => {
+    await fetch('https://example.com/user')
+  })
+)
+
+it.concurrent(
+  'handles fetching a non-existing user',
+  server.boundary(async () => {
+    server.use(
+      http.get('https://example.com/user', () => {
+        return new HttpResponse(null, { status: 404 })
+      })
+    )
+  })
+)
+```
+
+By wrapping each test in the `server.boundary()` function, any modifications made to the network behavior (those `server.use()` overrides) _will never leave the boundary's scope_.
+
+You might have noticed there's no `server.resetHandlers()` in this example. Since all request handler overrides are scoped to each boundary, there is nothing to reset! This also works nicely with test frameworks that don't support the `beforeEach`/`afterEach` hooks in concurrent mode.
+
+> Getting MSW to work in concurrent test runs means modifying your tests to establish proper network boundaries. Just like making your tests concurrent is an explicit choice, so is using the server boundary.
+
+It's important to note that the Server Boundary API is not exclusive to tests. You can wrap any closure in it, getting the same network isolation. This is tremendously useful in network introspection and debugging.
+
+```js {15,24}
+import { Hono } from 'hono'
+import { http } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer()
+server.listen()
+
+const app = new Hono()
+
+// Let's wrap this route handler in a server boundary
+// to inspect what network requests are made while
+// handling this request!
+app.get(
+  '/user',
+  server.boundary(async (ctx) => {
+    server.use(
+      http.all('*', ({ request }) => {
+        console.log('outgoing request while handling GET /user:')
+        console.log(request.method, request.url)
+      })
+    )
+
+    // ...handle this request by returning a Response.
+  })
+)
+```
+
+## Browser concurrency
+
+“Okay, but if `server.boundary()` can only be used in Node.js, how to solve the same concurrency issue in the browser?”
+
+The thing is, **there are no concurrency issues with MSW in the browser**. Unlike Node.js, where concurrent tests run in a single worker thread, MSW execution in the browser is always scoped to the client runtime. Every time you open your application in a new tab, it creates a new runtime, and the network modifications introduced via `worker.use()` only affect the runtime they've been called in.
+
+Furthermore, the Server Boundary API cannot be implemented in the browser, in the first place, because it uses a rather genius API exclusive to Node.js. Let's have a sneak peek at how `server.boundary()` works under the hood.
+
+## Behind the scenes
+
+The Server Boundary API uses [`AsyncLocalStorage`](https://nodejs.org/api/async_context.html#class-asynclocalstorage) from the built-in `async_hooks` module in Node.js.
+
+```js
+import { AsyncLocalStorage } from 'node:async_hooks'
+
+const store = new AsyncLocalStorage()
+```
+
+The idea behind this API is to provide context isolation during asynchronous operations. Using this API, we can “shift” the state of `this.currentHandlers` to each individual `server.boundary()` call, eliminating the global shared state issue at its core.
+
+The `server.boundary()` itself simply calls `store.run(context, callback)` to execute the given callback with a fixed context that now keeps the current list of request handlers. The magic happens in the context.
+
+Each time you create a server boundary, it takes whichever state of request handlers the _higher function scope_ has and treats it as the initial request handlers list. Next to that initial list, it introduces an empty array for runtime request handlers (the overrides). And that's pretty much it!
+
+```js {9-12,14}
+class SetupServerApi {
+  boundary(callback) {
+    return (...args) => {
+      const prevContext = store.getContext() || {
+        initialHandlers: [...this.initialHandlers],
+        handlers: [],
+      }
+
+      const nextContext = {
+        initialHandlers: context.handlers.concat(context.initialHandlers),
+        handlers: [],
+      }
+
+      return store.run(nextContext, callback, args)
+    }
+  }
+}
+```
+
+This also means that nesting server boundaries _inherits_ request handlers state at the moment of the boundary declaration.
+
+```js
+const server = setupServer(A)
+
+server.boundary(() => {
+  server.use(B)
+  // Initial handlers: [A]
+  // Runtime handler: [B]
+  // Current handlers: [A, B]
+
+  server.boundary(() => {
+    server.use(C)
+    // Initial handlers: [A, B]
+    // Runtime handlers: [C]
+    // Current handlers: [A, B, C]
+
+    server.resetHandlers()
+    // Runtime handlers: []
+    // Current handlers: [A, B]
+  })()
+})()
+```
+
+I know it may take a minute to wrap one's head around this. I highly encourage you to read about the `AsyncLocaStorage` API and async context tracking in Node.js if you want to learn more.
+
+## Trying Server Boundary API
+
+The Server Boundary API has been released in `msw@2.2.0` and is generally available for use. Update MSW to the latest version to take full advantage of concurrent test runs with predictable, isolated network:
+
+```txt
+npm i msw@latest
+```
+
+import { DocumentTextIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../components/react/pageCard'
+
+<PageCard
+  icon={DocumentTextIcon}
+  url="https://github.com/mswjs/msw/releases/tag/v2.2.0"
+  title="v2.2.0"
+  description="Read the release notes"
+/>
+
+You can learn more about the Server Boundary API in the documentation:
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/setup-server/boundary"
+  title="server.boundary()"
+  description="Scope the network interception to the given boundary."
+/>
+
+> If you are excited about Mock Service Worker development and believe in our mission of standard-driven API mocking, **please consider becoming our [GitHub Sponsor](https://github.com/sponsors/mswjs)**. Thank you!

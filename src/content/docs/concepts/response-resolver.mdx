@@ -39,9 +39,9 @@ http.post('/post/:postId', async ({ request, params, cookies }) => {
 The data below is available for every intercepted request, regardless if it's a REST API or a GraphQL request.
 
 | Name        | Type                                                                          | Description                                                  |
-| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------ | --- |
+| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | `request`   | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) | Fetch API Request representation of the intercepted request. |
-| `requestId` | `string`                                                                      | A UUID string identifier for the intercepted request.        | .   |
+| `requestId` | `string`                                                                      | A UUID string identifier for the intercepted request.        |
 | `cookies`   | `Record<string, string>`                                                      | Request cookies.                                             |
 | `params`    | `Record<string, string[] \| string>`                                          | Request path parameters.                                     |
 
@@ -138,6 +138,33 @@ export const handlers = [
   title="passthrough"
   description="Handle the intercepted request by performing it as-is."
 />
+
+### Fallthrough the request
+
+If a response resolver returns nothing, it stops execution and tells MSW to keep looking for any other matching request handlers that may return instruction on how to handle the intercepted request.
+
+```js {8-10}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('/user', ({ request }) => {
+    // If the intercepted request has a particular
+    // "Accept" header value, skip this request handler
+    // and let MSW "fallthrough" to the next one.
+    if (request.headers.get('Accept') === 'text/csv') {
+      return
+    }
+
+    return HttpResponse.json({ name: 'John' })
+  }),
+  http.get('/user', () => {
+    // Since this request handler also matches the
+    // "GET /user" request, it will be used instead
+    // when the "Accept" request header is "text/csv".
+    return HttpResponse.text('John')
+  }),
+]
+```
 
 ### Combining instructions
 
