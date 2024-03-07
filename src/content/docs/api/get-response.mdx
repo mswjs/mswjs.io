@@ -38,6 +38,6 @@ const handlers = [
 const request = new Request('/user')
 
 const response = await getResponse(handlers, request)
-const user = response?.json()
+const user = await response?.json()
 // {"name":"John"}
 ```
