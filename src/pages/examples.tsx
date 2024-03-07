@@ -63,14 +63,14 @@ const Examples = () => {
                     description="Learn how to mock a RESTful API in a React application."
                     logo={ReactLogo}
                     fill="#61DAFB"
-                    url="https://github.com/mswjs/examples/tree/master/examples/rest-react"
+                    url="https://github.com/mswjs/examples/tree/v1/examples/rest-react"
                   />
                   <ExampleItem
                     title="GraphQL API"
                     description="Learn how to mock a GraphQL API in a React application using Apollo."
                     logo={GraphQLLogo}
                     fill="#E535AB"
-                    url="https://github.com/mswjs/examples/tree/master/examples/graphql-react-apollo"
+                    url="https://github.com/mswjs/examples/tree/v1/examples/graphql-react-apollo"
                   />
                 </ExampleList>
               </div>
@@ -82,7 +82,7 @@ const Examples = () => {
                     description="Learn how to mock a RESTful API in an Angular application."
                     logo={AngularLogo}
                     fill="#ff4785"
-                    url="https://github.com/mswjs/examples/tree/master/examples/rest-angular"
+                    url="https://github.com/mswjs/examples/tree/v1/examples/rest-angular"
                   />
                 </ExampleList>
               </div>
@@ -107,21 +107,21 @@ const Examples = () => {
                 title="Storybook"
                 logo={StorybookLogo}
                 fill="#ff4785"
-                url="https://github.com/mswjs/examples/tree/master/examples/with-storybook"
+                url="https://github.com/mswjs/examples/tree/v1/examples/with-storybook"
               />
               <ExampleItem
                 mode="minimal"
                 title="Redux Saga"
                 logo={(props) => <img {...props} src={reduxSagaLogo} />}
                 fill="#ff4785"
-                url="https://github.com/mswjs/examples/tree/master/examples/with-redux-saga"
+                url="https://github.com/mswjs/examples/tree/v1/examples/with-redux-saga"
               />
               <ExampleItem
                 mode="minimal"
                 title="Karma"
                 logo={(props) => <img {...props} src={karmaLogo} />}
                 fill="#ff4785"
-                url="https://github.com/mswjs/examples/tree/master/examples/with-karma"
+                url="https://github.com/mswjs/examples/tree/v1/examples/with-karma"
               />
             </Composition>
           </section>
