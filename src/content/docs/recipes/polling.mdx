@@ -27,6 +27,7 @@ export const handlers = [
       yield HttpResponse.json({ degree: degree })
     }
 
+    degree++
     return HttpResponse.json({ degree: degree })
   }),
 ]
