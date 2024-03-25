@@ -9,14 +9,14 @@ keywords:
   - yield
 ---
 
-You can use [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) in JavaScript to yield different responses on each subsequent request to an endpoint. This is particularly handy to describe HTTP polling.
+You can use [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) (including async generators) in JavaScript to yield different responses on each subsequent request to an endpoint. This is particularly handy to describe HTTP polling.
 
 ```js /*/ /yield/ {13}
 import { http, HttpResponse, delay } from 'msw'
 
 export const handlers = [
   http.get('/weather/:city', async function* () {
-    const degree = 25
+    let degree = 25
 
     // Add random server-side latency to emulate
     // a real-world server.
