@@ -171,9 +171,9 @@ http.get('/posts', () => {
 
 ### Implementation
 
-| Environment | Mirage                                                          | Mock Service Worker                                                  |
-| ----------- | --------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Browser     | Monkey-patches `fetch` and `XMLHttpRequest` (uses `pretender`). | Uses a Service Worker to seamlessly intercept the outgoing requests. |
+| Environment | Mirage                                                          | Mock Service Worker                                               |
+| ----------- | --------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Browser     | Monkey-patches `fetch` and `XMLHttpRequest` (uses `pretender`). | Uses a Service Worker to intercept requests on the browser level. |
 
 ### Integration
 
@@ -290,9 +290,9 @@ db.toHandlers('graphql')
 
 ### Implementation
 
-| Environment | `cy.intercept()`                                                                                                             | Mock Service Worker                                                  |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Browser     | Uses a browser-wide HTTP proxy to route outgoing requests through the custom server Cypress spawns as a part of its runtime. | Uses a Service Worker to seamlessly intercept the outgoing requests. |
+| Environment | `cy.intercept()`                                                                                                             | Mock Service Worker                                               |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Browser     | Uses a browser-wide HTTP proxy to route outgoing requests through the custom server Cypress spawns as a part of its runtime. | Uses a Service Worker to intercept requests on the browser level. |
 
 ### Integration
 
@@ -366,9 +366,9 @@ MSW gives you a more advanced control over the requests through its `passthrough
 
 ### Implementation
 
-| Environment | `page.route()` | Mock Service Worker                                                  |
-| ----------- | -------------- | -------------------------------------------------------------------- |
-| Browser     | ???            | Uses a Service Worker to seamlessly intercept the outgoing requests. |
+| Environment | `page.route()`                                                                                                                       | Mock Service Worker                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Browser     | Uses the [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/) to intercept requests on the browser level. | Uses a Service Worker to intercept requests on the browser level. |
 
 ### Integration
 
