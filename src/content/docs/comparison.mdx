@@ -366,9 +366,9 @@ MSW gives you a more advanced control over the requests through its `passthrough
 
 ### Implementation
 
-| Environment | `page.route()` | Mock Service Worker                                                  |
-| ----------- | -------------- | -------------------------------------------------------------------- |
-| Browser     | ???            | Uses a Service Worker to seamlessly intercept the outgoing requests. |
+| Environment | `page.route()`                                                                                                                       | Mock Service Worker                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Browser     | Uses the [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/) to intercept requests on the browser level. | Uses a Service Worker to intercept requests on the browser level. |
 
 ### Integration
 
