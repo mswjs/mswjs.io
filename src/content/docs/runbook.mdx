@@ -247,3 +247,19 @@ jest.useFakeTimers({
 ```
 
 > Please refer to Jest's [documentation on fake timers](https://jestjs.io/docs/timer-mocks#selective-faking).
+
+---
+
+### RTK Query requests are not intercepted
+
+A common mistake when using RTK Query is not setting the `baseUrl` in the `baseQuery` configuration. Without this, the requests will have _relative URLs_, which is a no-op in Node.js (see [this issue](https://github.com/reduxjs/redux-toolkit/issues/3284) for more details).
+
+<Success>Set the `baseUrl` in your `baseQuery`:</Success>
+
+```js
+createApi({
+  baseQuery: fetchBaseQuery({
+    baseUrl: new URL('/your/api/endpoint', location.origin).href,
+  }),
+})
+```
