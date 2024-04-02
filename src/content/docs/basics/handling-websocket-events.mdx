@@ -187,7 +187,10 @@ import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 
 import { Warning } from '../../../components/react/warning'
 
-<Warning>To handle any events from the actual WebSocket server, you must _connect_ to that server first.</Warning>
+<Warning>
+  To handle any events from the actual WebSocket server, you must _connect_ to
+  that server first.
+</Warning>
 
 To establish the connection to the actual WebSocket server, grab the `server` object from the `"connection"` event listener argument and call its `.connect()` method.
 
@@ -272,6 +275,114 @@ chat.on('connection', ({ client, server }) => {
 ```
 
 > You can control what messages to forward to the actual server in the `"message'` event listener on the `client` object. Feel free to introduce conditions, analyze the message, or modify the data to forward.
+
+## Logging
+
+Since MSW implements the WebSocket interception mock-first, no actual connections will be established until you explicitly say so. This means that the mocked scenarios won't appear as network entries in your browser's DevTools and you won't be able to observe them.
+
+MSW enables custom logging for both mocked and original WebSocket connections **in the browser** to allow you to:
+
+- Observe any WebSocket connection if you have an event handler for it;
+- See previews for binary messages (Blob/ArrayBuffer);
+- Tell apart the messages sent by your application/original server from those initiated by the event handler (i.e. mocked messages).
+
+### Message colors and styles
+
+All the printed messages are color-graded by the following criteria: <span className="inline-block h-3 w-3 bg-blue-500 rounded-full" /> system events, <span className="inline-block h-3 w-3 bg-red-500 rounded-full" /> outgoing
+messages, <span className="inline-block h-3 w-3 bg-green-500 rounded-full" /> incoming
+messages, and <span className="inline-block h-3 w-3 bg-orange rounded-full" /> mocked
+events. In addition to the colors, some messages are represented by solid (↑↓) or dotted icons (⇡⇣), indicating whether the event occurred in your application or in the event handler, respectively.
+
+### Connection events
+
+#### <span className="text-blue-500">▶</span> Connection opened
+
+```
+[MSW] 12:34:56 ▶ wss://example.com
+```
+
+Dispatched when the connection is open (i.e. the WebSocket client emits the `open` event).
+
+#### <span className="text-blue-500">×</span> Connection errored
+
+```
+[MSW] 12:34:56 × wss://example.com
+```
+
+Dispatched when the client receives an error (i.e. the WebSocket client emits the `error` event).
+
+#### <span className="text-blue-500">■</span> Connection closed
+
+```
+[MSW] 12:34:56 ■ wss://example.com
+```
+
+Dispatched when the connection is closed (i.e. the WebSocket client emits the `close` event).
+
+### Message events
+
+Any message, be it outgoing or incoming message, follows the same structure:
+
+```txt /▼ timestamp/ /▲ icon/ /▼ sent data/ /▼ data length/
+      ▼ timestamp    ▼ sent data      ▼ data length (bytes)
+[MSW] 00:00:00.000 ↑ hello from client 17
+                   ▲ icon
+```
+
+Binary messages print a text preview of the sent binary alongside its full byte length:
+
+```
+[MSW] 12:34:56.789 ↑ Blob(hello world) 11
+[MSW] 12:34:56.789 ↑ ArrayBuffer(preview) 7
+```
+
+Long text messages and text previews are truncated:
+
+```
+[MSW] 12:34:56.789 ↑ this is a very long stri… 17
+```
+
+> You can access the full message by clicking on its console group and inspecting the original `MessageEvent` reference.
+
+#### <span className="text-red-500">↑</span> Outgoing client message
+
+```
+[MSW] 12:34:56.789 ↑ hello from client 17
+```
+
+A message sent by the client in your application.
+
+#### <span className="text-orange">⇡</span> Outgoing mocked client message
+
+```
+[MSW] 12:34:56.789 ⇡ hello from mock 15
+```
+
+A message sent from the client by the event handler (via `server.send()`). Requires the actual server connection to be opened via `server.connect()`. The client itself never sent this, thus the icon is dotted.
+
+#### <span className="text-green-500">↓</span> Incoming client message
+
+```
+[MSW] 12:34:56.789 ↓ hello from server 17
+```
+
+The end message the client received (i.e. the message that triggered the "message" event on the WebSocket client). The message can be either from the event handler or from the actual WebSocket server.
+
+#### <span className="text-orange">⇣</span> Incoming mocked client message
+
+```
+[MSW] 12:34:56.789 ⇣ hello from mock 15
+```
+
+A mocked message sent to the client from the event handler via `client.send()`. The actual server has never sent this, thus the icon is dotted.
+
+#### <span className="text-green-500">⇣</span> Incoming server message
+
+```
+[MSW] 12:34:56.789 ⇣ hello from server 17
+```
+
+An incoming message from the actual server. Requires the actual server connection to be opened via `server.connect()`. The incoming server messages can be modified or skipped by the event handler, thus the icon is dotted.
 
 ## Bindings
 
