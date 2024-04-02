@@ -31,7 +31,7 @@ import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
 import { http, HttpResponse, getResponse } from 'msw'
 
 const handlers = [
-  http.get('*/user', () => {
+  http.get('http://localhost/user', () => {
     return HttpResponse.json({ name: 'John' })
   }),
 ]
