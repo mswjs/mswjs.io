@@ -31,11 +31,11 @@ import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
 import { http, HttpResponse, getResponse } from 'msw'
 
 const handlers = [
-  http.get('/user', () => {
+  http.get('*/user', () => {
     return HttpResponse.json({ name: 'John' })
   }),
 ]
-const request = new Request('/user')
+const request = new Request('http://localhost/user')
 
 const response = await getResponse(handlers, request)
 const user = await response?.json()
