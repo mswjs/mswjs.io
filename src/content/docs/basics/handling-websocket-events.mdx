@@ -61,17 +61,21 @@ You will be handling both client-sent and server-sent events within the `"connec
 
 MSW implements a set of default behaviors to ensure good developer experience in different testing and development scenarios concerning WebSockets. You can opt-out from all of those, and fine-tune the interception behavior to suit your needs.
 
+### Client connections
+
+By default, no intercepted WebSocket connections are opened. This encourages mock-first development and makes it easier to manage connections to non-existing servers. You can [establish the actual server connection](#establishing-server-connection) by calling `server.connect()`.
+
 ### Client-to-server event forwarding
 
-By default, **outgoing client events _are not_ forwarded to the original server**. In fact, no connection to the original server is ever established. This allows for mock-first development, where the original server may not yet exist.
+By default, once you [establish the actual server connection](#connecting-to-the-server), **outgoing client events are _forwarded to the original server_**. If the server connection hasn't been established, no forwarding occurs (nowhere to forward). You can opt-out from this behavior by calling `event.preventDefault()` on the client message event.
 
-> Learn how to opt-out from this behavior and [enable client-to-server forwarding](#client-to-server-forwarding).
+> Learn more about [client-to-server forwarding](#client-to-server-forwarding).
 
 ### Server-to-client event forwarding
 
-By default, once you [establish the actual server connection](#connecting-to-the-server), **all incoming server events _are_ forwarded to the client.** This combines nicely with the explicit intention to connect to the actual server, as there's little reason to do so without also wishing to receive the server events.
+By default, once you [establish the actual server connection](#connecting-to-the-server), **all incoming server events are _forwarded to the client_.** You can opt-out from this behavior by calling `event.preventDefault()` on the server message event.
 
-> Learn how to opt-out from this behavior and [modify or prevent server events](#preventing-server-events).
+> Learn more about [server-to-client forwarding](#server-to-client-forwarding).
 
 ## Client events
 
@@ -183,7 +187,7 @@ import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 
 ## Server events
 
-### Connecting to the server
+### Establishing server connection
 
 import { Warning } from '../../../components/react/warning'
 
@@ -207,6 +211,23 @@ chat.on('connection', ({ server }) => {
   description="The `server.connect()` API."
 />
 
+### Client-to-server forwarding
+
+Once the server connection has been established, all outgoing client message events are forwarded to the server. To prevent this behavior, call `event.preventDefault()` on the client message event. You can use this to modify the client-sent data before it reaches the server or ignore it completely.
+
+```js
+chat.on('connection', ({ client }) => {
+  client.addEventListener('message', (event) => {
+    // Prevent the default client-to-server forwarding.
+    event.preventDefault()
+
+    // Modify the original client-sent data and send
+    // it to the server instead.
+    server.send(event.data + 'mocked')
+  })
+})
+```
+
 ### Intercepting server events
 
 To intercept an incoming event from the actual sever, grab the `server` object from the `"connection"` event listener argument and add a `"message"` event listener on that object.
@@ -221,9 +242,9 @@ chat.on('connection', ({ server }) => {
 
 Now, whenever the actual server sends data, the `"message"` listener in this handler will be called. The listener exposes a single `event` argument, which is a [`MessageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent) received from the client, with the sent data available as `event.data`.
 
-### Preventing server events
+### Server-to-client forwarding
 
-By default, all server events are forwarded to the connected client. You can opt-out from this behavior by preventing the received server `"message"` event. This is handy if you wish to modify the server-sent data before it reaches the client or prevent some server events from arriving at the client completely.
+By default, all server events are forwarded to the connected client. You can opt-out from this behavior by calling `event.preventDefault()` on the server message event. This is handy if you wish to modify the server-sent data before it reaches the client or prevent some server events from arriving at the client completely.
 
 ```js {4}
 chat.on('connection', ({ client, server }) => {
