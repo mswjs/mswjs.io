@@ -149,6 +149,9 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
 [data-highlighted-chars] {
   @apply px-0.5 bg-amber-700 bg-opacity-40 border-b-2 border-amber-500 font-bold rounded-sm !text-amber-200;
 }
+[data-highlighted-chars][data-chars-id='v'] {
+  @apply bg-violet-700 border-violet-400 !text-violet-100;
+}
 
 /* Sections */
 #mobile-menu-container {
