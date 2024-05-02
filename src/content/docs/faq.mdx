@@ -120,12 +120,26 @@ beforeEach(() => {
 
 ### Apollo Client
 
-```js
-import { client } from './apolloClient'
+The Apollo Client team recommends creating a new client instance for each test. From the [Apollo Client documentation](https://www.apollographql.com/docs/react/development-testing/schema-driven-testing/#should-i-share-a-single-apolloclient-instance-between-tests):
 
-beforeEach(() => {
-  return client.cache.reset()
-})
+> Even if the cache is reset in between tests, the client maintains some internal state that is not reset. This could have some unintended consequences. For example, the `ApolloClient` instance could have pending queries that could cause the following test's queries to be deduplicated by default.
+> Instead, create a `makeClient` function or equivalent so that every test uses the same client configuration as your production client, but no two tests share the same client instance.
+
+```js
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+
+const httpLink = new HttpLink({
+  uri: "https://example.com/graphql",
+});
+
+export const makeClient = () => {
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: httpLink,
+  });
+};
+
+export const client = makeClient();
 ```
 
 ## Light theme when?
