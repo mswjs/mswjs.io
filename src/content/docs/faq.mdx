@@ -14,7 +14,7 @@ import { Info } from '../../components/react/info'
 
 {/* prettier-ignore */}
 <Info>
-  Have a question not present in the list? Open a [Discussion](https://github.com/mswjs/msw/discussions/new) on GitHub and get help from our community.
+Have a question not present in the list? Open a [Discussion](https://github.com/mswjs/msw/discussions/new) on GitHub and get help from our community.
 </Info>
 
 ## How is it different than library XYZ?
@@ -120,13 +120,35 @@ beforeEach(() => {
 
 ### Apollo Client
 
-```js
-import { client } from './apolloClient'
+The Apollo Client team recommends creating a new client instance for each test.
 
-beforeEach(() => {
-  return client.cache.reset()
+```js {8-13}
+// src/apollo-client.js
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
+
+const httpLink = new HttpLink({
+  uri: 'https://example.com/graphql',
+})
+
+export function makeClient() {
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: httpLink,
+  })
+}
+```
+
+```js /makeClient/
+// test/Component.test.jsx
+import { makeClient } from '../src/apollo-client'
+
+it('renders the component', async () => {
+  const client = makeClient()
+  // ...use your client in test.
 })
 ```
+
+> Learn more in the [Apollo Client documentation](https://www.apollographql.com/docs/react/development-testing/schema-driven-testing/#should-i-share-a-single-apolloclient-instance-between-tests).
 
 ## Light theme when?
 
