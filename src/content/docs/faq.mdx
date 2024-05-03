@@ -14,7 +14,7 @@ import { Info } from '../../components/react/info'
 
 {/* prettier-ignore */}
 <Info>
-  Have a question not present in the list? Open a [Discussion](https://github.com/mswjs/msw/discussions/new) on GitHub and get help from our community.
+Have a question not present in the list? Open a [Discussion](https://github.com/mswjs/msw/discussions/new) on GitHub and get help from our community.
 </Info>
 
 ## How is it different than library XYZ?
@@ -120,27 +120,35 @@ beforeEach(() => {
 
 ### Apollo Client
 
-The Apollo Client team recommends creating a new client instance for each test. From the [Apollo Client documentation](https://www.apollographql.com/docs/react/development-testing/schema-driven-testing/#should-i-share-a-single-apolloclient-instance-between-tests):
+The Apollo Client team recommends creating a new client instance for each test.
 
-> Even if the cache is reset in between tests, the client maintains some internal state that is not reset. This could have some unintended consequences. For example, the `ApolloClient` instance could have pending queries that could cause the following test's queries to be deduplicated by default.
-> Instead, create a `makeClient` function or equivalent so that every test uses the same client configuration as your production client, but no two tests share the same client instance.
-
-```js
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+```js {8-13}
+// src/apollo-client.js
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 
 const httpLink = new HttpLink({
-  uri: "https://example.com/graphql",
-});
+  uri: 'https://example.com/graphql',
+})
 
-export const makeClient = () => {
+export function makeClient() {
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: httpLink,
-  });
-};
-
-export const client = makeClient();
+  })
+}
 ```
+
+```js /makeClient/
+// test/Component.test.jsx
+import { makeClient } from '../src/apollo-client'
+
+it('renders the component', async () => {
+  const client = makeClient()
+  // ...use your client in test.
+})
+```
+
+> Learn more in the [Apollo Client documentation](https://www.apollographql.com/docs/react/development-testing/schema-driven-testing/#should-i-share-a-single-apolloclient-instance-between-tests).
 
 ## Light theme when?
 
