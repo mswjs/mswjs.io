@@ -95,7 +95,7 @@ server.events.on('response:mocked', ({ request, requestId, response }) => {
     request.method,
     request.url,
     response.status,
-    response.statusText
+    response.statusText,
   )
 })
 ```
@@ -103,3 +103,16 @@ server.events.on('response:mocked', ({ request, requestId, response }) => {
 ### `response:bypass`
 
 The `response:bypass` event is emitted whenever an original (bypassed) response is sent. Similar to the `response:mocked` event, you can access the `response` and `request` references in the listener.
+
+## Other events
+
+### `unhandledException`
+
+The `unhandledException` event is emitted whenever an unhandled error is thrown within the response resolver function. You can access the relevant `request` and `requestId` in the listener to this event, as well as the thrown `error` reference.
+
+```js
+server.events.on('unhandledException', ({ request, requestId, error }) => {
+  console.log('%s %s errored! See details below.', request.method, request.url)
+  console.error(error)
+})
+```
