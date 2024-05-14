@@ -1,16 +1,16 @@
 ---
 import NavLink from './NavLink.astro';
-import { Container } from './react/container';
-import mswLogo from '../images/msw.svg'
 import Search from './Search.astro';
+import { Container } from './react/container';
 import { MobileMenu } from './react/mobileMenu';
 import { SponsorLink } from './react/sponsorLink';
 
 type Props = {
+  logo: { src: string }
   isFluid?: boolean
 }
 
-const { isFluid } = Astro.props
+const { logo, isFluid } = Astro.props
 ---
 
 <header class="header sticky top-0 z-10 text-sm h-[60px] font-semibold bg-neutral-900 border-b h-15 border-neutral-800">
@@ -22,7 +22,7 @@ const { isFluid } = Astro.props
           title="Mock Service Worker"
           class="hover:opacity-70 inline-flex"
         >
-          <img src={mswLogo.src} class="w-9 h-9" />
+          <img src={logo.src} class="w-9 h-9" />
         </a>
       </div>
       <div class:list={[

@@ -1,11 +1,11 @@
 ---
 import { CommandLineIcon } from '@heroicons/react/24/outline'
 import BaseHead from '../components/BaseHead.astro'
-import Header from '../components/Header.astro'
-import { Footer } from '../components/react/footer'
+import Header from 'mswjs.io-shared/components/Header.astro'
+import { Footer } from 'mswjs.io-shared/components/react/footer'
 import { SITE_TITLE, SITE_DESCRIPTION, EGGHEAD_COURSE_URL } from '../consts'
-import { Container } from '../components/react/container'
-import { Grid } from '../components/react/grid'
+import { Container } from 'mswjs.io-shared/components/react/container'
+import { Grid } from 'mswjs.io-shared/components/react/grid'
 import { Section } from '../components/react/section'
 import {
   PageHeaderWrapper,
@@ -36,7 +36,7 @@ import { GoogleIcon } from '../components/react/icons/google'
 import { AwsIcon } from '../components/react/icons/aws'
 import { MicrosoftIcon } from '../components/react/icons/microsoft'
 import { CodeSandboxIcon } from '../components/react/icons/codesandbox'
-import { GitHubIcon } from '../components/react/icons/github'
+import { GitHubIcon } from 'mswjs.io-shared/components/react/icons/github'
 import { GitLabIcon } from '../components/react/icons/gitlab'
 import { CloudflareIcon } from '../components/react/icons/cloudflare'
 import { SamsungIcon } from '../components/react/icons/samsung'
@@ -44,6 +44,8 @@ import { StrapiIcon } from '../components/react/icons/strapi'
 import { SpotifyIcon } from '../components/react/icons/spotify'
 import { VercelIcon } from '../components/react/icons/vercel'
 import { MozillaIcon } from '../components/react/icons/mozilla'
+
+import mswLogo from '../images/msw.svg'
 
 import noAvatar from '../images/people/no-avatar.jpg'
 import kentCDoddsAvatar from '../images/people/kent-c-dodds.jpg'
@@ -66,7 +68,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
     />
   </head>
   <body>
-    <Header />
+    <Header logo={mswLogo} />
     <main>
       {/* Hero */}
       <Container>

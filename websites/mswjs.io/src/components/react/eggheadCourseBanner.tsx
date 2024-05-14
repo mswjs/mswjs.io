@@ -1,4 +1,4 @@
-import { LinkExternal } from './linkExternal'
+import { LinkExternal } from 'mswjs.io-shared/components/react/linkExternal'
 import courseCover from '../../images/egghead-msw-course.png'
 import { EGGHEAD_COURSE_URL } from '../../consts'
 

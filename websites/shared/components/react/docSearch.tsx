@@ -1,6 +1,6 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { DocSearchModal, useDocSearchKeyboardEvents } from '@docsearch/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface Props {
   appId: string

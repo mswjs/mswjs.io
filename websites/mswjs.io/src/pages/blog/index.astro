@@ -1,14 +1,16 @@
 ---
+import { getCollection } from 'astro:content';
 import { ArrowRightIcon } from '@heroicons/react/24/solid';
 import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import { Footer } from '../../components/react/footer';
-import { Container } from '../../components/react/container'
-import { Grid } from '../../components/react/grid';
+import Header from 'mswjs.io-shared/components/Header.astro';
+import { Footer } from 'mswjs.io-shared/components/react/footer';
+import { Container } from 'mswjs.io-shared/components/react/container'
+import { Grid } from 'mswjs.io-shared/components/react/grid';
 import { PageHeaderSubtitle, PageHeaderWrapper } from '../../components/react/pageHeader';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
+
+import mswLogo from '../../images/msw.svg'
 
 const allBlogPosts = await getCollection('blog')
 const posts = allBlogPosts.sort(
@@ -29,7 +31,7 @@ const posts = allBlogPosts.sort(
 		/>
 	</head>
 	<body>
-		<Header />
+		<Header logo={mswLogo} />
 		<main>
 			<Container>
 				<Grid>

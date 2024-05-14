@@ -1,10 +1,10 @@
 ---
 import { type CollectionEntry } from "astro:content";
 import BaseHead from '../components/BaseHead.astro'
-import Header from '../components/Header.astro'
-import { Footer } from '../components/react/footer'
-import { Grid } from '../components/react/grid'
-import { Container } from "../components/react/container";
+import Header from 'mswjs.io-shared/components/Header.astro'
+import { Footer } from 'mswjs.io-shared/components/react/footer'
+import { Grid } from 'mswjs.io-shared/components/react/grid'
+import { Container } from "mswjs.io-shared/components/react/container";
 import FormattedDate from '../components/FormattedDate.astro';
 import DocsNavTree from '../components/docs/DocsNavTree.astro'
 import TableOfContents from '../components/docs/DocsTableOfContents.astro'
@@ -12,12 +12,14 @@ import DocsSidebarPartners from "../components/docs/DocsSidebarPartners.astro";
 import { type DocsItem, type DocsFrontmatter, createNavTreeBuilder } from '../utils/buildNavTree'
 import type { MarkdownHeading } from 'astro';
 import { buildHeadings } from '../utils/buildHeadings';
-import { DocsSidebarLinks } from "../components/react/docsSidebarLinks";
+import { DocsSidebarLinks } from "mswjs.io-shared/components/react/docsSidebarLinks";
 import { FeedbackWidget } from "../components/react/feedbackWidget";
 import Ads from '../components/Ads.astro'
-import { DocsMovileNav } from "../components/react/docsMobileNav";
+import { DocsMovileNav } from "mswjs.io-shared/components/react/docsMobileNav";
 import { SITE_TITLE } from "../consts";
 import PageBanner from "../components/PageBanner.astro";
+
+import mswLogo from '../images/msw.svg'
 
 type Props = CollectionEntry<'docs'>['data'] & {
   lastModifiedAt: Date
@@ -100,7 +102,7 @@ const shouldDisplayAds = import.meta.env.ADS
         <p>You are viewing the docs for <strong>MSW 2.0</strong>. To access the 1.x docs <a href="https://v1.mswjs.io/" class="text-orange hover:underline" target="_blank" rel="noopener noreferrer">click here</a>.</p>
       </PageBanner>
     ) : null}
-    <Header isFluid={page.isFluid} />
+    <Header logo={mswLogo} isFluid={page.isFluid} />
     <main>
       <Container isFluid={page.isFluid}>
         <!-- Mobile: Nav tree -->

@@ -2,9 +2,14 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 const COLOR_ORANGE = '#FF6A33'
 
+const extensions = `{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}`
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  content: [
+    `../shared/components/**/*.${extensions}`,
+    `./src/**/*.${extensions}`,
+  ],
   theme: {
     fontFamily: {
       sans: [

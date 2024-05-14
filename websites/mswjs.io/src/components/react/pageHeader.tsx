@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { cls } from '../../utils/cls'
+import { cls } from 'mswjs.io-shared/utils/cls'
 
 export function PageHeaderWrapper(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
