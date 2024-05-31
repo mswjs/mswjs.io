@@ -89,7 +89,7 @@ http.get('https://api.example.com/user', async ({ request }) => {
 
 [JSON Server](https://github.com/typicode/json-server) allows you to create an actual HTTP server based on a JSON file.
 
-> JSON Server is an actual HTTP server that utilizes abstract response definition format. This means a server you have to run and maintain. Mock Service Worker doesn't spawn any servers, so its initialization cost is free. Mock Service Worker also allows you to have a more error-proof mock definitions by using languages like TypeScript and generating mocks out of the actual backend implementation.
+> JSON Server is an actual HTTP server that utilizes abstract response definition format. This means a server you have to run and maintain. Mock Service Worker doesn't spawn any servers, so its initialization cost is free. Mock Service Worker also allows you to have more error-proof mock definitions by using languages like TypeScript and generating mocks out of the actual backend implementation.
 
 ### API support
 
@@ -131,7 +131,7 @@ JSON Server uses a resource-first routes format that implicitly generates reques
 }
 ```
 
-> This will automatically generated server-side routes like `GET /posts` and `DELETE /posts/:index` based on the described resources. The nature of such routes is static and requires additional abstractions to achieve more complex network behaviors.
+> This will automatically generate server-side routes like `GET /posts` and `DELETE /posts/:index` based on the described resources. The nature of such routes is static and requires additional abstractions to achieve more complex network behaviors.
 
 #### Mock Service Worker
 
@@ -285,7 +285,7 @@ db.toHandlers('graphql')
 | Browser  | ✅               | ✅                  |
 
 > <sup>1</sup>—Cypress is a browser testing framework, which means you cannot
-> use your `cy.interecept()` mocks in a Node.js process, like an integration
+> use your `cy.intercept()` mocks in a Node.js process, like an integration
 > test or a backend application.
 
 ### Implementation
