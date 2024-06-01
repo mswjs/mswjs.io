@@ -3,26 +3,6 @@
   "type": "module",
   "name": "websites",
   "dependencies": {
-    "@astrojs/markdown-remark": "^3.2.0",
-    "@astrojs/mdx": "^1.1.2",
-    "@astrojs/react": "^3.0.3",
-    "@astrojs/rss": "^3.0.0",
-    "@astrojs/sitemap": "^3.0.2",
-    "@astrojs/tailwind": "^5.0.2",
-    "@tailwindcss/typography": "^0.5.10",
-    "@types/body-scroll-lock": "^3.1.0",
-    "@docsearch/css": "^3.5.2",
-    "@docsearch/react": "^3.5.2",
-    "@heroicons/react": "^2.0.18",
-    "@types/node": "^20.8.0",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
-    "astro": "^3.3.2",
-    "body-scroll-lock": "4.0.0-beta.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "rehype-autolink-headings": "^7.0.0",
-    "rehype-external-links": "^3.0.0",
-    "tailwindcss": "^3.0.24"
+    "@types/node": "^20.8.0"
   }
 }
