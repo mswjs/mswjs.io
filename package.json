@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "name": "websites",
   "dependencies": {
     "@astrojs/markdown-remark": "^3.2.0",

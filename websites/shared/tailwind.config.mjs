@@ -5,7 +5,7 @@ const COLOR_ORANGE = '#FF6A33'
 const extensions = `{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}`
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     `../shared/components/**/*.${extensions}`,
     `./src/**/*.${extensions}`,
