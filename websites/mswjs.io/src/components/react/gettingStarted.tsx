@@ -1,5 +1,5 @@
 import { CommandLineIcon } from '@heroicons/react/24/outline'
-import { Container } from 'mswjs.io-shared/components/react/container'
+import { Container } from '@mswjs/shared/components/react/container'
 import { MswBlockItem } from './mswBlockItem'
 import { PageHeaderSubtitle } from './pageHeader'
 

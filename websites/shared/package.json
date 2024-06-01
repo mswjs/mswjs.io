@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "mswjs.io-shared",
+  "name": "@mswjs/shared",
   "version": "0.0.0",
   "dependencies": {
     "@docsearch/css": "^3.5.2",

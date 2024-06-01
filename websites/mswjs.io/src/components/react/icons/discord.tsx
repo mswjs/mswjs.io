@@ -1,1 +1,1 @@
-export * from 'mswjs.io-shared/components/react/icons/discord'
+export * from '@mswjs/shared/components/react/icons/discord'

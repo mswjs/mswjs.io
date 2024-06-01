@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { cls } from 'mswjs.io-shared/utils/cls'
+import { cls } from '@mswjs/shared/utils/cls'
 
 interface Props {
   url: string

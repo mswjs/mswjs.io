@@ -24,7 +24,7 @@
     "@types/react-dom": "18",
     "astro": "^4.9.2",
     "body-scroll-lock": "4.0.0-beta.0",
-    "mswjs.io-shared": "workspace:*",
+    "@mswjs/shared": "workspace:*",
     "react": "18",
     "react-dom": "18",
     "rehype-autolink-headings": "^7.0.0",
