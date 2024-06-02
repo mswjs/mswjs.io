@@ -12,7 +12,6 @@ export default defineConfig({
     mdx(),
     react(),
     tailwind({
-      configFile: '../shared/tailwind.config.mjs',
       applyBaseStyles: false,
     }),
   ],

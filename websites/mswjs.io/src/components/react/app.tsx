@@ -26,7 +26,7 @@ export function ProductDetailComponent(): JSX.Element {
         <p className="mb-1 text-lg font-bold leading-5">Porcelain Mug</p>
         <p className="text-neutral-400">$9.99</p>
       </div>
-      <button className="bg-transparent border border-orange text-orange font-semibold rounded-full px-4 py-1 pointer-events-none">
+      <button className="bg-transparent border border-primary text-primary font-semibold rounded-full px-4 py-1 pointer-events-none">
         Buy
       </button>
     </div>

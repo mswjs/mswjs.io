@@ -28,7 +28,6 @@ export default defineConfig({
     sitemap(),
     react(),
     tailwind({
-      configFile: '../shared/tailwind.config.mjs',
       applyBaseStyles: false,
     }),
   ],

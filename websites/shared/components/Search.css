@@ -11,8 +11,8 @@
 }
 
 .DocSearch-Button-Key {
-  @apply inline-block m-0 mt-[2px] h-[18px] w-[18px] bg-none bg-orange bg-opacity-10 text-orange;
-  box-shadow: inset 0 0 0 1px var(--orange);
+  @apply inline-block m-0 mt-[2px] h-[18px] w-[18px] bg-none bg-primary bg-opacity-10 text-primary;
+  box-shadow: inset 0 0 0 1px var(--primary);
   font-size: 10px;
   line-height: 17px;
 }

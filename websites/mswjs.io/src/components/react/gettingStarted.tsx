@@ -22,7 +22,7 @@ export function GettingStarted(): JSX.Element {
             href="/docs/getting-started"
             className="button button-primary inline-flex items-center justify-center gap-2 text-lg mt-10 px-10 w-full md:w-auto"
           >
-            <CommandLineIcon className="w-8 text-orange" />
+            <CommandLineIcon className="w-8 text-primary" />
             Get started in 3 steps
           </a>
         </div>

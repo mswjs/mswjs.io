@@ -1,7 +1,8 @@
 ---
 import { CommandLineIcon } from '@heroicons/react/24/outline'
-import BaseHead from '../components/BaseHead.astro'
+import BaseHead from '@mswjs/shared/components/BaseHead.astro'
 import Header from '@mswjs/shared/components/Header.astro'
+import Hero from '@mswjs/shared/components/Hero.astro'
 import { Footer } from '@mswjs/shared/components/react/footer'
 import { SITE_TITLE, SITE_DESCRIPTION, EGGHEAD_COURSE_URL } from '../consts'
 import { Container } from '@mswjs/shared/components/react/container'
@@ -70,60 +71,15 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
   <body>
     <Header logo={mswLogo} />
     <main>
-      {/* Hero */}
-      <Container>
-        <section
-          class="hero-gradient mx-auto max-w-screen-md py-16 md:py-24 md:text-center lg:py-48"
-        >
-          <div class="lg:-mt-16">
-            <AnnouncementBanner
-              actionText="Watch now"
-              actionUrl={EGGHEAD_COURSE_URL}
-            >
-              <div class="flex items-center">
-                <EggheadIcon
-                  className="absolute w-8"
-                  style={{ filter: 'drop-shadow(2px 6px 0 #171717)' }}
-                />
-                <span class="pl-[44px]">
-                  Learn MSW with our official Egghead course!
-                </span>
-              </div>
-            </AnnouncementBanner>
-          </div>
-
-          <h1 class="mb-8 font-black md:text-6xl">
-            <span class="text-orange">Industry standard</span>
-            <br />
-            API mocking for JavaScript.
-          </h1>
-          <p
-            class="text-xl tracking-tight text-neutral-400 md:text-2xl md:leading-9"
-          >
-            <span class="text-white">Mock Service Worker</span> is an API mocking
-            library that allows you to write client-agnostic mocks and reuse them
-            across any frameworks, tools, and environments.
-          </p>
-          <footer
-            class="mt-14 flex flex-col items-center justify-center gap-6 text-lg font-semibold md:flex-row md:gap-10"
-          >
-            <a
-              href="/docs/getting-started"
-              class="button button-primary inline-flex w-full items-center justify-center gap-2 md:w-auto md:px-8"
-            >
-              <CommandLineIcon className="text-orange w-[24px]" />
-              Get started
-            </a>
-            <a
-              href="https://github.com/mswjs/msw"
-              class="inline-block w-full text-center text-neutral-300 hover:text-white md:w-auto"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
-          </footer>
-        </section>
+      <Hero repoUrl="https://github.com/mswjs/msw">
+        <Fragment slot="title">
+          <span class="text-primary">Industry Standard</span> <nobr>API Mocking</nobr> for JavaScript.
+        </Fragment>
+        <Fragment slot="subtitle">
+          <span class="text-white">Mock Service Worker</span> is an API mocking
+          library that allows you to write client-agnostic mocks and reuse them
+          across any frameworks, tools, and environments.
+        </Fragment>
 
         <div class="py-16 text-center md:py-40">
           <UppercaseLabel>Making tests better at</UppercaseLabel>
@@ -162,7 +118,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
             </div>
           </Grid>
         </div>
-      </Container>
+      </Hero>
 
       {/* Control the network */}
       <section class="my-24 md:my-48">
@@ -322,7 +278,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
           <footer class="mt-32 text-center">
             <UppercaseLabel>
               Works with any tool there is or{' '}
-              <em class="text-orange not-italic">ever will be</em>
+              <em class="text-primary not-italic">ever will be</em>
             </UppercaseLabel>
             <div
               class="inline-grid grid-cols-6 items-center gap-10 text-neutral-500"

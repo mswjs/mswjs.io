@@ -17,7 +17,7 @@ export function AnnouncementBanner({
       {actionText ? (
         <a
           href={actionUrl}
-          className="text-orange ml-[1ch] flex-shrink-0 hover:underline"
+          className="text-primary ml-[1ch] flex-shrink-0 hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >

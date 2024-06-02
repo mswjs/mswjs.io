@@ -5,7 +5,7 @@ export function SponsorLink() {
   return (
     <LinkExternal
       href="https://github.com/sponsors/mswjs"
-      className="inline-flex items-center px-3 py-1 h-[36px] space-x-1 border rounded-md border-orange text-orange hover:bg-orange hover:text-black"
+      className="inline-flex items-center px-3 py-1 h-[36px] space-x-1 border rounded-md border-primary text-primary hover:bg-primary hover:text-black"
     >
       <span className="self-center">
         <HeartIcon className="absolute w-3 motion-safe:animate-ping duration-long" />

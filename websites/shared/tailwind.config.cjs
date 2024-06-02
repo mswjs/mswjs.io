@@ -1,15 +1,8 @@
+const path = require('node:path')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
-const COLOR_ORANGE = '#FF6A33'
-
-const extensions = `{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}`
-
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    `../shared/components/**/*.${extensions}`,
-    `./src/**/*.${extensions}`,
-  ],
+module.exports = {
   theme: {
     fontFamily: {
       sans: [
@@ -32,13 +25,10 @@ export default {
         center: true,
         padding: '1.25rem',
       },
-      colors: {
-        orange: COLOR_ORANGE,
-      },
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
-            '--tw-prose-links': theme('colors.orange'),
+            '--tw-prose-links': theme('colors.primary'),
             color: theme('colors.neutral.200'),
             'h1, h2, h3, h4': {
               color: theme('colors.white'),
@@ -52,7 +42,7 @@ export default {
               fontSize: theme('fontSize.lg'),
             },
             a: {
-              color: theme('colors.orange'),
+              color: theme('colors.primary'),
             },
             strong: {
               color: null,

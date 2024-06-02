@@ -26,8 +26,8 @@ export function PageCard({
       className="block my-5 px-5 py-4 border border-neutral-800 rounded-lg shadow-sm text-white no-underline bg-opacity-40 bg-neutral-800 hover:bg-opacity-70"
     >
       <article className="flex items-start gap-5">
-        <div className="bg-orange bg-opacity-10 rounded-md p-2">
-          <Icon className="w-[24px] h-[24px] text-orange text-lg" />
+        <div className="bg-primary bg-opacity-10 rounded-md p-2">
+          <Icon className="w-[24px] h-[24px] text-primary text-lg" />
         </div>
         <div>
           <p className="mt-0 mb-1 text-base font-bold">{title}</p>

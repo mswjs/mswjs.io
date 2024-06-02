@@ -36,7 +36,8 @@ export function Footer({ isCompact }: { isCompact?: boolean }): JSX.Element {
               &copy; {currentYear} Mock Service Worker
             </p>
             <p className="font-normal" aria-hidden="true">
-              Created with <HeartIcon className="w-3.5 inline text-orange" /> by{' '}
+              Created with <HeartIcon className="w-3.5 inline text-primary" />{' '}
+              by{' '}
               <a href="https://twitter.com/kettanaito" target="_blank">
                 kettanaito
               </a>

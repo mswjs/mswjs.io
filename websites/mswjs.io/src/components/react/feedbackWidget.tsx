@@ -92,7 +92,7 @@ export function FeedbackWidget({ pageTitle }: { pageTitle: string }) {
                   href="https://github.com/sponsors/mswjs"
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-orange underline"
+                  className="text-primary underline"
                 >
                   Sponsoring us
                 </a>

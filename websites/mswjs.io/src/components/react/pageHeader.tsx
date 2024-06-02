@@ -14,7 +14,7 @@ export function PageHeaderWrapper(
 
 export function PageHeaderPrefix({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-1 text-sm font-bold tracking-widest uppercase text-orange">
+    <p className="mb-1 text-sm font-bold tracking-widest uppercase text-primary">
       {children}
     </p>
   )
