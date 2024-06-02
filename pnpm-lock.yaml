@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -31,7 +27,7 @@ importers:
         version: 3.0.2
       '@astrojs/tailwind':
         specifier: ^5.0.2
-        version: 5.0.2(astro@4.9.2)(tailwindcss@3.3.3)(ts-node@10.9.1)
+        version: 5.0.2(astro@4.9.2)(tailwindcss@3.4.3)(ts-node@10.9.1)
       '@heroicons/react':
         specifier: ^2.0.18
         version: 2.0.18(react@18.2.0)
@@ -40,7 +36,7 @@ importers:
         version: link:../shared
       '@tailwindcss/typography':
         specifier: ^0.5.10
-        version: 0.5.10(tailwindcss@3.3.3)
+        version: 0.5.10(tailwindcss@3.4.3)
       '@types/react':
         specifier: '18'
         version: 18.2.22
@@ -78,8 +74,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       tailwindcss:
-        specifier: '3'
-        version: 3.3.3(ts-node@10.9.1)
+        specifier: ^3.4.3
+        version: 3.4.3(ts-node@10.9.1)
     devDependencies:
       '@astrojs/markdoc':
         specifier: ^0.5.0
@@ -140,7 +136,7 @@ importers:
         version: 3.0.2
       '@astrojs/tailwind':
         specifier: ^5.0.2
-        version: 5.0.2(astro@4.9.2)(tailwindcss@3.3.3)
+        version: 5.0.2(astro@4.9.2)(tailwindcss@3.4.3)(ts-node@10.9.1)
       '@heroicons/react':
         specifier: ^2.0.18
         version: 2.0.18(react@18.2.0)
@@ -149,7 +145,7 @@ importers:
         version: link:../shared
       '@tailwindcss/typography':
         specifier: ^0.5.10
-        version: 0.5.10(tailwindcss@3.3.3)
+        version: 0.5.10(tailwindcss@3.4.3)
       '@types/body-scroll-lock':
         specifier: ^3.1.0
         version: 3.1.0
@@ -178,8 +174,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       tailwindcss:
-        specifier: '3'
-        version: 3.3.3(ts-node@10.9.1)
+        specifier: ^3.4.3
+        version: 3.4.3(ts-node@10.9.1)
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
@@ -534,22 +530,7 @@ packages:
       zod: 3.21.1
     dev: false
 
-  /@astrojs/tailwind@5.0.2(astro@4.9.2)(tailwindcss@3.3.3):
-    resolution: {integrity: sha512-oXqeqmBlkQmsltrsU9nEWeXOtrZIAHW8dcmX7BCdrjzPnU6dPwWzAwhddNQ9ihKiWwsLnlbwQZIo2CDigcZlIA==}
-    peerDependencies:
-      astro: ^3.2.4
-      tailwindcss: ^3.0.24
-    dependencies:
-      astro: 4.9.2(@types/node@20.8.0)(typescript@5.4.5)
-      autoprefixer: 10.4.16(postcss@8.4.38)
-      postcss: 8.4.38
-      postcss-load-config: 4.0.1(postcss@8.4.38)(ts-node@10.9.1)
-      tailwindcss: 3.3.3(ts-node@10.9.1)
-    transitivePeerDependencies:
-      - ts-node
-    dev: false
-
-  /@astrojs/tailwind@5.0.2(astro@4.9.2)(tailwindcss@3.3.3)(ts-node@10.9.1):
+  /@astrojs/tailwind@5.0.2(astro@4.9.2)(tailwindcss@3.4.3)(ts-node@10.9.1):
     resolution: {integrity: sha512-oXqeqmBlkQmsltrsU9nEWeXOtrZIAHW8dcmX7BCdrjzPnU6dPwWzAwhddNQ9ihKiWwsLnlbwQZIo2CDigcZlIA==}
     peerDependencies:
       astro: ^3.2.4
@@ -559,7 +540,7 @@ packages:
       autoprefixer: 10.4.16(postcss@8.4.38)
       postcss: 8.4.38
       postcss-load-config: 4.0.1(postcss@8.4.38)(ts-node@10.9.1)
-      tailwindcss: 3.3.3(ts-node@10.9.1)
+      tailwindcss: 3.4.3(ts-node@10.9.1)
     transitivePeerDependencies:
       - ts-node
     dev: false
@@ -2122,7 +2103,7 @@ packages:
   /@shikijs/core@1.5.2:
     resolution: {integrity: sha512-wSAOgaz48GmhILFElMCeQypSZmj6Ru6DttOOtl3KNkdJ17ApQuGNCfzpk4cClasVrnIu45++2DBwG4LNMQAfaA==}
 
-  /@tailwindcss/typography@0.5.10(tailwindcss@3.3.3):
+  /@tailwindcss/typography@0.5.10(tailwindcss@3.4.3):
     resolution: {integrity: sha512-Pe8BuPJQJd3FfRnm6H0ulKIGoMEQS+Vq01R6M5aCrFB/ccR/shT+0kXLjouGC1gFLm9hopTFN+DMP0pfwRWzPw==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
@@ -2131,7 +2112,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.3.3(ts-node@10.9.1)
+      tailwindcss: 3.4.3(ts-node@10.9.1)
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -3641,6 +3622,7 @@ packages:
 
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
@@ -3781,8 +3763,8 @@ packages:
       '@pkgjs/parseargs': 0.11.0
     dev: false
 
-  /jiti@1.20.0:
-    resolution: {integrity: sha512-3TV69ZbrvV6U5DfQimop50jE9Dl6J8O1ja1dvBbMba/sZ3YBEQqJ2VZRoQPVnhlzjNtU1vaXRZVrVjU4qtm8yA==}
+  /jiti@1.21.0:
+    resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
     hasBin: true
     dev: false
 
@@ -5709,8 +5691,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /tailwindcss@3.3.3(ts-node@10.9.1):
-    resolution: {integrity: sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w==}
+  /tailwindcss@3.4.3(ts-node@10.9.1):
+    resolution: {integrity: sha512-U7sxQk/n397Bmx4JHbJx/iSOOv5G+II3f1kpLpY2QeUv5DcPdcTsYLlusZfq1NthHS1c1cZoyFmmkex1rzke0A==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -5722,7 +5704,7 @@ packages:
       fast-glob: 3.3.2
       glob-parent: 6.0.2
       is-glob: 4.0.3
-      jiti: 1.20.0
+      jiti: 1.21.0
       lilconfig: 2.1.0
       micromatch: 4.0.5
       normalize-path: 3.0.0
@@ -6399,3 +6381,7 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
