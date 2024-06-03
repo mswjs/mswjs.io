@@ -1,3 +1,4 @@
+import type { MDXInstance } from 'astro'
 import type { DocsFrontmatter } from '@mswjs/shared/collections/docs'
 import {
   createNavTreeBuilder,
