@@ -1,16 +1,23 @@
 ---
-import { getCollection } from 'astro:content'
-import { type DocsFrontmatter } from '@mswjs/shared/collections/docs'
+import { type CollectionEntry, getCollection } from 'astro:content'
 import BaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
 import DocsPageLayout from '@mswjs/shared/layouts/DocsPageLayout.astro'
 
 import logo from '../../images/source.svg'
+import type { DocsFrontmatter } from '@mswjs/shared/collections/docs'
 import { buildDocsNavTree } from '../../content/buildDocsNavTree'
 
-const collection = await getCollection('docs')
-const page = collection.find((page) => {
-  return page.slug === 'index'
-})!
+export async function getStaticPaths() {
+  const docs = await getCollection('docs')
+  return docs.map((page) => ({
+    params: { slug: page.slug },
+    props: {
+      page
+    },
+  }))
+}
+
+const { page } = Astro.props
 
 const allPages = await Astro.glob<DocsFrontmatter>('../../content/docs/**/*.mdx')
 const navTree = buildDocsNavTree(allPages)

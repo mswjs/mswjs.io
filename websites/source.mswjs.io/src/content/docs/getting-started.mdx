@@ -1,0 +1,45 @@
+---
+order: 2
+title: Getting started
+description: Three steps to get started with Source.
+---
+
+Content.
+
+## Step 1: Install
+
+Add Source as a dependency to your project:
+
+```sh
+npm install msw @mswjs/source --save-dev
+```
+
+> Source is meant to be used with [MSW](https://mswjs.io/) so we will install it too.
+
+## Step 2: Choose the source
+
+For this tutorial, let's generate request handlers from a HAR file we've recorded earlier.
+
+```js /fromTraffic/ /traffic/#v
+// src/mocks/handlers.js
+import { fromTraffic } from '@mswjs/source'
+import traffic from './api.har'
+
+const handlers = [...fromTraffic(traffic)]
+```
+
+> The `handler.js` module is where you describe your request handlers. If you are unsure what that means, please [read this first](https://mswjs.io/docs/getting-started#step-2-describe).
+
+TODO: Link to learn about all available sources.
+
+## Step 3: Integrate
+
+...TODO Link to MSW's Integration step. Also, example with `setupServer()` integration right here.
+
+```js {2,4}
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+const server = setupServer(...handlers)
+server.listen()
+```
