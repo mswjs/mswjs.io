@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { cls } from '@mswjs/shared/utils/cls'
+import { cls } from '../../utils/cls'
 
 type Feedback = 'great' | 'meh' | 'bad'
 

@@ -1,27 +1,20 @@
 ---
-import BaseHead from '@mswjs/shared/components/BaseHead.astro'
-import Header from '@mswjs/shared/components/Header.astro'
+import BaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
 
-import sourceLogo from '../images/source.svg'
+import logo from '../images/source.svg'
 ---
 
-<!doctype html>
-<html lang="en" data-theme="dark" transition:animate="none">
-  <head>
-    <BaseHead
-      title="Source"
-      displayTitle={`Source - Generate request handlers from different sources`}
-      description="Generate request handlers from different sources"
-    />
-  </head>
-  <body>
-    <Header logo={sourceLogo} />
-		<main>
-			<Hero repoUrl="https://github.com/mswjs/source">
-				<Fragment slot="title">Lift The <span class="text-primary">Source</span> of Truth Up</Fragment>
-				<Fragment slot="subtitle">Generate request handler from various sources, like OpenAPI documents or HAR files.</Fragment>
-			</Hero>
-		</main>
-	</body>
-</html>
+<BaseLayout
+  sitename="Source"
+  title="Source"
+  displayTitle="Source - Generate request handlers from different sources"
+  description="Generate request handlers from different sources"
+  logo={logo}
+>
+  <Hero repoUrl="https://github.com/mswjs/source">
+    <Fragment slot="title">Lift The <span class="text-primary">Source</span> of Truth Up</Fragment>
+    <Fragment slot="subtitle">Generate request handler from various sources, like OpenAPI documents or HAR files.</Fragment>
+  </Hero>
+</BaseLayout>
+

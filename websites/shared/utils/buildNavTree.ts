@@ -2,7 +2,7 @@ import * as path from 'path'
 import { z } from 'astro:content'
 import type { MDXInstance } from 'astro'
 import { minimatch } from 'minimatch'
-import { docsSchema } from '../content/config'
+import { docsSchema } from '../collections/docs'
 
 // This is relative to the project's root.
 const DOCS_BASE_PATH = path.resolve('./src/content/docs')

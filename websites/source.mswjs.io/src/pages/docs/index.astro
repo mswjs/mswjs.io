@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content'
+import { type DocsFrontmatter } from '@mswjs/shared/collections/docs'
+import BaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
+import DocsPageLayout from '@mswjs/shared/layouts/DocsPageLayout.astro'
+import { createNavTreeBuilder } from '@mswjs/shared/utils/buildNavTree'
+
+import logo from '../../images/source.svg'
+
+const collection = await getCollection('docs')
+const page = collection.find((page) => {
+  return page.slug === 'index'
+})!
+
+const allPages = await Astro.glob<DocsFrontmatter>('../../content/docs/**/*.mdx')
+const builder = createNavTreeBuilder(allPages)
+const navTree = [
+  ...builder.get('*.mdx')
+]
+---
+
+<BaseLayout
+  sitename="Source"
+  title={page.data.title}
+  desciption={page.data.description}
+  keywords={page.data.keywords}
+  logo={logo}
+  isFluid={true}
+>
+  <DocsPageLayout page={page} navTree={navTree} />
+</BaseLayout>

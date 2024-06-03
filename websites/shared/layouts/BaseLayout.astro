@@ -1,0 +1,38 @@
+---
+import { type ImageMetadata } from 'astro'
+import BaseHead from '../components/BaseHead.astro'
+import Header from '../components/Header.astro'
+
+interface Props {
+  sitename: string
+  title: string
+  displayTitle?: string
+  description?: string
+  keywords?: Array<string>
+  logo: ImageMetadata
+  isFluid?: boolean
+}
+
+const { props } = Astro
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark" transition:animate="none">
+  <head>
+    <BaseHead
+      title={props.title}
+      displayTitle={props.displayTitle || `${props.title} - ${props.sitename}`}
+      description={props.description}
+      keywords={props.keywords}
+    />
+  </head>
+  <body>
+    <slot name="banner" />
+    <Header logo={props.logo} isFluid={props.isFluid} />
+    <main>
+      <slot />
+    </main>
+    <p>TODO: Footer</p>
+  </body>
+</html>
+
