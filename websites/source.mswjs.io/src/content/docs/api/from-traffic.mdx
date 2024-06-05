@@ -1,4 +1,68 @@
 ---
 order: 1
 title: fromTraffic
+description: Generate request handlers from a HAR file.
 ---
+
+The `fromTraffic` function generates request handles from the given HAR document.
+
+## Call signature
+
+```ts
+function fromTraffic(
+  archive: Har.Har,
+  mapFn?: (entry: Har.Entry) => Har.Entry | undefined
+): RequestHandler[]
+```
+
+## Usage
+
+The `fromTraffic` function accepts a _parsed_ HAR file, which is a plain JavaScript object. Depending on your project, you can either import the `*.har` file directly, or read it from the file system and parse it via `JSON.parse()`.
+
+```js /fromTraffic/
+import { fromTraffic } from '@mswjs/source/traffic'
+import har from './api.har'
+
+const handlers = fromTraffic(har)
+```
+
+### Mapping entries
+
+You can transform HAR entries by providing a map function as the second argument to `fromTraffic`. The map function is called for every entry (`har.log.entries[n]`) in the archive, and acts similarly to `Array.prototype.map`.
+
+```js
+const { BASE_URL } = process.env
+
+fromTraffic(har, (entry) => {
+  const url = new URL(entry.request.url)
+
+  if (url.hostname === 'api.example.com') {
+    url.hostname = BASE_URL
+    entry.request.url = url.href
+  }
+
+  return entry
+})
+```
+
+In this example, we are locating requests to `api.example.com` and rewriting their hostname to point to the `BASE_URL` we use in tests. This is handy if the recorded traffic was on production while we want to run tests aginst staging or local.
+
+Using the map function also allows you to repurpose a single network archive by transforming its entries based on the test cases or debugging scenarios.
+
+### Filtering entries
+
+If the map function returns `undefined`, the respective network entry is _completely skipped_. In that regard, the map function acts as a filter function.
+
+```js {4-8}
+fromTraffic(har, (entry) => {
+  const url = new URL(entry.request.url)
+
+  // Skip all requests that weren't made
+  // to the "api.example.com" hostname.
+  if (url.hostname !== 'api.example.com') {
+    return
+  }
+
+  return entry
+})
+```

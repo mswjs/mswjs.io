@@ -22,7 +22,7 @@ For this tutorial, let's generate request handlers from a HAR file we've recorde
 
 ```js /fromTraffic/ /traffic/#v
 // src/mocks/handlers.js
-import { fromTraffic } from '@mswjs/source'
+import { fromTraffic } from '@mswjs/source/traffic'
 import traffic from './api.har'
 
 const handlers = [...fromTraffic(traffic)]

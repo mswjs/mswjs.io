@@ -8,7 +8,16 @@ Source is a library for generating request handlers for [Mock Service Worker](ht
 
 ## Motivation
 
-> TODO Why did I build source?
+[Request handlers](https://mswjs.io/docs/concepts/request-handler) is a great format to describe your network when working with MSW. In some cases, however, writing handlers by hand can lead to a suboptimal experience, specifically:
+
+- When migrating large test suites to MSW;
+- When writing regression tests for a network scenario reproduced elsewhere.
+
+Source is designed to breach that gap and allow you to generate request handlers from supported inputs, like OpenAPI documents or HAR files.
+
+I was inspired to create Source by a particular development workflow. Imagine you have finally reproduced a network-related issue in your browser, and now your job is to write a regression test for it. Refresh the page—and the reproduction is gone. So, instead, you should be able to save the network inro an `*.har` file, put it next to your test suite, and use Source to generate request handlers out of it and achieve reliable, reproducible network behavior to replay the issue on demand.
+
+That is precisely what Source enables you to do!
 
 ## Start here
 
