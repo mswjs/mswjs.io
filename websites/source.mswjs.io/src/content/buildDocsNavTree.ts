@@ -14,6 +14,11 @@ export function buildDocsNavTree(
     ...builder.get('*.mdx'),
     {
       kind: 'group',
+      title: 'Integrations',
+      children: builder.get('integrations/**/*.mdx'),
+    },
+    {
+      kind: 'group',
       title: 'API',
       children: builder.get('api/**/*.mdx'),
     },
