@@ -44,19 +44,19 @@ As a result, you will get an array of request handlers to use with MSW.
 
 Get yourself familiar with all the available source types for this library in the "Integrations" section to your left. Here are a few of the most used sources:
 
-import { WindowIcon } from '@heroicons/react/24/outline'
+import { GlobeAltIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import { PageCard } from '@mswjs/shared/components/react/pageCard'
 
 <div className="md:grid md:grid-cols-2 md:gap-5">
   <PageCard
-    icon={WindowIcon}
+    icon={GlobeAltIcon}
     url="/docs/integrations/har"
     title="Network archive (HAR)"
     description="Generate request handlers from HAR files."
   />
   <PageCard
-    icon={WindowIcon}
-    url="/docs/getting-started"
+    icon={DocumentTextIcon}
+    url="/docs/integrations/open-api"
     title="OpenAPI specification"
     description="Generate request handlers from OpenAPI documents."
   />
