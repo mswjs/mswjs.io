@@ -57,6 +57,13 @@ module.exports = {
             },
             'code::before': null,
             'code::after': null,
+            kbd: {
+              color: theme('colors.neutral.200'),
+              background: theme('colors.neutral.800'),
+              border: `1px solid ${theme('colors.neutral.700')}`,
+              borderRadius: theme('borderRadius.md'),
+              padding: `0 ${theme('padding.1')}`,
+            },
             blockquote: {
               color: theme('colors.neutral.400'),
               borderColor: theme('colors.neutral.700'),

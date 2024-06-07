@@ -22,5 +22,10 @@ export function buildDocsNavTree(
       title: 'API',
       children: builder.get('api/**/*.mdx'),
     },
+    {
+      kind: 'group',
+      title: 'Recipes',
+      children: builder.get('recipes/**/*.mdx'),
+    },
   ]
 }
