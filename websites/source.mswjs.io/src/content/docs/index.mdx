@@ -11,7 +11,7 @@ Source is a library for generating request handlers for [Mock Service Worker](ht
 [Request handlers](https://mswjs.io/docs/concepts/request-handler) is a great format to describe your network when working with MSW. In some cases, however, writing handlers by hand can lead to a suboptimal experience, specifically:
 
 - When migrating large test suites to MSW;
-- When writing regression tests for a network scenario reproduced elsewhere.
+- When writing regression tests for network scenarios reproduced elsewhere.
 
 Source is designed to breach that gap and allow you to generate request handlers from supported inputs, like OpenAPI documents or HAR files.
 
@@ -21,6 +21,14 @@ That is precisely what Source enables you to do!
 
 ## Start here
 
-If you are looking for a place to start with Source, don't look any further than our Getting started tutorial:
+If you've never used Source before, here's the best place to start:
 
-> TODO Link to the Getting started page.
+import { WindowIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+
+<PageCard
+  icon={WindowIcon}
+  url="/docs/getting-started"
+  title="Getting started"
+  description="Three steps to get started with Source."
+/>

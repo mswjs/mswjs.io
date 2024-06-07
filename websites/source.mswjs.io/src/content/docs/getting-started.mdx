@@ -4,37 +4,69 @@ title: Getting started
 description: Three steps to get started with Source.
 ---
 
-Content.
-
 ## Step 1: Install
 
-Add Source as a dependency to your project:
+Add `@mswjs/source` as a dependency to your project:
 
 ```sh
 npm install msw @mswjs/source --save-dev
 ```
 
-> Source is meant to be used with [MSW](https://mswjs.io/) so we will install it too.
+> Source is meant to be used with [`msw`](https://mswjs.io/) so we will install it too.
 
 ## Step 2: Choose the source
 
-For this tutorial, let's generate request handlers from a HAR file we've recorded earlier.
+Next, decide about the source (or sources) to generate the request handlers from.
 
-```js /fromTraffic/ /traffic/#v
+In this tutorial, we will use a network archive (`api.har`) we recorded earlier. It looks like this:
+
+```json
+{
+  "log": {
+    "entries": []
+  }
+}
+```
+
+> You can copy the contents of the HAR file above or make your own traffic recording in the browser.
+
+Import the `fromTraffic` function from `@mswjs/source/traffic` and provide the HAR file as an argument to that function:
+
+```js {3} /fromTraffic/
 // src/mocks/handlers.js
 import { fromTraffic } from '@mswjs/source/traffic'
 import traffic from './api.har'
 
-const handlers = [...fromTraffic(traffic)]
+export const handlers = [...fromTraffic(traffic)]
 ```
 
-> The `handler.js` module is where you describe your request handlers. If you are unsure what that means, please [read this first](https://mswjs.io/docs/getting-started#step-2-describe).
+As a result, you will get an array of request handlers to use with MSW.
 
-TODO: Link to learn about all available sources.
+Get yourself familiar with all the available source types for this library in the "Integrations" section to your left. Here are a few of the most used sources:
+
+import { WindowIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+
+<div className="md:grid md:grid-cols-2 md:gap-5">
+  <PageCard
+    icon={WindowIcon}
+    url="/docs/integrations/har"
+    title="Network archive (HAR)"
+    description="Generate request handlers from HAR files."
+  />
+  <PageCard
+    icon={WindowIcon}
+    url="/docs/getting-started"
+    title="OpenAPI specification"
+    description="Generate request handlers from OpenAPI documents."
+  />
+</div>
 
 ## Step 3: Integrate
 
-...TODO Link to MSW's Integration step. Also, example with `setupServer()` integration right here.
+Source helps you to generate request handlers but handlers themselves just describe the network. They don't intercept or mock anything.
+
+Here's a brief example of how to enable API mocking in a Node.js process, using the request `handlers` we've generated during the previous step:
 
 ```js {2,4}
 import { setupServer } from 'msw/node'
@@ -43,3 +75,5 @@ import { handlers } from './handlers'
 const server = setupServer(...handlers)
 server.listen()
 ```
+
+> Learn about all the available integrations in the [MSW Documentation](https://mswjs.io/docs/getting-started#step-3-integrate).
