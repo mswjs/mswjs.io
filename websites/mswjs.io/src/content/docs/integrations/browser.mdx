@@ -21,17 +21,28 @@ import { Info } from '../../../components/react/info'
   local HTTPS development, see [this recipe](/docs/recipes/using-local-https).
 </Info>
 
-## Copy the worker script
+## Generating the worker script
 
 If your application registers a Service Worker it must **host and serve it**. The library CLI provides you with the `init` command to quickly copy the `./mockServiceWorker.js` worker script into your application's public directory.
 
 ```sh
-npx msw init <PUBLIC_DIR>
+npx msw init <PUBLIC_DIR> --save
 ```
 
 > Learn more about the [`init` CLI command](/docs/cli/init).
 
 Once copied, navigate to the `/mockServiceWorker.js` URL of your application in your browser (e.g. if your application is running on `http://localhost:3000`, go to the `http://localhost:3000/mockServiceWorker.js` route). You should see the worker script contents. If you see a 404 or a MIME type error, make sure you are specifying the correct `PUBLIC_DIR` when running the `init` command, and that you adjust any potential configuration of your application that would affect serving static files.
+
+> Learn more about managing the worker script while using the library:
+
+import { CommandLineIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CommandLineIcon}
+  url="/docs/best-practices/managing-the-worker"
+  title="Managing the worker"
+  description="Learn how to manage the worker script updates."
+/>
 
 ## Setup
 
