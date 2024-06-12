@@ -40,7 +40,8 @@ npx msw init ./public --save
 
 Running this command will save the `./public` directory in your `package.json`:
 
-```json {3-5}
+```json {4-6}
+// package.json
 {
   "name": "my-app",
   "msw": {
@@ -50,3 +51,15 @@ Running this command will save the `./public` directory in your `package.json`:
 ```
 
 If this property is present, whenever you install the `msw` package, the worker script will be copied to the `msw.workerDirectory` destination automatically. This ensures the worker script being in sync with the currently installed version of the library.
+
+## Related materials
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CommandLineIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CommandLineIcon}
+  url="/docs/best-practices/managing-the-worker"
+  title="Managing the worker"
+  description="Learn how to manage the worker script updates."
+/>
