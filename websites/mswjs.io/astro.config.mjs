@@ -8,7 +8,7 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
-import { remarkLastModifiedPlugin } from '@mswjs/shared/plugins/remarkLastModifiedPlugin'
+import { remarkLastModifiedPlugin } from '@mswjs/shared/plugins/remarkLastModifiedPlugin.ts'
 
 /** @type {import('rehype-autolink-headings').Options} */
 const autoLinkHeadingsOptions = {

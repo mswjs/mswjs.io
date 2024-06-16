@@ -5,17 +5,17 @@ import Header from '@mswjs/shared/components/Header.astro'
 import { Footer } from '@mswjs/shared/components/react/footer'
 import { Grid } from '@mswjs/shared/components/react/grid'
 import { Container } from "@mswjs/shared/components/react/container";
-import FormattedDate from '../components/FormattedDate.astro';
-import DocsNavTree from '../components/docs/DocsNavTree.astro'
-import TableOfContents from '../components/docs/DocsTableOfContents.astro'
-import DocsSidebarPartners from "../components/docs/DocsSidebarPartners.astro";
-import { type DocsItem, type DocsFrontmatter, createNavTreeBuilder } from '../utils/buildNavTree'
+import FormattedDate from '@mswjs/shared/components/FormattedDate.astro';
+import DocsNavTree from '@mswjs/shared/components/docs/DocsNavTree.astro'
+import TableOfContents from '@mswjs/shared/components/docs/DocsTableOfContents.astro'
+import DocsSidebarPartners from "@mswjs/shared/components/docs/DocsSidebarPartners.astro";
+import { type DocsItem, type DocsFrontmatter, createNavTreeBuilder } from '@mswjs/shared/utils/buildNavTree'
 import type { MarkdownHeading } from 'astro';
-import { buildHeadings } from '../utils/buildHeadings';
+import { buildHeadings } from '@mswjs/shared/utils/buildHeadings';
 import { DocsSidebarLinks } from "@mswjs/shared/components/react/docsSidebarLinks";
-import { FeedbackWidget } from "../components/react/feedbackWidget";
-import Ads from '../components/Ads.astro'
+import { FeedbackWidget } from "@mswjs/shared/components/react/feedbackWidget";
 import { DocsMovileNav } from "@mswjs/shared/components/react/docsMobileNav";
+import Ads from '../components/Ads.astro'
 import { SITE_TITLE } from "../consts";
 import PageBanner from "../components/PageBanner.astro";
 

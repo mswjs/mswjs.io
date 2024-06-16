@@ -41,7 +41,7 @@ npm install msw@latest
 
 **This release sets the minimal supported Node.js version to 18.0.0.**
 
-import { Warning } from '../../../components/react/warning'
+import { Warning } from '@mswjs/shared/components/react/warning'
 
 <Warning>
   **Node.js versions prior to Node.js 18 are no longer supported.** To use the
@@ -710,7 +710,7 @@ The `request` argument of the `onUnhandledRequest` has changed from being an abs
 server.listen({
   onUnhandledRequest(request, print) {
     const url = request.url
- 
+
     if (url.pathname.includes('/assets/')) {
       return
     }
@@ -729,7 +729,7 @@ server.listen({
   onUnhandledRequest(request, print) {
     // Create a new URL instance manually.
     const url = new URL(request.url)
- 
+
     if (url.pathname.includes('/assets/')) {
       return
     }

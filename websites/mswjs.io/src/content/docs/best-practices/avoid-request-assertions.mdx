@@ -15,7 +15,7 @@ When testing, it may be tempting to write assertions against the intercepted req
 
 **We highly discourage against such assertions** as they represent implementation detail testing and sway you into testing how your application is written instead of what it does. Treat this as the default recommendation when testing with MSW.
 
-import { Success } from '../../../components/react/success'
+import { Success } from '@mswjs/shared/components/react/success'
 
 <Success>
   Instead of asserting that a particular request was made, test **how your
