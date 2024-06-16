@@ -700,6 +700,45 @@ worker.listHandlers().forEach((handler) => {
 })
 ```
 
+### onUnhandledRequest
+
+The `request` argument of the `onUnhandledRequest` has changed from being an abstract request object to be a Fetch API `Request` instance. Take that into account when accessing its properties, like `request.url`.
+
+**Before:**
+
+```js {3}
+server.listen({
+  onUnhandledRequest(request, print) {
+    const url = request.url
+ 
+    if (url.pathname.includes('/assets/')) {
+      return
+    }
+
+    print.warning()
+  },
+})
+```
+
+**After:**
+
+The `request` argument is an instance of `Request`, which makes its `url` property a `string`.
+
+```js {4}
+server.listen({
+  onUnhandledRequest(request, print) {
+    // Create a new URL instance manually.
+    const url = new URL(request.url)
+ 
+    if (url.pathname.includes('/assets/')) {
+      return
+    }
+
+    print.warning()
+  },
+})
+```
+
 ### Life-cycle events
 
 This release brings changes to the [Life-cycle events](/docs/api/life-cycle-events) listeners' call signature.

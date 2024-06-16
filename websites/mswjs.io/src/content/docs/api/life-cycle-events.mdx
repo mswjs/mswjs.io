@@ -95,7 +95,7 @@ server.events.on('response:mocked', ({ request, requestId, response }) => {
     request.method,
     request.url,
     response.status,
-    response.statusText,
+    response.statusText
   )
 })
 ```
@@ -115,4 +115,31 @@ server.events.on('unhandledException', ({ request, requestId, error }) => {
   console.log('%s %s errored! See details below.', request.method, request.url)
   console.error(error)
 })
+```
+
+## Removing listeners
+
+### `removeListener()`
+
+- `name`, _String_, the event name to remove.
+- `listener`, _Function_, the event listener to remove.
+
+```js
+server.events.removeListener('request:start', requestStartListener)
+```
+
+### `removeAllListeners()`
+
+- `name`, _String_ (Optional), the event name to remove.
+
+When called without any arguments, `.removeAllListeners()` removes _all_ events attached to the current `worker`/`server` instance:
+
+```js
+server.events.removeAllListeners()
+```
+
+You can provide a `name` argument to only remove the listeners for the respective event:
+
+```js
+server.events.removeAllListeners('request:start')
 ```

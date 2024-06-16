@@ -1,0 +1,90 @@
+---
+title: Managing the worker
+---
+
+In the browser, MSW registers a Service Worker script (`mockServiceWorker.js`) that allows it to intercept the outgoing network traffic of your application. Below, learn about the best practices of generating, verifying, and updating the worker script.
+
+## Generating the worker script
+
+To generate the worker script, run the following command in your project's root directory:
+
+```
+npx msw init <PUBLIC_DIR> --save
+```
+
+You'd have to replace the `<PUBLIC_DIR>` part with the actual path to your application's public directory. You can learn more about this step here:
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CommandLineIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CommandLineIcon}
+  url="/docs/cli/init#--save"
+  title="`init` CLI command"
+  description="Generate the worker script at the given path."
+/>
+
+## Committing the worker script
+
+**It is recommended you commit the `mockServiceWorker.js` worker script in Git**. This way, everyone working on the project can get MSW up and running without having to run any additional commands.
+
+Alternatively, you can treat the worker script as a generated artifact. If you chose to do so, make sure to automate the [worker script generation](#generating-the-worker-script) so the script is created for everyone starting with the project.
+
+## Serving the worker script
+
+The entire point of `msw init` is to copy the worker script to your project's root directory so _it is available on runtime_. You must ensure that your application is serving the worker script correctly by opening the script's URL in the browser.
+
+For example, if you are running your application at `http://localhost:3000`, navigating to `http://localhost:3000/mockServiceWorker.js` must return the `application/javascript` content of the worker script. If it doesn't, you should repeat the [generation step](#generating-the-worker-script) or go through the browser integration from the start:
+
+import { WindowIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={WindowIcon}
+  url="/docs/integrations/browser"
+  title="Browser integration"
+  description="Set up Mock Service Worker in the browser."
+/>
+
+## Updating the worker script
+
+The client-side code of MSW can pick up any worker script within the same major version. It is still recommended to keep the worker script up-to-date with the installed version of MSW. That is why we recommend using the `--save` flag with the `msw init` command.
+
+When run with the `--save` flag, the `msw init` command will save the used public path in `package.json`. Later, whenever you upgrade or downgrade the `msw` dependency, it will automatically generate the worker script at the saved path to keep you in-sync.
+
+```json {3-5}
+// package.json
+{
+  "msw": {
+    "workerDirectory": "./public"
+  }
+}
+```
+
+<PageCard
+  icon={CommandLineIcon}
+  url="/docs/cli/init#--save"
+  title="`--save` flag of the `init` command"
+  description="Save the public directory to enable automatic updates."
+/>
+
+### Multiple worker directories
+
+MSW supports an array of public directories as the value of the `msw.workerDirectory` property. This is especially handy when using MSW in multiple packages in a monorepo.
+
+```json {5-9}
+// package.json
+{
+  "name": "my-monorepo-root",
+  "msw": {
+    "workerDirectory": [
+      // Include multiple public directories.
+      "./packages/one/public",
+      "./packages/two/static"
+    ]
+  }
+}
+```
+
+Anytime you run `msw init` with the `--save` flag and a public directory not previously stored in `msw.workerDirectory`, MSW will automatically save the new public directory in your `package.json`.
+
+> If you decide to manually edit `msw.workerDirectory`, make sure that it's set in <em>your project's root-level `package.json`</em>.

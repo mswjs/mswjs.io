@@ -102,7 +102,7 @@ http.get('/resource', () => {
 })
 ```
 
-> Note that neither `HttpResponse.error()` nor `Response.error()` allow customizing the network error response. If you wish to customize it, consider throwing inside the response resolver—that will also produce a network error similar to the server throwing a runtime error.
+> Note that neither `HttpResponse.error()` nor `Response.error()` allow customizing the network error response. MSW chooses to abide by that behavior, especially since the custom network error messages are handled inconsistently across different request clients (some expose the error, others do not).
 
 ## Custom methods
 
