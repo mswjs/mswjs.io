@@ -3,16 +3,16 @@ import { cls } from '../../utils/cls'
 interface ContainerProps {
   children: React.ReactNode
   className?: string
-  isFluid?: boolean
+  compact?: boolean
 }
 
 export function Container({
   children,
   className,
-  isFluid,
+  compact,
 }: ContainerProps): JSX.Element {
   return (
-    <div className={cls(isFluid ? 'px-5' : 'container', className)}>
+    <div className={cls(compact ? 'px-5' : 'container', className)}>
       {children}
     </div>
   )

@@ -1,9 +1,7 @@
 ---
-import BaseHead from '@mswjs/shared/components/BaseHead.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
-import { SITE_TITLE, SITE_DESCRIPTION, EGGHEAD_COURSE_URL } from '../consts'
+import { EGGHEAD_COURSE_URL } from '../consts'
 import { Container } from '@mswjs/shared/components/react/container'
 import { Grid } from '@mswjs/shared/components/react/grid'
 import { Section } from '../components/react/section'
@@ -56,349 +54,335 @@ import heitorLessaAvatar from '../images/people/heitor-lessa.jpg'
 import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
 ---
 
-<!doctype html>
-<html lang="en" data-theme="dark" transition:animate="none">
-  <head>
-    <BaseHead
-      title={SITE_TITLE}
-      displayTitle={`${SITE_TITLE} - ${SITE_DESCRIPTION}`}
-      description={SITE_DESCRIPTION}
-    />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <Hero repoUrl="https://github.com/mswjs/msw">
-        <Fragment slot="title">
-          <span class="text-primary">Industry Standard</span> <nobr>API Mocking</nobr> for JavaScript.
-        </Fragment>
-        <Fragment slot="subtitle">
-          <span class="text-white">Mock Service Worker</span> is an API mocking
-          library that allows you to write client-agnostic mocks and reuse them
-          across any frameworks, tools, and environments.
-        </Fragment>
+<BaseLayout>
+  <Hero repoUrl="https://github.com/mswjs/msw">
+    <Fragment slot="title">
+      <span class="text-primary">Industry Standard</span> <nobr>API Mocking</nobr> for JavaScript.
+    </Fragment>
+    <Fragment slot="subtitle">
+      <span class="text-white">Mock Service Worker</span> is an API mocking
+      library that allows you to write client-agnostic mocks and reuse them
+      across any frameworks, tools, and environments.
+    </Fragment>
 
-        <div class="py-16 text-center md:py-40">
-          <UppercaseLabel>Making tests better at</UppercaseLabel>
-          <Grid className="relative">
-            <div
-              class="col-span-full grid max-w-full grid-cols-3 items-center justify-items-center gap-x-6 gap-y-6 overflow-hidden fill-white md:max-w-6xl md:grid-cols-6 md:gap-y-10 lg:col-span-8 lg:col-start-3"
-            >
-              <MicrosoftIcon
-                className="h-9 max-w-full"
-                aria-label="Microsoft"
-              />
-              <GoogleIcon className="h-9 max-w-full" aria-label="Google" />
-              <AwsIcon
-                className="h-9 max-w-full"
-                aria-label="Amazon Web Services"
-              />
-              <NetflixIcon className="h-5 max-w-full" aria-label="Netflix" />
-              <SpotifyIcon className="h-9 max-w-full" aria-label="Spotify" />
-              <SamsungIcon className="h-9 max-w-full" aria-label="Samsung" />
-              <UberIcon className="h-4 max-w-full" aria-label="Uber" />
-              <GitHubIcon className="h-9 max-w-full" aria-label="GitHub" />
-              <VercelIcon className="h-9 max-w-full" aria-label="Vercel" />
-              <CloudflareIcon
-                className="h-9 max-w-full"
-                aria-label="Cloudflare"
-              />
-              <CodeSandboxIcon
-                className="h-10 max-w-full"
-                aria-label="CodeSandbox"
-              />
-              <MozillaIcon className="h-9 max-w-full" aria-label="Mozilla" />
-            </div>
-            <div
-              class="absolute bottom-0 left-0 h-40 w-full bg-gradient-to-t from-neutral-900 to-transparent md:hidden"
-            >
-            </div>
-          </Grid>
+    <div class="py-16 text-center md:py-40">
+      <UppercaseLabel>Making tests better at</UppercaseLabel>
+      <Grid className="relative">
+        <div
+          class="col-span-full grid max-w-full grid-cols-3 items-center justify-items-center gap-x-6 gap-y-6 overflow-hidden fill-white md:max-w-6xl md:grid-cols-6 md:gap-y-10 lg:col-span-8 lg:col-start-3"
+        >
+          <MicrosoftIcon
+            className="h-9 max-w-full"
+            aria-label="Microsoft"
+          />
+          <GoogleIcon className="h-9 max-w-full" aria-label="Google" />
+          <AwsIcon
+            className="h-9 max-w-full"
+            aria-label="Amazon Web Services"
+          />
+          <NetflixIcon className="h-5 max-w-full" aria-label="Netflix" />
+          <SpotifyIcon className="h-9 max-w-full" aria-label="Spotify" />
+          <SamsungIcon className="h-9 max-w-full" aria-label="Samsung" />
+          <UberIcon className="h-4 max-w-full" aria-label="Uber" />
+          <GitHubIcon className="h-9 max-w-full" aria-label="GitHub" />
+          <VercelIcon className="h-9 max-w-full" aria-label="Vercel" />
+          <CloudflareIcon
+            className="h-9 max-w-full"
+            aria-label="Cloudflare"
+          />
+          <CodeSandboxIcon
+            className="h-10 max-w-full"
+            aria-label="CodeSandbox"
+          />
+          <MozillaIcon className="h-9 max-w-full" aria-label="Mozilla" />
         </div>
-      </Hero>
+        <div
+          class="absolute bottom-0 left-0 h-40 w-full bg-gradient-to-t from-neutral-900 to-transparent md:hidden"
+        >
+        </div>
+      </Grid>
+    </div>
+  </Hero>
 
-      {/* Control the network */}
-      <section class="my-24 md:my-48">
-        <Container>
-          <PageHeaderWrapper className="mt-0">
-            <h2 class="mb-8 capitalize">Control the network</h2>
-            <PageHeaderSubtitle className="md:w-3/6">
-              Focus on describing how the network should behave instead of
-              thinking how to mock your request client.
-            </PageHeaderSubtitle>
-          </PageHeaderWrapper>
-          <Grid>
-            <div class="text-md col-span-6">
-              <div class="relative md:pb-[105px]">
-                <HomepageCodeExample />
-                <div
-                  class="absolute bottom-0 right-0 hidden md:block md:w-[384px]"
-                >
-                  <ComponentExample />
-                </div>
-              </div>
-            </div>
-            <div class="col-span-6 text-lg">
-              <ul class="space-y-14">
-                <li>
-                  <h3>Omit implementation details</h3>
-                  <p class="text-neutral-400">
-                    Intercept both{' '}
-                    <a
-                      href="/docs/network-behavior/rest"
-                      class="text-white hover:underline"
-                    >
-                      REST
-                    </a>{' '}
-                    and{' '}
-                    <a
-                      href="/docs/network-behavior/graphql"
-                      class="text-white hover:underline"
-                    >
-                      GraphQL API
-                    </a>{' '}
-                    requests regardless of how they were made. Use request clients
-                    that suit your product, not your API mocking tool of choice.
-                  </p>
-                </li>
-                <li>
-                  <h3>Use the platform</h3>
-                  <p class="text-neutral-400">
-                    Handle requests and responses using the standard Fetch API.
-                    Respect the web standards and invest your time into learning
-                    the platform, not the tools.
-                  </p>
-                </li>
-                <li>
-                  <h3>Reuse like never before</h3>
-                  <p class="text-neutral-400">
-                    No configurations, adapters, or plugins. Reuse the same
-                    mocks across environments and tools, be it an integration
-                    test with Vitest, an automated browser test with Playwright,
-                    a demo showcase in Storybook, or a React Native app. <strong
-                      >Or all of them at once</strong
-                    >.
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </Grid>
-        </Container>
-      </section>
-
-      {/* Quote: Kent */}
-      <Section>
-        <Container>
-          <HeroQuote
-            author="Kent C. Dodds"
-            position="Software Engineer and Educator"
-            avatarUrl={kentCDoddsAvatar.src}
-          >
-            I found MSW and was thrilled that not only could I still see the
-            mocked responses in my DevTools, but that the mocks didn't have to
-            be written in a Service Worker and could instead live alongside the
-            rest of my app. This made it <em>silly easy to adopt</em>. The fact
-            that I can use it for testing as well makes MSW a{' '}
-            <em>huge productivity booster</em>.
-          </HeroQuote>
-        </Container>
-      </Section>
-
-      {/* Integrate anywhere */}
-      <section class="my-24 overflow-hidden md:my-48">
-        <Container>
-          <PageHeaderWrapper className="mt-0">
-            <h2 class="mb-8 capitalize">Integrate anywhere</h2>
-            <PageHeaderSubtitle className="md:w-3/6">
-              A single source of truth for your network across the entire stack.
-            </PageHeaderSubtitle>
-          </PageHeaderWrapper>
-          <div
-            class="relative mx-auto grid max-w-xl gap-x-10 gap-y-32 md:max-w-none lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2"
-          >
+  {/* Control the network */}
+  <section class="my-24 md:my-48">
+    <Container>
+      <PageHeaderWrapper className="mt-0">
+        <h2 class="mb-8 capitalize">Control the network</h2>
+        <PageHeaderSubtitle className="md:w-3/6">
+          Focus on describing how the network should behave instead of
+          thinking how to mock your request client.
+        </PageHeaderSubtitle>
+      </PageHeaderWrapper>
+      <Grid>
+        <div class="text-md col-span-6">
+          <div class="relative md:pb-[105px]">
+            <HomepageCodeExample />
             <div
-              class="integration-line absolute inset-0 -z-10 m-auto h-full w-1 bg-neutral-800 lg:h-1/2"
+              class="absolute bottom-0 right-0 hidden md:block md:w-[384px]"
             >
-            </div>
-            {/* Local development */}
-            <div class="integration-usage lg:self-end">
-              <div class="lg:flex lg:justify-end">
-                <ComponentExample />
-              </div>
-              <div class="mt-8 lg:text-right">
-                <p class="text-xl font-bold">Local development</p>
-                <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
-                  Create, change, and debug fast by augmenting existing
-                  APIs—both third-party and local—or designing them as you go.
-                </p>
-              </div>
-            </div>
-            <div
-              class="-order-1 flex self-center justify-self-center bg-neutral-900 px-10 lg:order-none lg:row-span-2"
-            >
-              <MswBlockItem />
-            </div>
-            {/* Vitest */}
-            <div class="integration-usage lg:self-end">
-              <VitestRunner />
-              <div class="mt-8">
-                <p class="text-xl font-bold">Integration tests</p>
-                <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
-                  Test happy paths and override network behavior on a per-test
-                  basis to test even the most trickest of edge cases.
-                </p>
-              </div>
-            </div>
-            {/* Cypress */}
-            <div class="integration-usage">
-              <CypressRunnerIntegration />
-              <div class="mt-8 lg:text-right">
-                <p class="text-xl font-bold">End-to-end tests</p>
-                <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
-                  Take any HTTP call out of your test's equation and focus on
-                  the user experience, mocking local or external APIs.
-                </p>
-              </div>
-            </div>
-            {/* Styorybook */}
-            <div class="integration-usage bg-neutral-900">
-              <StorybookShowcase />
-              <div class="mt-8">
-                <p class="text-xl font-bold">Storybook showcase</p>
-                <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
-                  Emulate the precise network state to share how your components
-                  handle it with the entire team.
-                </p>
-              </div>
+              <ComponentExample />
             </div>
           </div>
-          <footer class="mt-32 text-center">
-            <UppercaseLabel>
-              Works with any tool there is or{' '}
-              <em class="text-primary not-italic">ever will be</em>
-            </UppercaseLabel>
-            <div
-              class="inline-grid grid-cols-6 items-center gap-10 text-neutral-500"
-            >
-              <ReactIcon className="w-10 text-white" />
-              <VueIcon className="w-10 text-white" />
-              <AngularIcon className="w-10 text-white" />
-              <SvelteIcon className="w-10 text-white" />
-              <NextJsIcon className="w-10 text-white" />
-              <RemixIcon className="w-8 text-white" />
-            </div>
-          </footer>
-        </Container>
-      </section>
+        </div>
+        <div class="col-span-6 text-lg">
+          <ul class="space-y-14">
+            <li>
+              <h3>Omit implementation details</h3>
+              <p class="text-neutral-400">
+                Intercept both{' '}
+                <a
+                  href="/docs/network-behavior/rest"
+                  class="text-white hover:underline"
+                >
+                  REST
+                </a>{' '}
+                and{' '}
+                <a
+                  href="/docs/network-behavior/graphql"
+                  class="text-white hover:underline"
+                >
+                  GraphQL API
+                </a>{' '}
+                requests regardless of how they were made. Use request clients
+                that suit your product, not your API mocking tool of choice.
+              </p>
+            </li>
+            <li>
+              <h3>Use the platform</h3>
+              <p class="text-neutral-400">
+                Handle requests and responses using the standard Fetch API.
+                Respect the web standards and invest your time into learning
+                the platform, not the tools.
+              </p>
+            </li>
+            <li>
+              <h3>Reuse like never before</h3>
+              <p class="text-neutral-400">
+                No configurations, adapters, or plugins. Reuse the same
+                mocks across environments and tools, be it an integration
+                test with Vitest, an automated browser test with Playwright,
+                a demo showcase in Storybook, or a React Native app. <strong
+                  >Or all of them at once</strong
+                >.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </Grid>
+    </Container>
+  </section>
 
-      {/* Quote: Cory */}
-      <Section>
-        <Container>
-          <HeroQuote
-            author="Cory House"
-            position="Software Architect"
-            avatarUrl={coryHouseAvatar.src}
+  {/* Quote: Kent */}
+  <Section>
+    <Container>
+      <HeroQuote
+        author="Kent C. Dodds"
+        position="Software Engineer and Educator"
+        avatarUrl={kentCDoddsAvatar.src}
+      >
+        I found MSW and was thrilled that not only could I still see the
+        mocked responses in my DevTools, but that the mocks didn't have to
+        be written in a Service Worker and could instead live alongside the
+        rest of my app. This made it <em>silly easy to adopt</em>. The fact
+        that I can use it for testing as well makes MSW a{' '}
+        <em>huge productivity booster</em>.
+      </HeroQuote>
+    </Container>
+  </Section>
+
+  {/* Integrate anywhere */}
+  <section class="my-24 overflow-hidden md:my-48">
+    <Container>
+      <PageHeaderWrapper className="mt-0">
+        <h2 class="mb-8 capitalize">Integrate anywhere</h2>
+        <PageHeaderSubtitle className="md:w-3/6">
+          A single source of truth for your network across the entire stack.
+        </PageHeaderSubtitle>
+      </PageHeaderWrapper>
+      <div
+        class="relative mx-auto grid max-w-xl gap-x-10 gap-y-32 md:max-w-none lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2"
+      >
+        <div
+          class="integration-line absolute inset-0 -z-10 m-auto h-full w-1 bg-neutral-800 lg:h-1/2"
+        >
+        </div>
+        {/* Local development */}
+        <div class="integration-usage lg:self-end">
+          <div class="lg:flex lg:justify-end">
+            <ComponentExample />
+          </div>
+          <div class="mt-8 lg:text-right">
+            <p class="text-xl font-bold">Local development</p>
+            <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
+              Create, change, and debug fast by augmenting existing
+              APIs—both third-party and local—or designing them as you go.
+            </p>
+          </div>
+        </div>
+        <div
+          class="-order-1 flex self-center justify-self-center bg-neutral-900 px-10 lg:order-none lg:row-span-2"
+        >
+          <MswBlockItem />
+        </div>
+        {/* Vitest */}
+        <div class="integration-usage lg:self-end">
+          <VitestRunner />
+          <div class="mt-8">
+            <p class="text-xl font-bold">Integration tests</p>
+            <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
+              Test happy paths and override network behavior on a per-test
+              basis to test even the most trickest of edge cases.
+            </p>
+          </div>
+        </div>
+        {/* Cypress */}
+        <div class="integration-usage">
+          <CypressRunnerIntegration />
+          <div class="mt-8 lg:text-right">
+            <p class="text-xl font-bold">End-to-end tests</p>
+            <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
+              Take any HTTP call out of your test's equation and focus on
+              the user experience, mocking local or external APIs.
+            </p>
+          </div>
+        </div>
+        {/* Styorybook */}
+        <div class="integration-usage bg-neutral-900">
+          <StorybookShowcase />
+          <div class="mt-8">
+            <p class="text-xl font-bold">Storybook showcase</p>
+            <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
+              Emulate the precise network state to share how your components
+              handle it with the entire team.
+            </p>
+          </div>
+        </div>
+      </div>
+      <footer class="mt-32 text-center">
+        <UppercaseLabel>
+          Works with any tool there is or{' '}
+          <em class="text-primary not-italic">ever will be</em>
+        </UppercaseLabel>
+        <div
+          class="inline-grid grid-cols-6 items-center gap-10 text-neutral-500"
+        >
+          <ReactIcon className="w-10 text-white" />
+          <VueIcon className="w-10 text-white" />
+          <AngularIcon className="w-10 text-white" />
+          <SvelteIcon className="w-10 text-white" />
+          <NextJsIcon className="w-10 text-white" />
+          <RemixIcon className="w-8 text-white" />
+        </div>
+      </footer>
+    </Container>
+  </section>
+
+  {/* Quote: Cory */}
+  <Section>
+    <Container>
+      <HeroQuote
+        author="Cory House"
+        position="Software Architect"
+        avatarUrl={coryHouseAvatar.src}
+      >
+        Mock Service Worker has become a{' '}
+        <em>fundamental part of my development and testing workflow</em>.
+        With MSW I don&apos;t have to worry about endpoints or databases
+        being down or slow. And I can forget about brittle tests due to
+        changing data. I configure mocks that are 100% reliable and
+        predictable. The result?{' '}
+        <em>Faster development and rock-solid automated UI tests</em>.
+      </HeroQuote>
+    </Container>
+  </Section>
+
+  {/* Testimonials */}
+  <Container>
+    <section class="my-24 md:my-48">
+      <PageHeaderWrapper>
+        <PageHeaderPrefix>Community</PageHeaderPrefix>
+        <h2 class="mb-8 capitalize">Feedback</h2>
+        <PageHeaderSubtitle>
+          What developers are saying.
+        </PageHeaderSubtitle>
+      </PageHeaderWrapper>
+      <Grid className="items-start lg:grid-cols-2 xl:grid-cols-3">
+        <div class="space-y-10">
+          <Quote author="Alffrey Chemmannoor" imageUrl={noAvatar.src}>
+            I've spent numerous hours mocking and stubbing data for tests
+            over the years wishing for a better approach. I was recently
+            introduced to MSW and love how it{' '}
+            <em>instantly improves the developer experience</em>.
+          </Quote>
+          <Quote
+            author="Michael Haglund"
+            imageUrl={michaelHaglundAvatar.src}
+            position="Engineering Manager"
           >
-            Mock Service Worker has become a{' '}
-            <em>fundamental part of my development and testing workflow</em>.
-            With MSW I don&apos;t have to worry about endpoints or databases
-            being down or slow. And I can forget about brittle tests due to
-            changing data. I configure mocks that are 100% reliable and
-            predictable. The result?{' '}
-            <em>Faster development and rock-solid automated UI tests</em>.
-          </HeroQuote>
-        </Container>
-      </Section>
+            We've switched our tests over to use Mock Service Worker and we{
+              ' '
+            }
+            <em>haven't looked back ever since</em>.
+          </Quote>
+          <Quote
+            author="Brady Pascoe"
+            position="Maintainer of React Bootstrap"
+            imageUrl={bradyPascoeAvatar.src}
+          >
+            <em>I don't think I can use anything other than MSW</em> after picking
+            it up for a project at my previous workplace, to be honest.
+          </Quote>
+        </div>
+        <div class="space-y-10">
+          <Quote author="Tobias Pickel" imageUrl={noAvatar.src}>
+            Mock Service Worker is{' '}
+            <em>the best thing that ever happened to the JS community</em>.
+            Sharing mocks between development, unit, and E2E tests has never
+            been that easy.
+          </Quote>
+          <Quote author="Konna Buraun" imageUrl={konnaBuraunAvatar.src}>
+            Just a shoutout to MSW for being{' '}
+            <em>an absolute dream to work with</em>. Simple to get running
+            and it's allowed me to continue working while the backend was
+            down. Much faster than writing a mock server.
+          </Quote>
+          <Quote author="Derek DeHart" imageUrl={derekDeHartAvatar.src}>
+            I can't even imagine the mock I'd have to contrive to simulate a
+            server sending a CSRF cookie, and{' '}
+            <em>with MSW I don't have to</em>!
+          </Quote>
+        </div>
+        <div class="space-y-10">
+          <Quote
+            author="Rafal Rudol"
+            imageUrl={noAvatar.src}
+            position="Senior Frontend Developer"
+          >
+            Mock Service Worker was <em>a life-saver</em> for me when we had
+            a strict deadline and there was no backend.
+          </Quote>
+          <Quote
+            author="Heitor Lessa"
+            imageUrl={heitorLessaAvatar.src}
+            position="AWS EMEA"
+          >
+            It's quite <em>a genius use of Service Workers</em>—works for
+            both REST and GraphQL API.
+          </Quote>
+          <Quote
+            author="Matan Borenkraout"
+            imageUrl={matanBorenkraoutAvatar.src}
+            position="Frontend Engineer"
+          >
+            When it comes to mocking,{' '}
+            <em>I always recommend Mock Service Worker</em>. It's amazing
+            and as close as it gets to plug & play.
+          </Quote>
+        </div>
+      </Grid>
+    </section>
+  </Container>
 
-      {/* Testimonials */}
-      <Container>
-        <section class="my-24 md:my-48">
-          <PageHeaderWrapper>
-            <PageHeaderPrefix>Community</PageHeaderPrefix>
-            <h2 class="mb-8 capitalize">Feedback</h2>
-            <PageHeaderSubtitle>
-              What developers are saying.
-            </PageHeaderSubtitle>
-          </PageHeaderWrapper>
-          <Grid className="items-start lg:grid-cols-2 xl:grid-cols-3">
-            <div class="space-y-10">
-              <Quote author="Alffrey Chemmannoor" imageUrl={noAvatar.src}>
-                I've spent numerous hours mocking and stubbing data for tests
-                over the years wishing for a better approach. I was recently
-                introduced to MSW and love how it{' '}
-                <em>instantly improves the developer experience</em>.
-              </Quote>
-              <Quote
-                author="Michael Haglund"
-                imageUrl={michaelHaglundAvatar.src}
-                position="Engineering Manager"
-              >
-                We've switched our tests over to use Mock Service Worker and we{
-                  ' '
-                }
-                <em>haven't looked back ever since</em>.
-              </Quote>
-              <Quote
-                author="Brady Pascoe"
-                position="Maintainer of React Bootstrap"
-                imageUrl={bradyPascoeAvatar.src}
-              >
-                <em>I don't think I can use anything other than MSW</em> after picking
-                it up for a project at my previous workplace, to be honest.
-              </Quote>
-            </div>
-            <div class="space-y-10">
-              <Quote author="Tobias Pickel" imageUrl={noAvatar.src}>
-                Mock Service Worker is{' '}
-                <em>the best thing that ever happened to the JS community</em>.
-                Sharing mocks between development, unit, and E2E tests has never
-                been that easy.
-              </Quote>
-              <Quote author="Konna Buraun" imageUrl={konnaBuraunAvatar.src}>
-                Just a shoutout to MSW for being{' '}
-                <em>an absolute dream to work with</em>. Simple to get running
-                and it's allowed me to continue working while the backend was
-                down. Much faster than writing a mock server.
-              </Quote>
-              <Quote author="Derek DeHart" imageUrl={derekDeHartAvatar.src}>
-                I can't even imagine the mock I'd have to contrive to simulate a
-                server sending a CSRF cookie, and{' '}
-                <em>with MSW I don't have to</em>!
-              </Quote>
-            </div>
-            <div class="space-y-10">
-              <Quote
-                author="Rafal Rudol"
-                imageUrl={noAvatar.src}
-                position="Senior Frontend Developer"
-              >
-                Mock Service Worker was <em>a life-saver</em> for me when we had
-                a strict deadline and there was no backend.
-              </Quote>
-              <Quote
-                author="Heitor Lessa"
-                imageUrl={heitorLessaAvatar.src}
-                position="AWS EMEA"
-              >
-                It's quite <em>a genius use of Service Workers</em>—works for
-                both REST and GraphQL API.
-              </Quote>
-              <Quote
-                author="Matan Borenkraout"
-                imageUrl={matanBorenkraoutAvatar.src}
-                position="Frontend Engineer"
-              >
-                When it comes to mocking,{' '}
-                <em>I always recommend Mock Service Worker</em>. It's amazing
-                and as close as it gets to plug & play.
-              </Quote>
-            </div>
-          </Grid>
-        </section>
-      </Container>
-
-      <GettingStarted />
-    </main>
-    <Footer />
-  </body>
-</html>
+  <GettingStarted />
+</BaseLayout>
