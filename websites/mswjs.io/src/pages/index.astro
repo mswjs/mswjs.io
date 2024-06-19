@@ -1,7 +1,7 @@
 ---
 import BaseHead from '@mswjs/shared/components/BaseHead.astro'
-import Header from '@mswjs/shared/components/Header.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
+import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import { SITE_TITLE, SITE_DESCRIPTION, EGGHEAD_COURSE_URL } from '../consts'
 import { Container } from '@mswjs/shared/components/react/container'
@@ -45,8 +45,6 @@ import { MozillaIcon } from '../components/react/icons/mozilla'
 import { NetflixIcon } from '../components/react/icons/netflix'
 import { UberIcon } from '../components/react/icons/uber'
 
-import mswLogo from '../images/msw.svg'
-
 import noAvatar from '../images/people/no-avatar.jpg'
 import kentCDoddsAvatar from '../images/people/kent-c-dodds.jpg'
 import coryHouseAvatar from '../images/people/cory-house.jpg'
@@ -68,7 +66,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
     />
   </head>
   <body>
-    <Header logo={mswLogo} />
+    <Header />
     <main>
       <Hero repoUrl="https://github.com/mswjs/msw">
         <Fragment slot="title">

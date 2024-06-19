@@ -1,13 +1,11 @@
 ---
 import BaseHead from '@mswjs/shared/components/BaseHead.astro'
-import Header from "@mswjs/shared/components/Header.astro";
 import { Container } from "@mswjs/shared/components/react/container";
+import Header from "../components/Header.astro";
 import Footer from '../components/Footer.astro'
 import { Grid } from "@mswjs/shared/components/react/grid";
 import { LinkExternal } from "@mswjs/shared/components/react/linkExternal";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
-
-import mswLogo from '../images/msw.svg'
 
 const { pathname } = Astro.url
 
@@ -26,7 +24,7 @@ reportMisingPageUrl.searchParams.set('body', '<!-- Please describe what you expe
     <meta name="robots" content="noindex" />
   </head>
   <body>
-    <Header logo={mswLogo} />
+    <Header />
     <main>
       <Container>
         <Grid>

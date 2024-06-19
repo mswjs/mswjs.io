@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
+import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
 
@@ -13,6 +14,10 @@ import logo from '../images/source.svg'
   description="Generate request handlers from different sources"
   logo={logo}
 >
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
   <Hero repoUrl="https://github.com/mswjs/source">
     <Fragment slot="title">Lift The <span class="text-primary">Source</span> of Truth Up</Fragment>
     <Fragment slot="subtitle">Generate request handlers from various sources, like OpenAPI documents or HAR files.</Fragment>

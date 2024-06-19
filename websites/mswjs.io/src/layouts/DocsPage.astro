@@ -1,7 +1,6 @@
 ---
 import { type CollectionEntry } from "astro:content";
 import BaseHead from '@mswjs/shared/components/BaseHead.astro'
-import Header from '@mswjs/shared/components/Header.astro'
 import { Grid } from '@mswjs/shared/components/react/grid'
 import { Container } from "@mswjs/shared/components/react/container";
 import FormattedDate from '@mswjs/shared/components/FormattedDate.astro';
@@ -15,12 +14,11 @@ import { DocsSidebarLinks } from "@mswjs/shared/components/react/docsSidebarLink
 import { FeedbackWidget } from "@mswjs/shared/components/react/feedbackWidget";
 import { DocsMovileNav } from "@mswjs/shared/components/react/docsMobileNav";
 
+import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import Ads from '../components/Ads.astro'
 import { SITE_TITLE } from "../consts";
 import PageBanner from "../components/PageBanner.astro";
-
-import mswLogo from '../images/msw.svg'
 
 type Props = CollectionEntry<'docs'>['data'] & {
   lastModifiedAt: Date
@@ -103,7 +101,7 @@ const shouldDisplayAds = import.meta.env.ADS
         <p>You are viewing the docs for <strong>MSW 2.0</strong>. To access the 1.x docs <a href="https://v1.mswjs.io/" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">click here</a>.</p>
       </PageBanner>
     ) : null}
-    <Header logo={mswLogo} isFluid={page.isFluid} />
+    <Header isFluid={page.isFluid} />
     <main>
       <Container isFluid={page.isFluid}>
         <!-- Mobile: Nav tree -->

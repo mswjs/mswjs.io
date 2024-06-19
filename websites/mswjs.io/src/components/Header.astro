@@ -1,0 +1,25 @@
+---
+import type { ComponentProps } from 'astro/types'
+import BaseHeader from '@mswjs/shared/components/Header.astro'
+
+import mswLogo from '../images/msw.svg'
+
+type Props = Partial<ComponentProps<typeof BaseHeader>>
+
+const props = Astro.props
+---
+
+<BaseHeader
+  {...props}
+  logo={mswLogo}
+  links={[
+    {
+      label: 'Docs',
+      href: '/docs'
+    },
+    {
+      label: 'Blog',
+      href: '/blog'
+    }
+  ]}
+/>

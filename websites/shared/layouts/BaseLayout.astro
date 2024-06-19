@@ -1,7 +1,6 @@
 ---
 import { type ImageMetadata } from 'astro'
 import BaseHead from '../components/BaseHead.astro'
-import Header from '../components/Header.astro'
 
 interface Props {
   sitename: string
@@ -28,7 +27,7 @@ const { props } = Astro
   </head>
   <body>
     <slot name="banner" />
-    <Header logo={props.logo} isFluid={props.isFluid} />
+    <slot name="header" />
     <main>
       <slot />
     </main>

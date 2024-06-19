@@ -2,14 +2,12 @@
 import type { CollectionEntry } from 'astro:content';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import BaseHead from '@mswjs/shared/components/BaseHead.astro';
-import Header from '@mswjs/shared/components/Header.astro';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '@mswjs/shared/components/FormattedDate.astro';
 import { Container } from '@mswjs/shared/components/react/container';
 import { Grid } from '@mswjs/shared/components/react/grid';
 import { Avatar } from '../components/react/avatar';
-
-import mswLogo from '../images/msw.svg'
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -29,7 +27,7 @@ const { title, description, thumbnailUrl, publishedAt, author, keywords } = Astr
 	</head>
 
 	<body>
-		<Header logo={mswLogo} />
+		<Header />
 		<main>
 			<Container>
 				<Grid>

@@ -1,4 +1,5 @@
 ---
+import type { HTMLAttributes } from 'astro/types'
 import NavLink from './NavLink.astro';
 import Search from './Search.astro';
 import { Container } from './react/container';
@@ -8,9 +9,10 @@ import { SponsorLink } from './react/sponsorLink';
 type Props = {
   logo: { src: string }
   isFluid?: boolean
+  links: Array<HTMLAttributes<'a'> & { label: string }>
 }
 
-const { logo, isFluid } = Astro.props
+const { logo, isFluid, links } = Astro.props
 ---
 
 <header class="header sticky top-0 z-10 text-sm h-[60px] font-semibold bg-neutral-900 border-b h-15 border-neutral-800">
@@ -40,16 +42,17 @@ const { logo, isFluid } = Astro.props
         ]}
       >
         <ul class="flex items-center gap-4 list-none">
-          <li class="hidden md:block">
-            <NavLink href="/docs">
-              Docs
-            </NavLink>
-          </li>
-          <li class="hidden lg:block">
-            <NavLink href="/blog">
-              Blog
-            </NavLink>
-          </li>
+          {links.map(({ label, ...attrs }, index) => (
+            <li class:list={[
+              'hidden',
+              {'md:block': index === 0, 'lg:block': index === 1}
+            ]}
+              class="hidden md:block">
+              <NavLink {...attrs}>
+                {label}
+              </NavLink>
+            </li>
+          ))}
           <li>
             <SponsorLink />
           </li>
