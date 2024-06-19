@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
 import DocsPageLayout from '@mswjs/shared/layouts/DocsPageLayout.astro'
+import Footer from '../../components/Footer.astro'
 
 import logo from '../../images/source.svg'
 import type { DocsFrontmatter } from '@mswjs/shared/collections/docs'
@@ -32,4 +33,8 @@ const navTree = buildDocsNavTree(allPages)
   isFluid={true}
 >
   <DocsPageLayout page={page} navTree={navTree} />
+
+  <Fragment slot="footer">
+    <Footer compact={true} />
+  </Fragment>
 </BaseLayout>

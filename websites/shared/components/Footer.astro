@@ -1,0 +1,54 @@
+---
+import { HeartIcon } from '@heroicons/react/24/solid'
+import SocialLinksList from '../components/SocialLinksList.astro'
+
+import { Container } from './react/container'
+import { Grid } from './react/grid'
+
+interface Props {
+  compact?: boolean
+}
+
+const { compact } = Astro.props
+const currentYear = new Date().getFullYear()
+---
+
+<footer class:list={[
+  'footer py-10 text-sm font-medium text-neutral-400',
+  {
+    'border-t border-neutral-800': !compact
+  }
+]}>
+  <Container isFluid={compact}>
+    {compact ? (
+      <Grid>
+        <div class="pb-12 border-t col-span-full xl:col-span-10 xl:col-start-4 border-neutral-800" />
+      </Grid>
+    ) : null}
+
+    <Grid className="sm:grid-cols-6 gap-y-16">
+      <div
+        class:list={[
+          {
+            'xl:col-span-3 xl:col-start-4' :compact,
+            'sm:col-span-6': !compact,
+          }
+        ]}
+      >
+        <p class="text-neutral-200 font-medium">
+          &copy; {currentYear} Mock Service Worker
+        </p>
+        <p class="font-normal" aria-hidden="true">
+          Created with <HeartIcon className="w-3.5 inline text-primary" />{' '}
+          by{' '}
+          <a href="https://twitter.com/kettanaito" target="_blank">
+            kettanaito
+          </a>
+        </p>
+        <SocialLinksList />
+      </div>
+
+      <slot name="footer-sections" />
+    </Grid>
+  </Container>
+</footer>

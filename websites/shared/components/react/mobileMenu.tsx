@@ -3,8 +3,8 @@ import {
   Bars3Icon as MenuIcon,
   XMarkIcon as CloseIcon,
 } from '@heroicons/react/24/solid'
+import SocialLinksList from '../SocialLinksList.astro'
 import { MobileMenuContainer } from './docsMobileNav'
-import { SocialLinksBlock } from './footer'
 
 export function MobileMenu({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -32,7 +32,7 @@ export function MobileMenu({ children }: { children: ReactNode }) {
         onClose={() => setIsOpen(false)}
       >
         {children}
-        <SocialLinksBlock className="justify-center" />
+        <SocialLinksList class="justify-center" />
       </MobileMenuContainer>
     </>
   )

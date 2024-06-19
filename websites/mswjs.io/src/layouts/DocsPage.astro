@@ -2,7 +2,6 @@
 import { type CollectionEntry } from "astro:content";
 import BaseHead from '@mswjs/shared/components/BaseHead.astro'
 import Header from '@mswjs/shared/components/Header.astro'
-import { Footer } from '@mswjs/shared/components/react/footer'
 import { Grid } from '@mswjs/shared/components/react/grid'
 import { Container } from "@mswjs/shared/components/react/container";
 import FormattedDate from '@mswjs/shared/components/FormattedDate.astro';
@@ -15,6 +14,8 @@ import { buildHeadings } from '@mswjs/shared/utils/buildHeadings';
 import { DocsSidebarLinks } from "@mswjs/shared/components/react/docsSidebarLinks";
 import { FeedbackWidget } from "@mswjs/shared/components/react/feedbackWidget";
 import { DocsMovileNav } from "@mswjs/shared/components/react/docsMobileNav";
+
+import Footer from '../components/Footer.astro'
 import Ads from '../components/Ads.astro'
 import { SITE_TITLE } from "../consts";
 import PageBanner from "../components/PageBanner.astro";
@@ -183,8 +184,7 @@ const shouldDisplayAds = import.meta.env.ADS
         </article>
       </Container>
     </main>
-
-    <Footer isCompact={true} />
+    <Footer compact={true} />
   </body>
 </html>
 

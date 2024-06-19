@@ -3,8 +3,8 @@ import type { CollectionEntry } from 'astro:content';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import BaseHead from '@mswjs/shared/components/BaseHead.astro';
 import Header from '@mswjs/shared/components/Header.astro';
+import Footer from '../components/Footer.astro';
 import FormattedDate from '@mswjs/shared/components/FormattedDate.astro';
-import { Footer } from '@mswjs/shared/components/react/footer';
 import { Container } from '@mswjs/shared/components/react/container';
 import { Grid } from '@mswjs/shared/components/react/grid';
 import { Avatar } from '../components/react/avatar';
@@ -77,6 +77,7 @@ const { title, description, thumbnailUrl, publishedAt, author, keywords } = Astr
 				</Grid>
 			</Container>
 		</main>
+
 		<Footer />
 	</body>
 </html>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
+import Footer from '../components/Footer.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
 
 import logo from '../images/source.svg'
@@ -16,5 +17,9 @@ import logo from '../images/source.svg'
     <Fragment slot="title">Lift The <span class="text-primary">Source</span> of Truth Up</Fragment>
     <Fragment slot="subtitle">Generate request handlers from various sources, like OpenAPI documents or HAR files.</Fragment>
   </Hero>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
 </BaseLayout>
 
