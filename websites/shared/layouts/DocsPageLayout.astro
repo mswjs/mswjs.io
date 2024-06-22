@@ -27,7 +27,7 @@ const nestedHeadings = buildHeadings(headings || [], {
 const lastModifiedAt = new Date(remarkPluginFrontmatter.lastModifiedAt)
 ---
 
-<Container isFluid={true}>
+<Container compact={true}>
   <!-- Mobile: Nav tree -->
   <DocsMovileNav client:only="react">
     <nav>

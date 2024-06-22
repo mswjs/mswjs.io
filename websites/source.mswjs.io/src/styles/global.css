@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 :root {
-  --primary: '#84cc16';
+  --primary: #84cc16;
 }

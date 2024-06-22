@@ -1,23 +1,18 @@
 ---
-import BaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
 ---
 
-<BaseLayout
-  sitename="Source"
-  title="Source"
-  displayTitle="Source - Generate request handlers from different sources"
-  description="Generate request handlers from different sources"
->
+<BaseLayout>
   <Fragment slot="header">
     <Header />
   </Fragment>
 
   <Hero repoUrl="https://github.com/mswjs/source">
     <Fragment slot="title">Lift The <span class="text-primary">Source</span> of Truth Up</Fragment>
-    <Fragment slot="subtitle">Generate request handlers from various sources, like OpenAPI documents or HAR files.</Fragment>
+    <Fragment slot="subtitle"><span class="text-white">Source</span> is a library that allows you to generate request handlers from various sources, like HAR files or OpenAPI documents.</Fragment>
   </Hero>
 
   <Fragment slot="footer">
