@@ -9,15 +9,15 @@ import {
   PageHeaderWrapper,
   PageHeaderPrefix,
   PageHeaderSubtitle,
-} from '../components/react/pageHeader'
+} from '@mswjs/shared/components/react/pageHeader'
 import { AnnouncementBanner } from '../components/react/announcementBanner'
 import { UppercaseLabel } from '../components/react/uppercaseLabel'
 import { ComponentExample } from '../components/react/app'
-import { MswBlockItem } from '../components/react/mswBlockItem'
+import { MswIconBlock } from '../components/react/mswIconBlock'
 import { HomepageCodeExample } from '../components/react/homepageCodeExample'
 import { HeroQuote } from '../components/react/heroQuote'
 import { Quote } from '../components/react/quote'
-import { GettingStarted } from '../components/react/gettingStarted'
+import { GettingStarted } from '@mswjs/shared/components/react/gettingStarted'
 
 import { CypressRunnerIntegration } from '../components/react/integrations/cypressRunner'
 import { StorybookShowcase } from '../components/react/integrations/storybookShowcase'
@@ -29,6 +29,7 @@ import { SvelteIcon } from '../components/react/icons/svelte'
 import { VueIcon } from '../components/react/icons/vue'
 import { RemixIcon } from '../components/react/icons/remix'
 
+import mswLogo from '../images/msw.svg'
 import { EggheadIcon } from '../components/react/icons/egghead'
 import { GitHubIcon } from '@mswjs/shared/components/react/icons/github'
 import { GoogleIcon } from '../components/react/icons/google'
@@ -223,7 +224,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
         <div
           class="-order-1 flex self-center justify-self-center bg-neutral-900 px-10 lg:order-none lg:row-span-2"
         >
-          <MswBlockItem />
+          <MswIconBlock />
         </div>
         {/* Vitest */}
         <div class="integration-usage lg:self-end">
@@ -384,5 +385,16 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
     </section>
   </Container>
 
-  <GettingStarted />
+  <GettingStarted
+    title="Ship Better Products Today"
+    iconUrl={mswLogo.src}
+    iconAlt="Mock Service Worker logo"
+    linkText="Get started in 3 steps"
+    linkUrl="/docs/getting-started"
+  >
+    <span class="text-white">Mock Service Worker</span> is the best
+    way to integrate API mocking across your entire stack. Test,
+    prototype, and debug withouth sacrificing your application's
+    integrity. Give it a try, it's open-source and free!
+  </GettingStarted>
 </BaseLayout>

@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { cls } from '@mswjs/shared/utils/cls'
+import { cls } from '../../utils/cls'
 
 export function PageHeaderWrapper(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
@@ -30,7 +30,7 @@ export function PageHeaderSubtitle(
     <p
       {...props}
       className={cls(
-        'mx-auto text-xl text-neutral-400 leading-8 font-medium',
+        'mx-auto text-xl text-neutral-400 leading-8 font-medium text-balance',
         props.className
       )}
     />

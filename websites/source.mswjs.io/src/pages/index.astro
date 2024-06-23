@@ -3,6 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
+import { GettingStarted } from '@mswjs/shared/components/react/gettingStarted'
+
+import logo from '../images/source.svg'
 ---
 
 <BaseLayout>
@@ -14,6 +17,16 @@ import Hero from '@mswjs/shared/components/Hero.astro'
     <Fragment slot="title">Lift The <span class="text-primary">Source</span> of Truth Up</Fragment>
     <Fragment slot="subtitle"><span class="text-white">Source</span> is a library that allows you to generate request handlers from various sources, like HAR files or OpenAPI documents.</Fragment>
   </Hero>
+
+  <GettingStarted
+    title="Try out Source"
+    iconUrl={logo.src}
+    iconAlt="Source logo"
+    linkText="Get started"
+    linkUrl="/docs/getting-started"
+  >
+    <span class="text-white">Source</span> is a useful tool to replay the recorded network traffic when mocking or debugging.
+  </GettingStarted>
 
   <Fragment slot="footer">
     <Footer />
