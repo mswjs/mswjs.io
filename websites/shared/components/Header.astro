@@ -60,16 +60,13 @@ const { logo, compact, links } = Astro.props
             <MobileMenu client:only="react">
               <nav id="mobile-menu">
                 <ul>
-                  <li>
-                    <NavLink href="/docs">
-                      Documentation
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink href="/blog">
-                      Blog
-                    </NavLink>
-                  </li>
+                  {links.map(({ label, ...attrs }) => (
+                    <li>
+                      <NavLink {...attrs}>
+                        {label}
+                      </NavLink>
+                    </li>
+                  ))}
                 </ul>
               </nav>
             </MobileMenu>
