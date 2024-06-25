@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry } from "astro:content";
+import Ads from '../components/Ads.astro'
 import { Container } from "../components/react/container";
 import DocsNavTree from "../components/docs/DocsNavTree.astro";
 import DocsTableOfContents from "../components/docs/DocsTableOfContents.astro";
@@ -26,7 +27,9 @@ const { Content, headings, remarkPluginFrontmatter } = await props.page.render()
 const nestedHeadings = buildHeadings(headings || [], {
   maxDepth: props.page.tableOfContents?.maxDepth
 })
+
 const lastModifiedAt = new Date(remarkPluginFrontmatter.lastModifiedAt)
+const shouldDisplayAds = import.meta.env.ADS
 ---
 
 <Container compact={true}>
@@ -47,15 +50,15 @@ const lastModifiedAt = new Date(remarkPluginFrontmatter.lastModifiedAt)
       </section>
 
       <!-- Content -->
-      <div class="mdx py-10 sm:col-span-9 xl:col-start-4 xl:col-span-7">
+      <div class="py-10 mdx sm:col-span-9 xl:col-start-4 xl:col-span-7">
         <header class="mb-8">
           <h1 class="mb-3">{props.page.data.title}</h1>
           {props.page.data.description ? (
-            <p class="mb-6 text-lg text-neutral-400 font-medium">{props.page.data.description}</p>
+            <p class="mb-6 text-lg font-medium text-neutral-400">{props.page.data.description}</p>
           ) : null}
-          <!-- {shouldDisplayAds ? (
-            <Ads />
-          ) : null} -->
+          {shouldDisplayAds ? (
+            <Ads publisher="mswjsio" />
+          ) : null}
         </header>
         <div class="prose max-w-none">
           <Content />
@@ -87,7 +90,7 @@ const lastModifiedAt = new Date(remarkPluginFrontmatter.lastModifiedAt)
           <div class="flex flex-col gap-8 h-[calc(100vh_-_2.5rem_-_60px)] pb-12 overflow-x-hidden">
             {nestedHeadings.length > 0 ? (
               <section class="min-h-0 overflow-y-auto">
-                <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
+                <h4 class="mb-2 text-xs font-bold tracking-widest text-white uppercase">
                   Contents
                 </h4>
                 <DocsTableOfContents headings={nestedHeadings} />
@@ -97,7 +100,7 @@ const lastModifiedAt = new Date(remarkPluginFrontmatter.lastModifiedAt)
               <DocsSidebarLinks gitHubUrl={props.gitHubUrl} blogUrl={props.blogUrl} />
 
               <div>
-                <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
+                <h4 class="mb-2 text-xs font-bold tracking-widest text-white uppercase">
                   Partners
                 </h4>
                 <DocsSidebarPartners />

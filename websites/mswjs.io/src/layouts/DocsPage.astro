@@ -8,13 +8,14 @@ import DocsNavTree from '@mswjs/shared/components/docs/DocsNavTree.astro'
 import TableOfContents from '@mswjs/shared/components/docs/DocsTableOfContents.astro'
 import DocsSidebarPartners from "@mswjs/shared/components/docs/DocsSidebarPartners.astro";
 import { type DocsItem, type DocsFrontmatter, createNavTreeBuilder } from '@mswjs/shared/utils/buildNavTree'
+import Ads from '@mswjs/shared/components/Ads.astro'
+
 import type { MarkdownHeading } from 'astro';
 import { buildHeadings } from '@mswjs/shared/utils/buildHeadings';
 import { DocsSidebarLinks } from "@mswjs/shared/components/react/docsSidebarLinks";
 import { FeedbackWidget } from "@mswjs/shared/components/react/feedbackWidget";
 import { DocsMovileNav } from "@mswjs/shared/components/react/docsMobileNav";
 
-import Ads from '../components/Ads.astro'
 import PageBanner from "../components/PageBanner.astro";
 
 type Props = CollectionEntry<'docs'>['data'] & {
@@ -115,7 +116,7 @@ const shouldDisplayAds = import.meta.env.ADS
                 <p class="mb-6 text-lg text-neutral-400 font-medium">{page.description}</p>
               ) : null}
               {shouldDisplayAds ? (
-                <Ads />
+                <Ads publisher="mswjsio" />
               ) : null}
             </header>
             <div class="prose max-w-none">

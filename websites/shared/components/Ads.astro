@@ -1,6 +1,12 @@
 ---
 import './ads.css'
-import { Warning } from '@mswjs/shared/components/react/warning';
+import { Warning } from './react/warning';
+
+interface Props {
+  publisher: 'mswjsio'
+}
+
+const { props } = Astro
 ---
 
 <div id="ethical-container">
@@ -11,7 +17,7 @@ import { Warning } from '@mswjs/shared/components/react/warning';
   ></script>
   <div
     class="horizontal dark flat"
-    data-ea-publisher="mswjsio"
+    data-ea-publisher={props.publisher}
     data-ea-type="text"
   />
   <div id="adblocker-warning" style="display:none">
