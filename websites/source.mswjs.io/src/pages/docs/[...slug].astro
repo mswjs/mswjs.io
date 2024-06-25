@@ -5,7 +5,6 @@ import DocsPageLayout from '@mswjs/shared/layouts/DocsPageLayout.astro'
 import Header from '../../components/Header.astro'
 import Footer from '../../components/Footer.astro'
 
-import logo from '../../images/source.svg'
 import type { DocsFrontmatter } from '@mswjs/shared/collections/docs'
 import { buildDocsNavTree } from '../../content/buildDocsNavTree'
 
@@ -35,7 +34,12 @@ const navTree = buildDocsNavTree(allPages)
     <Header compact={true} />
   </Fragment>
 
-  <DocsPageLayout page={page} navTree={navTree} />
+  <DocsPageLayout
+    page={page}
+    navTree={navTree}
+    gitHubUrl="https://github.com/mswjs/source"
+    blogUrl="https://mswjs.io/blog"
+  />
 
   <Fragment slot="footer">
     <Footer compact={true} />

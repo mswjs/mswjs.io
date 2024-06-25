@@ -28,7 +28,12 @@ const navTree = buildDocsNavTree(allPages)
     <Header compact={true} />
   </Fragment>
 
-  <DocsPageLayout page={page} navTree={navTree} />
+  <DocsPageLayout
+    page={page}
+    navTree={navTree}
+    gitHubUrl="https://github.com/mswjs/source"
+    blogUrl="https://mswjs.io/blog"
+  />
 
   <Fragment slot="footer">
     <Footer compact={true} />
