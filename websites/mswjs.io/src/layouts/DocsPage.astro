@@ -15,8 +15,7 @@ import { buildHeadings } from '@mswjs/shared/utils/buildHeadings';
 import { DocsSidebarLinks } from "@mswjs/shared/components/react/docsSidebarLinks";
 import { FeedbackWidget } from "@mswjs/shared/components/react/feedbackWidget";
 import { DocsMovileNav } from "@mswjs/shared/components/react/docsMobileNav";
-
-import PageBanner from "../components/PageBanner.astro";
+import PageBanner from "@mswjs/shared/components/PageBanner.astro";
 
 type Props = CollectionEntry<'docs'>['data'] & {
   lastModifiedAt: Date
@@ -109,11 +108,11 @@ const shouldDisplayAds = import.meta.env.ADS
           </section>
 
           <!-- Content -->
-          <div class="mdx py-10 sm:col-span-9 xl:col-start-4 xl:col-span-7">
+          <div class="py-10 mdx sm:col-span-9 xl:col-start-4 xl:col-span-7">
             <header class="mb-8">
               <h1 class="mb-3">{page.title}</h1>
               {page.description ? (
-                <p class="mb-6 text-lg text-neutral-400 font-medium">{page.description}</p>
+                <p class="mb-6 text-lg font-medium text-neutral-400">{page.description}</p>
               ) : null}
               {shouldDisplayAds ? (
                 <Ads publisher="mswjsio" />
@@ -149,7 +148,7 @@ const shouldDisplayAds = import.meta.env.ADS
               <div class="flex flex-col gap-8 h-[calc(100vh_-_2.5rem_-_60px)] pb-12 overflow-x-hidden">
                 {nestedHeadings.length > 0 ? (
                   <section class="min-h-0 overflow-y-auto">
-                    <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
+                    <h4 class="mb-2 text-xs font-bold tracking-widest text-white uppercase">
                       Contents
                     </h4>
                     <TableOfContents headings={nestedHeadings}  />
@@ -159,7 +158,7 @@ const shouldDisplayAds = import.meta.env.ADS
                   <DocsSidebarLinks gitHubUrl="https://github.com/mswjs/msw" blogUrl="/blog" />
 
                   <div>
-                    <h4 class="text-xs mb-2 font-bold tracking-widest text-white uppercase">
+                    <h4 class="mb-2 text-xs font-bold tracking-widest text-white uppercase">
                       Partners
                     </h4>
                     <DocsSidebarPartners />

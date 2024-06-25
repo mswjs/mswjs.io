@@ -11,11 +11,11 @@ const { repoUrl } = Astro.props
 
 <Container>
   <section
-    class="hero-gradient mx-auto max-w-screen-md py-16 md:py-24 md:text-center lg:py-48"
+    class="max-w-screen-md py-16 mx-auto hero-gradient md:py-24 md:text-center lg:py-48"
   >
     <slot name="headnote" />
 
-    <h1 class="mb-8 font-black text-pretty md:text-6xl">
+    <h1 class="mb-8 font-black text-balance md:text-6xl">
       <slot name="title">
     </h1>
     <p
@@ -24,11 +24,11 @@ const { repoUrl } = Astro.props
       <slot name="subtitle">
     </p>
     <footer
-      class="mt-14 flex flex-col items-center justify-center gap-6 text-lg font-semibold md:flex-row md:gap-10"
+      class="flex flex-col items-center justify-center gap-6 text-lg font-semibold mt-14 md:flex-row md:gap-10"
     >
       <a
         href="/docs/getting-started"
-        class="button button-primary inline-flex w-full items-center justify-center gap-2 md:w-auto md:px-8"
+        class="inline-flex items-center justify-center w-full gap-2 button button-primary md:w-auto md:px-8"
       >
         <CommandLineIcon className="text-primary w-[24px]" />
         Get started

@@ -10,7 +10,6 @@ import {
   PageHeaderPrefix,
   PageHeaderSubtitle,
 } from '@mswjs/shared/components/react/pageHeader'
-import { AnnouncementBanner } from '../components/react/announcementBanner'
 import { UppercaseLabel } from '../components/react/uppercaseLabel'
 import { ComponentExample } from '../components/react/app'
 import { MswIconBlock } from '../components/react/mswIconBlock'
@@ -53,10 +52,23 @@ import konnaBuraunAvatar from '../images/people/konna-buraun.jpg'
 import derekDeHartAvatar from '../images/people/derek-de-hart.jpg'
 import heitorLessaAvatar from '../images/people/heitor-lessa.jpg'
 import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
+import PromoBanner from '@mswjs/shared/components/PromoBanner.astro'
 ---
 
 <BaseLayout>
   <Hero repoUrl="https://github.com/mswjs/msw">
+    <PromoBanner slot="headnote" actionText="Watch now" actionUrl={EGGHEAD_COURSE_URL}>
+      <div class="flex items-center">
+        <EggheadIcon
+          className="absolute w-8"
+          style={{ filter: 'drop-shadow(2px 6px 0 #171717)' }}
+        />
+        <span class="pl-[44px]">
+          Learn MSW with our official Egghead course!
+        </span>
+      </div>
+    </PromoBanner>
+
     <Fragment slot="title">
       <span class="text-primary">Industry standard</span> <nobr>API mocking</nobr> for JavaScript.
     </Fragment>
@@ -70,7 +82,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
       <UppercaseLabel>Making tests better at</UppercaseLabel>
       <Grid className="relative">
         <div
-          class="col-span-full grid max-w-full grid-cols-3 items-center justify-items-center gap-x-6 gap-y-6 overflow-hidden fill-white md:max-w-6xl md:grid-cols-6 md:gap-y-10 lg:col-span-8 lg:col-start-3"
+          class="grid items-center max-w-full grid-cols-3 overflow-hidden col-span-full justify-items-center gap-x-6 gap-y-6 fill-white md:max-w-6xl md:grid-cols-6 md:gap-y-10 lg:col-span-8 lg:col-start-3"
         >
           <MicrosoftIcon
             className="h-9 max-w-full"
@@ -98,7 +110,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
           <MozillaIcon className="h-9 max-w-full" aria-label="Mozilla" />
         </div>
         <div
-          class="absolute bottom-0 left-0 h-40 w-full bg-gradient-to-t from-neutral-900 to-transparent md:hidden"
+          class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-neutral-900 to-transparent md:hidden"
         >
         </div>
       </Grid>
@@ -116,7 +128,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
         </PageHeaderSubtitle>
       </PageHeaderWrapper>
       <Grid>
-        <div class="text-md col-span-6">
+        <div class="col-span-6 text-md">
           <div class="relative md:pb-[105px]">
             <HomepageCodeExample />
             <div
@@ -205,7 +217,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
         class="relative mx-auto grid max-w-xl gap-x-10 gap-y-32 md:max-w-none lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2"
       >
         <div
-          class="integration-line absolute inset-0 -z-10 m-auto h-full w-1 bg-neutral-800 lg:h-1/2"
+          class="absolute inset-0 w-1 h-full m-auto integration-line -z-10 bg-neutral-800 lg:h-1/2"
         >
         </div>
         {/* Local development */}
@@ -215,14 +227,14 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
           </div>
           <div class="mt-8 lg:text-right">
             <p class="text-xl font-bold">Local development</p>
-            <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
+            <p class="mt-2 ml-auto text-lg text-neutral-400 lg:max-w-lg">
               Create, change, and debug fast by augmenting existing
               APIs—both third-party and local—or designing them as you go.
             </p>
           </div>
         </div>
         <div
-          class="-order-1 flex self-center justify-self-center bg-neutral-900 px-10 lg:order-none lg:row-span-2"
+          class="flex self-center px-10 -order-1 justify-self-center bg-neutral-900 lg:order-none lg:row-span-2"
         >
           <MswIconBlock />
         </div>
@@ -242,7 +254,7 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
           <CypressRunnerIntegration />
           <div class="mt-8 lg:text-right">
             <p class="text-xl font-bold">End-to-end tests</p>
-            <p class="ml-auto mt-2 text-lg text-neutral-400 lg:max-w-lg">
+            <p class="mt-2 ml-auto text-lg text-neutral-400 lg:max-w-lg">
               Take any HTTP call out of your test's equation and focus on
               the user experience, mocking local or external APIs.
             </p>
@@ -263,10 +275,10 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
       <footer class="mt-32 text-center">
         <UppercaseLabel>
           Works with any tool there is or{' '}
-          <em class="text-primary not-italic">ever will be</em>
+          <em class="not-italic text-primary">ever will be</em>
         </UppercaseLabel>
         <div
-          class="inline-grid grid-cols-6 items-center gap-10 text-neutral-500"
+          class="inline-grid items-center grid-cols-6 gap-10 text-neutral-500"
         >
           <ReactIcon className="w-10 text-white" />
           <VueIcon className="w-10 text-white" />
