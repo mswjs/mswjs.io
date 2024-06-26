@@ -1,22 +1,24 @@
 ---
 import { getCollection } from 'astro:content'
-import DocsPage from '../../layouts/DocsPage.astro';
-import { getGitHubEditUrl } from '../../utils/getGitHubEditUrl'
+import { type DocsFrontmatter } from '@mswjs/shared/collections/docs'
+import DocsPageLayout from '@mswjs/shared/layouts/DocsPageLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildDocsNavTree } from '../../content/buildDocsNavTree'
 
-const allDocsPages = await getCollection('docs')
-const indexPage = allDocsPages.find((page) => {
+const collection = await getCollection('docs')
+const page = collection.find((page) => {
   return page.slug === 'index'
 })!
-const { Content, headings, remarkPluginFrontmatter } = await indexPage.render()
-const editUrl = getGitHubEditUrl(indexPage.id)
+
+const allPages = await Astro.glob<DocsFrontmatter>('../../content/docs/**/*.mdx')
+const navTree = buildDocsNavTree(allPages)
 ---
 
-<DocsPage
-  {...indexPage.data}
-  lastModifiedAt={remarkPluginFrontmatter.lastModifiedAt}
-  editUrl={editUrl}
-  headings={headings}
-  displayV1DocsBanner={true}
->
-  <Content />
-</DocsPage>
+<BaseLayout compact={true}>
+  <DocsPageLayout
+    page={page}
+    navTree={navTree}
+    gitHubUrl="https://github.com/mswjs/msw"
+    blogUrl="/blog"
+  />
+</BaseLayout>

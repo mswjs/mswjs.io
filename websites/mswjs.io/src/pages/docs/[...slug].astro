@@ -1,29 +1,32 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content'
-import DocsPage from '../../layouts/DocsPage.astro'
-import { getGitHubEditUrl } from '../../utils/getGitHubEditUrl'
+import { getCollection } from 'astro:content'
+import DocsPageLayout from '@mswjs/shared/layouts/DocsPageLayout.astro'
+import type { DocsFrontmatter } from '@mswjs/shared/collections/docs'
+
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { buildDocsNavTree } from '../../content/buildDocsNavTree'
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs')
   return docs.map((page) => ({
     params: { slug: page.slug },
-    props: page,
+    props: {
+      page
+    },
   }))
 }
 
-type Props = CollectionEntry<'docs'>
+const { page } = Astro.props
 
-const page = Astro.props
-const { Content, headings, remarkPluginFrontmatter } = await page.render()
-const editUrl = getGitHubEditUrl(page.id)
+const allPages = await Astro.glob<DocsFrontmatter>('../../content/docs/**/*.mdx')
+const navTree = buildDocsNavTree(allPages)
 ---
 
-<DocsPage
-  {...page.data}
-  lastModifiedAt={remarkPluginFrontmatter.lastModifiedAt}
-  editUrl={editUrl}
-  headings={headings}
-  displayV1DocsBanner={true}
->
-  <Content />
-</DocsPage>
+<BaseLayout compact={true}>
+  <DocsPageLayout
+    page={page}
+    navTree={navTree}
+    gitHubUrl="https://github.com/mswjs/msw"
+    blogUrl="/blog"
+  />
+</BaseLayout>
