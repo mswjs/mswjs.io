@@ -1,0 +1,50 @@
+---
+import { Container } from "@mswjs/shared/components/react/container";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Grid } from "@mswjs/shared/components/react/grid";
+import { PageHeaderSubtitle, PageHeaderWrapper } from "@mswjs/shared/components/react/pageHeader";
+
+import sourceLogo from '../../../source.mswjs.io/src/images/source.svg'
+import { IconBlock } from "@mswjs/shared/components/react/iconBlock";
+---
+
+<BaseLayout>
+  <main>
+    <Container>
+      <Grid>
+        <div class="sm:col-span-8 lg:col-start-3">
+          <PageHeaderWrapper className="mt-16 md:mt-24">
+            <h1 class="mb-8 capitalize">Ecosystem</h1>
+            <PageHeaderSubtitle className="md:w-3/6">
+              Expand your developer experience through the official ecosystem packages.
+            </PageHeaderSubtitle>
+          </PageHeaderWrapper>
+        </div>
+      </Grid>
+
+      <Grid className="py-24 gap-y-24">
+        <article class="sm:col-span-6 flex items-start gap-8">
+          <IconBlock imageUrl="https://raw.githubusercontent.com/mswjs/data/main/logo.svg" alt="Data logo" />
+          <div>
+            <h2 class="mt-7">Data</h2>
+            <p class="text-lg text-neutral-400 text-pretty">Data modeling and relation library for testing JavaScript applications.</p>
+            <footer class="mt-10">
+              <a href="https://github.com/mswjs/data" target="_blank" class="button button-primary">Visit repository</a>
+            </footer>
+          </div>
+        </article>
+
+        <article class="sm:col-span-6 flex items-start gap-8">
+          <IconBlock imageUrl={sourceLogo.src} alt="Source logo" />
+          <div>
+            <h2 class="mt-7">Source</h2>
+            <p class="text-lg text-neutral-400 text-pretty">Generate request handler from various sources, like HAR files or OpenAPI specifications.</p>
+            <footer class="mt-10">
+              <a href="https://source.mswjs.io" class="inline-flex button button-primary">Visit website</a>
+            </footer>
+          </div>
+        </article>
+      </Grid>
+    </Container>
+  </main>
+</BaseLayout>
