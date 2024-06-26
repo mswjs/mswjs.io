@@ -9,6 +9,9 @@ import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import { remarkLastModifiedPlugin } from '@mswjs/shared/plugins/remarkLastModifiedPlugin'
+import { remarkGitHubEditUrlPlugin } from '@mswjs/shared/plugins/remarkGItHubEditUrlPlugin'
+
+import { repository } from './package.json'
 
 /** @type {import('rehype-autolink-headings').Options} */
 const autoLinkHeadingsOptions = {
@@ -34,7 +37,15 @@ export default defineConfig({
   ],
   markdown: {
     syntaxHighlight: false,
-    remarkPlugins: [remarkLastModifiedPlugin],
+    remarkPlugins: [
+      remarkLastModifiedPlugin,
+      [
+        remarkGitHubEditUrlPlugin,
+        {
+          repositoryUrl: repository.url,
+        },
+      ],
+    ],
     rehypePlugins: [
       rehypeHeadingIds,
       [rehypeExternalLinks, externalLinksOptions],

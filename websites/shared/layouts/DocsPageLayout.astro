@@ -17,18 +17,22 @@ import type { DocsItem } from "../utils/buildNavTree";
 interface Props {
   page: CollectionEntry<'docs'>
   navTree: Array<DocsItem>
+  /**
+   * GitHub repository URL.
+   */
   gitHubUrl: string
   blogUrl: string
 }
 
 const props = Astro.props
 const { Content, headings, remarkPluginFrontmatter } = await props.page.render()
+const { lastModifiedAt: lastModifiedAtString, editUrl } = remarkPluginFrontmatter
 
 const nestedHeadings = buildHeadings(headings || [], {
   maxDepth: props.page.tableOfContents?.maxDepth
 })
 
-const lastModifiedAt = new Date(remarkPluginFrontmatter.lastModifiedAt)
+const lastModifiedAt = new Date(lastModifiedAtString)
 const shouldDisplayAds = import.meta.env.ADS
 ---
 
@@ -73,7 +77,7 @@ const shouldDisplayAds = import.meta.env.ADS
             ) : null}
           </p>
           <a
-            href="#TODO"
+            href={editUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="text-white hover:underline"
