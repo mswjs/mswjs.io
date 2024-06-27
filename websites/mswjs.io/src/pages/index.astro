@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
-import { EGGHEAD_COURSE_URL } from '../consts'
+import { EGGHEAD_COURSE_URL, SITE_DESCRIPTION, SITE_TITLE } from '../consts'
 import { Container } from '@mswjs/shared/components/react/container'
 import { Grid } from '@mswjs/shared/components/react/grid'
 import { Section } from '../components/react/section'
@@ -55,7 +55,9 @@ import matanBorenkraoutAvatar from '../images/people/matan-borenkraout.jpg'
 import PromoBanner from '@mswjs/shared/components/PromoBanner.astro'
 ---
 
-<BaseLayout>
+<BaseLayout
+  displayTitle={`${SITE_TITLE} - ${SITE_DESCRIPTION}`}
+>
   <Hero repoUrl="https://github.com/mswjs/msw">
     <PromoBanner slot="headnote" actionText="Watch now" actionUrl={EGGHEAD_COURSE_URL}>
       <div class="flex items-center">

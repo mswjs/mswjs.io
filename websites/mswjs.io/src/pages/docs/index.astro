@@ -14,7 +14,12 @@ const allPages = await Astro.glob<DocsFrontmatter>('../../content/docs/**/*.mdx'
 const navTree = buildDocsNavTree(allPages)
 ---
 
-<BaseLayout compact={true}>
+<BaseLayout
+  title={page.data.title}
+  description={page.data.description}
+  keywords={page.data.keywords}
+  compact={true}
+>
   <DocsPageLayout
     page={page}
     navTree={navTree}
