@@ -1,0 +1,36 @@
+---
+import { Container } from "../components/react/container";
+import { Grid } from "../components/react/grid";
+import { LinkExternal } from "../components/react/linkExternal";
+
+interface Props {
+  sitename: string
+}
+
+const { sitename } = Astro.props
+const { pathname } = Astro.url
+
+const reportMisingPageUrl = new URL('issues/new', 'https://github.com/mswjs/mswjs.io/')
+reportMisingPageUrl.searchParams.set('title', `${sitename}: Missing page at "${pathname}"`)
+reportMisingPageUrl.searchParams.set('body', '<!-- Please describe what you expected to see at that URL -->')
+---
+
+<main>
+  <Container>
+    <Grid>
+      <section class="py-16 col-span-full xl:col-start-3 xl:col-span-8">
+        <header class="mb-10">
+          <h1 class="mb-5">Page not found</h1>
+          <p class="text-neutral-400 text-xl">It must be a cookie monster.</p>
+        </header>
+        <main>
+          <p>The page you are trying to load has been moved or never existed, to begin with. Spooky! If you think something should be here, please let us know.</p>
+          <p>
+        </main>
+        <footer class="mt-5">
+          <LinkExternal href={reportMisingPageUrl.href} className="inline-block button button-primary">Report a missing page</LinkExternal>
+        </footer>
+      </section>
+    </Grid>
+  </Container>
+</main>
