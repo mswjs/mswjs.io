@@ -201,12 +201,44 @@ await fromOpenApi({
 The document above will generate a `GET /user/:id` request handler with the following JSON response:
 
 ```json
-{
-  "id": "a5d43b08-2446-4da3-ab63-47e3dced6b0c"
-}
+{ "id": "a5d43b08-2446-4da3-ab63-47e3dced6b0c" }
 ```
 
 > Source will use `faker` to produce literal values based on the data types from the schema. It supports string, number, integer, boolean, array, and object types.
+
+#### Custom data formats
+
+Source supports the following data formats:
+
+- `"uuid"`
+- `"uri"`
+- `"firstName"`
+- `"lastName"`
+- `"email"`
+- `"password"`
+- `"date"`
+- `"date-time"`
+- `"creditCard"`
+- `"hexColor"`
+- `"hostname"`
+- `"mac"`
+- `"ipv4"`
+- `"ipv6"`
+- `"byte"`
+- `"binary"`
+
+You can provide any of these formats as the value of the `format` property in the JSON schemas of your API specification:
+
+```json
+{
+  "type": "string",
+  "format": "email"
+}
+```
+
+```json
+{ "email": "hayley.johnson@gmail.com" }
+```
 
 ### Content types
 
