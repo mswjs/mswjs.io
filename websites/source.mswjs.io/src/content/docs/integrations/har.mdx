@@ -1,0 +1,159 @@
+---
+order: 1
+title: Network archive (HAR)
+description: Learn how to generate request handlers from HAR files.
+---
+
+## Import
+
+Import the `fromTraffic()` function from `@mswjs/source/traffic`:
+
+```js
+import { fromTraffic } from '@mswjs/source/traffic'
+```
+
+## Network archive
+
+Next, you would need a network archive (`*.har`) file. You can use any existing HAR file you have, or learn how to record a new one:
+
+import { BeakerIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+
+<PageCard
+  icon={BeakerIcon}
+  title="Recording HAR"
+  description="Learn how to record HAR files in the browser."
+  url="/docs/recipes/recording-har"
+/>
+
+## Generate request handlers
+
+Import the HAR file and provided it as an argument to the `fromTraffic()` function:
+
+```js /fromTraffic/
+import { fromTraffic } from '@mswjs/source/traffic'
+import traffic from './api.har'
+
+const handlers = fromTraffic(traffic)
+```
+
+> `*.har` files are JSON files, so you can import them directly in your code. In case you cannot, make sure to parse the archive file before passing it to `fromTraffic`.
+
+## Features
+
+### Response timing
+
+Generated request handlers respect the response timing recorded in the respective HAR entries.
+
+For example, the following network entry took 554ms to complete:
+
+```json {5}
+{
+  "log": {
+    "entries": [
+      {
+        "time": 554,
+        "request": { ... },
+        "response": { ... }
+      }
+    ]
+  }
+}
+```
+
+The request handler for this entry will delay the mocked response by 554ms to replay this HTTP request faithfully.
+
+### Response order sensitivity
+
+There may be multiple request/response entries for the same request in the archive. If that happens, Source will _exhaust_ the recorded responses in the same order they have been received.
+
+In the example below, the same `GET https://example.com/cart` request receives two distinct responses:
+
+```json {9-14,21-26}
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "GET",
+          "url": "https://example.com/cart"
+        },
+        "response": {
+          "status": 200,
+          "content": {
+            "text": "{\"items\":[]}"
+          }
+        }
+      },
+      {
+        "request": {
+          "method": "GET",
+          "url": "https://example.com/cart"
+        },
+        "response": {
+          "status": 200,
+          "content": {
+            "text": "{\"items\":[{\"id\":\"abc-123\"}]}"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+The generated request handler for the `GET https://example.com/cart` endpoint will replay this network communication respectively:
+
+```js {5,8}
+const handlers = fromTraffic(traffic)
+setupServer(...handlers).listen()
+
+await fetch('https://example.com/cart').then((res) => res.json())
+// {"items":[]}
+
+await fetch('https://example.com/cart').then((res) => res.json())
+// {"items":[{"id":"abc-123"}]}
+```
+
+Once the responses have been exhausted, the last recorded response will be used to respond to the matching request from there on out.
+
+### Mapping network entries
+
+You can transform network entries by providing a map function as the second argument to `fromTraffic`. The map function is called for every entry (`har.log.entries[n]`) in the archive, and acts similarly to `Array.prototype.map`.
+
+```js {8}
+const { BASE_URL } = process.env
+
+fromTraffic(har, (entry) => {
+  const url = new URL(entry.request.url)
+
+  if (url.hostname === 'example.com') {
+    url.hostname = BASE_URL
+    entry.request.url = url.href
+  }
+
+  return entry
+})
+```
+
+In this example, we are locating requests to `example.com` and rewriting their hostname to point to the `BASE_URL` we use in tests. This is handy if the recorded traffic was on production while we want to run tests aginst staging or local.
+
+Using the map function also allows you to repurpose a single network archive by transforming its entries based on the test cases or debugging scenarios.
+
+### Filtering network entries
+
+If the map function returns `undefined`, the respective network entry is _completely skipped_. In that regard, the map function acts as a filter function.
+
+```js {4-8}
+fromTraffic(har, (entry) => {
+  const url = new URL(entry.request.url)
+
+  // Skip all requests that weren't made
+  // to the "example.com" hostname.
+  if (url.hostname !== 'example.com') {
+    return
+  }
+
+  return entry
+})
+```

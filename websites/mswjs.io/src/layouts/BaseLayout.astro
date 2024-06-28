@@ -1,0 +1,32 @@
+---
+import '../styles/global.css'
+import type { ComponentProps } from 'astro/types'
+import SharedBaseLayout from '@mswjs/shared/layouts/BaseLayout.astro'
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts'
+
+interface Props extends Partial<ComponentProps<typeof SharedBaseLayout>> {
+  compact?: boolean
+}
+
+const { compact, ...layoutProps } = Astro.props
+---
+
+<SharedBaseLayout
+  sitename={SITE_TITLE}
+  title={SITE_TITLE}
+  description={SITE_DESCRIPTION}
+  keywords={['mock', 'api', 'msw', 'service', 'worker']}
+  {...layoutProps}
+>
+  <Fragment slot="header">
+    <Header compact={compact} />
+  </Fragment>
+
+  <slot />
+
+  <Fragment slot="footer">
+    <Footer compact={compact} />
+  </Fragment>
+</BaseLayout>

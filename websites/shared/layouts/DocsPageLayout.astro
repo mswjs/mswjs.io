@@ -1,0 +1,160 @@
+---
+import { type CollectionEntry } from "astro:content";
+import Ads from '../components/Ads.astro'
+import { Container } from "../components/react/container";
+import DocsNavTree from "../components/docs/DocsNavTree.astro";
+import DocsTableOfContents from "../components/docs/DocsTableOfContents.astro";
+import { DocsSidebarLinks } from "../components/react/docsSidebarLinks";
+import DocsSidebarPartners from "../components/docs/DocsSidebarPartners.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+
+import { Grid } from "../components/react/grid"
+import { DocsMovileNav } from "../components/react/docsMobileNav"
+import { FeedbackWidget } from "../components/react/feedbackWidget"
+import { buildHeadings } from "../utils/buildHeadings";
+import type { DocsItem } from "../utils/buildNavTree";
+
+interface Props {
+  page: CollectionEntry<'docs'>
+  navTree: Array<DocsItem>
+  /**
+   * GitHub repository URL.
+   */
+  gitHubUrl: string
+  blogUrl: string
+}
+
+const props = Astro.props
+const { Content, headings, remarkPluginFrontmatter } = await props.page.render()
+const { lastModifiedAt: lastModifiedAtString, editUrl } = remarkPluginFrontmatter
+
+const nestedHeadings = buildHeadings(headings || [], {
+  maxDepth: props.page.tableOfContents?.maxDepth
+})
+
+const lastModifiedAt = new Date(lastModifiedAtString)
+const shouldDisplayAds = import.meta.env.ADS
+---
+
+<Container compact={true}>
+  <!-- Mobile: Nav tree -->
+  <DocsMovileNav client:only="react">
+    <nav>
+      <DocsNavTree items={props.navTree} />
+    </nav>
+  </DocsMovileNav>
+
+  <article>
+    <Grid className="relative">
+      <!-- Nav tree -->
+      <section class="hidden xl:block xl:w-1/5 xl:col-span-3 xl:fixed xl:top-[60px]">
+        <nav id="docs-nav-tree" class="py-10 pr-10 overflow-y-auto h-[calc(100vh_-_60px)]">
+          <DocsNavTree items={props.navTree} />
+        </nav>
+      </section>
+
+      <!-- Content -->
+      <div class="py-10 mdx sm:col-span-9 xl:col-start-4 xl:col-span-7">
+        <header class="mb-8">
+          <h1 class="mb-3">{props.page.data.title}</h1>
+          {props.page.data.description ? (
+            <p class="mb-6 text-lg font-medium text-neutral-400">{props.page.data.description}</p>
+          ) : null}
+          {shouldDisplayAds ? (
+            <Ads publisher="mswjsio" />
+          ) : null}
+        </header>
+        <div class="prose max-w-none">
+          <Content />
+        </div>
+        <footer class="justify-between pt-5 mt-10 text-sm font-medium border-t text-neutral-400 border-neutral-800 md:flex">
+          <p>
+            {lastModifiedAt ? (
+              <span>
+                Last updated on{' '}
+                  <FormattedDate date={lastModifiedAt} />
+              </span>
+            ) : null}
+          </p>
+          <a
+            href={editUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white hover:underline"
+          >
+            Edit this page on GitHub
+          </a>
+        </footer>
+        <FeedbackWidget client:only="react" pageTitle={props.page.data.title} />
+      </div>
+
+      <!-- Table of contents -->
+      <aside class="hidden py-10 pl-5 text-sm font-medium text-neutral-400 lg:block sm:col-span-3 xl:col-span-2">
+        <div class="sticky top-28">
+          <div class="flex flex-col gap-8 h-[calc(100vh_-_2.5rem_-_60px)] pb-12 overflow-x-hidden">
+            {nestedHeadings.length > 0 ? (
+              <section class="min-h-0 overflow-y-auto">
+                <h4 class="mb-2 text-xs font-bold tracking-widest text-white uppercase">
+                  Contents
+                </h4>
+                <DocsTableOfContents headings={nestedHeadings} />
+              </section>
+            ) : null}
+
+              <DocsSidebarLinks gitHubUrl={props.gitHubUrl} blogUrl={props.blogUrl} />
+
+              <div>
+                <h4 class="mb-2 text-xs font-bold tracking-widest text-white uppercase">
+                  Partners
+                </h4>
+                <DocsSidebarPartners />
+              </div>
+          </div>
+        </div>
+      </aside>
+    </Grid>
+  </article>
+</Container>
+
+
+<script is:inline>
+	{
+    const NAV_TREE_SCROLL_KEY = 'nav-tree-scroll'
+
+		const docsNavTree = document.getElementById('docs-nav-tree');
+		const storedScrollValue = sessionStorage.getItem(NAV_TREE_SCROLL_KEY);
+    const storedScrollPosition = storedScrollValue ? parseInt(storedScrollValue, 10) : undefined
+    const activeDocsLink = document.getElementsByClassName('docs-link-active')[0]
+
+    const scrollToActiveLink = () => {
+      // If there's no stored scroll position, scroll to the
+      // currently active link in the nav tree.
+      activeDocsLink.scrollIntoView({
+        block: 'center',
+        behavior: 'instant'
+      })
+    }
+
+    if (storedScrollPosition == null) {
+      scrollToActiveLink()
+    } else {
+      docsNavTree.scrollTop = storedScrollPosition
+
+      if (activeDocsLink) {
+        const observer = new IntersectionObserver(([entry]) => {
+          if (!entry.isIntersecting) {
+            scrollToActiveLink()
+          }
+
+          observer.disconnect()
+        }, { root: null, threshold: 0.1 })
+
+        observer.observe(activeDocsLink)
+      }
+    }
+
+    window.addEventListener('beforeunload', () => {
+			sessionStorage.setItem(NAV_TREE_SCROLL_KEY, docsNavTree.scrollTop);
+		});
+	}
+</script>

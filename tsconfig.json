@@ -3,6 +3,12 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
-  }
+    "jsxImportSource": "react",
+    "resolveJsonModule": true
+  },
+  "include": [
+    "./websites/**/*.astro",
+    "./websites/**/*.tsx",
+    "./websites/**/*.ts"
+  ]
 }

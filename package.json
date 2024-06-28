@@ -1,4 +1,8 @@
 {
   "private": true,
-  "name": "websites"
+  "type": "module",
+  "name": "websites",
+  "dependencies": {
+    "@types/node": "^20.8.0"
+  }
 }

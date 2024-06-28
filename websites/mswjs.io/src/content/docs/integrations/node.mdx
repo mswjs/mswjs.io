@@ -55,7 +55,7 @@ One of the most common uses of MSW in Node.js is with test runners like Jest or 
 1. Reset any request handlers _between_ tests (`server.resetHandlers()`);
 1. Restore native request-issuing modules _after_ all tests run (`server.close()`).
 
-import { Info } from '../../../components/react/info'
+import { Info } from '@mswjs/shared/components/react/info'
 
 <Info>
   Consult your test runner's documentation on the correct API to implement those

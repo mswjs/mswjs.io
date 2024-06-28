@@ -10,7 +10,7 @@ keywords:
 ---
 
 import { Action } from '../../../components/react/action'
-import { Warning } from '../../../components/react/warning'
+import { Warning } from '@mswjs/shared/components/react/warning'
 
 The browser can only register a single Service Worker per scope. This means that if your application already registers a Service Worker, it cannot register another one for MSW in parallel. You can still use both your custom Service Worker and MSW by _merging the two worker scripts_.
 

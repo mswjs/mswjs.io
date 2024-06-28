@@ -1,0 +1,295 @@
+---
+order: 2
+title: OpenAPI (Swagger)
+description: Learn how to generate request handlers from OpenAPI documents.
+---
+
+## Import
+
+Import the `fromOpenApi()` function from `@mswjs/source/open-api`:
+
+```js
+import { fromOpenApi } from '@mswjs/source/open-api'
+```
+
+## OpenAPI document
+
+You can use both OpenAPI 2.0 and 3.0 documents with Source. Get the document you have or author a new one. Learn more about [writing OpenAPI documents](https://learn.openapis.org/).
+
+## Generate request handlers
+
+Import the OpenAPI document and provide it as an argument to the `fromOpenApi()` function:
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+```js /fromOpenApi/ /await/#v
+import { fromOpenApi } from '@mswjs/source/open-api'
+import spec from './api.spec.json'
+
+const handlers = await fromOpenApi(spec)
+```
+
+<Warning>
+  Generating request handlers from an OpenAPI document is an _asynchronous_
+  operation because parsing the document is an asynchronous operation.
+</Warning>
+
+If your OpenAPI document was not authored in JSON, you would have to convert it to JSON before using `fromOpenApi()`.
+
+You can also provide an inline definition of a OpenAPI document as an argument to the `fromOpenApi()` function:
+
+```js
+fromOpenApi({
+  openapi: '3.0.0',
+  paths: {
+    '/user': {
+      get: {
+        responses: {
+          200: {
+            example: {
+              id: 'abc-123',
+              firstName: 'John',
+            },
+          },
+        },
+      },
+    },
+  },
+})
+```
+
+## Features
+
+### Base path
+
+Source respects both `basePath` and `servers` properties of your OpenAPI specification. If you define those, they will be included in the request URL predicate of the generated request handlers.
+
+```js {3}
+await fromOpenApi({
+  // ...
+  basePath: 'https://api.example.com',
+  paths: {
+    '/cart/{cartId}': {
+      post: {
+        // ...
+      },
+    },
+  },
+})
+```
+
+This generates the following request handler:
+
+```js
+http.post('https://api.example.com/cart/:cartId', resolver)
+```
+
+In the case of `servers`, Source will generate a request handler _for each defined server URL_.
+
+```js {4-5}
+await fromOpenApi({
+  // ...
+  servers: [
+    { url: 'https://prod.example.com' },
+    { url: 'https://staging.example.com' },
+  ],
+  paths: {
+    '/user': {
+      get: {
+        // ...
+      },
+    },
+  },
+})
+```
+
+```js
+http.get('https://prod.example.com/user', resolver)
+http.get('https://staging.example.com/user', resolver)
+```
+
+### Response definition
+
+Source can get the response definition to use for the mocked responses from various places in your OpenAPI specification, listed by the order of priority:
+
+1. `responses[status].example`. Literal response examples are always used as the mocked response bodies.
+1. `responses[status].schema`. If no response `example` is provided, the response JSON schema will be [evolved](#json-schema) into a mocked response.
+1. If the request is described but has no `200` successful response, a hard-coded `504 Not Implemented` mocke response will be returned unless you [choose a conditional response](#conditional-responses).
+1. If the request is described but has no responses, a hard-coded `504 Not Implemented` mocked response will be returned.
+
+### Conditional responses
+
+A single request can describe multiple responses in your specification. For example:
+
+```js {7,12}
+await fromOpenApi({
+  // ...
+  paths: {
+    '/user': {
+      get: {
+        responses: {
+          200: {
+            example: {
+              id: 'abc-123',
+            },
+          },
+          404: {
+            example: {
+              errorMessage: 'User not found',
+            },
+          },
+        },
+      },
+    },
+  },
+})
+```
+
+If present, the `200` successful response is used as the mocked response by default:
+
+```js
+await fetch('/user').then((res) => res.json())
+// 200 OK
+// content-type: application/json
+//
+// {"id":"abc-123"}
+```
+
+You can choose which mocked response your client receives by using setting the `response` search parameter of the request URL to equal to the desired response status code.
+
+```js
+await fetch('/user?response=404').then((res) => res.json())
+// 404 Not Found
+// content-type: application/json
+//
+// {"errorMessage":"User not found"}
+```
+
+### JSON schema
+
+Whenever a JSON schema is encountered in the response definition of the OpenAPI document, it will automatically be "evolved" into literal values based on the data types defined in the schema.
+
+```js {9-17}
+await fromOpenApi({
+  // ...
+  paths: {
+    '/user/{id}': {
+      get: {
+        responses: {
+          200: {
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                      format: 'uuid',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+})
+```
+
+The document above will generate a `GET /user/:id` request handler with the following JSON response:
+
+```json
+{ "id": "a5d43b08-2446-4da3-ab63-47e3dced6b0c" }
+```
+
+> Source will use `faker` to produce literal values based on the data types from the schema. It supports string, number, integer, boolean, array, and object types.
+
+#### Custom data formats
+
+Source supports the following data formats:
+
+- `"uuid"`
+- `"uri"`
+- `"firstName"`
+- `"lastName"`
+- `"email"`
+- `"password"`
+- `"date"`
+- `"date-time"`
+- `"creditCard"`
+- `"hexColor"`
+- `"hostname"`
+- `"mac"`
+- `"ipv4"`
+- `"ipv6"`
+- `"byte"`
+- `"binary"`
+
+You can provide any of these formats as the value of the `format` property in the JSON schemas of your API specification:
+
+```json
+{
+  "type": "string",
+  "format": "email"
+}
+```
+
+```json
+{ "email": "hayley.johnson@gmail.com" }
+```
+
+### Content types
+
+A single response can have multiple content types defined.
+
+```js {8,11}
+await fromOpenApi({
+  // ...
+  paths: {
+    '/user': {
+      get: {
+        responses: {
+          content: {
+            'application/json': {
+              example: { id: 'abc-123' },
+            },
+            'application/xml': {
+              example: `<id>abc-123</id>`,
+            },
+          },
+        },
+      },
+    },
+  },
+})
+```
+
+By default, the first content type in the definition is used in the mocked response.
+
+```js
+await fetch('/user').then((res) => res.json())
+// 200 OK
+// content-type: application/json
+//
+// {"id":"abc-123"}
+```
+
+You can choose a different content types by specifying as the value of the `Accept` request header.
+
+```js {2-4}
+await fetch('/resource', {
+  headers: {
+    Accept: 'application/xml',
+  },
+}).then((res) => res.json())
+// 200 OK
+// content-type: application/xml
+//
+// <id>abc-123</id>
+```
+
+> Wildcards like `*` and `application/*` are also supported.
+
+If multiple content types are listed in the `Accept` request header, the first content type found in the response specification is used.

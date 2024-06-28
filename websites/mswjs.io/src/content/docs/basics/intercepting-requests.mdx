@@ -51,7 +51,7 @@ http.get(
   // intercepted request, and decides how to handle it.
   ({ request, params, cookies }) => {
     return HttpResponse.json(['Tom', 'Jerry', 'Spike'])
-  },
+  }
 )
 ```
 
@@ -72,7 +72,7 @@ export const handlers = [
 ]
 ```
 
-import { Info } from '../../../components/react/info'
+import { Info } from '@mswjs/shared/components/react/info'
 
 <Info>
   Relative request URLs are resolved against the current `location.origin`, if
@@ -144,7 +144,7 @@ query ListPets {
 }
 ```
 
-import { Warning } from '../../../components/react/warning'
+import { Warning } from '@mswjs/shared/components/react/warning'
 
 In the query above, `query` is the operation type while `ListPets` is the operation name.
 

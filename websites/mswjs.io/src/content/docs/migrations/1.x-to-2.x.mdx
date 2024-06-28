@@ -41,7 +41,7 @@ npm install msw@latest
 
 **This release sets the minimal supported Node.js version to 18.0.0.**
 
-import { Warning } from '../../../components/react/warning'
+import { Warning } from '@mswjs/shared/components/react/warning'
 
 <Warning>
   **Node.js versions prior to Node.js 18 are no longer supported.** To use the
@@ -710,7 +710,7 @@ The `request` argument of the `onUnhandledRequest` has changed from being an abs
 server.listen({
   onUnhandledRequest(request, print) {
     const url = request.url
- 
+
     if (url.pathname.includes('/assets/')) {
       return
     }
@@ -729,7 +729,7 @@ server.listen({
   onUnhandledRequest(request, print) {
     // Create a new URL instance manually.
     const url = new URL(request.url)
- 
+
     if (url.pathname.includes('/assets/')) {
       return
     }
@@ -795,17 +795,3 @@ This will force JSDOM to use the default export condition when importing `msw/no
 ### `multipart/form-data is not supported` Error in Node.js
 
 Earlier versions of Node.js, like v18.8.0, didn't have official support for `request.formData()`. Please upgrade to the latest Node.js 18.x where such a support has been added.
-
-## Need help?
-
-This is a _massive_ change. If you ever feel lost or have questions while migrating, don't hesitate to reach out to use on Discord.
-
-import { DISCORD_URL } from '../../../consts'
-import { DiscordIcon } from '../../../components/react/icons/discord'
-
-<PageCard
-  icon={DiscordIcon}
-  url={DISCORD_URL}
-  title="MSW Discord"
-  description="Official MSW Discord server."
-/>
