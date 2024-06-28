@@ -5,9 +5,10 @@ import { DocSearchModal, useDocSearchKeyboardEvents } from '@docsearch/react'
 interface Props {
   appId: string
   apiKey: string
+  indexName: string
 }
 
-export function DocSearch({ appId, apiKey }: Props) {
+export function DocSearch({ appId, apiKey, indexName }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [initialQuery, setInitialQuery] = useState('')
   const searchButtonRef = useRef(
@@ -51,7 +52,7 @@ export function DocSearch({ appId, apiKey }: Props) {
     <DocSearchModal
       appId={appId}
       apiKey={apiKey}
-      indexName="mswjs_prod"
+      indexName={indexName}
       initialQuery={initialQuery}
       initialScrollY={window.scrollY}
       insights
