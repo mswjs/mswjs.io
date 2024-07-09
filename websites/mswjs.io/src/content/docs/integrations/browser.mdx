@@ -13,7 +13,7 @@ keywords:
 
 In the browser, MSW works by registering a Service Worker responsible for request interception on the network level.
 
-import { Info } from '../../../components/react/info'
+import { Info } from '@mswjs/shared/components/react/info'
 
 <Info>
   Although Service Workers are meant to be served via HTTPS, browsers allow
@@ -85,7 +85,7 @@ enableMocking().then(() => {
 })
 ```
 
-import { Warning } from '../../../components/react/warning'
+import { Warning } from '@mswjs/shared/components/react/warning'
 
 <Warning>
   Make sure to await the `worker.start()` Promise! Service Worker registration

@@ -1,0 +1,70 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import { DiscordIcon } from './react/icons/discord'
+import { GitHubIcon } from './react/icons/github'
+import { TwitterIcon } from './react/icons/twitter'
+import { OpenCollectiveIcon } from './react/icons/opencollective'
+import { YouTubeIcon } from './react/icons/youtube'
+
+type Props = HTMLAttributes<'ul'>
+
+const props = Astro.props
+---
+
+<ul class:list={['flex items-center gap-1 mt-5 -ml-2', props.class]}>
+  <li>
+    <a
+      href="https://github.com/mswjs"
+      aria-label="GitHub organization"
+      class="flex p-2 hover:text-white"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <GitHubIcon className="w-[20px]" />
+    </a>
+  </li>
+  <li>
+    <a
+      href="https://twitter.com/ApiMocking"
+      aria-label="Twitter account"
+      class="flex p-2 hover:text-white"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <TwitterIcon className="w-[20px]" />
+    </a>
+  </li>
+  <li>
+    <a
+      href="https://youtube.com/c/MockServiceWorker"
+      aria-label="YouTube channel"
+      class="flex p-2 hover:text-white"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <YouTubeIcon className="w-[20px]" />
+    </a>
+  </li>
+  <li>
+    <a
+      href="https://kettanaito.com/discords"
+      arial-label="Discord server"
+      class="flex p-2 hover:text-white"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <DiscordIcon className="w-[20px]" />
+    </a>
+  </li>
+  <li>
+    <a
+      href="https://opencollective.com/mswjs"
+      aria-label="Open Collective page"
+      class="flex p-2 hover:text-white"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <OpenCollectiveIcon className="w-[20px]" />
+    </a>
+  </li>
+</ul>

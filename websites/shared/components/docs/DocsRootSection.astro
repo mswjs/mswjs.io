@@ -1,0 +1,46 @@
+---
+import {
+  ChevronRightIcon as ArrowRightIcon,
+  ChevronDownIcon as ArrowDownIcon,
+  Bars2Icon as MenuIcon,
+  NewspaperIcon,
+  CubeTransparentIcon as CubeIcon,
+  BeakerIcon,
+  GlobeAltIcon as GlobeIcon,
+  TrophyIcon,
+  CommandLineIcon,
+} from '@heroicons/react/24/solid'
+import type { DocsItem } from '../../utils/buildNavTree'
+import DocsNavTree from './DocsNavTree.astro'
+
+type Props = {
+  title: string
+  items: Array<DocsItem>
+}
+
+const { title, items } = Astro.props
+
+const rootSectionIcons: Record<
+  string,
+  React.FC<{ className?: string }>
+> = {
+  Basics: NewspaperIcon,
+  'Network behavior': GlobeIcon,
+  Integrations: MenuIcon,
+  Concepts: MenuIcon,
+  'Best practices': TrophyIcon,
+  API: CubeIcon,
+  CLI: CommandLineIcon,
+  Recipes: BeakerIcon,
+}
+
+const Icon = rootSectionIcons[title] || MenuIcon
+---
+
+<span class="block pt-10 mt-10 mb-3 text-sm font-bold tracking-widest uppercase border-t border-neutral-800">
+  <span class="inline-flex items-center justify-center mr-2 w-5 h-5 rounded-sm align-top bg-primary bg-opacity-10">
+    <Icon className="w-4 text-primary" />
+  </span>
+  {title}
+</span>
+<DocsNavTree items={items} itemKind="page" />

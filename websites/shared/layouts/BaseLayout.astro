@@ -1,0 +1,34 @@
+---
+import BaseHead from '../components/BaseHead.astro'
+
+interface Props {
+  sitename: string
+  title: string
+  displayTitle?: string
+  description?: string
+  keywords?: Array<string>
+}
+
+const { props } = Astro
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark" transition:animate="none">
+  <head>
+    <BaseHead
+      title={props.title}
+      displayTitle={props.displayTitle || `${props.title} - ${props.sitename}`}
+      description={props.description}
+      keywords={props.keywords}
+    />
+  </head>
+  <body>
+    <slot name="banner" />
+    <slot name="header" />
+    <main>
+      <slot />
+    </main>
+    <slot name="footer" />
+  </body>
+</html>
+
