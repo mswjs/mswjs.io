@@ -22,7 +22,7 @@ There are multiple ways to describe an OpenAPI document. The `fromOpenApi` funct
 import { fromOpenApi } from '@mswjs/source/open-api'
 import api from './api.spec.json'
 
-const handlers = await fromOpenAPI(api)
+const handlers = await fromOpenApi(api)
 ```
 
 You can also define the OpenAPI document directly in the arguments to `fromOpenApi`, which is a handy way to start exploring the OpenAPI specification:
