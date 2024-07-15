@@ -2,7 +2,7 @@ import { AppTrayIcons } from '../app'
 
 export function VitestRunner(): JSX.Element {
   return (
-    <div className="border border-neutral-700 rounded-lg p-4 font-mono select-none">
+    <div className="border border-neutral-700 rounded-lg p-4 font-mono select-none text-sm">
       <header className="pb-4">
         <AppTrayIcons />
       </header>
