@@ -20,6 +20,10 @@ const { compact, ...layoutProps } = Astro.props
   keywords={['mock', 'api', 'msw', 'service', 'worker']}
   {...layoutProps}
 >
+  <Fragment slot="banner">
+    <slot name="banner" />
+  </Fragment>
+
   <Fragment slot="header">
     <Header compact={compact} />
   </Fragment>

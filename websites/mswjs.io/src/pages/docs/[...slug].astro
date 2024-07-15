@@ -5,6 +5,7 @@ import type { DocsFrontmatter } from '@mswjs/shared/collections/docs'
 
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { buildDocsNavTree } from '../../content/buildDocsNavTree'
+import DocsV1Banner from '../../components/DocsV1Banner.astro'
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs')
@@ -28,6 +29,8 @@ const navTree = buildDocsNavTree(allPages)
   keywords={page.data.keywords}
   compact={true}
 >
+  <DocsV1Banner slot="banner" />
+
   <DocsPageLayout
     page={page}
     navTree={navTree}
