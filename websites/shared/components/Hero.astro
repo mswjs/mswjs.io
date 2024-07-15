@@ -3,18 +3,18 @@ import { CommandLineIcon } from "@heroicons/react/24/outline";
 import { Container } from "./react/container";
 
 interface Props {
+  class?: string
   repoUrl: string
 }
 
-const { repoUrl } = Astro.props
+const { repoUrl, class: className } = Astro.props
 ---
 
-<Container>
+<Container className={className}>
   <section
     class="max-w-screen-md py-16 mx-auto hero-gradient md:py-24 md:text-center lg:py-48"
   >
     <slot name="headnote" />
-
     <h1 class="mb-8 font-black text-balance md:text-6xl">
       <slot name="title">
     </h1>
