@@ -1,0 +1,81 @@
+---
+order: 2
+title: setupServer
+description: Configure the interception of requests in Node.js.
+keywords:
+  - server
+  - node
+  - setup
+  - listen
+---
+
+A function that configures the interception of requests in a Node.js process.
+
+Despite the word "server" in the name, it _does not_ establish any servers, operating entirely in the thread of your process.
+
+## Node.js specifics
+
+The `setupServer` function acts as a bridge to apply the same request handlers in Node.js, where Service Workers cannot run. Instead, it augments the standard request modules like `http` in order to react to outgoing requests and respond to them from your mock definitions.
+
+### Precautions
+
+Reusing the same handlers between the browser and Node.js may have certain limitations. The browser-specific API you may use in your handlers, like `location` or `localStorage`, will not be available in Node.js. It is your responsibility to polyfill those APIs in tests or use an appropriate testing environment that provides them.
+
+## Usage
+
+Using `setupServer` is similar to `setupWorker`. It comes down to providing it with the list of request handlers, and starting the request interception.
+
+```js {2,5,15}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+// Provide the server-side API with the request handlers.
+const server = setupServer(
+  http.get('/user', () => {
+    return HttpResponse.json({
+      id: '15d42a4d-1948-4de4-ba78-b8a893feaf45',
+      firstName: 'John',
+    })
+  })
+)
+
+// Start the interception.
+server.listen()
+```
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  Pay attention that `setupServer` is imported from `msw/node`, while the
+  request handlers are imported from `msw` as usual.
+</Warning>
+
+One of the most common usages of Mock Service Worker in Node.js is during integration tests. Integrate API mocking as a part of your testing setup to make sure you start and clean up the request interception logic appropriately.
+
+Take a look at the testing setup example using [Jest](https://jestjs.io/) testing framework:
+
+```js
+// jest.setup.js
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+const server = setupServer(...handlers)
+
+beforeAll(() => {
+  // Start the interception.
+  server.listen()
+})
+
+afterEach(() => {
+  // Remove any handlers you may have added
+  // in individual tests (runtime handlers).
+  server.resetHandlers()
+})
+
+afterAll(() => {
+  // Disable request interception and clean up.
+  server.close()
+})
+```
+
+> While we commend setting up request interception globally, as a part of your testing setup, you may also use `setupServer` in individual tests, if you want to. Just make sure to choose _one_ pattern and follow it throughout your tests—multiple `setupServer` calls is **not** a good idea!

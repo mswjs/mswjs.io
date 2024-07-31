@@ -1,0 +1,40 @@
+---
+import type { ComponentProps } from 'astro/types';
+import SharedFooter from '@mswjs/shared/components/Footer.astro';
+import FooterSection from "@mswjs/shared/components/FooterSection.astro";
+import FooterSectionLink from "@mswjs/shared/components/FooterSectionLink.astro";
+
+type FooterProps = ComponentProps<typeof SharedFooter>
+type Props = FooterProps
+
+const props = Astro.props
+---
+
+<SharedFooter {...props}>
+  <Fragment slot="footer-sections">
+    <div class="sm:col-span-2">
+      <FooterSection title="Library">
+        <FooterSectionLink href="/">Home</FooterSectionLink>
+        <FooterSectionLink href="/docs">Documentation</FooterSectionLink>
+        <FooterSectionLink href="/blog" target="_blank">Blog</FooterSectionLink>
+      </FooterSection>
+    </div>
+
+    <div class="sm:col-span-2">
+      <FooterSection title="Resources">
+        <FooterSectionLink href="/docs/getting-started">Getting started</FooterSectionLink>
+        <FooterSectionLink href="/docs/best-practices">Best practices</FooterSectionLink>
+        <FooterSectionLink href="https://github.com/mswjs/examples" target="_blank">Examples</FooterSectionLink>
+      </FooterSection>
+    </div>
+
+
+    <div class="sm:col-span-2">
+      <FooterSection title="Community">
+        <FooterSectionLink href="https://github.com/mswjs/msw" target="_blank">GitHub</FooterSectionLink>
+        <FooterSectionLink href="https://twitter.com/ApiMocking" target="_blank">Twitter</FooterSectionLink>
+        <FooterSectionLink href="https://kettanaito.com/discord" target="_blank">Discord</FooterSectionLink>
+      </FooterSection>
+    </div>
+  </Fragment>
+</SharedFooter>

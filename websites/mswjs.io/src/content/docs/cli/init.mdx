@@ -1,0 +1,65 @@
+---
+title: init
+description: Copy the worker script into the given directory.
+keywords:
+  - init
+  - initialize
+  - copy
+  - script
+  - cli
+  - command
+---
+
+## Usage
+
+```
+npx msw init <PUBLIC_DIR> [options]
+```
+
+## Arguments
+
+### `PUBLIC_DIR`
+
+A relative path to the public directory of your application.
+
+For example, when using NextJS, the public directory is located in `/public`, and that's the path you should provide to this command:
+
+```
+npx msw init ./public
+```
+
+## Flags
+
+### `--save`
+
+Save the given `PUBLIC_DIR` in `package.json` for future automatic updates of the worker script.
+
+```
+npx msw init ./public --save
+```
+
+Running this command will save the `./public` directory in your `package.json`:
+
+```json {4-6}
+// package.json
+{
+  "name": "my-app",
+  "msw": {
+    "workerDirectory": "./public"
+  }
+}
+```
+
+If this property is present, whenever you install the `msw` package, the worker script will be copied to the `msw.workerDirectory` destination automatically. This ensures the worker script being in sync with the currently installed version of the library.
+
+## Related materials
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CommandLineIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CommandLineIcon}
+  url="/docs/best-practices/managing-the-worker"
+  title="Managing the worker"
+  description="Learn how to manage the worker script updates."
+/>

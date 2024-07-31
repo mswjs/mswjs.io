@@ -1,0 +1,797 @@
+---
+title: '1.x → 2.x'
+slug: migrations/1.x-to-2.x
+description: Migration guidelines for version 2.0.
+---
+
+import { PageCard } from '../../../components/react/pageCard'
+
+## About the release
+
+Version 2.0 brings the biggest API change to the library since its inception. Alongside the new API, it includes various features, such as `ReadableStream` support, ESM-compatibility, and countless bug fixes. This guide will help you migrate your application to version 2.0. **We highly recommend you read it from start to finish.**
+
+> Make sure to read the official announcement for this release if you've missed it!
+
+import { NewspaperIcon } from '@heroicons/react/24/solid'
+
+<PageCard
+  icon={NewspaperIcon}
+  url="/blog/introducing-msw-2.0"
+  title="Introducing MSW 2.0"
+  description="Official announcement post."
+/>
+
+## Codemods
+
+Our friends at Codemod.com have prepared a fantastic **collection of codemods** that can help you migrate to MSW 2.0.
+
+- [**Codemods to migrate**](https://codemod.com/automations/msw-2-upgrade-recipe/)
+
+## Installation
+
+```bash
+npm install msw@latest
+```
+
+## Breaking changes
+
+### Environment
+
+#### Node.js version
+
+**This release sets the minimal supported Node.js version to 18.0.0.**
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  **Node.js versions prior to Node.js 18 are no longer supported.** To use the
+  next versions of MSW, please migrate to Node.js 18 or higher.
+</Warning>
+
+#### TypeScript version
+
+**This release sets the minimal supported TypeScript version to 4.7**. If you are using an older TypeScript version, please migrate to version 4.7 or later to use MSW. Please consider that at the moment of writing this TypeScript 4.6 is almost two years old.
+
+### Imports
+
+#### Worker imports
+
+Everything related to the browser-side integration is now exported from the `msw/browser` entrypoint. This includes both the `setupWorker` function and the relevant type definitions.
+
+**Before:**
+
+```js
+import { setupWorker } from 'msw'
+```
+
+**After:**
+
+```js /browser/
+import { setupWorker } from 'msw/browser'
+```
+
+### Response resolver arguments
+
+Response resolver function no longer accepts `req`, `res`, and `ctx` arguments. Instead, it accepts a single argument which is an object containing information about the intercepted request.
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {})
+```
+
+**After:**
+
+```js
+http.get('/resource', (info) => {})
+```
+
+Depending on the handler namespace used (`http` or `graphql`), the `info` object contains different properties. You can learn about how to access request information now in the [Request changes](#request-changes).
+
+Learn more about the updated call signature of the request handler namespaces:
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/http"
+  title="http"
+  description="API reference for the `http` namespace."
+/>
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/graphql"
+  title="graphql"
+  description="API reference for the `graphql` namespace."
+/>
+
+### Request changes
+
+#### Request URL
+
+Since the intercepted request is now described as a Fetch API `Request` instance, its `request.url` property is no longer a `URL` instance but a plain `string.`
+**Before:**
+
+```js
+rest.get('/resource', (req) => {
+  const productId = req.url.searchParams.get('id')
+})
+```
+
+**After:**
+
+If you wish to operate with it as a `URL` instance, you should create it first from the `request.url` string.
+
+```js {4-5}
+import { http } from 'msw'
+
+http.get('/resource', ({ request }) => {
+  const url = new URL(request.url)
+  const productId = url.searchParams.get('id')
+})
+```
+
+#### Request params
+
+Path parameters are no longer exposed under `req.params`.
+
+**Before:**
+
+```js
+rest.get('/post/:id', (req) => {
+  const { id } = req.params
+})
+```
+
+**After:**
+
+To access path parameters, use the `params` object on the response resolver.
+
+```js /params/ {4}
+import { http } from 'msw'
+
+http.get('/post/:id', ({ params }) => {
+  const { id } = params
+})
+```
+
+#### Request cookies
+
+Request cookies are no longer exposed under `req.cookies.`
+
+**Before:**
+
+```js
+rest.get('/resource', (req) => {
+  const { token } = req.cookies
+})
+```
+
+**After:**
+
+To access request cookies, use the `cookies` object on the response resolver.
+
+```js /cookies/ {4}
+import { http } from 'msw'
+
+http.get('/resource', ({ cookies }) => {
+  const { token } = cookies
+})
+```
+
+#### Request body
+
+You can no longer read the intercepted request body via the `req.body` property. In fact, according to the Fetch API specification, `request.body` will now return a `ReadableStream` if the body is set.
+
+**Before:**
+
+```js
+rest.post('/resource', (req) => {
+  // The library would assume a JSON request body
+  // based on the request's "Content-Type" header.
+  const { id } = req.body
+})
+```
+
+**After:**
+
+MSW will **no longer assume the request body type**. Instead, you should read the request body as you wish using the standard `Request` methods like `.text()`, `.json()`, `.arrayBuffer()`, etc.
+
+```js /json()/ {4-6}
+import { http } from 'msw'
+
+http.post('/user', async ({ request }) => {
+  // Read the request body as JSON.
+  const user = await request.json()
+  const { id } = user
+})
+```
+
+### Response declaration
+
+Mocked responses are no longer declared using the `res()` composition function. We are departing from the composition approach in favor of adhering to the web standards.
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.json({ id: 'abc-123' }))
+})
+```
+
+**After:**
+
+To declare a mocked response, create a Fetch API `Response` instance and return it from the response resolver.
+
+```js {4-8}
+import { http } from 'msw'
+
+http.get('/resource', () => {
+  return new Response(JSON.stringify({ id: 'abc-123' }), {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+})
+```
+
+To provide a less verbose interface and also support such features as mocking response cookies, the library now provides a custom `HttpResponse` class that you can use as a drop-in replacement for the native `Response` class.
+
+```js /HttpResponse/ {5}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('/resource', () => {
+    return HttpResponse.json({ id: 'abc-123' })
+  }),
+]
+```
+
+Learn more about the new `HttpResponse` API:
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/http-response"
+  title="HttpResponse"
+  description="API reference for the `HttpResponse` class."
+/>
+
+### `req.passthrough()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return req.passthrough()
+})
+```
+
+**After:**
+
+```js /passthrough/ {5}
+import { http, passthrough } from 'msw'
+
+export const handlers = [
+  http.get('/resource', () => {
+    return passthrough()
+  }),
+]
+```
+
+### `res.once()`
+
+Since the `res()` composition API is gone, so is the `res.once()` one-time request handler declaration.
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res.once(ctx.text('Hello world!'))
+})
+```
+
+**After:**
+
+To declare a one-time request handler, provide an object as the third argument to it, and set the `once` property of that object to `true`.
+
+```js {8}
+import { http, HttpResponse } from 'msw'
+
+http.get(
+  '/resource',
+  () => {
+    return new HttpResponse('Hello world!')
+  },
+  { once: true }
+)
+```
+
+### `res.networkError()`
+
+To mock a network error, call the `HttpResponse.error()` static method and return it from the response resolver.
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res.networkError('Custom error message')
+})
+```
+
+**After:**
+
+```js
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return HttpResponse.error()
+})
+```
+
+> Note that the [`Response.error()`](https://developer.mozilla.org/en-US/docs/Web/API/Response/error_static) doesn't accept a custom error message. Previously, MSW did its best to coerce the custom error message you provided to the underlying request client but it never worked reliably because it's up to the request client to handle or disregard the network error message.
+
+### Context utilities
+
+With this release we are deprecating the `ctx` utilities object. Instead, use the `HttpResponse` class to declare mocked response properties, like status, headers, or body.
+
+#### `ctx.status()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.status(201))
+})
+```
+
+**After:**
+
+```js /HttpResponse/ {5}
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return new HttpResponse(null, {
+    status: 201,
+  })
+})
+```
+
+#### `ctx.set()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.set('X-Custom-Header', 'foo'))
+})
+```
+
+**After:**
+
+```js /HttpResponse/ {5-7}
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return new HttpResponse(null, {
+    headers: {
+      'X-Custom-Header': 'foo',
+    },
+  })
+})
+```
+
+> Learn about the standard [`Headers` API](https://developer.mozilla.org/en-US/docs/Web/API/Headers).
+
+#### `ctx.cookie()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.cookie('token', 'abc-123'))
+})
+```
+
+**After:**
+
+```js /HttpResponse/ {5-7}
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return new HttpResponse(null, {
+    headers: {
+      'Set-Cookie': 'token=abc-123',
+    },
+  })
+})
+```
+
+The library is able to detect whenever you are mocking response cookies via the `HttpResponse` class. If you wish to mock response cookies, you must use that class, since response cookies cannot be read on the native `Response` class after they are set.
+
+#### `ctx.body()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.body('Hello world'), ctx.set('Content-Type', 'text/plain'))
+})
+```
+
+**After:**
+
+```js /HttpResponse/ {4}
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', (req, res, ctx) => {
+  return new HttpResponse('Hello world')
+})
+```
+
+#### `ctx.text()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.text('Hello world!'))
+})
+```
+
+**After:**
+
+```js /HttpResponse/ {4}
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return new HttpResponse('Hello world!')
+})
+```
+
+#### `ctx.json()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.json({ id: 'abc-123' }))
+})
+```
+
+**After:**
+
+```js /HttpResponse/ {4}
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return HttpResponse.json({ id: 'abc-123' })
+})
+```
+
+> Note that you don't have to explicitly specify the `Content-Type` response header when using static `HttpResponse` methods like `HttpResponse.text()`, `HttpResponse.json()`, and others.
+
+#### `ctx.xml()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.xml('<foo>bar</foo>'))
+})
+```
+
+**After:**
+
+```js /HttpResponse/ {4}
+import { http, HttpResponse } from 'msw'
+
+http.get('/resource', () => {
+  return HttpResponse.xml('<foo>bar</foo>')
+})
+```
+
+#### `ctx.data()`
+
+**Before:**
+
+```js
+graphql.query('GetUser', (req, res, ctx) => {
+  return res(
+    ctx.data({
+      user: {
+        firstName: 'John',
+      },
+    })
+  )
+})
+```
+
+**After:**
+
+The `graphql` handler namespace no longer gets a special treatment. Instead, you should declare standard JSON responses directly.
+
+To make the mocked response definition for GraphQL operations more comfortable, use the `HttpResponse.json()` static method:
+
+```js /HttpResponse/ /data/ {4-11}
+import { graphql, HttpResponse } from 'msw'
+
+graphql.query('GetUser', () => {
+  return HttpResponse.json({
+    data: {
+      user: {
+        firstName: 'John',
+      },
+    },
+  })
+})
+```
+
+> Using `HttpResponse`, you have to explicitly include the root-level `data` property on the response.
+
+#### `ctx.errors()`
+
+**Before:**
+
+```js
+graphql.mutation('Login', (req, res, ctx) => {
+  const { username } = req.variables
+
+  return res(
+    ctx.errors([
+      {
+        message: `Failed to login:  user "${username}" does not exist`,
+      },
+    ])
+  )
+})
+```
+
+**After:**
+
+```js /HttpResponse/ /errors/ {6-12}
+import { graphql, HttpResponse } from 'msw'
+
+graphql.mutation('Login', ({ variables }) => {
+  const { username } = variables
+
+  return HttpResponse.json({
+    errors: [
+      {
+        message: `Failed to login:  user "${username}" does not exist`,
+      },
+    ],
+  })
+})
+```
+
+> Using `HttpResponse`, you have to explicitly include the `errors` root-level property on the response.
+
+#### `ctx.extensions()`
+
+**Before:**
+
+```js
+graphql.query('GetUser', (req, res, ctx) => {
+  return res(
+    ctx.data({
+      user: {
+        firstName: 'John',
+      },
+    }),
+    ctx.extensions({
+      requestId: 'abc-123',
+    })
+  )
+})
+```
+
+**After:**
+
+```js /HttpResponse/ /extensions/ {4-13}
+import { graphql, HttpResponse } from 'msw'
+
+graphql.query('GetUser', () => {
+  return HttpResponse.json({
+    data: {
+      user: {
+        firstName: 'John',
+      },
+    },
+    extensions: {
+      requestId: 'abc-123',
+    },
+  })
+})
+```
+
+#### `ctx.delay()`
+
+**Before:**
+
+```js
+rest.get('/resource', (req, res, ctx) => {
+  return res(ctx.delay(500), ctx.text('Hello world'))
+})
+```
+
+**After:**
+
+The library now exports the `delay()` function that returns a timeout `Promise`. You can await it anywhere in your response resolvers to emulate server-side delay.
+
+```js /delay/ {4}
+import { http, HttpResponse, delay } from 'msw'
+
+http.get('/resource', async () => {
+  await delay(500)
+  return HttpResponse.text('Hello world')
+})
+```
+
+The call signature of the `delay()` function remains identical to the previous `ctx.delay()`.
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/delay"
+  title="delay"
+  description="API reference for the `delay` function."
+/>
+
+#### `ctx.fetch()`
+
+**Before:**
+
+```js
+rest.get('/resource', async (req, res, ctx) => {
+  const originalResponse = await ctx.fetch(req)
+  const originalJson = await originalResponse.json()
+
+  return res(
+    ctx.json({
+      ...originalJson,
+      mocked: true,
+    })
+  )
+})
+```
+
+**After:**
+
+To perform an additional request within the handler, use the new `bypass` function exported from `msw`. This function wraps any given `Request` instance, marking it as the one MSW should ignore when intercepting requests.
+
+```js /bypass/ {4}
+import { http, HttpResponse, bypass } from 'msw'
+
+http.get('/resource', async ({ request }) => {
+  const originalResponse = await fetch(bypass(request))
+  const originalJson = await originalResponse.json()
+
+  return HttpResponse.json({
+    ...originalJson,
+    mocked: true,
+  })
+})
+```
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/bypass"
+  title="bypass"
+  description="API reference for the `bypass` function."
+/>
+
+#### `printHandlers()`
+
+The `.printHandlers()` method on `worker`/`server` has been removed in favor of the new `.listHandlers()` method.
+
+**Before:**
+
+```js
+worker.printHandlers()
+```
+
+**After:**
+
+The new `.listHandlers()` method returns a read-only array of currently active request handlers.
+
+```js /listHandlers()/
+worker.listHandlers().forEach((handler) => {
+  console.log(handler.info.header)
+})
+```
+
+### onUnhandledRequest
+
+The `request` argument of the `onUnhandledRequest` has changed from being an abstract request object to be a Fetch API `Request` instance. Take that into account when accessing its properties, like `request.url`.
+
+**Before:**
+
+```js {3}
+server.listen({
+  onUnhandledRequest(request, print) {
+    const url = request.url
+
+    if (url.pathname.includes('/assets/')) {
+      return
+    }
+
+    print.warning()
+  },
+})
+```
+
+**After:**
+
+The `request` argument is an instance of `Request`, which makes its `url` property a `string`.
+
+```js {4}
+server.listen({
+  onUnhandledRequest(request, print) {
+    // Create a new URL instance manually.
+    const url = new URL(request.url)
+
+    if (url.pathname.includes('/assets/')) {
+      return
+    }
+
+    print.warning()
+  },
+})
+```
+
+### Life-cycle events
+
+This release brings changes to the [Life-cycle events](/docs/api/life-cycle-events) listeners' call signature.
+
+**Before:**
+
+```js
+server.events.on('request:start', (request, requestId) => {})
+```
+
+**After:**
+
+Every life-cycle event listener now accepts _a single argument_ being an object.
+
+```js /request/2 /requestId/
+server.events.on('request:start', ({ request, requestId }) => {})
+```
+
+## New API
+
+In addition to the breaking changes, this release introduces a list of new APIs. Most of them are focused on providing compatibility with the deprecated functionality.
+
+- [`HttpResponse`](/docs/api/http-response)
+- [`http`](/docs/api/http)
+- [`delay()`](/docs/api/delay)
+- [`passthrough()`](/docs/api/passthrough)
+- [`bypass()`](/docs/api/bypass)
+
+## Frequent issues
+
+### `Request`/`Response`/`TextEncoder` is not defined (Jest)
+
+import JestMissingGlobals from '../shared/jest-missing-globals.mdx'
+
+<JestMissingGlobals />
+
+### Cannot find module 'msw/node' (JSDOM)
+
+This error is thrown by your test runner because JSDOM uses the `browser` export condition by default. This means that when you import any third-party packages, like MSW, JSDOM forces its `browser` export to be used as the entrypoint. This is incorrect and dangerous because _JSDOM still runs in Node.js_ and cannot guarantee full browser compatibility by design.
+
+To fix this, set the `testEnvironmentOptions.customExportConditions` option in your `jest.config.js` to `['']`:
+
+```js {3-5}
+// jest.config.js
+module.exports = {
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
+}
+```
+
+This will force JSDOM to use the default export condition when importing `msw/node`, resulting in correct imports.
+
+### `multipart/form-data is not supported` Error in Node.js
+
+Earlier versions of Node.js, like v18.8.0, didn't have official support for `request.formData()`. Please upgrade to the latest Node.js 18.x where such a support has been added.

@@ -1,0 +1,110 @@
+---
+order: 3
+title: React Native integration
+description: Set up Mock Service Worker in React Native.
+keywords:
+  - native
+  - react
+  - ios
+  - android
+  - mobile
+---
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+In React Native, MSW works similarly to Node.js, but omits certain request interceptors for modules that are not present in React Native, like the standard `http` module in Node.js.
+
+<Warning>
+  **This integration is potentially incomplete**. If you are a React Native
+  developer, please follow these steps and share any discrepancies/missing
+  pieces with us on [GitHub](https://github.com/mswjs/mswjs.io/issues). Let's
+  improve the React Native integration guidelines together.
+</Warning>
+
+## Prerequisites
+
+### Polyfills
+
+MSW relies on standard JavaScript classes that are not present in React Native, like `URL`. Please install the polyfills below to guarantee proper MSW execution in React Native.
+
+```sh
+npm install react-native-url-polyfill fast-text-encoding
+```
+
+Create a new `msw.polyfills.js` file with the following content:
+
+```js
+// msw.polyfills.js
+import 'fast-text-encoding'
+import 'react-native-url-polyfill/auto'
+```
+
+We will import this file later, when [Enabling mocking](#enable-mocking).
+
+## Setup
+
+Import the `setupServer` function from `msw/native` and call it, providing your request handlers as the argument.
+
+```js {2}
+// src/mocks/server.js
+import { setupServer } from 'msw/native'
+import { handlers } from './handlers'
+
+export const server = setupServer(...handlers)
+```
+
+> Learn more about the [`setupServer` API](/docs/api/setup-server). It's the same for Node.js and React Native.
+
+<Warning>
+  In React Native, import `setupServer` from `msw/native`. The `/native` export
+  contains pre-configured interceptors relevant for the React Native
+  environment.
+</Warning>
+
+## Enable mocking
+
+### Development
+
+Import `server` in the entrypoint of your React Native application and call `server.listen()` _conditionally_.
+
+```js {6-14} /enableMocking/
+// index.js
+import { AppRegistry } from 'react-native'
+import App from './src/App'
+import { name as appName } from './app.json'
+
+async function enableMocking() {
+  if (!__DEV__) {
+    return
+  }
+
+  await import('./msw.polyfills')
+  const { server } = await import('./src/mocks/server')
+  server.listen()
+}
+
+enableMocking().then(() => {
+  AppRegistry.registerComponent(appName, () => App)
+})
+```
+
+> Don't forget to import the `msw.polyfills.js` module!
+
+### Testing
+
+When testing your React Native application, the way you set up MSW will differ based on how you run your tests. For example, for unit/integration testing where you render your React components in isolation, you should follow the regular [Node.js integration](/docs/integrations/node) to configure MSW with tools like Vitest or Jest.
+
+For end-to-end testing, make sure you have [Enabled MSW in development](#development) and spawn the instance of your React Native application accordingly (feel free to introduce new environment variables just for that). That way, you will be running your end-to-end tests against the application instance that has MSW up and running.
+
+## Common issues
+
+### Unable to resolve module `http`
+
+**Reason:** Your React Native code ends up importing the `http` module that doesn't exist in React Native.
+
+**Solution:** Find the incorrect `msw/node` import in your application and replace it with `msw/native`.
+
+```diff /native/
+-import { setupServer } from 'msw/node'
++import { setupServer } from 'msw/native'
+```

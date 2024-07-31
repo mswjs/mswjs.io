@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import DocsPageLayout from '@mswjs/shared/layouts/DocsPageLayout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+
+import type { DocsFrontmatter } from '@mswjs/shared/collections/docs'
+import { buildDocsNavTree } from '../../content/buildDocsNavTree'
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs')
+  return docs.map((page) => ({
+    params: { slug: page.slug },
+    props: {
+      page
+    },
+  }))
+}
+
+const { page } = Astro.props
+
+const allPages = await Astro.glob<DocsFrontmatter>('../../content/docs/**/*.mdx')
+const navTree = buildDocsNavTree(allPages)
+---
+
+<BaseLayout
+  title={page.data.title}
+  description={page.data.description}
+  keywords={page.data.keywords}
+  compact={true}
+>
+  <Fragment slot="header">
+    <Header compact={true} />
+  </Fragment>
+
+  <DocsPageLayout
+    page={page}
+    navTree={navTree}
+    gitHubUrl="https://github.com/mswjs/source"
+    blogUrl="https://mswjs.io/blog"
+  />
+
+  <Fragment slot="footer">
+    <Footer compact={true} />
+  </Fragment>
+</BaseLayout>

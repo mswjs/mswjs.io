@@ -1,0 +1,50 @@
+---
+order: 1
+title: Introduction
+contentTitle: Best practices
+standalone: true
+---
+
+Our mission is to help you describe the network you want. With that in mind, we have prepared a set of best practices you can employ to improve your network descriptions.
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CommandLineIcon } from '@heroicons/react/24/outline'
+
+<div className="grid md:grid-cols-2 md:gap-x-8">
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/best-practices/structuring-handlers"
+    title="Structuring handlers"
+    description="Manage a large number of request handlers."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/best-practices/network-behavior-overrides"
+    title="Network behavior overrides"
+    description="Override network behaviors on runtime."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/best-practices/avoid-request-assertions"
+    title="Avoid request assertions"
+    description="Learn why you should not assert requests directly."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/best-practices/custom-request-predicate"
+    title="Custom request predicate"
+    description="Intercept requests by custom criteria."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/best-practices/dynamic-mock-scenarios"
+    title="Dynamic mock scenarios"
+    description="Apply different network scenarios on runtime."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/best-practices/managing-the-worker"
+    title="Managing the worker"
+    description="Learn how to manage the worker script updates."
+  />
+</div>

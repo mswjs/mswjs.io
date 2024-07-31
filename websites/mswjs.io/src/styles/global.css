@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #ff6a33;
+}
+
+.companies-list {
+  position: relative;
+  overflow: hidden;
+}
+
+.companies-list:before,
+.companies-list:after {
+  @apply from-black to-transparent;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  content: '';
+  width: 15%;
+}
+.companies-list:before {
+  @apply bg-gradient-to-r;
+  left: 0;
+}
+.companies-list:after {
+  @apply bg-gradient-to-l;
+  right: 0;
+}
+
+.integration-usage {
+  @apply relative;
+}
+.integration-usage:before {
+  content: '';
+  @apply absolute -inset-10 bg-neutral-900 -z-10;
+}
+
+.integration-line:before,
+.integration-line:after {
+  content: '';
+  @apply absolute left-0 right-0 h-1 w-[50vw] bg-neutral-800 -translate-x-1/2;
+  @apply hidden lg:block;
+}
+.integration-line:before {
+  @apply top-0;
+}
+.integration-line:after {
+  @apply bottom-0;
+}

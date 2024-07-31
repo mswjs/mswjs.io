@@ -1,0 +1,72 @@
+---
+order: 2
+title: fromOpenApi
+description: Generate request handlers from an OpenAPI specification.
+---
+
+The `fromOpenApi` function generates request handlers from the given OpenAPI document.
+
+## Call signature
+
+```ts
+function fromOpenApi(document: OpenAPI.Document): Promise<RequestHandler[]>
+```
+
+> Both OpenAPI 2.0 and 3.0 are supported.
+
+## Usage
+
+There are multiple ways to describe an OpenAPI document. The `fromOpenApi` function expects an _object_ as the input, which means that other formats, like YAML, have to be parsed into JSON before they are used with this function.
+
+```js
+import { fromOpenApi } from '@mswjs/source/open-api'
+import api from './api.spec.json'
+
+const handlers = await fromOpenApi(api)
+```
+
+You can also define the OpenAPI document directly in the arguments to `fromOpenApi`, which is a handy way to start exploring the OpenAPI specification:
+
+```js
+await fromOpenApi({
+  openapi: '3.0',
+  info: {
+    title: 'My Test Specification',
+    version: '0.1.0',
+  },
+  basePath: 'https://api.example.com',
+  paths: {
+    '/user': {
+      get: {
+        responses: {
+          200: {
+            description: 'User detail response',
+            content: {
+              'application/json': {
+                example: {
+                  id: 'abc-123',
+                  email: 'john.doe@example.com',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+})
+```
+
+> This document will generate a `GET https://api.example.com/user` request handler that will respond with the JSON response defined in the `example`.
+
+## Related materials
+
+import { DocumentTextIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+
+<PageCard
+  icon={DocumentTextIcon}
+  url="/docs/integrations/open-api"
+  title="OpenAPI specification"
+  description="Generate request handlers from OpenAPI documents."
+/>

@@ -1,0 +1,27 @@
+---
+order: 3
+title: FAQ
+description: Frequently asked questions.
+---
+
+## Can I generate request handlers on build time?
+
+No. Source currently only supports runtime request handlers generation. That is a deliberate decision in order to prevent generated handlers from becoming build artifacts that you need to version, maintain, and remember to keep in-sync with your input type.
+
+## Can I generate request handlers from XYZ?
+
+Yes, you can. That doesn't mean that we need to ship a designated API for XYZ from Source. Use [`@mswjs/source`](https://github.com/mswjs/source) for inspiration to build a request generation utility, which you can then even publish to NPM for others to use!
+
+## Can I spawn an HTTP server from Source?
+
+No, but you can spawn an HTTP server from the request handlers using the [`@mswjs/http-middleware`](https://github.com/mswjs/http-middleware) package! Here's a brief example of how to do that:
+
+```js {1,6-7}
+import { createServer } from '@mswjs/http-middleware'
+import { fromOpenApi } from '@mswjs/source/open-api'
+import api from './api.spec.json'
+
+const handlers = await fromOpenApi(api)
+const server = createServer(...handlers)
+server.listen(8080)
+```

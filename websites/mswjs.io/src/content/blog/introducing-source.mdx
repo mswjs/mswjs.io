@@ -1,0 +1,133 @@
+---
+title: Introducing Source
+slug: introducing-source
+description: "Request handlers is a great way to describe the source of truth for your network. But what if you already have that description elsewhere? Well, that's where Source comes in."
+publishedAt: 2024-07-09
+thumbnailUrl: /thumbnails/introducing-source.png
+author:
+  name: Artem Zakharchenko
+  twitterHandle: kettanaito
+keywords:
+  - source
+  - openapi
+  - har
+  - generate
+  - handlers
+---
+
+Today, I am happy to announce [Source](https://source.mswjs.io)—an open-source library that helps you generate request handlers from various sources. It has been in development for a really long time, and now you can finally get your hands on it. Let's take a moment to talk about what problems the library solves and how it was created.
+
+> For years I wasn't sure if I should open source Source. Releasing a new tool when you didn't have enough resources to support the existing ones felt like cutting the branch you are sitting on. That is why I am incredibly grateful to our sponsors who made today's announcement possible and saw that Source would be truly open.
+>
+> Consider [becoming an MSW sponsor](https://github.com/sponsors/mswjs) to support the effort behind the project and its developing ecosystem. That would mean a lot. Thank you.
+
+## Motivation
+
+When working with Mock Service Worker, you use functions called _request handlers_ to describe the network behavior you want. Those functions look like this:
+
+```js
+http.get('/user', () => {
+  return Response.json({ login: 'kettanaito' })
+})
+```
+
+The purpose of these handlers is to represent the source of truth for your network. This works rather well when developing mock-first or when your application doesn't have any such source of truth, to begin with.
+
+But that's not always the case. API-first development has gained a significant adoption, and is a fantastic way to develop your applications and services in its own right. You may already have a source of truth written in your API specification, using formats like OpenAPI (formerly Swagger). If that's the case, writing request handlers may feel like a chore of describing the network you already have described elsewhere.
+
+One of the core benefits of MSW is reusability, and it pained me to know developers are forced to repeat themselves for the lack of a better solution. The solution that would be called Source.
+
+## Enter Source
+
+Source is a simple function of `X -> RequestHandler[]`. It is meant to be used alongside MSW to help you lift the source of truth up, like in the case of having an existing API document.
+
+This is an example of your workflow with MSW when using Source and OpenAPI:
+
+```js {1,4}
+import { fromOpenApi } from '@mswjs/source/open-api'
+import api from './api.json'
+
+export const handlers = await fromOpenApi(api)
+```
+
+Calling `fromOpenApi()` will return you an array of request handlers generated from the given OpenAPI document. Source will respect operation `paths`, `baseUrl`, different response examples, and a bunch of other things to make sure that the behavior you get in the handlers corresponds to that defined in the specification.
+
+You can learn more about using Source with OpenAPI in the documentation:
+
+import { Bars2Icon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../components/react/pageCard'
+
+<PageCard
+  icon={Bars2Icon}
+  url="https://source.mswjs.io/docs/integrations/open-api"
+  title="OpenAPI (Swagger)"
+  description="Learn how to generate request handlers from OpenAPI documents."
+/>
+
+But OpenAPI isn't the only supported input to Source. There's one more.
+
+## Network archives (HAR)
+
+Yes, the same HAR you can record in your browser can be used to generate request handlers. The motivation behind this input format is a bit different though.
+
+**A recording of your traffic is not a specification for your API**. I have always advocated against using runtime behaviors as a foundation of how your service should behave. The gap between the reality and the specification can be rather significant, and you will pay for that difference in the reliability of your test suite.
+
+That being said, supporting HAR was what inspired me the most when building Source. And I have a single word to explain why.
+
+**Regressions**.
+
+Most of your tests run against the "expected" state (your specification). But there are those that should run against the runtime behaviors. Like a flaky bug you have finally managed to record, for example. Now you can put that network recording next to a regression test for the issue and receive a 1-1 reliable reproduction for it in tests. Every time, all the time.
+
+```js {1,4}
+import { fromTraffic } from '@mswjs/source/traffic'
+import har from './recordings/issue-201.har'
+
+export const handlers = fromTraffic(har)
+```
+
+Similar to working with OpenAPI, using HAR files as the input returns you the handlers for the recorded HTTP transactions, but also respect response timing and even request order sensitivity so you can replay complex network interactions in the same way they were recorded.
+
+More information on HAR files can be found in the documentation:
+
+<PageCard
+  icon={Bars2Icon}
+  url="https://source.mswjs.io/docs/integrations/har"
+  title="Network archive (HAR)"
+  description="Learn how to generate request handlers from HAR files."
+/>
+
+## Runtime vs build-time
+
+Source is a _runtime_ tool. This means that it transforms given inputs on-the-fly, keeping the request handlers in memory. Making it runtime was a conscious decision. **Request handlers are not meant as build artifacts**. The maintenance cost of such artifacts would be way too high.
+
+You pay the build-time cost. The library pays the runtime cost. I would rather optimize Source than ask you to carry a bunch of generated files with you everywhere you need a mock. I believe that is the right design choice for a tool like Source.
+
+> You are welcome to write the generated handlers to disk, if you want to! Just be mindful of the cost that puts on your setup.
+
+## Other formats
+
+There are many ways to describe the network. Source is not meant to support all of them out of the box, the same way as MSW is not meant to do everything all at once. My goal is to design the tool that can support and encourage community packages around other formats you may be using.
+
+If you wish to use an unsupported API format with Source, you have two options:
+
+1. Convert it to a supported format (likely OpenAPI);
+1. Create a community library (take inspiration from the [source code](https://github.com/mswjs/source)).
+
+I am at constant awe at what others create around MSW! In fact, even Source is a result of that inspiration. Which brings me to the next point.
+
+## Special thanks
+
+I would like to say a huge thanks to [Weyert de Boer](https://github.com/weyert) for building [`tapico-msw-webarchive`](https://github.com/Tapico/tapico-msw-webarchive) and collaborating with me on Source! Also, a warm thank you to [Michaël De Boey](https://x.com/MichaelDeBoey93) for helping me proofread this article. I value your support deeply.
+
+## Conclusion
+
+I hope you welcome the new addition to the MSW ecosystem with warm embrace. Give Source a try, and share your feedback. I would be happy to feature some of it on the website as well!
+
+<PageCard
+  icon={Bars2Icon}
+  url="https://source.mswjs.io/docs/getting-started"
+  title="Getting started with Source"
+  description="Three steps to get started with Source."
+/>
+
+Stay safe and write good tests.

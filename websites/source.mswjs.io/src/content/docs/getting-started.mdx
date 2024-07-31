@@ -1,0 +1,243 @@
+---
+order: 2
+title: Getting started
+description: Three steps to get started with Source.
+---
+
+## Step 1: Install
+
+Add `@mswjs/source` as a dependency to your project:
+
+```sh
+npm install msw @mswjs/source --save-dev
+```
+
+> Source is meant to be used with [`msw`](https://mswjs.io/) so we will install it too.
+
+## Step 2: Choose source
+
+Next, decide about the source (or sources) to generate the request handlers from.
+
+In this tutorial, we will use a [network archive](<https://en.wikipedia.org/wiki/HAR_(file_format)>) (`api.har`) we recorded earlier. It looks like this:
+
+```json
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "WebInspector",
+      "version": "537.36"
+    },
+    "pages": [],
+    "entries": [
+      {
+        "_initiator": {
+          "type": "script",
+          "stack": {
+            "callFrames": [
+              {
+                "functionName": "",
+                "scriptId": "138",
+                "url": "",
+                "lineNumber": 0,
+                "columnNumber": 0
+              }
+            ]
+          }
+        },
+        "_priority": "High",
+        "_resourceType": "fetch",
+        "cache": {},
+        "connection": "2530404",
+        "request": {
+          "method": "GET",
+          "url": "https://httpbin.org/get",
+          "httpVersion": "http/2.0",
+          "headers": [
+            {
+              "name": ":authority",
+              "value": "httpbin.org"
+            },
+            {
+              "name": ":method",
+              "value": "GET"
+            },
+            {
+              "name": ":path",
+              "value": "/get"
+            },
+            {
+              "name": ":scheme",
+              "value": "https"
+            },
+            {
+              "name": "accept",
+              "value": "*/*"
+            },
+            {
+              "name": "accept-encoding",
+              "value": "gzip, deflate, br, zstd"
+            },
+            {
+              "name": "accept-language",
+              "value": "en-US,en;q=0.9,cs;q=0.8"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://httpbin.org/get"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "same-origin"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+            }
+          ],
+          "queryString": [],
+          "cookies": [],
+          "headersSize": -1,
+          "bodySize": 0
+        },
+        "response": {
+          "status": 200,
+          "statusText": "",
+          "httpVersion": "http/2.0",
+          "headers": [
+            {
+              "name": "access-control-allow-credentials",
+              "value": "true"
+            },
+            {
+              "name": "access-control-allow-origin",
+              "value": "*"
+            },
+            {
+              "name": "content-length",
+              "value": "804"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            },
+            {
+              "name": "date",
+              "value": "Fri, 07 Jun 2024 12:52:51 GMT"
+            },
+            {
+              "name": "server",
+              "value": "gunicorn/19.9.0"
+            }
+          ],
+          "cookies": [],
+          "content": {
+            "size": 804,
+            "mimeType": "application/json",
+            "text": "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate, br, zstd\", \n    \"Accept-Language\": \"en-US,en;q=0.9,cs;q=0.8\", \n    \"Host\": \"httpbin.org\", \n    \"Priority\": \"u=1, i\", \n    \"Referer\": \"https://httpbin.org/get\", \n    \"Sec-Ch-Ua\": \"\\\"Google Chrome\\\";v=\\\"125\\\", \\\"Chromium\\\";v=\\\"125\\\", \\\"Not.A/Brand\\\";v=\\\"24\\\"\", \n    \"Sec-Ch-Ua-Mobile\": \"?0\", \n    \"Sec-Ch-Ua-Platform\": \"\\\"macOS\\\"\", \n    \"Sec-Fetch-Dest\": \"empty\", \n    \"Sec-Fetch-Mode\": \"cors\", \n    \"Sec-Fetch-Site\": \"same-origin\", \n    \"User-Agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36\", \n    \"X-Amzn-Trace-Id\": \"Root=1-666302a2-76683e484e937293732e9808\"\n  }, \n  \"origin\": \"0.0.0.0\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"
+          },
+          "redirectURL": "",
+          "headersSize": -1,
+          "bodySize": -1,
+          "_transferSize": 944,
+          "_error": null
+        },
+        "serverIPAddress": "52.6.210.6",
+        "startedDateTime": "2024-06-07T12:52:50.395Z",
+        "time": 1182.7169999014586,
+        "timings": {
+          "blocked": 1.6650000019669533,
+          "dns": -1,
+          "ssl": -1,
+          "connect": -1,
+          "send": 0.32000000000000006,
+          "wait": 1180.1440000787825,
+          "receive": 0.5879998207092285,
+          "_blocked_queueing": 0.8870000019669533
+        }
+      }
+    ]
+  }
+}
+```
+
+> You can copy the contents of the HAR file above or [make your own traffic recording in the browser](/docs/recipes/recording-har).
+
+Import the `fromTraffic` function from `@mswjs/source/traffic` and provide the HAR file as an argument to that function:
+
+```js {3} /fromTraffic/
+// src/mocks/handlers.js
+import { fromTraffic } from '@mswjs/source/traffic'
+import traffic from './api.har'
+
+export const handlers = [...fromTraffic(traffic)]
+```
+
+As a result, you will get an array of request handlers to use with MSW.
+
+Get yourself familiar with all the available source types for this library in the "Integrations" section to your left. Here are a few of the most used sources:
+
+import { GlobeAltIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+
+<div className="md:grid md:grid-cols-2 md:gap-5">
+  <PageCard
+    icon={GlobeAltIcon}
+    url="/docs/integrations/har"
+    title="Network archive (HAR)"
+    description="Generate request handlers from HAR files."
+  />
+  <PageCard
+    icon={DocumentTextIcon}
+    url="/docs/integrations/open-api"
+    title="OpenAPI specification"
+    description="Generate request handlers from OpenAPI documents."
+  />
+</div>
+
+## Step 3: Integrate
+
+Source helps you to generate request handlers but handlers themselves just describe the network. They don't intercept or mock anything.
+
+Here's a brief example of how to enable API mocking in a Node.js process, using the request `handlers` we've generated during the previous step:
+
+```js {2,4}
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+const server = setupServer(...handlers)
+server.listen()
+```
+
+> Learn about all the available integrations in the [MSW Documentation](https://mswjs.io/docs/getting-started#step-3-integrate).
+
+Making a matching request will result in the response from the recorded HAR file:
+
+```js
+await fetch('https://httpbin.org/get').then((res) => res.json())
+// {"args":{},"headers":{...},"origin":"0.0.0.0",...}
+```

@@ -1,0 +1,125 @@
+---
+order: 1
+title: Browser integration
+description: Set up Mock Service Worker in the browser.
+keywords:
+  - integrate
+  - integration
+  - setup
+  - browser
+  - client
+  - worker
+---
+
+In the browser, MSW works by registering a Service Worker responsible for request interception on the network level.
+
+import { Info } from '@mswjs/shared/components/react/info'
+
+<Info>
+  Although Service Workers are meant to be served via HTTPS, browsers allow
+  registering workers on HTTP while developing on `localhost`. If you need a
+  local HTTPS development, see [this recipe](/docs/recipes/using-local-https).
+</Info>
+
+## Generating the worker script
+
+If your application registers a Service Worker it must **host and serve it**. The library CLI provides you with the `init` command to quickly copy the `./mockServiceWorker.js` worker script into your application's public directory.
+
+```sh
+npx msw init <PUBLIC_DIR> --save
+```
+
+> Learn more about the [`init` CLI command](/docs/cli/init).
+
+Once copied, navigate to the `/mockServiceWorker.js` URL of your application in your browser (e.g. if your application is running on `http://localhost:3000`, go to the `http://localhost:3000/mockServiceWorker.js` route). You should see the worker script contents. If you see a 404 or a MIME type error, make sure you are specifying the correct `PUBLIC_DIR` when running the `init` command, and that you adjust any potential configuration of your application that would affect serving static files.
+
+> Learn more about managing the worker script while using the library:
+
+import { CommandLineIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CommandLineIcon}
+  url="/docs/best-practices/managing-the-worker"
+  title="Managing the worker"
+  description="Learn how to manage the worker script updates."
+/>
+
+## Setup
+
+```js
+// src/mocks/browser.js
+import { setupWorker } from 'msw/browser'
+import { handlers } from './handlers'
+
+export const worker = setupWorker(...handlers)
+```
+
+> Learn about the [`setupWorker` API](/docs/api/setup-worker).
+
+## Conditionally enable mocking
+
+Lastly, we need to start the worker by calling `worker.start()`, which will register and activate the Service Worker. We also only want to enable API mocking in development so our production traffic is unaffected.
+
+Because registering the Service Worker is an asynchronous operation, it's a good idea to defer the rendering of your application until the registration Promise resolves.
+
+```js /enableMocking/ {6-16}
+// src/index.jsx
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { App } from './App'
+
+async function enableMocking() {
+  if (process.env.NODE_ENV !== 'development') {
+    return
+  }
+
+  const { worker } = await import('./mocks/browser')
+
+  // `worker.start()` returns a Promise that resolves
+  // once the Service Worker is up and ready to intercept requests.
+  return worker.start()
+}
+
+enableMocking().then(() => {
+  ReactDOM.render(<App />, rootElement)
+})
+```
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  Make sure to await the `worker.start()` Promise! Service Worker registration
+  is asynchronous and failing to await it may result in a race condition between
+  the worker registration and the initial requests your application makes.
+</Warning>
+
+## Confirmation
+
+Go to your application in the browser and open the Console in the Developer Tools. If the integration was successful, you will see the following message being printed:
+
+```sh
+[MSW] Mocking enabled.
+```
+
+If you don't see this message or see an error instead, please follow this page from the beginning and make sure you've completed all the steps.
+
+## Related materials
+
+import { PageCard } from '../../../components/react/pageCard'
+import { NodejsIcon } from '../../../components/react/icons/nodejs'
+import { GraphQLIcon } from '../../../components/react/icons/graphql'
+
+<div className="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon={NodejsIcon}
+    url="/docs/network-behavior/rest"
+    title="Describing REST API"
+    description="Learn about describing RESTful APIs."
+  />
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/network-behavior/graphql"
+    title="Describing GraphQL API"
+    description="Learn about describing GraphQL APIs."
+  />
+</div>

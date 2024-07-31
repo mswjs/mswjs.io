@@ -1,0 +1,290 @@
+---
+order: 1
+title: Describing REST API
+description: Learn how to describe REST API with Mock Service Worker.
+keywords:
+  - rest
+  - rest api
+  - mock
+  - describe
+  - definition
+---
+
+## Import
+
+MSW provides a designated [`http`](/docs/api/http) namespace for describing HTTP requests. We will use that namespace to describe what requests to intercept and how to respond to them.
+
+import { Action } from '../../../components/react/action'
+
+<Action>Import the `http` namespace from the `msw` package:</Action>
+
+```js {2}
+// src/mocks/handlers.js
+import { http } from 'msw'
+
+export const handlers = []
+```
+
+> Although GraphQL is often implemented over HTTP, we highly recommend using the designated `graphql` namespace for [describing GraphQL APIs](/docs/network-behavior/graphql).
+
+## Request handler
+
+Next, we will create a [Request handler](/docs/concepts/request-handler). Every method in the `http` namespace allows us to create a request handler corresponding to an HTTP request method:
+
+```bash
+http[method](predicate, resolver)
+```
+
+> Request handlers are functions that allow you to [Intercept requests](/docs/basics/intercepting-requests) and [Mock responses](/docs/basics/mocking-responses).
+
+In this tutorial, we will describe a basic RESTful API that has the following endpoints:
+
+- `GET /posts`, to return all existing posts;
+- `POST /posts`, to create a new post;
+- `DELETE /posts/:id`, to delete a post by ID.
+
+Let's start by creating a request handler for the `GET /posts` requests.
+
+<Action>Call `http.get()` to declare your first request handler</Action>
+
+```js {9-14}
+// src/mocks/handlers.js
+import { http } from 'msw'
+
+export const handlers = [
+  // By calling "http.get()" we're instructing MSW
+  // to capture all outgoing "GET /posts" requests
+  // and execute the given response resolver when they
+  // happen.
+  http.get('/posts', () => {
+    // Response resolver allows you to react to captured requests,
+    // respond with mock responses or passthrough requests entirely.
+    // For now, let's just print a message to the console.
+    console.log('Captured a "GET /posts" request')
+  }),
+]
+```
+
+import { Info } from '@mswjs/shared/components/react/info'
+
+<Info>
+  Note that you can also provide an absolute request URL to intercept requests
+  to external services, like `http.get('https://example.com/resource')`.
+</Info>
+
+Following the same principle, add request handlers for the remaining endpoints:
+
+```js {8-13}
+// src/mocks/handlers.js
+import { http } from 'msw'
+
+export const handlers = [
+  http.get('/posts', () => {
+    console.log('Captured a "GET /posts" request')
+  }),
+  http.post('/posts', () => {
+    console.log('Captured a "POST /posts" request')
+  }),
+  http.delete('/posts/:id', ({ params }) => {
+    console.log(`Captured a "DELETE /posts/${params.id}" request`)
+  }),
+]
+```
+
+With these handlers defined, MSW will intercept the respective requests but won't do anything to respond to them just yet.
+
+## Response resolver
+
+Response resolver is the second argument to the request handler that decides how to handle the intercepted request. There are multiple things you can do with such a request: respond with a mock response, perform it as-is, perform a proxy request and augment the original response, etc. You can always learn more about response resolver on this pages:
+
+import { PageCard } from '../../../components/react/pageCard'
+import { LightBulbIcon, CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+<div className="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon={LightBulbIcon}
+    url="/docs/concepts/response-resolver"
+    title="Response resolver"
+    description="Learn more about response resolvers."
+  />
+  <PageCard
+    icon={CubeTransparentIcon}
+    url="/docs/basics/mocking-responses"
+    title="Mocking responses"
+    description="Learn how to mock HTTP responses."
+  />
+</div>
+
+In this tutorial, we will be responding to the intercepted requests with mock responses.
+
+### Mocking responses
+
+To respond to an intercepted request, construct a valid Fetch API `Response` instance and return it from the corresponding request handler. Although you can work with the `Response` instance directly, we highly recommend using the `HttpResponse` class provided by the library.
+
+<Action>Import the `HttpResponse` class from `msw`:</Action>
+
+```js /HttpResponse/
+import { http, HttpResponse } from 'msw'
+```
+
+> Learn about what `HttpResponse` is and why you should use it over the standard `Response` in [here](/docs/api/http-response).
+
+Next, let's construct the mocked response to return the list of all posts.
+
+<Action>Return a mocked `HttpResponse` from the `GET /posts` resolver:</Action>
+
+```js /HttpResponse/ {12}
+// src/mocks/handlers.js
+import { http, HttpResponse } from 'msw'
+
+// Let's keep a map of all existing posts in memory.
+// At the beginning, this list is empty as we have no posts.
+const allPosts = new Map()
+
+export const handlers = [
+  http.get('/posts', () => {
+    // Construct a JSON response with the list of all posts
+    // as the response body.
+    return HttpResponse.json(Array.from(allPosts.values()))
+  }),
+
+  // ...the other request handlers.
+]
+```
+
+Using the `HttpResponse.json()` static method, we are returning an `application/json` response from this resolver to be used as the mocked response.
+
+### Reading request body
+
+In the `POST /posts` handler, let's read the request body and push the new post to the `allPosts` map. We can get the reference to the intercepted request instance as the `request` argument to the response resolver function.
+
+<Action>Read the request body using the `request` argument:</Action>
+
+```js /request/1,3 {9}
+// src/mocks/handlers.js
+import { http, HttpResponse } from 'msw'
+
+const allPosts = new Map()
+
+export const handlers = [
+  http.post('/posts', async ({ request }) => {
+    // Read the intercepted request body as JSON.
+    const newPost = await request.json()
+
+    // Push the new post to the map of all posts.
+    allPosts.set(newPost.id, newPost)
+
+    // Don't forget to declare a semantic "201 Created"
+    // response and send back the newly created post!
+    return HttpResponse.json(newPost, { status: 201 })
+  }),
+]
+```
+
+### Reading path parameters
+
+Lastly, let's implement the `DELETE /posts/:id` resolver that will lookup and delete a post from `allPosts` by its ID. The path parameters of the request URL are parsed and stored as the `params` argument to the response resolver function.
+
+<Action>Read the `id` path parameter using the `params` argument</Action>
+
+```js /params/1,3
+// src/mocks/handlers.js
+import { http, HttpResponse } from 'msw'
+
+const allPosts = new Map()
+
+export const handlers = [
+  http.delete('/posts/:id', ({ params }) => {
+    // All request path params are provided in the "params"
+    // argument of the response resolver.
+    const { id } = params
+
+    // Let's attempt to grab the post by its ID.
+    const deletedPost = allPosts.get(id)
+
+    // Respond with a "404 Not Found" response if the given
+    // post ID does not exist.
+    if (!deletedPost) {
+      return new HttpResponse(null, { status: 404 })
+    }
+
+    // Delete the post from the "allPosts" map.
+    allPosts.delete(id)
+
+    // Respond with a "200 OK" response and the deleted post.
+    return HttpResponse.json(deletedPost)
+  }),
+]
+```
+
+Response resolver provide you with much more useful data about the intercepted request, such as request cookies, GraphQL query and variables, and more. Learn more about the [Response resolvers](/docs/concepts/response-resolver) to unlock their full potential.
+
+### Reading request cookies
+
+Access the parsed value of the request's `Cookie` header as the `cookies` key on the response resolver object argument:
+
+```js /cookies/ {2}
+http.get('/user', ({ cookies }) => {
+  const { session } = cookies
+
+  if (!session) {
+    return new HttpResponse(null, { status: 401 })
+  }
+})
+```
+
+## Next steps
+
+### Integrations
+
+Once you have described the network you want, integrate it into any environment in your application.
+
+import { WindowIcon, CommandLineIcon } from '@heroicons/react/24/outline'
+
+<div className="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon={WindowIcon}
+    url="/docs/integrations/browser"
+    title="Browser"
+    description="Integrate MSW in a browser environment, such as a React application or Storybook."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/integrations/node"
+    title="Node.js"
+    description="Integrate MSW in Node.js, such as an Express application or a test runner."
+  />
+</div>
+
+### Recipes
+
+Learn about other ways to work with requests and responses by browsing our recipes.
+
+import { BeakerIcon } from '@heroicons/react/24/outline'
+
+<div className="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon={BeakerIcon}
+    url="/docs/recipes/cookies"
+    title="Cookies"
+    description="Read and write request/response cookies."
+  />
+  <PageCard
+    icon={BeakerIcon}
+    url="/docs/recipes/query-parameters"
+    title="Query parameters"
+    description="Work with request query parameters."
+  />
+  <PageCard
+    icon={BeakerIcon}
+    url="/docs/recipes/response-patching"
+    title="Response patching"
+    description="Learn to augment original responses."
+  />
+  <PageCard
+    icon={BeakerIcon}
+    url="/docs/recipes/network-errors"
+    title="Network errors"
+    description="Reproduce a network error response."
+  />
+</div>
