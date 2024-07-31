@@ -114,11 +114,21 @@ In this example, the WebSocket connection to `wss://chat.example.com` emits the 
 
 ## `WebSocketClientConnection`
 
-The `WebSocketClientConnection` object represents an intercepted WebSocket client connection.
+The `WebSocketClientConnection` object represents an intercepted WebSocket client connection from the _server's_ perspective. This means that the `message` event on the client stands for a message _sent_ by the client and received by the "server".
 
 ### `.addEventListener(event, listener, options)`
 
+Adds a listener to the given client event. These are the supported client events:
+
+| Event name | Description                                                           |
+| ---------- | --------------------------------------------------------------------- |
+| `message`  | Dispatched when this client _sends_ a message.                        |
+| `error`    | Dispatched when this client connection has been closed with an error. |
+| `close`    | Dispatched when this client is closed (e.g. by your application).     |
+
 ### `.removeEventListener(event, listener, options)`
+
+Removes the listener for the given client event.
 
 ### `.send(data)`
 
@@ -181,7 +191,18 @@ api.on('connection', ({ server }) => {
 
 ### `.addEventListener(event, listener, options)`
 
+Adds a listener to the original server WebSocket connection. The supported events are:
+
+| Event name | Description                                                                   |
+| ---------- | ----------------------------------------------------------------------------- |
+| `open`     | Dispatched when the connection to the original server has been opened.        |
+| `message`  | Dispatched when the original server _sends_ a message.                        |
+| `error`    | Dispatched when the original server connection has been closed with an error. |
+| `close`    | Dispatched when the original server connection has been closed.               |
+
 ### `.removeEventListener(event, listener, options)`
+
+Removes the listener for the given server event.
 
 ### `.send(data)`
 

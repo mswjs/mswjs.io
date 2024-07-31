@@ -8,22 +8,26 @@ keywords:
   - ws
 ---
 
-MSW supports intercepting and mocking WebSocket connections using its designated [`ws` API](/docs/api/ws). This page will guide you through the basics of handling WebSocket events, explain the mental model behind MSW when intercepting duplex connections, and elaborate on the defaults the library ships to promote good developer experience.
+MSW supports intercepting and mocking WebSocket connections using its designated [`ws` API](/docs/api/ws). This page will guide you through the basics of handling WebSocket events, explain the mental model behind MSW when working with duplex connections, and elaborate on the defaults the library ships to ensure great developer experience.
 
 ## Respecting standards
 
 Mock Service Worker is dedicated to respecting, promoting, and teaching you about the web standards. The way you intercept and mock WebSocket communications will be according to the [WHATWG WebSocket Standard](https://websockets.spec.whatwg.org/), which means treating clients as `EventTarget`, listening to events like `"message"` and `"close"`, and reading the sent and received data from the `MessageEvent` objects.
 
-**We do not plan to support custom WebSocket protocols**, such as those using HTTP polling. Those are proprietary to the third-party tooling that implements them, and there is no reliable way for MSW to intercept such protocols without introducing non-standard, library-specific logic.
+**We have no plans of supporting custom WebSocket protocols**, such as those using HTTP polling or XMLHttpRequest. Those are proprietary to the third-party tooling that implements them, and there is no reliable way for MSW to intercept such protocols without introducing non-standard, library-specific logic.
 
-That being said, we acknowledge that the standard `WebSocket` interface is rarely used in production systems as-is. Often, it's used as the underlying implementation detail for more convenient third-party abstractions like SocketIO or PartyKit. We firmly believe in mock-as-you-use philosophy and want to provide you with the mocking experience that resembles the actual usage of the third-party libraries you may be relying on through the concept of [Bindings](#bindings).
+That being said, we acknowledge that the standard `WebSocket` interface is rarely used in production systems as-is. Often, it's used as the underlying implementation detail for more convenient third-party abstractions, like SocketIO or PartyKit. We aim to address that experience gap via [Bindings](#bindings).
+
+import { Info } from '@mswjs/shared/components/react/info'
+
+<Info>Foo</Info>
 
 ## Event types
 
-Unlike HTTP, a WebSocket communication is _duplex_, which means that the client and the server may send events independently. There are two types of events you can handle with MSW:
+A WebSocket communication is _duplex_, which means that both the client and the server may send and receive events independently and simultaneously. There are two types of events you can handle with MSW:
 
-- **Outgoing client events**. These are the events the client sends via `.send()`;
-- **Incoming server events**. These are the events the server sends and the client receives via its `"message"` event listener.
+- **Outgoing client events**. These are the events your application sends to the WebSocket server;
+- **Incoming server events**. These are the events the original server sends and the client receives via its `"message"` event listener.
 
 ## Intercepting connections
 
@@ -81,7 +85,7 @@ By default, once you [establish the actual server connection](#connecting-to-the
 
 ### Intercepting client events
 
-To intercept an outgoing client event, grab the `client` object from the `"connection"` event listener argument and add a `"message"` listener on that object.
+To intercept an outgoing client event, get the `client` object from the `"connection"` event listener argument and add a `"message"` listener on that object.
 
 ```js /client/1,2 {2-4}
 chat.on('connection', ({ client }) => {
@@ -95,7 +99,7 @@ Now, whenever a WebSocket client sends data via the `.send()` method, the `"mess
 
 ### Sending data to the client
 
-To send data to the connected client, grab the `client` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send.
+To send data to the connected client, get the `client` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send.
 
 ```js /client/1,2 {2}
 chat.on('connection', ({ client }) => {
@@ -196,7 +200,7 @@ import { Warning } from '@mswjs/shared/components/react/warning'
   that server first.
 </Warning>
 
-To establish the connection to the actual WebSocket server, grab the `server` object from the `"connection"` event listener argument and call its `.connect()` method.
+To establish the connection to the actual WebSocket server, get the `server` object from the `"connection"` event listener argument and call its `.connect()` method.
 
 ```js /server/ {2}
 chat.on('connection', ({ server }) => {
@@ -230,7 +234,7 @@ chat.on('connection', ({ client }) => {
 
 ### Intercepting server events
 
-To intercept an incoming event from the actual sever, grab the `server` object from the `"connection"` event listener argument and add a `"message"` event listener on that object.
+To intercept an incoming event from the actual sever, get the `server` object from the `"connection"` event listener argument and add a `"message"` event listener on that object.
 
 ```js /server/1,2 {2-4}
 chat.on('connection', ({ server }) => {
@@ -261,7 +265,7 @@ chat.on('connection', ({ client, server }) => {
 
 ### Sending data to the server
 
-To send data to the actual server, grab the `server` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send to the server.
+To send data to the actual server, get the `server` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send to the server.
 
 ```js /server/ {2}
 chat.on('connection', ({ server }) => {
@@ -277,25 +281,6 @@ This is equivalent to a client sending that data to the server.
   title="server.send(data)"
   description="The `server.send()` API."
 />
-
-### Client-to-server forwarding
-
-By default, the actual server will not receive any outgoing client events—they will short-circuit on your event handler's level. If you wish to forward client-to-server events, establish the actual server connection by calling `server.connect()`, listen to the outgoing events via the `"message"` event listener on the `client` object, and use the `server.send()` method to forward the data.
-
-```js {2-3,5-9}
-chat.on('connection', ({ client, server }) => {
-  // Establish the actual server connection.
-  server.connect()
-
-  // Listen to all outgoing client events.
-  client.addEventListener('message', (event) => {
-    // And send them to the actual server as-is.
-    server.send(event.data)
-  })
-})
-```
-
-> You can control what messages to forward to the actual server in the `"message'` event listener on the `client` object. Feel free to introduce conditions, analyze the message, or modify the data to forward.
 
 ## Logging
 
