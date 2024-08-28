@@ -116,6 +116,14 @@ Creates a `Response` instance with the `Content-Type: text/plain` header and giv
 HttpResponse.text('Hello world!')
 ```
 
+### `HttpResponse.html(body, init)`
+
+Creates a `Response` instance with the `Content-Type: text/html` header and given response body.
+
+```js
+HttpResponse.html(`<p class="greeting">Hello world!</p>`)
+```
+
 ### `HttpResponse.xml(body, init)`
 
 Creates a `Response` instance with the `Content-Type: application/xml` header and given response body.
