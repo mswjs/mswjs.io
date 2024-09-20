@@ -476,6 +476,61 @@ chat.addEventListener('connection', ({ client }) => {
 
 > If the client sends a `'special-scenario'` payload in the message, it will be closed, and the `client.send(event.data)` logic from the second event listener will never be called.
 
+## Type safety
+
+Bringing type safety to the WebSocket communication is essential when using TypeScript, and that includes your handlers too! That being said, MSW intentionally doesn't support any type arguments to annotate the outgoing/incoming events. The reasoning behing that is twofold:
+
+1. Just because you narrow down the data type doesn't mean a different data type cannot be transferred over the network (the classic types vs runtime debate);
+1. It is common to send stringified payload over the WebSocket protocol, which implies the need of parsing it anyway.
+
+You can achieve a proper type and runtime safety in WebSockets by introducing parsing utilities. Libraries like [Zod](https://github.com/colinhacks/zod) can help you greatly in achieving type and runtime safety.
+
+```js
+import { z } from 'zod'
+
+// Define a Zod schema for the incoming events.
+// Here, our WebSocket communication supports two
+// events: "chat/join" and "chat/message".
+const incomingSchema = z.union([
+  z.object({
+    type: z.literal('chat/join'),
+    user: userSchema,
+  }),
+  z.object({
+    type: z.literal('chat/message'),
+    message: z.object({
+      text: z.string(),
+      sentAt: z.string().datetime(),
+    }),
+  }),
+])
+
+chat.addEventListener('connection', ({ client, server }) => {
+  client.addEventListener('message', (event) => {
+    const result = incomingSchema.safeParse(event.data)
+    const message = result.data
+
+    // Ignore non-matching events.
+    if (!message) {
+      return
+    }
+
+    // Handle incoming events in type-safe way.
+    switch (result.success.type) {
+      case 'chat/join': {
+        // ...
+        break
+      }
+
+      case 'chat/message': {
+        // ...
+        break
+      }
+    }
+  })
+})
+```
+
 ## Bindings
 
 To provide a more familiar experience when mocking third-party WebSocket clients, MSW uses _bindings_. A binding is a wrapper over the standard `WebSocket` class that encapsulates the third-party-specific behaviors, such as message parsing, and gives you a public API similar to that of the bound third-party library.
