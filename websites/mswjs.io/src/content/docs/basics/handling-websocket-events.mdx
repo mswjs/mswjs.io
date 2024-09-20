@@ -53,7 +53,7 @@ Next, add an event handler to the list of your handlers:
 
 ```js {2-4}
 export const handlers = [
-  chat.on('connection', () => {
+  chat.addEventListener('connection', () => {
     console.log('outgoing WebSocket connection')
   }),
 ]
@@ -88,7 +88,7 @@ By default, once you [establish the actual server connection](#connecting-to-the
 To intercept an outgoing client event, get the `client` object from the `"connection"` event listener argument and add a `"message"` listener on that object.
 
 ```js /client/1,2 {2-4}
-chat.on('connection', ({ client }) => {
+chat.addEventListener('connection', ({ client }) => {
   client.addEventListener('message', (event) => {
     console.log('from client:', event.data)
   })
@@ -102,7 +102,7 @@ Now, whenever a WebSocket client sends data via the `.send()` method, the `"mess
 To send data to the connected client, get the `client` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send.
 
 ```js /client/1,2 {2}
-chat.on('connection', ({ client }) => {
+chat.addEventListener('connection', ({ client }) => {
   client.send('Hello from the server!')
 })
 ```
@@ -121,7 +121,7 @@ chat.on('connection', ({ client }) => {
 To broadcast data to all connected clients, use the `.broadcast()` method on the event handler object (the one returned from the `ws.link()` call) and provide it with the data you wish to broadcast.
 
 ```js /chat/2 {2}
-chat.on('connection', () => {
+chat.addEventListener('connection', () => {
   chat.broadcast('Hello everyone!')
 })
 ```
@@ -129,7 +129,7 @@ chat.on('connection', () => {
 You can also broadcast data to all clients except a subset of clients by using the `.boardcastExcept()` method on the event handler object.
 
 ```js {3,6}
-chat.on('connection', ({ client }) => {
+chat.addEventListener('connection', ({ client }) => {
   // Broadcast data to all clients except the current one.
   chat.broadcastExcept(client, 'Hello everyone except you!')
 
@@ -159,7 +159,7 @@ chat.on('connection', ({ client }) => {
 You can close an existing client connection at any time by calling `client.close()`.
 
 ```js {2}
-chat.on('connection', ({ client }) => {
+chat.addEventListener('connection', ({ client }) => {
   client.close()
 })
 ```
@@ -167,7 +167,7 @@ chat.on('connection', ({ client }) => {
 By default, the `.close()` method will result in a graceful closure of the connection (1000 code). You can control the nature of the connection closure by providing the custom `code` and `reason` arguments to the `.close()` method.
 
 ```js /1003/ {4}
-chat.on('connection', ({ client }) => {
+chat.addEventListener('connection', ({ client }) => {
   client.addEventListener('message', (event) => {
     if (event.data === 'hello') {
       client.close(1003)
@@ -203,7 +203,7 @@ import { Warning } from '@mswjs/shared/components/react/warning'
 To establish the connection to the actual WebSocket server, get the `server` object from the `"connection"` event listener argument and call its `.connect()` method.
 
 ```js /server/ {2}
-chat.on('connection', ({ server }) => {
+chat.addEventListener('connection', ({ server }) => {
   server.connect()
 })
 ```
@@ -220,7 +220,7 @@ chat.on('connection', ({ server }) => {
 Once the server connection has been established, all outgoing client message events are forwarded to the server. To prevent this behavior, call `event.preventDefault()` on the client message event. You can use this to modify the client-sent data before it reaches the server or ignore it completely.
 
 ```js
-chat.on('connection', ({ client }) => {
+chat.addEventListener('connection', ({ client }) => {
   client.addEventListener('message', (event) => {
     // Prevent the default client-to-server forwarding.
     event.preventDefault()
@@ -237,7 +237,7 @@ chat.on('connection', ({ client }) => {
 To intercept an incoming event from the actual sever, get the `server` object from the `"connection"` event listener argument and add a `"message"` event listener on that object.
 
 ```js /server/1,2 {2-4}
-chat.on('connection', ({ server }) => {
+chat.addEventListener('connection', ({ server }) => {
   server.addEventListener('message', (event) => {
     console.log('from server:', event.data)
   })
@@ -251,7 +251,7 @@ Now, whenever the actual server sends data, the `"message"` listener in this han
 By default, all server events are forwarded to the connected client. You can opt-out from this behavior by calling `event.preventDefault()` on the server message event. This is handy if you wish to modify the server-sent data before it reaches the client or prevent some server events from arriving at the client completely.
 
 ```js {4}
-chat.on('connection', ({ client, server }) => {
+chat.addEventListener('connection', ({ client, server }) => {
   server.addEventListener('message', (event) => {
     // Prevent the default server-to-client forwarding.
     event.preventDefault()
@@ -268,7 +268,7 @@ chat.on('connection', ({ client, server }) => {
 To send data to the actual server, get the `server` object from the `"connection"` event listener argument and call its `.send()` method with the data you wish to send to the server.
 
 ```js /server/ {2}
-chat.on('connection', ({ server }) => {
+chat.addEventListener('connection', ({ server }) => {
   server.send('hello from client!')
 }
 ```
@@ -390,6 +390,92 @@ A mocked message sent to the client from the event handler via `client.send()`. 
 
 An incoming message from the actual server. Requires the actual server connection to be opened via `server.connect()`. The incoming server messages can be modified or skipped by the event handler, thus the icon is dotted.
 
+## Event flow
+
+Much like the WebSocket communication, handling it with MSW is event-based. Your experience mocking WebSockets will involve the understanding of `EventTarget` and how events work in JavaScript. Let's have a quick reminder.
+
+When your application establishes a WebSocket connection, the `connection` event will be emitted on _all matching WebSocket links_.
+
+```js {4,5}
+const chat = ws.link('wss://example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', () => console.log('This is called')),
+  chat.addEventListener('connection', () => console.log('This is also called')),
+]
+```
+
+This way, both the happy path and the runtime handlers can react to the same connection.
+
+The client/server events are dispatched on _all_ `client` and `server` objects of the same connection as well. Meanwhile, you can attach multiple listeners to the same object, or to different objects across different handlers.
+
+```js {3-5,8-11}
+export const handlers = [
+  chat.addEventListener('connection', ({ client }) => {
+    // Attaching multiple message listeners to the same `client` object.
+    client.addEventListener('message', () => console.log('This is called'))
+    client.addEventListener('message', () => console.log('This is also called'))
+  }),
+  chat.addEventListener('connection', ({ client }) => {
+    // Attaching another message listener to a different `client` object.
+    client.addEventListener('message', () =>
+      console.log('Hey, this gets called too!'),
+    )
+  }),
+]
+```
+
+Since these events are dispatched against the same event target, you can utilize that to _prevent_ them. That comes in handy when creating runtime handlers (i.e. network behavior overrides), as you can control whether your override _augments_ or _completely overrides_ particular event handling.
+
+```js {4-6,15-19}
+const server = setupServer(
+  chat.addEventListener('connection', ({ client }) => {
+    client.addEventListener('message', (event) => {
+      // In a happy path handler, send back the event data
+      // received from the WebSocket client.
+      client.send(event.data)
+    })
+  }),
+)
+
+it('handles error payload', async () => {
+  server.use(
+    chat.addEventListener('connection', ({ client }) => {
+      client.addEventListener('message', (event) => {
+        // In this runtime handler, prevent the "message" client from
+        // propagating to another event target (the happy path handler).
+        // Then, send a completely different message to the client.
+        event.preventPropagation()
+        client.send('error-payload')
+      })
+    }),
+  )
+})
+```
+
+> Omitting `event.preventPropagation()` will result in _two_ messages being sent to the client upon receiving the same event—the `'error-payload'` first, then the original `event.data` second.
+
+Just like with a regular `EventTarget`, you can utilize `event.preventImmediatePropagation()` to stop an event from propagating across sibling listeners. For example, when handling a particular WebSocket event, you can use that to short-circuit any other event listeners that would otherwise be called.
+
+```js {4-6,12}
+chat.addEventListener('connection', ({ client }) => {
+  client.addEventListener('message', (event) => {
+    if (event.data === 'special-scenario') {
+      // This prevents this "message" event from propagating
+      // to the "message" event listener below.
+      event.stopImmediatePropagation()
+      client.close()
+    }
+  })
+
+  client.addEventListener('message', (event) => {
+    client.send(event.data)
+  })
+})
+```
+
+> If the client sends a `'special-scenario'` payload in the message, it will be closed, and the `client.send(event.data)` logic from the second event listener will never be called.
+
 ## Bindings
 
 To provide a more familiar experience when mocking third-party WebSocket clients, MSW uses _bindings_. A binding is a wrapper over the standard `WebSocket` class that encapsulates the third-party-specific behaviors, such as message parsing, and gives you a public API similar to that of the bound third-party library.
@@ -403,7 +489,7 @@ import { bind } from '@mswjs/socket.io-binding'
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.on('connection', (connection) => {
+  chat.addEventListener('connection', (connection) => {
     const io = bind(connection)
 
     io.client.on('hello', (username) => {
