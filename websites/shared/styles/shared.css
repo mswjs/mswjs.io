@@ -148,6 +148,12 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
 [data-highlighted-chars][data-chars-id='v'] {
   @apply bg-violet-700 border-violet-400 !text-violet-100;
 }
+[data-highlighted-chars][data-chars-id='g'] {
+  @apply bg-green-700 border-green-400 !text-green-100;
+}
+[data-highlighted-chars][data-chars-id='b'] {
+  @apply bg-blue-700 border-blue-400 !text-blue-100;
+}
 
 /* Sections */
 #mobile-menu-container {
