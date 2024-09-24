@@ -515,10 +515,21 @@ chat.addEventListener('connection', ({ client }) => {
 
 ## Type safety
 
-Bringing type safety to the WebSocket communication is essential when using TypeScript, and that includes your handlers too! That being said, MSW intentionally doesn't support any type arguments to annotate the outgoing/incoming events. The reasoning behing that is twofold:
+Bringing type safety to the WebSocket communication is essential when using TypeScript, and that includes your handlers too! That being said, MSW intentionally doesn't support any type arguments to annotate the outgoing/incoming events:
 
-1. Just because you narrow down the data type doesn't mean a different data type cannot be transferred over the network (the classic types vs runtime debate);
-1. It is common to send stringified payload over the WebSocket protocol, which implies the need of parsing it anyway.
+```ts
+import { ws } from 'msw'
+
+ws.link<Arg1, Arg2>(url)
+//     ^^^^^^^^^^^^ Type error!
+```
+
+The reasoning behing this decision is twofold:
+
+1. Narrowing down the data type doesn't guarantee that a different data type wouldn't be sent over the network (the classic types vs runtime debate);
+1. The `event.data` value you receive in the message event listener will always be of type `string | Blob | ArrayBuffer` because MSW provides no message parsing.
+
+If you are using objects to communicate with a WebSocket server, those objects have to be stringified and parsed when sending and receiving them, respectively, which already implies a parsing layer being present in your application.
 
 You can achieve a proper type and runtime safety in WebSockets by introducing parsing utilities. Libraries like [Zod](https://github.com/colinhacks/zod) can help you greatly in achieving type and runtime safety.
 
@@ -567,6 +578,8 @@ chat.addEventListener('connection', ({ client, server }) => {
   })
 })
 ```
+
+> Feel free to introduce a higher-order listener for the message event that abstracts that parsing, helping you reuse it across your handlers.
 
 ## Bindings
 
