@@ -556,15 +556,16 @@ const incomingSchema = z.union([
 chat.addEventListener('connection', ({ client, server }) => {
   client.addEventListener('message', (event) => {
     const result = incomingSchema.safeParse(event.data)
-    const message = result.data
 
     // Ignore non-matching events.
-    if (!message) {
+    if (!result.success) {
       return
     }
 
+    const message = result.data
+
     // Handle incoming events in type-safe way.
-    switch (result.success.type) {
+    switch (message.type) {
       case 'chat/join': {
         // ...
         break
