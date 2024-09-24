@@ -18,10 +18,6 @@ Mock Service Worker is dedicated to respecting, promoting, and teaching you abou
 
 That being said, we acknowledge that the standard `WebSocket` interface is rarely used in production systems as-is. Often, it's used as the underlying implementation detail for more convenient third-party abstractions, like SocketIO or PartyKit. We aim to address that experience gap via [Bindings](#bindings).
 
-import { Info } from '@mswjs/shared/components/react/info'
-
-<Info>Foo</Info>
-
 ## Event types
 
 A WebSocket communication is _duplex_, which means that both the client and the server may send and receive events independently and simultaneously. There are two types of events you can handle with MSW:
