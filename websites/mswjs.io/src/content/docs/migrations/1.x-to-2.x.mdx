@@ -304,7 +304,7 @@ http.get(
   () => {
     return new HttpResponse('Hello world!')
   },
-  { once: true }
+  { once: true },
 )
 ```
 
@@ -503,7 +503,7 @@ graphql.query('GetUser', (req, res, ctx) => {
       user: {
         firstName: 'John',
       },
-    })
+    }),
   )
 })
 ```
@@ -543,7 +543,7 @@ graphql.mutation('Login', (req, res, ctx) => {
       {
         message: `Failed to login:  user "${username}" does not exist`,
       },
-    ])
+    ]),
   )
 })
 ```
@@ -582,7 +582,7 @@ graphql.query('GetUser', (req, res, ctx) => {
     }),
     ctx.extensions({
       requestId: 'abc-123',
-    })
+    }),
   )
 })
 ```
@@ -651,7 +651,7 @@ rest.get('/resource', async (req, res, ctx) => {
     ctx.json({
       ...originalJson,
       mocked: true,
-    })
+    }),
   )
 })
 ```
