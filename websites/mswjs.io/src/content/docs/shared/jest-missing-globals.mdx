@@ -2,64 +2,21 @@
 title: Jest missing globals
 ---
 
-import { Warning } from '@mswjs/shared/components/react/warning'
+This issue is caused by your environment not having the Node.js globals for one reason or another. This commonly happens when using `jest-environment-jsdom` because it intentionally replaces built-in APIs with polyfills, breaking their Node.js compatibility.
 
-<Warning>
-  Make sure you are using Node.js v18 or newer before reading further.
-</Warning>
+To fix this, use the [`jest-fixed-jsdom`](https://github.com/mswjs/jest-fixed-jsdom) environment instead of `jest-environment-jsdom`.
 
-This issue is caused by your environment not having the Node.js globals for one reason or another. This commonly happens in Jest because it intentionally robs you of Node.js globals and fails to re-add them in their entirely. As the result, you have to explicitly add them yourself.
-
-Create a `jest.polyfills.js` file next to your `jest.config.js` with the following content:
-
-```js
-// jest.polyfills.js
-/**
- * @note The block below contains polyfills for Node.js globals
- * required for Jest to function when running JSDOM tests.
- * These HAVE to be require's and HAVE to be in this exact
- * order, since "undici" depends on the "TextEncoder" global API.
- *
- * Consider migrating to a more modern test runner if
- * you don't want to deal with this.
- */
-
-const { TextDecoder, TextEncoder } = require('node:util')
-
-Object.defineProperties(globalThis, {
-  TextDecoder: { value: TextDecoder },
-  TextEncoder: { value: TextEncoder },
-})
-
-const { Blob, File } = require('node:buffer')
-const { fetch, Headers, FormData, Request, Response } = require('undici')
-
-Object.defineProperties(globalThis, {
-  fetch: { value: fetch, writable: true },
-  Blob: { value: Blob },
-  File: { value: File },
-  Headers: { value: Headers },
-  FormData: { value: FormData },
-  Request: { value: Request, configurable: true },
-  Response: { value: Response, configurable: true },
-})
+```sh
+npm i jest-fixed-jsdom
 ```
 
-> Make sure to install `undici`. It's the official fetch implementation in Node.js.
-
-Then, set the `setupFiles` option in `jest.config.js` to point to the newly created `jest.polyfills.js`:
-
-```js {3}
+```js
 // jest.config.js
 module.exports = {
-  setupFiles: ['./jest.polyfills.js'],
+  testEnvironment: 'jest-fixed-jsdom',
 }
 ```
 
-<Warning>
-  Pay attention it's the `setupFiles` option, and _not_ `setupFilesAfterEnv`.
-  The missing Node.js globals must be injected _before_ the environment (e.g.
-  JSDOM).
-</Warning>
+This custom environment is a superset of `jest-environment-jsdom` with the built-in Node.js modules added back. That being said, there are a lot of things that Jest/JSDOM breaks in your test environment that are problematic to fix. **This setup is a workaround**.
 
 If you find this setup cumbersome, consider migrating to a modern testing framework, like [Vitest](https://vitest.dev/), which has none of the Node.js globals issues and provides native ESM support out of the box.
