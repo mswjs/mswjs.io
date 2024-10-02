@@ -280,63 +280,34 @@ This is equivalent to a client sending that data to the server.
 
 ## Logging
 
-Since MSW implements the WebSocket interception mock-first, no actual connections will be established until you explicitly say so. This means that the mocked scenarios won't appear as network entries in your browser's DevTools and you won't be able to observe them.
+Since MSW implements the WebSocket interception mock-first, no actual connections will be established until you explicitly say so. This means that the mocked scenarios won't appear as network entries in your browser's DevTools and you won't be able to observe them there.
 
-MSW enables custom logging for both mocked and original WebSocket connections **in the browser** that allows you to:
+MSW provides custom logging for both mocked and original WebSocket connections **in the browser**.
 
-- Observe any WebSocket connection if you have an event handler for it;
-- See previews for binary messages (`Blob`/`ArrayBuffer`);
-- Tell apart the messages sent by your application/original server from those initiated by the event handler (i.e. mocked messages).
+### Reading the log output
 
-### Message grading
+The logger will print out various events occurring during the WebSocket communication as collapsed console groups in your browser's console.
 
-All themessages printed by MSW are graded by three criteria: _icon_, _stroke_, and _color_.
+**There are four types of logs you can observe:**
 
-#### Icon
+1. <p className="flex items-center gap-2">
+     <span className="text-blue-500">▶■×</span>
+     <span>System events;</span>
+   </p>
+1. <p className="flex items-center gap-2">
+     <span className="text-green-500">⬆⇡</span>
+     <span>Client events;</span>
+   </p>
+1. <p className="flex items-center gap-2">
+     <span className="text-green-500 no-emoji">⬇⇣</span>
+     <span>Server events.</span>
+   </p>
+1. <p className="flex items-center gap-2">
+     <span className="text-primary no-emoji">⬆⬇</span>
+     <span>Mocked events.</span>
+   </p>
 
-- System events:
-  - ▶ Connection open;
-  - ■ Connection closed;
-  - × Connection error.
-- Message events:
-  - ↑ Outgoing message (i.e. sent by the client);
-  - ↓ Incoming message (i.e. received by the client).
-
-#### Stroke
-
-Message icons can have a different stroke (solid or dashed) representing the origin of those messages. Solid-stroke icons stand for the end events sent or received by your WebSocket client. Dashed icons stand for mocked events sent or received from the event handler.
-
-- ↑ Outgoing message sent by the actual client;
-- ⇡ Outgoing message sent by the event handler (i.e. mock);
-- ↓ Incoming message from the original server;
-- ⇣ Incoming message from the event handler (i.e. mock).
-
-#### Color
-
-To help read the log output, all the icons are also color-graded based on their type:
-
-- <p>
-    <span className="inline-block h-3 w-3 bg-blue-500 rounded-full" /> System
-    events (<span className="text-blue-500">▶</span>,{' '}
-    <span className="text-blue-500">■</span>,{' '}
-    <span className="text-blue-500">×</span>);
-  </p>
-- <p>
-    <span className="inline-block h-3 w-3 bg-red-500 rounded-full" /> Outgoing
-    client messages (<span className="text-red-500">↑</span>,{' '}
-    <span className="text-red-500">⇡</span>);
-  </p>
-- <p>
-    <span className="inline-block h-3 w-3 bg-green-500 rounded-full" /> Incoming
-    client messages (<span className="text-green-500">↓</span>,{' '}
-    <span className="text-green-500">⇣</span>);
-  </p>
-- <p>
-    <span className="inline-block h-3 w-3 bg-primary rounded-full" /> Mock
-    events (either outgoing or incoming).
-  </p>
-
-### Connection events
+### System events
 
 #### <span className="text-blue-500">▶</span> Connection opened
 
@@ -366,66 +337,58 @@ Dispatched when the connection is closed (i.e. the WebSocket client emits the `c
 
 Any message, be it outgoing or incoming message, follows the same structure:
 
-```txt /00:00:00.000/#g /↑/#v /hello from client/ /17/#b
+```txt /00:00:00.000/#v /⬆/#g /hello from client/ /17/#b
         timestamp         sent data
-[MSW] 00:00:00.000 ↑ hello from client 17
+[MSW] 00:00:00.000 ⬆ hello from client 17
                   icon              byte length
 ```
 
 Binary messages print a text preview of the sent binary alongside its full byte length:
 
 ```
-[MSW] 12:34:56.789 ↑ Blob(hello world) 11
-[MSW] 12:34:56.789 ↑ ArrayBuffer(preview) 7
+[MSW] 12:34:56.789 ⬆ Blob(hello world) 11
+[MSW] 12:34:56.789 ⬆ ArrayBuffer(preview) 7
 ```
 
 Long text messages and text previews are truncated:
 
 ```
-[MSW] 12:34:56.789 ↑ this is a very long stri… 17
+[MSW] 12:34:56.789 ⬆ this is a very long stri… 17
 ```
 
-> You can access the full message by clicking on its console group and inspecting the original `MessageEvent` reference.
+> You can access the full message by clicking on its console group and inspecting the original `MessageEvent` instance.
 
-#### <span className="text-red-500">↑</span> Outgoing client message
-
-```
-[MSW] 12:34:56.789 ↑ hello from client 17
-```
-
-A message sent by the client in your application.
-
-#### <span className="text-primary">⇡</span> Outgoing mocked client message
+#### <span className="text-green-500 no-emoji">⬆⇡</span> Outgoing client message
 
 ```
-[MSW] 12:34:56.789 ⇡ hello from mock 15
+[MSW] 12:34:56.789 ⬆ hello from client 17
 ```
 
-A message sent from the client by the event handler (via `server.send()`). Requires the actual server connection to be opened via `server.connect()`. The client itself never sent this, thus the icon is dotted.
+A raw message sent by the WebSocket client in your application. If the arrow is dashed, the forwarding of this message event has been prevented in the event handler.
 
-#### <span className="text-green-500">↓</span> Incoming client message
-
-```
-[MSW] 12:34:56.789 ↓ hello from server 17
-```
-
-The end message the client received (i.e. the message that triggered the "message" event on the WebSocket client). The message can be either from the event handler or from the actual WebSocket server.
-
-#### <span className="text-primary">⇣</span> Incoming mocked client message
+#### <span className="text-primary no-emoji">⬆</span> Outgoing mocked client message
 
 ```
-[MSW] 12:34:56.789 ⇣ hello from mock 15
+[MSW] 12:34:56.789 ⬆ hello from mock 15
 ```
 
-A mocked message sent to the client from the event handler via `client.send()`. The actual server has never sent this, thus the icon is dotted.
+A message sent from the client by the event handler via `server.send()`. Requires an [open server connection](#establishing-server-connection).
 
-#### <span className="text-green-500">⇣</span> Incoming server message
+#### <span className="text-red-500 no-emoji">⬇⇣</span> Incoming server message
 
 ```
-[MSW] 12:34:56.789 ⇣ hello from server 17
+[MSW] 12:34:56.789 ⬇ hello from server 17
 ```
 
-An incoming message from the actual server. Requires the actual server connection to be opened via `server.connect()`. The incoming server messages can be modified or skipped by the event handler, thus the icon is dotted.
+An incoming message sent from the original server. Requires an [open server connection](#establishing-server-connection). If the arrow is dashed, the forwarding of this message event has been prevented in the event handler.
+
+#### <span className="text-primary no-emoji">⬇</span> Incoming mocked server message
+
+```
+[MSW] 12:34:56.789 ⬇ hello from mock 15
+```
+
+A mocked message sent to the client from the event handler via `client.send()`.
 
 ## Event flow
 
