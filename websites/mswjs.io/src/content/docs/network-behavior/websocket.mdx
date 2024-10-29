@@ -64,7 +64,7 @@ import { ws } from 'msw'
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.on('connection', ({ client }) => {
+  chat.addEventListener('connection', ({ client }) => {
     console.log('Intercepted a WebSocket connection:', client.url)
   }),
 ]
@@ -89,7 +89,7 @@ import { ws } from 'msw'
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.on('connection', ({ client }) => {
+  chat.addEventListener('connection', ({ client }) => {
     client.addEventListener('message', (event) => {
       console.log('client sent:', event.data)
     })
@@ -101,9 +101,7 @@ Now that we know when the client sends a message in the chat, we can send data b
 
 To send data from the server to the client, we can use the `client.send()` method provided by the `client` object.
 
-<Action>
-  Call `client.send()` to send data to the client:
-</Action>
+<Action>Call `client.send()` to send data to the client:</Action>
 
 ```js /client.send/ {9}
 // src/mocks/handlers.js
@@ -112,7 +110,7 @@ import { ws } from 'msw'
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.on('connection', ({ client }) => {
+  chat.addEventListener('connection', ({ client }) => {
     client.addEventListener('message', (event) => {
       client.send('hello from server!')
     })
@@ -139,7 +137,7 @@ import { ws } from 'msw'
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.on('connection', ({ client }) => {
+  chat.addEventListener('connection', ({ client }) => {
     client.addEventListener('message', (event) => {
       chat.broadcast(event.data)
     })
@@ -152,7 +150,8 @@ When using the `.broadcast()` method of the event handler, _all the connected cl
 To broadcast data to all clients except a subset of clients, use the `.broacastExcept()` method on the event handler object.
 
 <Action>
-  Call `chat.broadcastExcept()` to broadcast the message to all clients except the initial sender:
+  Call `chat.broadcastExcept()` to broadcast the message to all clients except
+  the initial sender:
 </Action>
 
 ```js /chat.broadcastExcept/ {9}
@@ -162,7 +161,7 @@ import { ws } from 'msw'
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.on('connection', ({ client }) => {
+  chat.addEventListener('connection', ({ client }) => {
     client.addEventListener('message', (event) => {
       chat.broadcastExcept(client, event.data)
     })
