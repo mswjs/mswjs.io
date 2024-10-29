@@ -71,15 +71,12 @@ function batchedGraphQLQuery(url, handlers) {
         // Construct an individual query request
         // to the same URL but with an unwrapped query body.
         const queryRequest = new Request(request, {
-          body: JSON.stringify(operation),
+          body: JSON.stringify(query),
         })
 
         // Resolve the individual query request
         // against the list of request handlers you provide.
-        const response = await getResponse({
-          request: queryRequest,
-          handlers,
-        })
+        const response = await getResponse(handlers, queryRequest)
 
         // Return the mocked response, if found.
         // Otherwise, perform the individual query as-is,
