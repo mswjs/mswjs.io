@@ -1,0 +1,157 @@
+---
+title: Enter WebSockets!
+slug: enter-websockets
+description: The next chapter of MSW is here, and it's as real-time as ever.
+publishedAt: 2024-11-20
+thumbnailUrl: /thumbnails/introducing-source.png
+author:
+  name: Artem Zakharchenko
+  twitterHandle: kettanaito
+keywords:
+  - websocket
+  - socket
+  - real-time
+  - msw
+  - mocking
+---
+
+It's been a little more than a year since our last major announcement of the Fetch-based MSW, aka MSW 2.0. Today, I'm unveiling another exciting update to your favorite three-letter API mocking library—**the WebSocket API support**.
+
+That's right, with the latest release Mock Service Worker becomes the first library in JavaScript to support mocking RESTful, GraphQL, and WebSocket APIs. At the same time and with the same level of reusability, seamlessness, and respect for the standards. It is no longer just the most used mocking library, it is also the most powerful one.
+
+As usual, let's meander through the history of this update, how it came to be, and how you can use MSW to mock WebSockets in your application.
+
+> I've also released an entire video course teaching you how to mock _and test_ WebSocket APIs with Mock Service Worker! This is a great interactive way to learn the new API, and watching it supports the project financially. You've never developed and tested your WebSocket applications this way!
+
+import { EggheadCourseBanner } from '../../components/react/eggheadCourseBanner'
+
+<EggheadCourseBanner
+  courseUrl="#TODO"
+  title="It's WebSocket time"
+  description="Learn how to mock WebSocket APIs with Mock Service Worker."
+/>
+
+## The origins
+
+Believe it or not, but the WebSocket support is one of the oldest [feature request](https://github.com/mswjs/msw/issues/156) we had, dating as far back as 2020. I've been wanting to implement that support for a while, but . . . it's complicated.
+
+No, quite literally—it's _complicated_. There's the WHATWG WebSocket standard that nobody uses directly, there are a few third-party libraries, like `ws` and `socket.io`, that implement layers of abstraction on top of it, and don't forget about custom transports and message formats. The typical standard vs userland divide.
+
+I knew from the start that a proper support would mean untangling all of that to find a solid ground for everybody to rely on. More to that, I knew that I had to gather feedback early on since one wrong assumption could cost me months of work. So after I was happy with the PoC, I opened the [discussion](https://github.com/mswjs/msw/discussions/2010) and began gathering feedback from all of you.
+
+Most of the heavy-lifting was done in `@mswjs/interceptors` with the introduction of the [`WebSocketInterceptor`](https://github.com/mswjs/interceptors/pull/501). That has honestly been one of the most fun pull requests I've ever worked on, which ended up with me writing the `WebSocket` class polyfill (more on that later) to lay the foundation for what would become the WebSocket support in MSW.
+
+## The hard decisions
+
+The original architecture of the interceptor facilitated an abstract `Transport` class that exposed a public API for the consumer to use but relied on different logistics algorithm for the actual events transport. With that structure, I wanted to support the major WebSocket transports, being the `WebSocket` class and long polling HTTP.
+
+That has quickly got out of hand. I wanted to use a single interceptor with different internal transports, but different transports demanded their own interception algorithms. And none of that even scratched the surface of the looming question of message encoding and decoding used by third-party libraries that we cannot ignore if we ever wished to support them.
+
+That is why one of the earliest decisions I made was to **drop support for non-standard WebSocket transports**. Only the global `WebSocket` class is supported. Everything else is contrived anyway, and promising any form of support meant poisoning the otherwise client-agnostic library with the implementation details of various third parties.
+
+It was not an easy decision to make since the majority of deveopers are using `socket.io`, where the default transport is, actually, XMLHttpRequest polling. But it was the right call to make, and the fruits soon followed. The interceptor implementation became more streamlined, focusing on the WHATWG WebSocket standard. And what do you know, suddenly, I learn that you can switch to that standard in all of the third-party tools I could find! You can never go wrong by betting on the standards.
+
+## The new API
+
+Long months later, the public _you_-facing API is here. And it's gorgeous.
+
+```ts
+import { ws } from 'msw'
+```
+
+Okay, so far not much to go on with. Let's see how you would intercept a WebSocket connection in your application or tests:
+
+```ts {4-6} /chat/
+const chat = ws.link('wss://api.example.com/ws')
+
+export const handlers == [
+  chat.addEventListener('connection', () => {
+    console.log('Intercepted a WebSocket connection!')
+  })
+]
+```
+
+> These are the same `handlers` where you put your HTTP/GraphQL mocks! Provide them to the `setupWorker` or `setupServer`, or both, based on where you need this network behavior. And yes, you can match HTTP and WebSocket handlers side-by-side!
+
+You start by creating a link using the `ws.link` method, letting MSW know that you intend to intercept WebSocket connections to the given URL (or a pattern, or a regular expression). That doesn't create an event handler just yet. For that, you add a "connection" listener on your WebSocket link. That is your first _event handler_ that will be called whenever a matching WebSocket connection is established in your app.
+
+From here, you can control the intercepted connection however you like.
+
+For example, let's send a mocked event to the client from the event handler:
+
+```ts {3} /client/
+export const handlers == [
+  chat.addEventListener('connection', ({ client }) => {
+    client.send('Hello from mock!')
+  })
+]
+```
+
+That's all nice, but how do you handle the events _sent_ from the client? Well, by attaching a "message" event listener, of course!
+
+```ts {5-9}
+export const handlers == [
+  chat.addEventListener('connection', ({ client }) => {
+    client.send('Hello from mock!')
+
+    client.addEventListener('message', (event) => {
+      console.log('Received a message:', event.data)
+
+      client.send('Thank you for your message!')
+    })
+  })
+]
+```
+
+There is so much more to handling WebSocket connections, including broadcasting events, estabishing a client-to-mock and mock-to-server comnunication, augmenting events and preventing their flow through different listeners. I couldn't possibly cover all of that in a single article, so I highly encourage you to explore the API in the documentation:
+
+import { NewspaperIcon } from '@heroicons/react/24/solid'
+import { PageCard } from '../../components/react/pageCard'
+
+<PageCard
+  icon={NewspaperIcon}
+  url="/docs/basics/handling-websocket-events"
+  title="Handling WebSocket events"
+  description="Learn how to intercept and mock WebSocket events."
+/>
+
+## The mind-twister
+
+WebSocket communication is full-duplex, which means the client and the server can send events independently and simultaneously.
+
+```
+client ⇄ server
+```
+
+That is clear when you have a client and a server, but where does the mock fit in?
+
+The best way to describe this is to imagine your event handlers as a _proxy server_ sitting between your client and the actual WebSocket server.
+
+```
+client ⇄ MSW ⇄ server
+```
+
+This means that MSW can be a replacement for the actual server as well as a proxy that observes and modifies the real communication. The choice is yours.
+
+## The important defaults
+
+In order to ship an intuitive developer experience, I had to make a few defaults in how the WebSocket handling works. Basing it around the WHATWG standard is one of those defaults! But there are more, and they are important to know before you start using MSW in your project.
+
+1. By default, intercepted WebSocket connections _are not open_. This contrasts with the HTTP handling where any intercepted request is bypassed unless you provide a mocked response. Achieving that behavior with WebSocket connections is, sadly, impossible. The `WebSocket` constructor establishes the connection in the next event loop tick, which makes it impossible to react to connection failures and suppress them. Thus, all connections are mocked by default, established on-demand.
+1. By default, when the actual server connection is established, all client events are forwarded to the original server, and all original server's events are forwarded to the client. You can affect that forwarding at any time by calling `event.preventDefault()`, which prevents this default.
+
+## Special thanks
+
+I would like to say thank you to everybody who participated in the WebSocket API discussion during this year. You are absolutely incredible, and your feedback helped shape this API so it's better for everyone. Mentioning you alphabetically:
+
+[alessbell](https://github.com/alessbell), [Zijp](https://github.com/Bram-Zijp), [DanielleHuisman](https://github.com/DanielleHuisman), [davidgoli](https://github.com/davidgoli), [ernestostifano](https://github.com/ernestostifano), [hajnyon](https://github.com/hajnyon), [itsdouges](https://github.com/itsdouges), [KaisaSiSD](https://github.com/KaisaSiSD), [kesupile](https://github.com/kesupile), [maurice](https://github.com/maurice), [mknijnenberg](https://github.com/mknijnenberg), [Narretz](https://github.com/Narretz), [nemonemi](https://github.com/nemonemi), [RayOei](https://github.com/RayOei).
+
+I would like to extend my gratitude to [MSW Sponsors](https://github.com/sponsors/mswjs), without whom I would've never been able to dedicate as much time to this as I did (and trust me, this took a lot of time). I am extremely grateful to Chromatic, Microsoft, Workleap, and Codacy, to name a few, for their consistent support. These folks are helping me improve API mocking for the entire ecosystem. I hope to live up to their expectations.
+
+## What's next?
+
+With the WebSocket interception becoming a part of the MSW suite, I'm looking forward to implementing features that can utilize it, like GraphQL subscriptions. I am also expecting a barrage of bug reports as it often happens when developers start using new APIs in their projects. So, please, make sure to [report any issues](https://github.com/mswjs/msw/issues/new/choose) you find!
+
+For me, what's next is long months of work, so you can support my involvement with Mock Service Worker, please consider [becoming its GitHub sponsor](https://github.com/sponsors/mswjs)! Go watch the Egghead course as well, the revenue I get supports my open-source work.
+
+Thank you.
