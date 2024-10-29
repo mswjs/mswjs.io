@@ -1,0 +1,213 @@
+---
+order: 3
+title: Describing WebSocket API
+description: Learn how to describe WebSocket API with Mock Service Worker.
+keywords:
+  - websocket
+  - socket
+  - events
+  - mock
+  - describe
+---
+
+## Import
+
+MSW provides a designated [`ws`](/docs/api/ws) namespace for describing WebSocket events. We will use that namespace to describe what connections and events to intercept and how to handle them.
+
+import { Action } from '../../../components/react/action'
+
+<Action>Import the `ws` namespace from the `msw` package:</Action>
+
+```js {2}
+// src/mocks/handlers.js
+import { ws } from 'msw'
+
+export const handlers = []
+```
+
+## Event handler
+
+WebSocket communications are _event-based_ so we will be using an event handler to intercept and describe them.
+
+In this tutorial, we will describe a chat application that uses WebSocket to send and receive messages. We will use MSW as a substitute for an actual WebSocket server, developing mock-first.
+
+You can imagine the chat application like this:
+
+```js
+// src/app.js
+const ws = new WebSocket('wss://chat.example.com')
+
+// Handle receiving messages.
+ws.addEventListener('message', (event) => {
+  renderMessage(event.data)
+})
+
+// Handle sending messages.
+const handleFormSubmit = (event) => {
+  const data = new FormData(event.target)
+  const message = data.get('message')
+  ws.send(message)
+}
+```
+
+Let's start by creating an event handler for a WebSocket endpoint using the `ws.link()` method.
+
+<Action>Call `ws.link()` to declare an event handler:</Action>
+
+```js {7,10-12}
+// src/mocks/handlers.js
+import { ws } from 'msw'
+
+// The "chat" object is an event handler responsible
+// for intercepting and mocking any WebSocket events
+// to the provided endpoint.
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', ({ client }) => {
+    console.log('Intercepted a WebSocket connection:', client.url)
+  }),
+]
+```
+
+The `chat` object returned from the `ws.link()` method gives us the server-like API to interact with the intercepted WebSocket connection. We can add the `"connection"` event listener to know when a client in our application tries to connect to the specified WebSocket server.
+
+Next, let's describe how to handle the chat messages that the client sends and mock the server responding to them.
+
+## Responding to client messages
+
+Whenever the WebSocket client sends data to the server, the `client` object in the `"connection"` event listener argument will emit the `"message"` event. We can attach a listener to that event to listen and react to outgoing client messages.
+
+<Action>
+  Add a `"message"` listener to the `client` to intercept client events:
+</Action>
+
+```js /client.addEventListener/ {8-10}
+// src/mocks/handlers.js
+import { ws } from 'msw'
+
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', ({ client }) => {
+    client.addEventListener('message', (event) => {
+      console.log('client sent:', event.data)
+    })
+  }),
+]
+```
+
+Now that we know when the client sends a message in the chat, we can send data back from the "server", which is our event handler.
+
+To send data from the server to the client, we can use the `client.send()` method provided by the `client` object.
+
+<Action>Call `client.send()` to send data to the client:</Action>
+
+```js /client.send/ {9}
+// src/mocks/handlers.js
+import { ws } from 'msw'
+
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', ({ client }) => {
+    client.addEventListener('message', (event) => {
+      client.send('hello from server!')
+    })
+  }),
+]
+```
+
+Now, whenever the client sends a message, our `chat` event handler intercepts it and sends back a `"hello from server!"` string. You can think of this interaction as a mock chat message arriving in response to any message you send from the application.
+
+Our event handler has been interacting with a single `client` so far. Let's take a look how to broadcast data across all clients to implement the realtime chat functionality.
+
+## Broadcasting data
+
+When a single client sends a message, we want to broadcast that message to all connected clients so they would see it in their applications. To do so, our `chat` event handler object provides a `broadcast()` method that we can use.
+
+<Action>
+  Call `chat.broadcast()` to broadcast the message to all clients:
+</Action>
+
+```js /chat.broadcast/ {9}
+// src/mocks/handlers.js
+import { ws } from 'msw'
+
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', ({ client }) => {
+    client.addEventListener('message', (event) => {
+      chat.broadcast(event.data)
+    })
+  }),
+]
+```
+
+When using the `.broadcast()` method of the event handler, _all the connected clients will receive the sent data_. That includes the `client` that has sent the message we are broadcasting! Depending on how you implement your chat, you may want to omit the initial client from this broadcasting (e.g. if you display the sent message for the client optimistically).
+
+To broadcast data to all clients except a subset of clients, use the `.broacastExcept()` method on the event handler object.
+
+<Action>
+  Call `chat.broadcastExcept()` to broadcast the message to all clients except
+  the initial sender:
+</Action>
+
+```js /chat.broadcastExcept/ {9}
+// src/mocks/handlers.js
+import { ws } from 'msw'
+
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', ({ client }) => {
+    client.addEventListener('message', (event) => {
+      chat.broadcastExcept(client, event.data)
+    })
+  }),
+]
+```
+
+Now, whenever a client sends a message to the chat, it will be broadcasted to _all the other clients_ so they would see it in the UI too.
+
+## Next steps
+
+### Integrations
+
+Once you have described the network behavior you want, integrate it into any environment in your application.
+
+import { PageCard } from '../../../components/react/pageCard'
+import { WindowIcon, CommandLineIcon } from '@heroicons/react/24/outline'
+
+<div className="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon={WindowIcon}
+    url="/docs/integrations/browser"
+    title="Browser"
+    description="Integrate MSW in a browser environment, such as a React application or Storybook."
+  />
+  <PageCard
+    icon={CommandLineIcon}
+    url="/docs/integrations/node"
+    title="Node.js"
+    description="Integrate MSW in Node.js, such as an Express application or a test runner."
+  />
+</div>
+
+> Note that some envirionments, like Node.js, do not ship the global WebSocket API yet. You may want to configure your environment to polyfill the `WebSocket` class in those cases.
+
+### Learn about handling WebSocket events
+
+This tutorial includes a minimal functionality to describe the WebSocket communication for a chat application. There's much more you can do with WebSosckets in MSW, like connecting to the actual server, modifying server-sent events, mocking errors and connection closures.
+
+Learn more about what you can do with WebSocket connections on this page:
+
+import { NewspaperIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={NewspaperIcon}
+  url="/docs/basics/handling-websocket-events"
+  title="Handling WebSocket events"
+  description="Learn how to intercept and mock WebSocket events."
+/>
