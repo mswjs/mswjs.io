@@ -278,6 +278,19 @@ This is equivalent to a client sending that data to the server.
   description="The `server.send()` API."
 />
 
+### Closing server connections
+
+You can close a previously established original WebSocket server connection by calling `server.close()`.
+
+```js {3}
+chat.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.close()
+})
+```
+
+Calling `server.close()` will close the server connection and dispatch the `close` event on the `server` object.
+
 ## Logging
 
 Since MSW implements the WebSocket interception mock-first, no actual connections will be established until you explicitly say so. This means that the mocked scenarios won't appear as network entries in your browser's DevTools and you won't be able to observe them there.

@@ -223,6 +223,17 @@ api.addEventListener('connection', ({ server }) => {
 })
 ```
 
+### `.close(code, reason)`
+
+Closes the underlying original WebSocket server connection. Provides a custom close `code` and `reason`.
+
+```js {3}
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.close()
+})
+```
+
 ## `WebSocketConnectionInfo`
 
 The `info` argument on the `connection` event listener contains additional WebSocket connection infromation.
