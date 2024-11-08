@@ -238,8 +238,9 @@ api.addEventListener('connection', ({ server }) => {
 
 The `info` argument on the `connection` event listener contains additional WebSocket connection infromation.
 
-| Property name | Type | Description |
-| `protocols` | `string | string[] | undefined` | The list of protocols used when establishing this WebSocket connection. |
+| Property name | Type                              | Description                                                             |
+| ------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| `protocols`   | `string \| string[] \| undefined` | The list of protocols used when establishing this WebSocket connection. |
 
 ```js
 api.addEventListener('connection', ({ info }) => {
