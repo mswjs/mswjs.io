@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256px" height="256px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Artboard</title>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Group" transform="translate(0, -1)">
+            <line x1="8.25" y1="0.5" x2="8.25" y2="256.5" id="Line"></line>
+            <line x1="48.25" y1="0.5" x2="48.25" y2="256.5" id="Line-Copy"></line>
+            <line x1="88.25" y1="0.5" x2="88.25" y2="256.5" id="Line-Copy-2"></line>
+            <line x1="128.25" y1="0.5" x2="128.25" y2="256.5" id="Line-Copy-3"></line>
+            <line x1="168.25" y1="0.5" x2="168.25" y2="256.5" id="Line-Copy-4"></line>
+            <line x1="208.25" y1="0.5" x2="208.25" y2="256.5" id="Line-Copy-5"></line>
+            <line x1="248.25" y1="0.5" x2="248.25" y2="256.5" id="Line-Copy-6"></line>
+            <line x1="0" y1="208.75" x2="256" y2="208.75" id="Line-Copy"></line>
+            <line x1="0" y1="168.75" x2="256" y2="168.75" id="Line-Copy-2"></line>
+            <line x1="0" y1="128.75" x2="256" y2="128.75" id="Line-Copy-3"></line>
+            <line x1="0" y1="88.75" x2="256" y2="88.75" id="Line-Copy-4"></line>
+            <line x1="0" y1="48.75" x2="256" y2="48.75" id="Line-Copy-5"></line>
+            <line x1="0" y1="8.75" x2="256" y2="8.75" id="Line-Copy-6"></line>
+        </g>
+        <line x1="0" y1="247.75" x2="256" y2="247.75" id="Line"></line>
+    </g>
+</svg>

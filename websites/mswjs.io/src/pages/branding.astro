@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from '../consts';
+import { Container } from "@mswjs/shared/components/react/container";
+import { Grid } from "@mswjs/shared/components/react/grid";
+import { PageHeaderSubtitle, PageHeaderWrapper } from "@mswjs/shared/components/react/pageHeader";
+import { CopyButton } from '../components/react/copyButton';
+import UsageGrid from '../images/usage-grid.svg?react';
+import MswLogo from '../images/msw.svg?react';
+import MswLogoMono from '../images/msw-mono.svg?react';
+import MswLogoIncorrectNoBackground from '../images/msw-incorrect-no-bg.svg?react';
+
+---
+
+<BaseLayout
+  displayTitle={`Branding - ${SITE_TITLE}`}
+  description="Guidelines on using the Mock Service Worker logo."
+>
+<main>
+  <Container>
+    <Grid>
+      <div class="sm:col-span-8 lg:col-start-3">
+        <PageHeaderWrapper className="mt-16 md:mt-24">
+          <h1 class="mb-8 capitalize">Branding</h1>
+          <PageHeaderSubtitle className="md:w-3/6">
+            Guidelines on using the Mock Service Worker logo.
+          </PageHeaderSubtitle>
+        </PageHeaderWrapper>
+      </div>
+    </Grid>
+
+    <Grid>
+      <div class="mb-16 flex flex-col gap-24 sm:col-span-8 lg:col-start-3">
+        <section class="inline-flex gap-6 md:gap-10 justify-center">
+          <div class="flex gap-3 items-center">
+            <div id="msw-logo" class="size-12">
+              <MswLogo />
+            </div>
+            <CopyButton client:only="react" elementId="msw-logo" className="button button-primary text-sm">Copy SVG</CopyButton>
+          </div>
+          <div class="flex gap-3 items-center">
+            <div id="msw-logo-mono" class="size-12">
+              <MswLogoMono />
+            </div>
+            <CopyButton client:only="react" elementId="msw-logo-mono" className="button button-primary text-sm">Copy SVG</CopyButton>
+          </div>
+        </section>
+
+        <hr/>
+
+        <section class="flex flex-col gap-10">
+          <div>
+            <h2>Background</h2>
+            <p>Keep the dark background of the logo to create a proper contrast.</p>
+          </div>
+          <div class="md:justify-self-end">
+            <div class="flex flex-col sm:flex-row items-center md:justify-items-center gap-10 -space-x-px">
+              <div class="relative flex flex-col gap-5 size-64 items-center justify-center">
+                <UsageGrid className="absolute inset-0 -z-10 stroke-neutral-800" />
+                <MswLogo className="size-20" />
+                <div class="absolute bottom-[34px] size-7 bg-green-500 bg-opacity-80 rounded-full flex items-center justify-center text-lg">✓</div>
+              </div>
+              <div class="relative flex flex-col gap-5 size-64 items-center justify-center">
+                <UsageGrid className="absolute inset-0 -z-10 stroke-neutral-800" />
+                <MswLogoIncorrectNoBackground className="size-20" />
+                <div class="absolute bottom-[34px] size-7 bg-red-500 bg-opacity-80 rounded-full flex items-center justify-center text-lg">✗</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="flex flex-col gap-10">
+          <div>
+            <h2>Primary color</h2>
+            <p>Keep the orange (<code class="text-primary">#FF6A33</code>) fill color for the arrows.</p>
+          </div>
+          <div class="md:justify-self-end">
+            <div class="flex flex-col sm:flex-row items-center md:justify-items-center gap-10 -space-x-px">
+              <div class="relative flex flex-col gap-5 size-64 items-center justify-center">
+                <UsageGrid className="absolute inset-0 -z-10 stroke-neutral-800" />
+                <MswLogo className="size-20" />
+                <div class="absolute bottom-[34px] size-7 bg-green-500 bg-opacity-80 rounded-full flex items-center justify-center text-lg">✓</div>
+              </div>
+              <div class="relative flex flex-col gap-5 size-64 items-center justify-center">
+                <UsageGrid className="absolute inset-0 -z-10 stroke-neutral-800" />
+                <div class="relative">
+                  <MswLogo className="size-20" />
+                  <div class="absolute inset-0 bg-blue-500 mix-blend-hue" />
+                </div>
+                <div class="absolute bottom-[34px] size-7 bg-red-500 bg-opacity-80 rounded-full flex items-center justify-center text-lg">✗</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="flex flex-col gap-10">
+          <div>
+            <h2>Monochrome variant</h2>
+            <p>Use a designated monochrome variant for the black-and-white logo.</p>
+          </div>
+          <div class="md:justify-self-end">
+            <div class="flex flex-col sm:flex-row items-center md:justify-items-center gap-10 -space-x-px">
+              <div class="relative flex flex-col gap-5 size-64 items-center justify-center">
+                <UsageGrid className="absolute inset-0 -z-10 stroke-neutral-800" />
+                <MswLogoMono className="size-20" />
+                <div class="absolute bottom-[34px] size-7 bg-green-500 bg-opacity-80 rounded-full flex items-center justify-center text-lg">✓</div>
+              </div>
+              <div class="relative flex flex-col gap-5 size-64 items-center justify-center">
+                <UsageGrid className="absolute inset-0 -z-10 stroke-neutral-800" />
+                <MswLogo className="size-20 grayscale" />
+                <div class="absolute bottom-[34px] size-7 bg-red-500 bg-opacity-80 rounded-full flex items-center justify-center text-lg">✗</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </Grid> 
+  </Container>
+</BaseLayout>

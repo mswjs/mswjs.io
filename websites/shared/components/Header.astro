@@ -10,9 +10,10 @@ type Props = {
   logo: { src: string }
   compact?: boolean
   links: Array<HTMLAttributes<'a'> & { label: string }>
+  brandingUrl?: string
 }
 
-const { logo, compact, links } = Astro.props
+const { logo, compact, links, brandingUrl } = Astro.props
 ---
 
 <header class="header sticky top-0 z-10 text-sm h-[60px] font-semibold bg-neutral-900 border-b h-15 border-neutral-800">
@@ -23,6 +24,7 @@ const { logo, compact, links } = Astro.props
           href="/"
           title="Mock Service Worker"
           class="hover:opacity-70 inline-flex"
+          oncontextmenu={brandingUrl ? `location.href = '${brandingUrl}'; return false;` : undefined}
         >
           <img src={logo.src} class="w-9 h-9" />
         </a>
