@@ -23,7 +23,7 @@ export function CopyButton({ elementId, ...props }: CopyButtonProps) {
       return
     }
 
-    await navigator.clipboard.writeText(element.outerHTML)
+    await navigator.clipboard.writeText(element.innerHTML)
     setText('✓ Copied!')
 
     timeoutRef.current = setTimeout(() => {
