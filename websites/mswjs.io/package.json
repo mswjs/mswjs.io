@@ -39,8 +39,11 @@
   },
   "devDependencies": {
     "@astrojs/markdoc": "^0.5.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "rehype-pretty-code": "^0.10.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vite-plugin-svgr": "4"
   }
 }
