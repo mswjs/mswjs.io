@@ -122,7 +122,7 @@ chat.addEventListener('connection', () => {
 })
 ```
 
-You can also broadcast data to all clients except a subset of clients by using the `.boardcastExcept()` method on the event handler object.
+You can also broadcast data to all clients except a subset of clients by using the `.broadcastExcept()` method on the event handler object.
 
 ```js {3,6}
 chat.addEventListener('connection', ({ client }) => {
@@ -130,7 +130,7 @@ chat.addEventListener('connection', ({ client }) => {
   chat.broadcastExcept(client, 'Hello everyone except you!')
 
   // Broadcast data to all the clients matching a predicate.
-  chat.boardcastExcept(chat.clients.filter((client) => {
+  chat.broadcastExcept(chat.clients.filter((client) => {
     return client
   }, "Hello to some of you!")
 })
