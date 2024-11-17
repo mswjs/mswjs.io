@@ -48,7 +48,7 @@ Any good comparison begins with a clearly defined set of criteria. Here are the 
 | ------------- | ---- | ------------------- |
 | REST API      | ✅   | ✅                  |
 | GraphQL API   | ❌   | ✅                  |
-| WebSocket API | ❌   | ❌                  |
+| WebSocket API | ❌   | ✅                  |
 
 ### Supported environment
 
@@ -97,7 +97,7 @@ http.get('https://api.example.com/user', async ({ request }) => {
 | ------------- | ----------- | ------------------- |
 | REST API      | ✅          | ✅                  |
 | GraphQL API   | ❌          | ✅                  |
-| WebSocket API | ❌          | ❌                  |
+| WebSocket API | ❌          | ✅                  |
 
 ### Supported environment
 
@@ -160,7 +160,7 @@ http.get('/posts', () => {
 | ------------- | ------ | ------------------- |
 | REST API      | ✅     | ✅                  |
 | GraphQL API   | ❌     | ✅                  |
-| WebSocket API | ❌     | ❌                  |
+| WebSocket API | ❌     | ✅                  |
 
 ### Supported environments
 
@@ -270,7 +270,7 @@ db.toHandlers('graphql')
 | ------------- | ---------------- | ------------------- |
 | REST API      | ✅               | ✅                  |
 | GraphQL API   | ❌<sup>1</sup>   | ✅                  |
-| WebSocket API | ❌               | ❌                  |
+| WebSocket API | ❌               | ✅                  |
 
 > <sup>1</sup>—Although it is possible to work with GraphQL requests through
 > custom aliasing, it still requires a lot of additional setup. Cypress achieves
@@ -347,7 +347,7 @@ MSW gives you a more advanced control over the requests through its `passthrough
 | ------------- | -------------- | ------------------- |
 | REST API      | ✅             | ✅                  |
 | GraphQL API   | ❌<sup>1</sup> | ✅                  |
-| WebSocket API | ❌             | ❌                  |
+| WebSocket API | ✅             | ✅                  |
 
 > <sup>1</sup>—You can handle GraphQL requests with `page.route()` since they
 > are also HTTP requests but Playwright does not provide a first-class support

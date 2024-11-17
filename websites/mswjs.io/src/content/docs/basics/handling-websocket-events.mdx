@@ -122,7 +122,7 @@ chat.addEventListener('connection', () => {
 })
 ```
 
-You can also broadcast data to all clients except a subset of clients by using the `.boardcastExcept()` method on the event handler object.
+You can also broadcast data to all clients except a subset of clients by using the `.broadcastExcept()` method on the event handler object.
 
 ```js {3,6}
 chat.addEventListener('connection', ({ client }) => {
@@ -130,7 +130,7 @@ chat.addEventListener('connection', ({ client }) => {
   chat.broadcastExcept(client, 'Hello everyone except you!')
 
   // Broadcast data to all the clients matching a predicate.
-  chat.boardcastExcept(chat.clients.filter((client) => {
+  chat.broadcastExcept(chat.clients.filter((client) => {
     return client
   }, "Hello to some of you!")
 })
@@ -277,6 +277,19 @@ This is equivalent to a client sending that data to the server.
   title="server.send(data)"
   description="The `server.send()` API."
 />
+
+### Closing server connections
+
+You can close a previously established original WebSocket server connection by calling `server.close()`.
+
+```js {3}
+chat.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.close()
+})
+```
+
+Calling `server.close()` will close the server connection and dispatch the `close` event on the `server` object.
 
 ## Logging
 
@@ -445,7 +458,7 @@ it('handles error payload', async () => {
         // In this runtime handler, prevent the "message" client from
         // propagating to another event target (the happy path handler).
         // Then, send a completely different message to the client.
-        event.preventPropagation()
+        event.stopPropagation()
         client.send('error-payload')
       })
     }),
@@ -453,7 +466,7 @@ it('handles error payload', async () => {
 })
 ```
 
-> Omitting `event.preventPropagation()` will result in _two_ messages being sent to the client upon receiving the same event—the `'error-payload'` first, then the original `event.data` second.
+> Omitting `event.stopPropagation()` will result in _two_ messages being sent to the client upon receiving the same event—the `'error-payload'` first, then the original `event.data` second.
 
 Just like with a regular `EventTarget`, you can utilize `event.preventImmediatePropagation()` to stop an event from propagating across sibling listeners. For example, when handling a particular WebSocket event, you can use that to short-circuit any other event listeners that would otherwise be called.
 
