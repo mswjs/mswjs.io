@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Hero from '@mswjs/shared/components/Hero.astro'
-import { EGGHEAD_COURSE_URL, SITE_DESCRIPTION, SITE_TITLE } from '../consts'
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts'
 import { Container } from '@mswjs/shared/components/react/container'
 import { Grid } from '@mswjs/shared/components/react/grid'
 import { Section } from '../components/react/section'
@@ -59,7 +59,7 @@ import PromoBanner from '@mswjs/shared/components/PromoBanner.astro'
   displayTitle={`${SITE_TITLE} - ${SITE_DESCRIPTION}`}
 >
   <Hero repoUrl="https://github.com/mswjs/msw" class="lg:-mt-20">
-    <PromoBanner slot="headnote" actionText="Watch now" actionUrl={EGGHEAD_COURSE_URL}>
+    <PromoBanner slot="headnote" actionText="Watch now" actionUrl="https://egghead.io/courses/mock-rest-and-graphql-apis-with-mock-service-worker-8d471ece">
       <div class="flex items-center">
         <EggheadIcon
           className="absolute w-8"

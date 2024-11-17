@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@astrojs/markdoc": "^0.5.0",
+    "@tailwindcss/container-queries": "^0.1.1",
     "rehype-pretty-code": "^0.10.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
