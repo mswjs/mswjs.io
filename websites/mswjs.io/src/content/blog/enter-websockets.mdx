@@ -63,7 +63,7 @@ export class WebSocketInterceptor extends BatchInterceptor {
     super({
       name: 'websocket-interceptor',
       interceptors: [
-        createXMLHttpRequetsPollingInterceptor(),
+        createXMLHttpRequestPollingInterceptor(),
         createWebSocketInterceptor(),
       ],
     })
