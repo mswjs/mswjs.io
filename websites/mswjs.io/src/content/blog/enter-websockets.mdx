@@ -17,7 +17,9 @@ keywords:
 
 It's been a little more than a year since our last major announcement for MSW. The reception of the [Fetch-based API mocking](/blog/introducing-msw-2.0) has been incredible! By the time of writing this, the overwhelming majority of developers are running standard-based MSW 2.0, exposing themselves to web APIs and becoming better engineers in the process.
 
-Today, I've got another major announcement to make. **You can now [mock WebSocket connections](/docs/network-behavior/websocket) with MSW!** 🎉 Finally, I can say that:
+Today, I've got another major news to share.
+
+**You can now [mock WebSocket connections](/docs/network-behavior/websocket) with MSW!** 🎉 Finally, I can say that:
 
 > Mock Service Worker is the first API mocking library in JavaScript to support mocking REST, GraphQL, and WebSocket APIs at the same time.
 
@@ -45,7 +47,7 @@ One thing was certain. Adding WebSocket support to MSW meant making sense of all
 
 ## The iterations
 
-It has become a customary fashion for any serious feature to require about half a dozen of iterations before it's complete. The WebSocket support was no exception. I took some early tries on the API about three years ago, but I was soon met with a wall.
+It has become somewhat a habit of mine to go through at least half a dozen iterations before completing any serious feature. The WebSocket support was no exception. I made some early attempts on the API about three years ago, but I was soon met with a wall.
 
 The **transports**.
 
@@ -164,14 +166,14 @@ We are introducing [bindings](/docs/basics/handling-websocket-events#bindings) t
 
 ```ts {2,9}
 import { ws } from 'msw'
-import { bind } from '@mswjs/socket.io-binding'
+import { toSocketIo } from '@mswjs/socket.io-binding'
 
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
   chat.addEventListener('connection', (connection) => {
-    // Bind the raw WebSocket connection to a socket.io API.
-    const io = bind(connection)
+    // Bind the raw WebSocket connection to a Socket.IO API.
+    const io = toSocketIo(connection)
 
     // Listen to events and emit data as you're used to.
     io.client.on('hello', (username) => {
@@ -193,8 +195,19 @@ I would like to extend my gratitude to [MSW Sponsors](https://github.com/sponsor
 
 ## What's next?
 
-With the WebSocket interception becoming a part of the MSW suite, I'm looking forward to implementing features that can utilize it, like GraphQL subscriptions. I am also expecting a barrage of bug reports as it often happens when developers start using new APIs in their projects. So, please, make sure to [report any issues](https://github.com/mswjs/msw/issues/new/choose) you find!
+With the WebSocket interception becoming a first-class citizen in MSW, I'm looking forward to implementing features that can utilize it, like [GraphQL subscriptions](https://github.com/mswjs/msw/pull/2357). I am also expecting a barrage of bug reports as it often happens when developers start using new APIs in their projects (so, please, make sure to [report any issues](https://github.com/mswjs/msw/issues/new/choose) you find).
 
-For me, what's next is long months of work, so you can support my involvement with Mock Service Worker, please consider [becoming its GitHub sponsor](https://github.com/sponsors/mswjs)! Go watch the Egghead course as well, the revenue I get supports my open-source work.
+One gigantic effort is complete, but there are many more to come. I do what I do because there are a lot of awesome companies and individuals who believe in me and support my work on the project. Please consider joining them!
+
+import { CurrencyDollarIcon } from '@heroicons/react/24/solid'
+
+<PageCard
+  icon={CurrencyDollarIcon}
+  url="https://github.com/sponsors/mswjs"
+  title="Become a sponsor"
+  description="Support Mock Service Worker by becoming a GitHub Sponsor."
+/>
+
+Go watch the [Egghead course](https://egghead.io/courses/mocking-websocket-apis-with-mock-service-worker-9933b7f5) as well, the royalties I get from them supports my open-source work.
 
 Thank you.
