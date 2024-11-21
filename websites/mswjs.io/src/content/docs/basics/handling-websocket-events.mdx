@@ -562,17 +562,17 @@ chat.addEventListener('connection', ({ client, server }) => {
 
 To provide a more familiar experience when mocking third-party WebSocket clients, MSW uses _bindings_. A binding is a wrapper over the standard `WebSocket` class that encapsulates the third-party-specific behaviors, such as message parsing, and gives you a public API similar to that of the bound third-party library.
 
-For example, here's how to handle SocketIO communication using MSW and a designated SocketIO binding:
+For example, here's how to handle Socket.IO communication using MSW and a designated SocketIO binding:
 
-```js /bind/1,3 {2,8}
+```js /toSocketIo/ {2,8}
 import { ws } from 'msw'
-import { bind } from '@mswjs/socket.io-binding'
+import { toSocketIo } from '@mswjs/socket.io-binding'
 
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
   chat.addEventListener('connection', (connection) => {
-    const io = bind(connection)
+    const io = toSocketIo(connection)
 
     io.client.on('hello', (username) => {
       io.client.emit('message', `hello, ${username}!`)
