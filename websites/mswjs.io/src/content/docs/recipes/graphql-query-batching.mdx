@@ -11,7 +11,7 @@ keywords:
   - batched-execute
 ---
 
-Query batching is a performance mechanism provided by some GraphQL clients to optimize the number of operations made by grouping them togeher in a single query. While this feature has its practical benefits, query batching is not a part of the [GraphQL specification](https://spec.graphql.org/) (neither the [GraphQL-over-HTTP specification](https://graphql.github.io/graphql-over-http/)), lacking any standard consensus on the syntax and behavior of batched queries. Because of this, MSW does not provide a built-in way of handling such queries.
+Query batching is a performance mechanism provided by some GraphQL clients to optimize the number of operations made by grouping them together in a single query. While this feature has its practical benefits, query batching is not a part of the [GraphQL specification](https://spec.graphql.org/) (neither the [GraphQL-over-HTTP specification](https://graphql.github.io/graphql-over-http/)), lacking any standard consensus on the syntax and behavior of batched queries. Because of this, MSW does not provide a built-in way of handling such queries.
 
 We highly recommend implementing the support for batched GraphQL queries as a part of your MSW setup. Below, you can find a couple of examples of how to achieve that.
 
