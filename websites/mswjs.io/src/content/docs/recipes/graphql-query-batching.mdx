@@ -59,6 +59,7 @@ import { http, HttpResponse, getResponse, bypass } from 'msw'
 
 export function batchedGraphQlQuery(url, handlers) {
   return http.post(url, async ({ request }) => {
+    const requestClone = request.clone()
     const payload = await request.clone().json()
 
     // Ignore non-batched GraphQL queries.
@@ -70,7 +71,7 @@ export function batchedGraphQlQuery(url, handlers) {
       payload.map(async (query) => {
         // Construct an individual query request
         // to the same URL but with an unwrapped query body.
-        const queryRequest = new Request(request.clone(), {
+        const queryRequest = new Request(requestClone, {
           body: JSON.stringify(query),
         })
 
