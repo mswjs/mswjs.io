@@ -51,7 +51,7 @@ http.get(
   // intercepted request, and decides how to handle it.
   ({ request, params, cookies }) => {
     return HttpResponse.json(['Tom', 'Jerry', 'Spike'])
-  }
+  },
 )
 ```
 
@@ -89,7 +89,7 @@ You can include special tokens in the request predicate string to intercept mult
 http.get('/user/*', userResolver)
 ```
 
-> Request pathname matching in MSW is using [`path-to-regexp`](https://github.com/pillarjs/path-to-regexp) library. Learn more about all the supported path tokens in its documentation.
+> Request pathname matching in MSW is using [`path-to-regexp`](https://github.com/pillarjs/path-to-regexp/tree/6.x) library. Learn more about all the supported path tokens in its documentation.
 
 When providing request pathnames, make sure to _exclude any query parameters_. Query parameters have no effect on resource identification and instead serve as the means to send additional information to the server. If MSW encounters a query parameter, it removes it and prints a warning that you should remove it too. The values of the query parameters is still available to you in the `request.url` property in the response resolver.
 
