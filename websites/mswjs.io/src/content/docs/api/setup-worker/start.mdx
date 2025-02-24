@@ -107,7 +107,7 @@ worker.start({
 
 Decide how to react to unhandled requests (i.e. those that do not have a matching request handler).
 
-#### Standard modes
+#### Predefined strategies
 
 | Handling mode    | Description                                                                    |
 | ---------------- | ------------------------------------------------------------------------------ |
@@ -115,7 +115,7 @@ Decide how to react to unhandled requests (i.e. those that do not have a matchin
 | `error`          | Throws an error, aborts the request.                                           |
 | `bypass`         | Prints nothing, performs the request as-is.                                    |
 
-#### Custom `onUnhandledRequest` function
+#### Custom strategy
 
 ```js
 worker.start({
@@ -130,6 +130,8 @@ worker.start({
   },
 })
 ```
+
+> By default, MSW will ignore common static asset requests so they won't be considered unhandled. If you provide a custom callback to the `onUnhandledRequest` function, _you will opt out from that behavior_. You can tap into it at any time by manually calling the [`isCommonAssetRequest()`](/docs/api/is-common-asset-request) function.
 
 ### `waitUntilReady`
 

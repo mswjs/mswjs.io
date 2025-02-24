@@ -1,0 +1,69 @@
+---
+title: isCommonAssetRequest
+description: Check if the request is a common asset request.
+keywords:
+  - common
+  - static
+  - asset
+  - ignore
+  - bypass
+---
+
+## Call signature
+
+```ts
+function isCommonAssetRequest(request: Request): boolean
+```
+
+import { PageCard } from '../../../components/react/pageCard'
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CodeBracketSquareIcon}
+  url="https://github.com/mswjs/msw/tree/main/src/core/isCommonAssetRequest.ts"
+  title="delay.ts"
+  description="Source code for the `isCommonAssetRequest` function."
+/>
+
+## Common assets
+
+The following conditions are included in determining whether a request is a common asset request:
+
+- Has a `file:` protocol;
+- Has a hostname of common static assets providers (e.g. `fonts.googleapis.com`);
+- Includes `/node_modules` substring in its pathname;
+- Includes `@vite` in its pathname;
+- Is an HTML (`.html`), CSS (`.css`, `.scss`, `.lass`), JavaScript (`.js`, `.jsx`, `.mjs`, `.ts`, `.tsx`, `.mts`), image (`.jpg`, `.jpeg`, `.png`, `.gif`, `.avif`, `.webp`, `.svg`), font (`.ttf`, `.otf`, `.woff`, `.woff2`, `.eot`), video (`.mp4`, `.webm`, `.ogg`, `.mov`), audio (`.mp3`, `.ogg`, `.flac`, `.aac`), or other document format (`.pdf`, `.json`, `.csv`, `.zip`, `.tar`, `.gz`, `.rar`, `.7z`) request.
+
+## Usage
+
+The `isCommonAssetRequest` function is meant to be used internally by MSW to automatically ignore common static asset requests from being considered unhandled. You don't have to check that manually anymore.
+
+### Custom `onUnhandledRequest` callback
+
+One use case where you may want to use this function is when providing a custom function to the `onUnhandledRequest` option of your `server`/`worker`. Doing so will opt out from the default static assets exclusion and you would have to call `isCommonAssetRequest` manually if you want to rely on it again.
+
+```ts
+import { isCommonAssetRequest } from 'msw'
+const { setupWorker } from 'msw/browser'
+
+const worker = setupWorker()
+
+worker.start({
+	onUnhandledRequest(request, print) {
+		// List a custom request predicate.
+		if (myCustomLogic(request)) {
+			return
+		}
+
+		// Ignore common static asset requests
+		// (i.e. tap into the default behavior).
+		if (isCommonAssetRequest(request)) {
+			return
+		}
+
+		// Otherwise, print a warning.
+		print.warning()
+	}
+})
+```

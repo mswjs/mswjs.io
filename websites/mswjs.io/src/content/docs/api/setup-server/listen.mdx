@@ -76,3 +76,5 @@ server.listen({
   },
 })
 ```
+
+> By default, MSW will ignore common static asset requests so they won't be considered unhandled. If you provide a custom callback to the `onUnhandledRequest` function, _you will opt out from that behavior_. You can tap into it at any time by manually calling the [`isCommonAssetRequest()`](/docs/api/is-common-asset-request) function.
