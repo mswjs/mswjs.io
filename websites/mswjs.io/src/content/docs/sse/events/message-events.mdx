@@ -1,0 +1,12 @@
+---
+order: 1
+title: Message events
+---
+
+```ts
+sse('/stream', ({ client }) => {
+  client.send({
+    data: 'hello world',
+  })
+})
+```

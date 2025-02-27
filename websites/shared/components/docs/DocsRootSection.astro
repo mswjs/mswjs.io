@@ -7,9 +7,12 @@ import {
   GlobeAltIcon as GlobeIcon,
   TrophyIcon,
   CommandLineIcon,
+  ServerIcon,
+ChatBubbleBottomCenterIcon
 } from '@heroicons/react/24/solid'
 import type { DocsItem } from '../../utils/buildNavTree'
 import DocsNavTree from './DocsNavTree.astro'
+import { GraphQLIcon } from '../../../mswjs.io/src/components/react/icons/graphql'
 
 type Props = {
   title: string
@@ -22,6 +25,10 @@ const rootSectionIcons: Record<
   string,
   React.FC<{ className?: string }>
 > = {
+  'Mocking HTTP': ServerIcon,
+  'Mocking GraphQL': GraphQLIcon,
+  'Mocking WebSocket': ChatBubbleBottomCenterIcon,
+
   Basics: NewspaperIcon,
   'Network behavior': GlobeIcon,
   Integrations: MenuIcon,

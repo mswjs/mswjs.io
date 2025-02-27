@@ -6,12 +6,36 @@ import {
 } from '@mswjs/shared/utils/buildNavTree'
 
 export function buildDocsNavTree(
-  pages: Array<MDXInstance<DocsFrontmatter>>
+  pages: Array<MDXInstance<DocsFrontmatter>>,
 ): Array<DocsItem> {
   const builder = createNavTreeBuilder(pages)
 
   return [
     ...builder.get('*.mdx'),
+
+    {
+      kind: 'group',
+      title: 'Mocking HTTP',
+      children: builder.get('http/**/*.mdx'),
+    },
+    {
+      kind: 'group',
+      title: 'Mocking GraphQL',
+      children: builder.get('graphql/**/*.mdx'),
+    },
+    {
+      kind: 'group',
+      title: 'Mocking WebSocket',
+      children: builder.get('websocket/**/*.mdx'),
+    },
+    {
+      kind: 'group',
+      title: 'Mocking SSE',
+      children: builder.get('sse/**/*.mdx'),
+    },
+
+    // ---
+
     {
       kind: 'group',
       title: 'Basics',

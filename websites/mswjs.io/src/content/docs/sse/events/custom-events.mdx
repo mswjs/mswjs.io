@@ -1,0 +1,15 @@
+---
+order: 2
+title: Custom events
+---
+
+```ts
+sse('/stream', ({ client }) => {
+  client.send({
+    event: 'userconnect',
+    data: {
+      username: 'john',
+    },
+  })
+})
+```
