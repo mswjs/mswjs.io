@@ -1,4 +1,21 @@
 ---
 order: 2
 title: Network errors
+description: Simulating request/network errors.
 ---
+
+You can respond to the intercepted request with [`Response.error()`](https://developer.mozilla.org/en-US/docs/Web/API/Response/error_static) that's designed to represent a network error. The `Response.error()` static method returns a special kind of `Response` insatnce that doesn't get treated as a normal server response. Instead, it results in a network error, **aborting the pending request**.
+
+```ts {2}
+http.get('/resource', () => {
+  return HttpResponse.error()
+})
+```
+
+Use the `Response.error()` method to simulate network errors, such as:
+
+- DNS errors;
+- Connection timeouts;
+- Client going offline.
+
+The WHATWG Fetch API Specification provides no way to customize the network error message so your client will receive a generic `TypeError: Failed to fetch` error that you should handle in the `.catch()` closure of your request.

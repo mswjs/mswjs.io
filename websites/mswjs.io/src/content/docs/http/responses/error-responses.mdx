@@ -1,4 +1,20 @@
 ---
 order: 1
 title: Error responses
+description: Simulating server error responses.
 ---
+
+You can respond to the intercepted request with an error response by constructing a valid error `Response` instance and returning it from the response resolver. This implies using an error status code (`4xx`/`5xx`) and optionally providing any custom response payload, such as an error message.
+
+```ts {3} /404/
+http.get('/books/:id', ({ params }) => {
+  if (params.id === 'abc-123') {
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  return HttpResponse.json({
+    id: params.id,
+    title: 'The Lord of the Rings',
+  })
+})
+```

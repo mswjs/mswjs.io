@@ -2,3 +2,91 @@
 order: 2
 title: Mocked responses
 ---
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+## Handling a request
+
+There are multiple ways you can handle an intercepted request in MSW. You can choose the appropriate way, or even combine them, based on what you want to achieve in your mocks.
+
+### Return a mocked response
+
+If you return a `Response` instance from the response resolver, that response will be used as the mocked response for the request.
+
+```ts {2}
+http.get<never, never, string>('/resource', () => {
+  return HttpResponse.text('hello world')
+})
+```
+
+> You can return a plain Fetch API [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) instance, too. It's recommended to use the [`HttpResponse`](/docs/api/http-response) class instead, which is a drop-in replacement for `Response` but provides improved developer experience and unlocks otherwise unavailable features, like mocking the `set-cookie` header.
+
+### Throw a mocked response
+
+If you throw a `Response` instance at any point in the response resolver, that response will be used as the mocked response for the request. This is particularly handy for short-circuiting the resolver flow anywhere during the request handling.
+
+```ts /throw/ {3,8}
+function withAuthorization(request: Request) {
+  if (!request.headers.get('authorization')) {
+    throw HttpResponse.text('Unauthorized', { status: 401 })
+  }
+}
+
+http.get<never, never, { id: string }>('/resource', ({ request }) => {
+  withAuthorization(request)
+  return HttpResponse.json({ id: 'abc-123' })
+})
+```
+
+> In this example, the `GET /resource` request will get a "401 Unauthorized" response if it doesn't contain the `Authorization` header. Otherwise, it will proceed with the mocked JSON response.
+
+### Passthrough
+
+You can perform the intercepted request as-is and return its original response (i.e. passthrough a request) by returning the result of the `passthrough()` function call.
+
+```ts /passthrough/1 {4}
+import { passthrough } from 'msw'
+
+http.get('/resource', () => {
+  return passthrough()
+})
+```
+
+<Warning>
+  Note that passthrough requests are still _considered handled_. This means that
+  once you return `passthrough()`, no other request handlers will be able to
+  affect this request, even if they would match it otherwise.
+</Warning>
+
+This is especially useful when you only want to mock a response in certain situations and perform the request as-is otherwise.
+
+```ts {5,8}
+http.get('https://api.example.com/resource', async ({ request }) => {
+  const data = await request.clone().json()
+
+  if (data?.id === 'abc-123') {
+    return HttpResponse.json({ id: 'abc-123' })
+  }
+
+  return passthrough()
+})
+```
+
+> Above, you can intercept a request, parse its body as JSON, and then decide whether you want to respond with a mock or perform it as-is.
+
+### Return nothing
+
+You can also return nothing from the response resolver, either explicitly or implicitly. If that happens, MSW will continue to look for other request handlers that might match ths request. You can utilize this for network introspection or any other side effects that do not involve responding to the request.
+
+```ts {3}
+export const handlers = [
+  http.get('/resource', ({ request }) => {
+    console.log('Request intercepted!', request.method, request.url)
+  }),
+  http.get('/resource', () => {
+    return HttpResponse.text('hello world')
+  }),
+]
+```
+
+> In this example, the first request handler will match, log the message to the console, and, since it returns nothing, finish. The second request hander will then match the same request and handle it with a mocked response, as an example.

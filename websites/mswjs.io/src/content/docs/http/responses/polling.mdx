@@ -1,3 +1,35 @@
 ---
 title: Polling
+description: Yield different responses on subsequent requests.
 ---
+
+You can use [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) (including async generators) in JavaScript to yield different responses on each subsequent request to the same handler. This is particularly handy to describe HTTP polling.
+
+```ts /*/ /yield/ {8}
+http.get<{ city: string }, never, { degree: number }>(
+  '/weather/:city',
+  function* () {
+    let degree = 25
+
+    while (degree < 27) {
+      degree++
+      yield HttpResponse({ degree })
+    }
+
+    degree++
+    return HttpResponse.json({ degree })
+  },
+)
+```
+
+This `GET /wheather/:city` request handler increments the `degree` on each response until it reaches 28 degrees:
+
+```json
+GET /weather/london // { "degree": 26 }
+GET /weather/london // { "degree": 27 }
+GET /weather/london // { "degree": 28 }
+
+// All subsequent requests will respond
+// with the latest returned response.
+GET /weather/london // { "degree": 28 }
+```

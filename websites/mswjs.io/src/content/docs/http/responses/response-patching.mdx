@@ -1,3 +1,39 @@
 ---
 title: Response patching
+description: Combine original and mocked responses.
+keywords:
+  - patch
+  - patching
+  - augment
+  - original
+  - bypass
 ---
+
+You can combine original and mocked responses using a technique called **response patching**. It involves performing the intercepted request as-is, getting its original response, and modifying it as you want.
+
+Use the [`bypass()`](/docs/api/bypass) function from `msw` to perform any Fetch API `Request`, bypassing any otherwise matching request handlers and also preventing an infinite loop caused by the handler where you're using `bypass()`:
+
+```ts {4-5,8-10} /bypass/
+import { http, HttpResponse, bypass } from 'msw'
+
+http.get('/resource', async ({ request }) => {
+  // Get the original JSON response from the server.
+  const originalData = await bypass(request).then((response) => response.json())
+
+  return HttpResponse.json({
+    // Combine the original data with the mocked data.
+    ...originalData,
+    id: 'mocked-id',
+  })
+})
+```
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/bypass"
+  title="bypass"
+  description="API reference for the `bypass` function."
+/>
