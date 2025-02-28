@@ -2,6 +2,11 @@
 order: 2
 title: Network errors
 description: Simulating request/network errors.
+keywords:
+  - offline
+  - timeout
+  - dns
+  - ssl
 ---
 
 You can respond to the intercepted request with [`Response.error()`](https://developer.mozilla.org/en-US/docs/Web/API/Response/error_static) that's designed to represent a network error. The `Response.error()` static method returns a special kind of `Response` insatnce that doesn't get treated as a normal server response. Instead, it results in a network error, **aborting the pending request**.
