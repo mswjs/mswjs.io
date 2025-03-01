@@ -93,3 +93,17 @@ http.get(/\/settings\/(profile|settings)/, () => {})
 ```
 
 It's generally recommended to use request paths/URLs predicates, but you can rely on regular expressions for the most complex matching scenarios.
+
+## Response resolver
+
+The following properties are available on the response resolver object argument for `http.*` handlers:
+
+| Property  | Type                                 | Description                                                                      |
+| --------- | ------------------------------------ | -------------------------------------------------------------------------------- |
+| `request` | [`Request`](#)                       | Fetch API `Request` representation of the intercepted request.                   |
+| `params`  | `Record<string, string \| string[]>` | Request [path parameters](/docs/http/requests/path-parameters) (e.g. `:userId`). |
+| `cookies` | `Record<string, string>`             | Parsed [request cookies](/docs/http/requests/cookies).                           |
+
+```ts /request/ /params/#g /cookies/#v
+http.get('/resource', ({ request, params, cookies }) => {})
+```
