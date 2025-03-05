@@ -5,3 +5,57 @@ title: Introduction
 displayTitle: Mocking HTTP
 description: Intercept and mock HTTP requests.
 ---
+
+Mock Service Worker supports the interception and mocking of HTTP requests via the `http` namespace provided by the library:
+
+```ts
+import { http } from 'msw'
+```
+
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/http"
+  title="http"
+  description="API reference for the `http` namespace."
+/>
+
+This page will give you an overview of the mocking experience and some of the benefits of using MSW in your project. Please refer to the additional pages in this section for more details about the request interception, response mocking, specific recipes, and best practices.
+
+## Web standards
+
+We believe in web standards. That is why when using MSW you will be working with the [Fetch API](https://fetch.spec.whatwg.org/) to handle intercepted requests and construct mocked responses (even if they weren't made with `fetch()`). Inevitably, you will become better at understanding the web fundamentals while solving the exact tasks you have at hand.
+
+If you are familiar with requests and responses on the web, you know how to use MSW.
+
+## Benefits
+
+Here are some of the benefits of using MSW for mocking HTTP APIs:
+
+- **Client-agnostic**. The library intercepts any HTTP requests, regardless of the request client. Use plain `fetch()` today, or any third-party client tomorrow—your mocks remain the same.
+- **Seamless**. Make zero changes to the tested code. Request the same production resources, intercept them on the network level with MSW, and handle them in any way you need.
+- **Reusable**. Use the same mocks for different purposes: local development, automated testing, debugging, and showcasing your app.
+- **Type-safe**. Annotate path parameters, request and response body types to never have out-of-date mocks again.
+
+## Next steps
+
+The following sections will guide you through everything you need to know about intercepting and mocking HTTP requests:
+
+import { ServerIcon } from '@heroicons/react/24/outline'
+
+<div className="grid md:grid-cols-2 gap-x-8">
+  <PageCard
+    icon={ServerIcon}
+    url="/docs/http/interception/"
+    title="Intercepting requests"
+    description="Learn how to intercept outgoing HTTP requests."
+  />
+  <PageCard
+    icon={ServerIcon}
+    url="/docs/http/mocking/"
+    title="Mocking responses"
+    description="Learn about all the ways to handle the intercepted request."
+  />
+</div>
