@@ -6,7 +6,7 @@ description: Intercepting GraphQL queries.
 
 import { Success } from '@mswjs/shared/components/react/success'
 
-You can intercept a GraphQL query by defining a `graphql.query()` handler for it and matching it by the _query name_:
+You can intercept a GraphQL query by defining a `graphql.query()` handler for it and matching it by the _operation name_:
 
 ```ts /graphql.query/ /'ListUsers'/#g
 graphql.query('ListUsers', () => {
