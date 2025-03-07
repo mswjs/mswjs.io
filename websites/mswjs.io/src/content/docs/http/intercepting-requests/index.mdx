@@ -66,7 +66,7 @@ You intercepted requests can still have query parameters, and you can access the
 
 <PageCard
   icon={ServerIcon}
-  url="/docs/http/requests/query-parameters"
+  url="/docs/http/intercepting-requests/query-parameters"
   title="Query parameters"
   description="Read and write request query parameters."
 />
@@ -84,7 +84,7 @@ http.post('https://api.github.com/repos/:owner/:repo', () => {})
 When using a string request predicate, you can include special tokens in it to represent different matching behaviors:
 
 - `*` (wildcard), to match any URL or a portion of the URL in its place;
-- `:foo` (parameter), to match a named parameter in the URL (see [Path parameters](/docs/http/requests/path-parameters)).
+- `:foo` (parameter), to match a named parameter in the URL (see [Path parameters](/docs/http/intercepting-requests/path-parameters)).
 
 ### Regular expression
 
@@ -100,11 +100,11 @@ It's generally recommended to use request paths/URLs predicates, but you can rel
 
 The following properties are available on the response resolver object argument for `http.*` handlers:
 
-| Property  | Type                                 | Description                                                                      |
-| --------- | ------------------------------------ | -------------------------------------------------------------------------------- |
-| `request` | [`Request`](#)                       | Fetch API `Request` representation of the intercepted request.                   |
-| `params`  | `Record<string, string \| string[]>` | Request [path parameters](/docs/http/requests/path-parameters) (e.g. `:userId`). |
-| `cookies` | `Record<string, string>`             | Parsed [request cookies](/docs/http/requests/cookies).                           |
+| Property  | Type                                 | Description                                                                                   |
+| --------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `request` | [`Request`](#)                       | Fetch API `Request` representation of the intercepted request.                                |
+| `params`  | `Record<string, string \| string[]>` | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
+| `cookies` | `Record<string, string>`             | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
 
 ```ts /request/ /params/#g /cookies/#v
 http.get('/resource', ({ request, params, cookies }) => {})
