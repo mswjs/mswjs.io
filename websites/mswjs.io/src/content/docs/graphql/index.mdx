@@ -6,11 +6,21 @@ displayTitle: Mocking GraphQL
 description: Intercept and mock GraphQL operations.
 ---
 
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
 Mock Service Worker comes with the first-class support for mocking [GraphQL](https://graphql.org/) APIs. You can develop, test, showcase, and debug your GraphQL applications using the `graphql` namespace exported by `msw`.
 
 ```ts
 import { graphql } from 'msw'
 ```
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/graphql"
+  title="graphql"
+  description="API reference for the `graphql` namespace."
+/>
 
 ## GraphQL clients
 
@@ -29,7 +39,6 @@ Here are some of the benefits when using MSW for mocking GraphQL:
 
 The following sections will guide you through everything you need to know about intercepting and mocking GraphQL APIs:
 
-import { PageCard } from '@mswjs/shared/components/react/pageCard'
 import { GraphQLIcon } from '../../../components/react/icons/graphql'
 
 <div className="grid md:grid-cols-2 gap-x-8">
