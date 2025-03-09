@@ -1,4 +1,205 @@
 ---
 title: Query batching
 description: Intercept and mock batched GraphQL queries.
+keywords:
+  - batch
+  - batched
+  - batching
+  - query
+  - graphql
+  - apollo
+  - batched-execute
 ---
+
+Query batching is a performance mechanism provided by some GraphQL clients to optimize the number of operations made by grouping them together in a single query. While this feature has its practical benefits, query batching is not a part of the [GraphQL specification](https://spec.graphql.org/) (neither the [GraphQL-over-HTTP specification](https://graphql.github.io/graphql-over-http/)), lacking any standard consensus on the syntax and behavior of batched queries. Because of this, MSW does not provide a built-in way of handling such queries.
+
+We highly recommend implementing the support for batched GraphQL queries as a part of your MSW setup. Below, you can find a couple of examples of how to achieve that.
+
+## General knowledge
+
+At its core, mocking a batched GraphQL query comes down to the following steps:
+
+1. Intercept the batched GraphQL query;
+1. Unwrap the batched query into individual GraphQL queries;
+1. Resolve the individual queries against the existing request handlers;
+1. Compose the batched response.
+
+## Apollo
+
+Apollo provides [Query batching](https://www.apollographql.com/docs/router/executing-operations/query-batching/) by grouping multiple queries in a single root-level array.
+
+```graphql
+[
+  query GetUser {
+    user {
+      id
+    }
+  },
+  query GetProduct {
+    product {
+      name
+    }
+  }
+]
+```
+
+This grouping is later reflected in the payload structure received in response to a batched query:
+
+```json
+[
+  { "data": { "user": { "id": "abc-123" } } },
+  { "data": { "product": { "name": "Hoover 2000" } } }
+]
+```
+
+You can mock batched GraphQL queries in Apollo by introducing a custom `batchedGraphQLQuery` higher-order request handler that intercepts such batched queries, unwraps them, and resolves them against any given list of request handlers using the `getResponse` function from `msw`.
+
+```js
+import { http, HttpResponse, getResponse, bypass } from 'msw'
+
+export function batchedGraphQLQuery(url, handlers) {
+  return http.post(url, async ({ request }) => {
+    const requestClone = request.clone()
+    const payload = await request.clone().json()
+
+    // Ignore non-batched GraphQL queries.
+    if (!Array.isArray(payload)) {
+      return
+    }
+
+    const responses = await Promise.all(
+      payload.map(async (query) => {
+        // Construct an individual query request
+        // to the same URL but with an unwrapped query body.
+        const queryRequest = new Request(requestClone, {
+          body: JSON.stringify(query),
+        })
+
+        // Resolve the individual query request
+        // against the list of request handlers you provide.
+        const response = await getResponse(handlers, queryRequest)
+
+        // Return the mocked response, if found.
+        // Otherwise, perform the individual query as-is,
+        // so it can be resolved against an original server.
+        return response || fetch(bypass(queryRequest))
+      }),
+    )
+
+    // Read the mocked response JSON bodies to use
+    // in the response to the entire batched query.
+    const queryData = await Promise.all(
+      responses.map((response) => response?.json()),
+    )
+
+    return HttpResponse.json(queryData)
+  })
+}
+```
+
+Then, use the `batchedGraphQLQuery` function in your request handlers:
+
+```ts {2,15} /batchedGraphQLQuery/1,3
+import { graphql, HttpResponse } from 'msw'
+import { batchedGraphQLQuery } from './batchedGraphQLQuery'
+
+const graphqlHandlers = [
+  graphql.query('GetUser', () => {
+    return HttpResponse.json({
+      data: {
+        user: { id: 'abc-123' },
+      },
+    })
+  }),
+]
+
+export const handlers = [
+  batchedGraphQLQuery('/graphql', graphqlHandlers),
+  ...graphqlHandlers,
+]
+```
+
+## `batched-execute`
+
+The `batched-execute` package provides [Query batching](https://the-guild.dev/graphql/stitching/handbook/appendices/batching-arrays-and-queries) by hoisting multiple operations on a single query and achieving grouping by using field aliases.
+
+```graphql
+query {
+  user_0: user {
+    id
+  }
+  product_0: product {
+    name
+  }
+}
+```
+
+The client then remap the field aliases to the original operations, producing a flat response object.
+
+You can mock batched GraphQL queries in `batched-execute` by introducing a custom `batchedGraphQLQuery` higher-order request handler that intercepts such batched queries and resolves them against a _mocked schema_. We recommend a schema-first API mocking in this case to support anonymous queries.
+
+```js
+import {
+  buildSchema,
+  print,
+  graphql as executeGraphQL,
+  defaultFieldResolver,
+} from 'graphql'
+import { http, HttpResponse, bypass } from 'msw'
+
+// Describe the GraphQL schema.
+// You can also use an existing schema!
+const schema = buildSchema(`
+type User {
+  id: ID!
+}
+
+type Query {
+  user: User
+}
+`)
+
+function batchedGraphQLQuery(url, handlers) {
+  return http.post(url, async ({ request }) => {
+    const payload = await request.json()
+
+    // Resolve the intercepted GraphQL batched query
+    // against the mocked GraphQL schema.
+    const result = await executeGraphQL({
+      source: payload.query,
+      variableValues: data.variables,
+      schema,
+      rootValue: {
+        // Mock individual queries, fields, and types.
+        user: () => ({ id: 'abc-123' }),
+      },
+      async fieldResolver(source, args, context, info) {
+        // Resolve the known fields from the "rootValue".
+        if (source[info.fieldName]) {
+          return defaultFieldResolver(source, args, context, info)
+        }
+
+        // Proxy the unknown fields to the actual GraphQL server.
+        const compiledQuery = info.fieldNodes
+          .map((node) => print(node))
+          .join('\n')
+
+        const query = `${info.operation.operation} { ${compiledQuery} }`
+        const queryRequest = new Request(request, {
+          body: JSON.stringify({ query }),
+        })
+        const response = await fetch(bypass(queryRequest))
+        const { error, data } = await response.json()
+
+        if (error) {
+          throw error
+        }
+
+        return data[info.fieldName]
+      },
+    })
+
+    return HttpResponse.json(result)
+  })
+}
+```
