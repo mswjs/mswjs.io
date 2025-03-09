@@ -2,5 +2,83 @@
 order: 2
 title: Mocking responses
 displayTitle: Mocking GraphQL responses
-description: Different ways to handle an intercepted GraphQL operation.
+description: Responding to an intercepted GraphQL operation.
 ---
+
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { GraphQLIcon } from '../../../../components/react/icons/graphql'
+
+Since GraphQL is still implemented over HTTP, you can handle an intercepted GraphQL operation in the [same ways](/docs/http/handling-requests) as you would any other HTTP request. This includes mocking the response, performing the operation as-is, or doing nothing.
+
+This page will focus on responding to GraphQL operations with mocked responses. Explore the section on the left to find more fine-tuned mocking scenarios.
+
+## Response declaration
+
+When handling operations, GraphQL clients expect a JSON response of a predefined shape, including properties like `data`, `errors`, and others. You must respect that shape when constructing your mocked responses as well.
+
+Use the `HttpResponse.json()` shorthand to respond to an intercepted GraphQL operation.
+
+```ts {12-19} /HttpResponse/1 /HttpResponse.json/
+import { graphql, HttpResponse } from 'msw'
+
+const api = graphql.link('https://api.example.com/graphql')
+
+type User = {
+  id: string
+  name: string
+}
+
+export const handlers = [
+  api.query<User, { id: string }>('GetUser', ({ variables }) => {
+    return HttpResponse.json({
+      data: {
+        user: {
+          id: variables.id,
+          name: 'John Maverick',
+        },
+      },
+    })
+  }),
+]
+```
+
+> Include the root-level keys like `data` or `errors` to tap into different GraphQL client response handling scenarios. Remember that GraphQL APIs support _partial responses_.
+
+## Client-specific keys
+
+Some GraphQL clients, like Apollo, require the presence of special keys in the response object to handle the associated operations correctly. You would have to include those keys in your mocked responses as well. Consult your GraphQL client documentation for more information on how it handles responses and whether it provides any helper functions to simplify the mocks declaration for you.
+
+```ts {5}
+api.query<User>('GetUser', () => {
+  return HttpResponse.json({
+    data: {
+      user: {
+        __typename: 'User',
+        id: 'abc-123',
+        name: 'John Maverick',
+      },
+    },
+  })
+})
+```
+
+> Above is an example of including the `__typename` key in the mocked response reqiured by Apollo.
+
+## Next steps
+
+There is a lot you can do when it comes to mocking GraphQL APIs. Please take a look at the collection of recipes listed in this section. Here are a few noteworthy ones:
+
+<div className="grid md:grid-cols-2 gap-x-8">
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/graphql/mocking-responses/errors/"
+    title="Errors"
+    description="Mock GraphQL error responses."
+  />
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/graphql/mocking-responses/query-batching"
+    title="Query batching"
+    description="Mock responses to batched GraphQL queries."
+  />
+</div>
