@@ -91,6 +91,19 @@ http.get('/resource', () => {
 })
 ```
 
+As with other shorthand methods under the `HttpResponse` class, you can provide the `init` argument to describe your mocked response properties:
+
+```js {6}
+http.get('/resource', () => {
+  return HttpResponse.json(
+    {
+      errorMessage: 'Missing session',
+    },
+    { status: 401 },
+  )
+})
+```
+
 ### `HttpResponse.error()`
 
 A static method that creates a new network error response instance.
