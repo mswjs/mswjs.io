@@ -216,7 +216,7 @@ chat.addEventListener('connection', ({ server }) => {
 Once the server connection has been established, all outgoing client message events are forwarded to the server. To prevent this behavior, call `event.preventDefault()` on the client message event. You can use this to modify the client-sent data before it reaches the server or ignore it completely.
 
 ```js
-chat.addEventListener('connection', ({ client }) => {
+chat.addEventListener('connection', ({ client, server }) => {
   client.addEventListener('message', (event) => {
     // Prevent the default client-to-server forwarding.
     event.preventDefault()
