@@ -33,11 +33,6 @@ export function buildDocsNavTree(
 
     {
       kind: 'group',
-      title: 'Basics',
-      children: builder.get('basics/**/*.mdx'),
-    },
-    {
-      kind: 'group',
       title: 'Concepts',
       children: builder.get('concepts/**/*.mdx'),
     },
