@@ -28,11 +28,6 @@ export function buildDocsNavTree(
       title: 'Mocking WebSocket',
       children: builder.get('websocket/**/*.mdx'),
     },
-    {
-      kind: 'group',
-      title: 'Mocking SSE',
-      children: builder.get('sse/**/*.mdx'),
-    },
 
     // ---
 
