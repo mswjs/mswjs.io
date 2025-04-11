@@ -34,6 +34,8 @@ const nestedHeadings = buildHeadings(headings || [], {
 
 const lastModifiedAt = new Date(lastModifiedAtString)
 const shouldDisplayAds = import.meta.env.ADS
+
+const pageTitle = props.page.data.displayTitle || props.page.data.title
 ---
 
 <Container compact={true}>
@@ -56,7 +58,7 @@ const shouldDisplayAds = import.meta.env.ADS
       <!-- Content -->
       <div class="py-10 mdx sm:col-span-9 xl:col-start-4 xl:col-span-7">
         <header class="mb-8">
-          <h1 class="mb-3">{props.page.data.title}</h1>
+          <h1 class="mb-3">{pageTitle}</h1>
           {props.page.data.description ? (
             <p class="mb-6 text-lg font-medium text-neutral-400">{props.page.data.description}</p>
           ) : null}
@@ -85,7 +87,7 @@ const shouldDisplayAds = import.meta.env.ADS
             Edit this page on GitHub
           </a>
         </footer>
-        <FeedbackWidget client:only="react" pageTitle={props.page.data.title} />
+        <FeedbackWidget client:only="react" pageTitle={pageTitle} />
       </div>
 
       <!-- Table of contents -->

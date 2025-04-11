@@ -1,0 +1,77 @@
+---
+order: 2
+title: Query parameters
+description: Read and write request query parameters.
+keywords:
+  - query
+  - search
+  - parameters
+  - url
+---
+
+## Read a single query parameter
+
+You can read the request's query parameters by creating a `URL` out of the `request.url` string and accessing its `searchParams` property.
+
+```ts {6}
+http.get('/product', ({ request }) => {
+  const url = new URL(request.url)
+
+  // Given a request url of "/product?id=1",
+  // the `productId` will be a "1" string.
+  const productId = url.searchParams.get('id')
+
+  if (!productId) {
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  return HttResponse.json({ id: productId })
+})
+```
+
+> `url.searchParams` is an instance of [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams), which means you get the values of query parameters using methods like `.get()` and `.getAll()`.
+
+## Read multi-value query parameters
+
+Use the [`URLSearchParams.prototype.getAll()`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/getAll) method to get a list of values for multi-value query parameters.
+
+```ts {6}
+http.get('/products', ({ request }) => {
+  const url = new URL(request.url)
+
+  // Given a request url of "/products?id=1&id=2&id=3",
+  // the `productIds` will be an array of ["1", "2", "3"].
+  const productIds = url.searchParams.getAll('id')
+})
+```
+
+## Write query parameters
+
+Although the `request` object represents a Fetch API request _that has already happened_ and cannot be changed, you can still add, change, or remove its query parameters if you wish to _forward that request elsewhere_.
+
+```ts {3,7}
+http.get('/user', ({ request }) => {
+  const url = new URL(request.url)
+  url.searchParams.set('id', 'another-id')
+
+  // Create a proxy request that extends the intercepted request
+  // but has modified query parameters in its URL.
+  const proxyRequest = new Request(url, request)
+})
+```
+
+> Learn more about performing proxy requests and patching the original responses in this recipe:
+
+import { PageCard } from '../../../../components/react/pageCard'
+import { CpuChipIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CpuChipIcon}
+  url="/docs/http/responses/response-patching"
+  title="Response patching"
+  description="Perform original requests and modify their responses."
+/>
+
+## Type safety
+
+Query parameter types are always a `string` for single parameters and `string[]` for multi-value ones. MSW provides no additional functionality to parse parameter values or cast them to narrower types. If you ever need such a functionality, we recommend implementing it yourself as a utility function you can reuse across your request handlers.

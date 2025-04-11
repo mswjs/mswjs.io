@@ -1,0 +1,117 @@
+---
+order: -1
+standalone: true
+title: Introduction
+displayTitle: Mocking WebSocket
+description: Intercept and mock WebSocket events.
+---
+
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+Mock Service Worker comes with a first-class support for mocking WebSocket APIs. You can intercept WebSocket connections and mock client and server events using the `ws` namespace from `msw`:
+
+```ts
+import { ws } from 'msw'
+```
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/ws"
+  title="ws"
+  description="API reference for the `ws` namespace."
+/>
+
+This page will give you a high-level overview of what mocking WebSockets with MSW looks like, as well as go through the important defaults of the said mocking.
+
+## Standard-first
+
+Much like HTTP and GraphQL, WebSocket mocking is designed to respect and promote web standards. The way you intercept and mock WebSocket communication is according to the [WHATWG WebSocket Standard](https://websockets.spec.whatwg.org/), which means treating clients as `EventTarget`, listening to events like `message` and `close`, and reading sent and received data from the `MessageEvent` objects.
+
+**We have no plans to support custom WebSocket protocols,** such as those utilizing HTTP polling. Those are proprietary to the third-party tooling that implements them, and there is no reliable way for MSW to handle those protocols without shipping non-standard, vendor-specific logic.
+
+That being said, we acknowledge that the standard `WebSocket` interface is seldom used directly in production systems. We are providing a collection of [bindings](/docs/api/ws/bindings) to help you mock clients built on top of the WebSocket protocol, like Socket.IO.
+
+## Event types
+
+WebSocket communication is _duplex_, which means that both the client and the server can send and receive events independently and simultaneously. There are two types of events you can handle with the library:
+
+- **Outgoing client events** (client-to-server). These are sent by your WebSocket client to the original server. You can intercept such events and decide whether to mock the server response or allow them to pass through.
+- **Incoming server events** (server-to-client). These are received from your original server. You can intercept these events, too, before they reach the client and decide whether to modify them, prevent them, or let them pass through.
+
+## Intercepting connections
+
+You can intercept WebSocket connections in your app and use the library to act as a _middleware_ layer that sits between your client and the original server:
+
+```
+client ⇄ MSW ⇄ server
+```
+
+Start by importing the `ws` namespace and creating a new _link_:
+
+```ts {3} /ws/1,2
+import { ws } from 'msw'
+
+const chat = ws.link('wss://chat.example.com')
+```
+
+> You can use the same URL predicate for WebSocket connections as you use for the `http` handlers, which includes absolute and relative URLs as well as path parameters, wildcards, and regular expressions.
+
+A link preconfigures the interceptor to match WebSocket connections that match the provided predicate (e.g. URL).
+
+Add a `connectin` event listener on the link to intercept an outgoing client connection:
+
+```ts {2-4} /'connection'/
+export const handlers = [
+  chat.addEventListener('connection', () => {
+    console.log('WebSocket client connecting...')
+  }),
+]
+```
+
+You will be handling both client and server events from this connection listener.
+
+## Important defaults
+
+The library implements a set of default behaviors to guarantee good developer experience for different testing and development scenarios. You can optot from all of these and fine-tune the interception to suit your needs.
+
+### Client connections
+
+**By default, the intercepted WebSocket connections are not open.** This encourages mock-first development and makes it easier to manage connections to non-existing servers (as the connection error in that case happens in a scheduled microtask that cannot be caught). You can establish the actual server connection by calling `server.connect()` in the connection listener.
+
+### Client-to-server forwarding
+
+**By default, no client events are forwarded to the original server** (since the connection isn't established). Once you establish the original server connection via `server.connect()`, **all client events will be forwarded to the server**.
+
+You can opt-out from client-to-server forwarding by calling `event.preventDefault()` on the events that should not reach the server.
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/client-events/client-to-server-forwarding"
+  title="Client-to-server forwarding"
+  description="Manage the client event forwarding."
+/>
+
+### Server-to-client forwarding
+
+**By default, once you establish the actual server connection, all incoming server events are forwarded to the client.** You can opt-out from this behavior by calling `event.preventDefault()` on the server events that should not reach the client.
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/server-events/server-to-client-forwarding"
+  title="Server-to-client forwarding"
+  description="Manage the server event forwarding."
+/>
+
+## Next steps
+
+Next, read the following section to learn how to intercept and handle WebSocket client events like `message` or `close`:
+
+import { ChatBubbleBottomCenterIcon } from '@heroicons/react/24/solid'
+
+<PageCard
+  icon={ChatBubbleBottomCenterIcon}
+  url="/docs/websocket/client-events/"
+  title="Client events"
+  description="Intercepting and handling WebSocket client events."
+/>

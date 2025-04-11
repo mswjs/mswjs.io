@@ -1,0 +1,68 @@
+---
+order: 7
+title: Streaming
+description: Respond with a stream of mocked data.
+keywords:
+  - stream
+  - streaming
+  - readable
+  - transform
+  - video
+---
+
+You can respond to the intercepted request with a stream of data by constructing a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) instance and providing it as the body of a mocked response.
+
+```ts {2-8,10} /stream/2,3
+http.get('/stream', () => {
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode('hello'))
+      controller.enqueue(new TextEncoder().encode('world'))
+      controller.close()
+    },
+  })
+
+  return new HttpResponse(stream, {
+    headers: {
+      'content-type': 'text/plain',
+    },
+  })
+})
+```
+
+## Transform streams
+
+You can use any kind of Web Stream supported by the Fetch API as a mocked response body, like a [`TransformStream`](https://developer.mozilla.org/en-US/docs/Web/API/TransformStream), for example. Here's a compound scenario of fetching the original response stream and injecting latency between its chunks using `TransformStream`:
+
+```ts {9-15} /latencyStream/
+import { http, HttpResponse, delay } from 'msw'
+
+http.get('/video/:id', async ({ params }) => {
+  const videoResponse = await fetch(
+    `https://api.example.com/videos/${params.id}`,
+  )
+  const videoStream = videoResponse.body
+
+  const latencyStream = new TransformStream({
+    start() {},
+    async transform(chunk, controller) {
+      await delay(1000)
+      controller.enqueue(chunk)
+    },
+  })
+
+  return new HttpResponse(videoStream.pipeThrough(latencyStream), videoResponse)
+})
+```
+
+> Learn more about using response timing:
+
+import { PageCard } from '../../../../components/react/pageCard'
+import { ClockIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={ClockIcon}
+  url="/docs/http/responses/response-timing"
+  title="Response timing"
+  description="Control server response time."
+/>

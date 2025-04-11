@@ -1,0 +1,57 @@
+---
+order: -1
+standalone: true
+title: Introduction
+displayTitle: Mocking GraphQL
+description: Intercept and mock GraphQL operations.
+---
+
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+Mock Service Worker comes with the first-class support for mocking [GraphQL](https://graphql.org/) APIs. You can develop, test, showcase, and debug your GraphQL applications using the `graphql` namespace exported by `msw`.
+
+```ts
+import { graphql } from 'msw'
+```
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/graphql"
+  title="graphql"
+  description="API reference for the `graphql` namespace."
+/>
+
+## GraphQL clients
+
+MSW supports intercepting any GraphQL operations that comply with the [GraphQL Specification](https://spec.graphql.org/October2021/). This includes **queries and mutations** (subscriptions are coming in the future) regardless of the GraphQL client that performed them. The library has you covered if you're exploring GraphQL via `graphql-request` or plain `fetch()` as well as if you're using a production-ready client like Apollo, Relay, or URQL.
+
+## Benefits
+
+Here are some of the benefits when using MSW for mocking GraphQL:
+
+- **No more `<MockProvider>`s!** Embrace a cleaner test setup to focus on what matters most: testing your app.
+- **Specification-compliant**. The library will refuse operations that violate the spec, which adds an extra layer of implicit testing to your application (we literally use the `graphql` package to parse operations).
+- **Client-agnostic**. You won't have to touch a single line of mocks if you migrate to a different GraphQL client.
+- **Type-safe**. Reuse the type definitions you have from tools like [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) in your mocks. No more out-of-date mocks.
+
+## Next steps
+
+The following sections will guide you through everything you need to know about intercepting and mocking GraphQL APIs:
+
+import { GraphQLIcon } from '../../../components/react/icons/graphql'
+
+<div className="grid md:grid-cols-2 gap-x-8">
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/graphql/intercepting-operations/"
+    title="Intercepting operations"
+    description="Learn how to intercept GraphQL operations."
+  />
+  <PageCard
+    icon={GraphQLIcon}
+    url="/docs/graphql/mocking-responses/"
+    title="Mocking responses"
+    description="Learn how to mock GraphQL responses."
+  />
+</div>

@@ -58,7 +58,7 @@ export const handlers = [
   http.get('/video', async () => {
     // Request the original video stream.
     const videoResponse = await fetch(
-      'https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4'
+      'https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4',
     )
     const videoStream = videoResponse.body
 
@@ -79,7 +79,7 @@ export const handlers = [
       videoStream.pipeThrough(latencyStream),
       // Inherit the rest of the original video
       // response data, like "headers".
-      videoResponse
+      videoResponse,
     )
   }),
 ]

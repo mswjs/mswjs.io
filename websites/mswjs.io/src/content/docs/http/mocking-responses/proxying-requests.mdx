@@ -1,0 +1,46 @@
+---
+title: Proxying requests
+keywords:
+  - proxy
+  - modify
+  - redirect
+  - bypass
+---
+
+You can proxy the intercepted request by constructing a proxy Fetch API `Request` instance and performing it using the [`bypass()`](/docs/api/bypass) function to prevent it from matching the same request handler again. This can turn your MSW setup into a proxy server that affects both local and external traffic.
+
+```ts /bypass/ {7-8,10-16,18-19}
+import { http, bypass } from 'msw'
+
+export const handlers = [
+  http.get('/resource', async ({ request }) => {
+    const originalUrl = new URL(request.url)
+
+    // Modify the original URL to point to a different server.
+    originalUrl.hostname = 'api.example.com'
+
+    // Construct a proxy request.
+    const proxyRequest = new Request(proxyUrl, {
+      headers: {
+        'content-type': request.headers.get('Content-Type'),
+        'x-proxy-header': 'abc-123',
+      },
+    })
+
+    // Perform the proxy request.
+    const originalResponse = await fetch(bypass(proxyRequest))
+
+    // Continue handling the request...
+  }),
+]
+```
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/bypass"
+  title="bypass"
+  description="API reference for the `bypass` function."
+/>

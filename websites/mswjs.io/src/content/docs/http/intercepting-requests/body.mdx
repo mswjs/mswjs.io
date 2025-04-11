@@ -1,0 +1,31 @@
+---
+order: 3
+title: Request body
+description: "Read the intercepted request's body."
+keywords:
+  - read body
+  - json
+  - formdata
+  - parse
+---
+
+import { Success } from '@mswjs/shared/components/react/success'
+
+You can read the intercepted request's body as you normally would any Fetch API [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request). The `request` object you get in the response resolver argument is literally a regular `Request` instance and can be operated as such.
+
+For example, you can call `await request.json()` to read the request's body as JSON:
+
+```ts {2} /await request.json()/
+http.post<{ id: string }, Post>('/posts/:id', async ({ request }) => {
+  const newPost = await request.clone().json() // Post
+})
+```
+
+<Success>
+  It's highly recommended to _clone_ the intercepted request before reading its
+  body. While it's okay to read the request body directly if you plan to mock
+  its response, reading it without cloning in passthrough/bypass scenarios will
+  result in an exception (streams cannot be read twice).
+</Success>
+
+The same is true for the other methods like `.text()`, `.formData()`, `.blob()`, etc.
