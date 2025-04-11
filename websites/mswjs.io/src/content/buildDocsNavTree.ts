@@ -15,6 +15,12 @@ export function buildDocsNavTree(
 
     {
       kind: 'group',
+      title: 'Concepts',
+      children: builder.get('concepts/**/*.mdx'),
+    },
+
+    {
+      kind: 'group',
       title: 'Mocking HTTP',
       children: builder.get('http/**/*.mdx'),
     },
@@ -29,13 +35,6 @@ export function buildDocsNavTree(
       children: builder.get('websocket/**/*.mdx'),
     },
 
-    // ---
-
-    {
-      kind: 'group',
-      title: 'Concepts',
-      children: builder.get('concepts/**/*.mdx'),
-    },
     {
       kind: 'group',
       title: 'Integrations',

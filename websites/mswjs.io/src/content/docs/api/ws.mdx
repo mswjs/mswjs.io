@@ -245,7 +245,7 @@ The `info` argument on the `connection` event listener contains additional WebSo
 ```js
 api.addEventListener('connection', ({ info }) => {
   if (info.protocols?.includes('chat')) {
-    // ...
+    // Handle the chat protocol connection.
   }
 })
 ```
