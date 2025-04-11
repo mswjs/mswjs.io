@@ -1,3 +1,36 @@
 ---
+order: 99
 title: Closing server connection
 ---
+
+You can close the original server connection by calling `server.close()` at any point in your event handler.
+
+```ts {7}
+api.addEventListener('connection', ({ client, server }) => {
+  server.connect()
+
+  client.addEventListener('message', (event) => {
+    if (event.data === 'hello world') {
+      event.preventDefault()
+      server.close()
+      client.send('hello from mock')
+    }
+  })
+})
+```
+
+> In the example above, we are closing the server connection once the client sends a text message `'hello world'`. Additionally, we prevent that message from being forwarded by calling `event.preventDefault()` and instead send back a mock message to the client `'hello from mock'`.
+
+The original server connection will be closed automatically when the underlying client connection closes.
+
+## API reference
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/ws#closecode-reason-1"
+  title="server.close()"
+  description="The `server.close()` API reference."
+/>

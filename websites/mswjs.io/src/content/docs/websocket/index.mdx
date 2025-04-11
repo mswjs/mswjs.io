@@ -85,13 +85,23 @@ The library implements a set of default behaviors to guarantee good developer ex
 
 You can opt-out from client-to-server forwarding by calling `event.preventDefault()` on the events that should not reach the server.
 
-> TODO: Learn more about [client-to-server forwarding](#).
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/client-events/client-to-server-forwarding"
+  title="Client-to-server forwarding"
+  description="Manage the client event forwarding."
+/>
 
 ### Server-to-client forwarding
 
 **By default, once you establish the actual server connection, all incoming server events are forwarded to the client.** You can opt-out from this behavior by calling `event.preventDefault()` on the server events that should not reach the client.
 
-> TODO: Learn more about [server-to-client forwarding](#).
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/server-events/server-to-client-forwarding"
+  title="Server-to-client forwarding"
+  description="Manage the server event forwarding."
+/>
 
 ## Next steps
 
@@ -101,7 +111,7 @@ import { ChatBubbleBottomCenterIcon } from '@heroicons/react/24/solid'
 
 <PageCard
   icon={ChatBubbleBottomCenterIcon}
-  url="/docs/websocket/client-events"
+  url="/docs/websocket/client-events/"
   title="Client events"
   description="Intercepting and handling WebSocket client events."
 />

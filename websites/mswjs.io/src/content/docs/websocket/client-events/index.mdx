@@ -11,12 +11,14 @@ keywords:
 
 You can intercept the following WebSocket client events:
 
-- [`message`](#the-message-event), when the client is sending a message to the server;
-- [`close`](#the-close-event), when the client has closed the connection.
+| Event name                      | Description                                                    |
+| ------------------------------- | -------------------------------------------------------------- |
+| [`message`](#the-message-event) | Dispatched when the client is sending a message to the server. |
+| [`close`](#the-close-event)     | Dispatched when the client has closed the connection.          |
 
-> The [`open`](#the-open-event) event is represented by the `connection` event listener.
+> The [`open`](#the-open-event) event is represented by the `connection` event listener and doesn't have a designated listener.
 
-You intercept events by adding the respective event listener onto the `client` object on the connection listener argument:
+You can listen to these events by adding a respective event listener to the `client` object anywhere in your event handler:
 
 ```ts {2} /client/
 api.addEventListener('connection', ({ client }) => {
@@ -47,7 +49,7 @@ You can intercept the data sent from your client by adding a `message` listener 
 ```ts /'message'/
 api.addEventListener('connection', ({ client }) => {
   client.addEventListener('message', (event) => {
-    console.log('Client sent data:', event.data)
+    console.log('Intercepted message from the client', event)
   })
 })
 ```

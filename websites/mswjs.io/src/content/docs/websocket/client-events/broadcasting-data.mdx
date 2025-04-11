@@ -1,7 +1,7 @@
 ---
 order: 2
 title: Broadcasting data
-description: Sending data to multiple WebSocket clients.
+description: Sending mocked data to multiple WebSocket clients.
 keywords:
   - multiple
   - clients
@@ -31,7 +31,7 @@ This will send the same data to all intercepted WebSocket clients.
 
 ### Excluding clients
 
-You can exclude a specific client from the broadcast by using the `.broadcastExcept()` method of the WebSocket link and providing it with the `client` instance to exclude:
+You can exclude a specific client from the broadcast by using the `broadcastExcept()` method of the WebSocket link and providing it with the `client` instance to exclude:
 
 ```ts {10} /.broadcastExcept/
 import { ws } from 'msw'
@@ -49,7 +49,7 @@ export const handlers = [
 ]
 ```
 
-You can also provide a _list of clients_ as the first argument to the `.broadcastExcept()` method to have a finer control over which clients get excluded from the broadcast:
+You can also provide a _list of clients_ as the first argument to the `broadcastExcept()` method to have a finer control over which clients get excluded from the broadcast:
 
 ```ts {3-5} /chat.clients/
 chat.addEventListener('connection', () => {
@@ -62,4 +62,4 @@ chat.addEventListener('connection', () => {
 })
 ```
 
-> The `.clients` property of your WebSocket link contains an array of all intercepted clients.
+> The `clients` property of your WebSocket link contains an array of all intercepted clients.

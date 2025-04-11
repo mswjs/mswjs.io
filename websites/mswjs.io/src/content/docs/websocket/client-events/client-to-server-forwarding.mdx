@@ -1,0 +1,88 @@
+---
+title: Client-to-server forwarding
+description: Manage the client event forwarding.
+---
+
+By default, none of the events you send from your WebSocket client are forwarded to the original server because the original server connection is not established. You can choose to [establish the server connection](/docs/websocket/server-events/establishing-server-connection) by calling `server.connect()` in your event handler. Once you do, all the client events will be forwaded to that original server.
+
+You can manage that event forwarding in multiple ways:
+
+- Proxy the events (i.e. do nothing);
+- Send modified client events to the server;
+- Prevent client events from reaching the server entirely.
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  Client-to-server forwarding is only relevant in the context of you
+  establishing the actual server connection. If you are developing or testing
+  against mocks, there is no forwarding involved.
+</Warning>
+
+## Preventing client events
+
+You can prevent any event dispatched by your WebSocket client from being forwarded to the original server by calling `event.preventDefault()` in the event listener for that event.
+
+```ts {5}
+api.addEventListener('connection', ({ client, server }) => {
+  server.connect()
+
+  client.addEventListener('message', (event) => {
+    event.preventDefault()
+  })
+})
+```
+
+For example, here we are preventing any `message` event from the client from ever reaching the original server. You can still able to observe the dispatched client messages in the listener but they will not be forwarded to the server anymore.
+
+Just like with regular events, you can prevent the default _conditionally_:
+
+```ts {6-8}
+api.addEventListener('connection', ({ client, server }) => {
+  server.connect()
+
+  client.addEventListener('message', (event) => {
+    // Skip the forwarding only for particular client messages.
+    if (event.data === 'hello world') {
+      event.preventDefault()
+    }
+  })
+})
+```
+
+## Modifying client events
+
+Modifying a client event comes down to two steps:
+
+1. Preventing the forwarding for that event (i.e. `event.preventDefault()`);
+1. Sending a modified (mocked) event to the server instead (i.e. `server.send()`).
+
+Let's expand on the previous example and send a modified client message event after it's been prevented:
+
+```ts {8} /server/1,3
+api.addEventListener('connection', ({ client, server }) => {
+  server.connect()
+
+  client.addEventListener('message', (event) => {
+    // Skip the forwarding only for particular client messages.
+    if (event.data === 'hello world') {
+      event.preventDefault()
+      server.send('hello cosmos')
+    }
+  })
+})
+```
+
+## Related materials
+
+In a similar manner, you can manage the forwarding of the server events.
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/server-events/server-to-client-forwarding"
+  title="Server-to-client forwarding"
+  description="Manage the server event forwarding."
+/>
