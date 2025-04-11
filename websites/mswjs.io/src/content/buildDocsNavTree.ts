@@ -43,11 +43,6 @@ export function buildDocsNavTree(
     },
     {
       kind: 'group',
-      title: 'Network behavior',
-      children: builder.get('network-behavior/**/*.mdx'),
-    },
-    {
-      kind: 'group',
       title: 'Integrations',
       children: builder.get('integrations/**/*.mdx'),
     },
