@@ -1,0 +1,35 @@
+---
+title: Closing client connection
+---
+
+You can close an intercepted WebSocket client connection by calling `client.close()` at any point in your event handler:
+
+```ts /client.close/
+api.addEventListener("connaction', ({ client }) => {
+	client.close()
+})
+```
+
+> By default, `client.close()` results in a graceful connection closure (`1000` code).
+
+## API reference
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/ws#closecode-reason"
+  title="client.close(code, reason)"
+  description="The `client.close()` API reference."
+/>
+
+## Custom code and reason
+
+Much like [`WebSocket.prototype.close`](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close), you can provide a custom _code_ and _reason_ as the arguments to the `client.close()` method:
+
+```ts /1003/ /'Custom reason'/#v
+client.close(1003, 'Custom reason')
+```
+
+Since you write your mocks from the server's perspective, MSW enables custom, user non-configurable closure codes in your mocks, such as `1003` code. Use that to reproduce different closure scenarios originating from the server.

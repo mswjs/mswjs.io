@@ -19,7 +19,7 @@ const navTree = buildDocsNavTree(allPages)
 
 <BaseLayout
   sitename="Source"
-  title={page.data.title}
+  title={page.data.displayTitle || page.data.title}
   description={page.data.description}
   keywords={page.data.keywords}
   compact={true}

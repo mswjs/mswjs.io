@@ -1,0 +1,41 @@
+---
+title: Bindings
+keywords:
+  - socket.io
+  - binding
+  - third-party
+  - custom
+---
+
+To provide a more familiar experience when mocking third-party WebSocket clients, MSW uses _bindings_. A binding is a wrapper over the standard `WebSocket` class that encapsulates the third-party-specific behaviors, such as message parsing, and gives you a public API similar to that of the bound third-party library.
+
+For example, here's how to handle Socket.IO communication using MSW and a designated SocketIO binding:
+
+```js /toSocketIo/ {2,8}
+import { ws } from 'msw'
+import { toSocketIo } from '@mswjs/socket.io-binding'
+
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', (connection) => {
+    const io = toSocketIo(connection)
+
+    io.client.on('hello', (username) => {
+      io.client.emit('message', `hello, ${username}!`)
+    })
+  }),
+]
+```
+
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../components/react/pageCard'
+
+<PageCard
+  icon={CodeBracketSquareIcon}
+  url="https://github.com/mswjs/socket.io-binding"
+  title="@mswjs/socket.io-binding"
+  description="Connection wrapper for mocking Socket.IO with MSW."
+/>
+
+> Note that binding is not meant to cover all the public APIs of the respective third-party library. Unless the binding is shipped by that library, maintaining full compatibility is not feasible.

@@ -31,7 +31,7 @@ export function PageCard({
         </div>
         <div>
           <p className="mt-0 mb-1 text-base font-bold">{title}</p>
-          <p className="mb-0 mt-0 text-sm leading-6 text-neutral-400">
+          <p className="mb-0 mt-0 text-sm leading-5 text-neutral-400">
             {description || url}
           </p>
         </div>

@@ -1,0 +1,45 @@
+---
+order: 1
+title: Error responses
+description: Simulating server error responses.
+keywords:
+  - '404'
+  - server error
+  - fail
+---
+
+You can respond to the intercepted request with an error response by constructing a valid error `Response` instance and returning it from the response resolver. This implies using an error status code (`4xx`/`5xx`) and optionally providing any custom response payload, such as an error message.
+
+```ts {3} /404/
+http.get<{ id: string }>('/books/:id', ({ params }) => {
+  if (params.id === 'abc-123') {
+    return new HttpResponse(null, { status: 404 })
+  }
+
+  return HttpResponse.json({
+    id: params.id,
+    title: 'The Lord of the Rings',
+  })
+})
+```
+
+## Type safety
+
+Type safety of your error responses depends on how you define them. When using shorthands that infer the expected response body type, like `HttpResponse.text()` and `HttpResponse.json()`, error responses will remain type-safe:
+
+```ts {4}
+http.get<never, never { id: string } | { error: message }>('/resource', ({ request }) => {
+  if (!request.headers.has('authorization')) {
+    return HttpResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    )
+  }
+
+  return HttpResponse.json({
+    id: 'abc-123',
+  })
+})
+```
+
+Using the plain `Response` instance ignores any response body types because its `bodyInit` type cannot be narrowed—it's always either `null`, `string`, or `ReadableStream`. Use this to your advantage for error responses without a body.

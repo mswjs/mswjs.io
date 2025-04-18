@@ -1,0 +1,76 @@
+---
+order: 3
+title: Server events
+---
+
+You can intercept the following WebSocket events from the original server:
+
+| Event name                      | Description                                                    |
+| ------------------------------- | -------------------------------------------------------------- |
+| [`open`](#the-open-event)       | Dispatched when the server connection has been established.    |
+| [`message`](#the-message-event) | Dispatched when the server is sending a message to the client. |
+| [`error`](#the-error-event)     | Dispatched when the connection error occurs.                   |
+| [`close`](#the-close-event)     | Dispatched when the server has closed the connection.          |
+
+You can listen to those events by adding a respective event listener to the `server` object anywhere in your event handler:
+
+```ts {3} /server/1,3
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.addEventListener('message', () => {})
+})
+```
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  You must [establish the server
+  connection](/docs/websocket/server-events/establishing-server-connection)
+  before you can listen to any server events.
+</Warning>
+
+## Intercepting server events
+
+### The `open` event
+
+```ts {3-5}
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.addEventListener('open', (event) => {
+    console.log('Server connection opened', event)
+  })
+})
+```
+
+### The `message event
+
+```ts {3-5}
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.addEventListener('message', (event) => {
+    console.log('Received message from the server', event)
+  })
+})
+```
+
+### The `error` event
+
+```ts {3-5}
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.addEventListener('error', (event) => {
+    console.log('Server connection errored', event)
+  })
+})
+```
+
+### The `close` event
+
+```ts {3-5}
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.addEventListener('close', (event) => {
+    console.log('Server connection was closed', event)
+  })
+})
+```

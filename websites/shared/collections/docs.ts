@@ -2,6 +2,7 @@ import { defineCollection, z } from 'astro:content'
 
 export const docsSchema = z.object({
   title: z.string(),
+  displayTitle: z.string().optional(),
   description: z.string().optional(),
   keywords: z.array(z.string()).optional(),
   order: z.number().optional(),
