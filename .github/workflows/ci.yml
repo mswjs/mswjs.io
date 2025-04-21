@@ -29,3 +29,5 @@ jobs:
         run: pnpx @gravityci/cli "websites/mswjs.io/dist/**/*"
         env:
           GRAVITY_TOKEN: ${{ secrets.GRAVITY_TOKEN }}
+          GRAVITY_HOST: ${{ vars.GRAVITY_HOST }}
+        
