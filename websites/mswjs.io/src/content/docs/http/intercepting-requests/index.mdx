@@ -33,8 +33,8 @@ import { PageCard } from '@mswjs/shared/components/react/pageCard'
 
 <PageCard
   icon={ServerIcon}
-  url="/docs/http/responses"
-  title="Mocked responses"
+  url="/docs/http/handling-requests"
+  title="Handling requests"
   description="Different ways to handle an intercepted request."
 />
 
@@ -100,11 +100,12 @@ It's generally recommended to use request paths/URLs predicates, but you can rel
 
 The following properties are available on the response resolver object argument for `http.*` handlers:
 
-| Property  | Type                                 | Description                                                                                   |
-| --------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
-| `request` | [`Request`](#)                       | Fetch API `Request` representation of the intercepted request.                                |
-| `params`  | `Record<string, string \| string[]>` | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
-| `cookies` | `Record<string, string>`             | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
+| Property    | Type                                 | Description                                                                                   |
+| ----------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `request`   | [`Request`](#)                       | Fetch API `Request` representation of the intercepted request.                                |
+| `requestId` | `string`                             | UUID representing the intercepted request.                                                    |
+| `params`    | `Record<string, string \| string[]>` | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
+| `cookies`   | `Record<string, string>`             | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
 
 ```ts /request/ /params/#g /cookies/#v
 http.get('/resource', ({ request, params, cookies }) => {})
@@ -116,7 +117,7 @@ Now that you know how to intercept HTTP requests, proceed by learning how to han
 
 <PageCard
   icon={ServerIcon}
-  url="/docs/http/mocking"
+  url="/docs/http/mocking-responses"
   title="Mocking responses"
   description="Different ways to handle an intercepted HTTP request."
 />

@@ -23,12 +23,12 @@
     },
     {
       "source": "/docs/getting-started/mocks/rest-api",
-      "destination": "/docs/network-behavior/rest",
+      "destination": "/docs/http",
       "statusCode": 301
     },
     {
       "source": "/docs/getting-started/mocks/graphql-api",
-      "destination": "/docs/network-behavior/graphql",
+      "destination": "/docs/graphql",
       "statusCode": 301
     },
     {
@@ -54,22 +54,22 @@
 
     {
       "source": "/docs/basics/request-handler",
-      "destination": "/docs/concepts/request-handler",
+      "destination": "/docs/http/intercepting-requests/",
       "statusCode": 301
     },
     {
       "source": "/docs/basics/response-resolver",
-      "destination": "/docs/concepts/response-resolver",
+      "destination": "/docs/http/intercepting-requests/#response-resolver",
       "statusCode": 301
     },
     {
       "source": "/docs/basics/response-transformer",
-      "destination": "/docs/basics/mocking-responses",
+      "destination": "/docs/http/mocking-responses",
       "statusCode": 301
     },
     {
       "source": "/docs/basics/request-matching",
-      "destination": "/docs/basics/intercepting-requests",
+      "destination": "/docs/http/intercepting-requests",
       "statusCode": 301
     },
 
@@ -130,17 +130,17 @@
     },
     {
       "source": "/docs/api/context/data",
-      "destination": "/docs/network-behavior/graphql#mocking-responses",
+      "destination": "/docs/graphql/mocking-responses",
       "statusCode": 301
     },
     {
       "source": "/docs/api/context/extensions",
-      "destination": "/docs/network-behavior/graphql#mocking-responses",
+      "destination": "/docs/graphql/mocking-responses",
       "statusCode": 301
     },
     {
       "source": "/docs/api/context/errors",
-      "destination": "/docs/network-behavior/graphql#mocking-responses",
+      "destination": "/docs/graphql/mocking-responses",
       "statusCode": 301
     },
     {
@@ -189,9 +189,35 @@
       "destination": "/docs/best-practices/avoid-request-assertions",
       "statusCode": 301
     },
+
     {
-      "source": "",
-      "destination": "",
+      "source": "/basics/intercepting-requests",
+      "destination": "/docs/http/intercepting-requests/",
+      "statusCode": 301
+    },
+    {
+      "source": "/basics/mocking-responses",
+      "destination": "/docs/http/mocking-responses/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/basics/handling-websocket-events",
+      "destination": "/docs/websocket/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/concepts/request-namespace",
+      "destination": "/docs/http/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/concepts/request-handler",
+      "destination": "/docs/http/intercepting-requests/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/concepts/response-resolver",
+      "destination": "/docs/http/intercepting-requests/#response-resolver",
       "statusCode": 301
     },
     {

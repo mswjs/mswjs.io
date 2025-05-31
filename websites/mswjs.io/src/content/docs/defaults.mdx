@@ -1,0 +1,59 @@
+---
+order: 3
+title: Default behaviors
+description: Important default behaviors of Mock Service Worker.
+---
+
+## Passthrough by default
+
+## Handler fallthrough
+
+## Handler order sensitivity
+
+Handlers execute in the order they have been defined, left-to-right. If multiple handlers match the same request, MSW will keep iterating over them until any handler returns an [explicit instruction](/docs/concepts/response-resolver#resolver-instructions) on how to handle that request.
+
+```js
+import { http, HttpResponse, passthrough } from 'msw'
+
+export const handlers = [
+  // This handler will be called first but since
+  // it doesn't return anything from its resolver,
+  // MSW will continue looking for a handler that does.
+  http.get('/user', ({ request }) => {
+    console.log('Just observing:', request.method, request.url)
+  }),
+
+  // This handler is called next (2nd), and it returns
+  // a JSON response from its resolver. MSW will stop looking
+  // for handlers and will consider this one to be relevant
+  // to the intercepted request.
+  http.get('/user', () => {
+    return HttpResponse.json({ name: 'John' })
+  }),
+
+  // Although this handler also matches the request,
+  // it will never be called because the previous handler
+  // returned a mocked response.
+  http.get('/user', () => passthrough()),
+]
+```
+
+Understanding the handler execution order is important when declaring your network behavior. You can declare handlers that will trigger first, observing the traffic, followed by the handlers responsible for yielding responses.
+
+import { Success } from '@mswjs/shared/components/react/success'
+
+<Success>
+  Correctly structuring your handlers is the key to differentiate between
+  ambiguous resources:
+</Success>
+
+```js /messages/ /*/2 {6}
+export const handlers = [
+  // By placing a more specific pathname first,
+  // the "GET /user/messages" request will be handled
+  // properly, despite it also matching a more permissive
+  // handler below.
+  http.get('/user/messages', messagesResolver)
+  http.get('/user/*', resolverOne),
+]
+```

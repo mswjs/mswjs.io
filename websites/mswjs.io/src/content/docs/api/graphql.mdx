@@ -199,13 +199,13 @@ export const handlers = [
 
 The response resolver function for every `graphql.*` method has the following keys in its argument object:
 
-| Name            | Type                                                                  | Description                                                               |
-| --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `query`         | `object`                                                              | GraphQL query sent from the client.                                       |
-| `variables`     | `object`                                                              | Variables of this GraphQL query.                                          |
-| `operationName` | `string`                                                              | Operation name (e.g. `GetUser`).                                          |
-| `request`       | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                                 |
-| `cookies`       | `object`                                                              | Request's [cookies](/docs/network-behavior/rest#reading-request-cookies). |
+| Name            | Type                                                                  | Description                                              |
+| --------------- | --------------------------------------------------------------------- | -------------------------------------------------------- |
+| `query`         | `object`                                                              | GraphQL query sent from the client.                      |
+| `variables`     | `object`                                                              | Variables of this GraphQL query.                         |
+| `operationName` | `string`                                                              | Operation name (e.g. `GetUser`).                         |
+| `request`       | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                |
+| `cookies`       | `object`                                                              | Request's [cookies](/docs/http#reading-request-cookies). |
 
 You access these arguments on the response resolver argument object.
 
@@ -235,7 +235,7 @@ graphql.query(
   },
   {
     once: true,
-  }
+  },
 )
 ```
 
@@ -247,7 +247,7 @@ import { GraphQLIcon } from '../../../components/react/icons/graphql'
 
 <PageCard
   icon={GraphQLIcon}
-  url="/docs/network-behavior/graphql"
+  url="/docs/graphql"
   title="Describing GraphQL API"
   description="Learn about describing GraphQL APIs."
 />
