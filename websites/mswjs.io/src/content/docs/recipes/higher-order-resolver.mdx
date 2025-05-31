@@ -2,7 +2,7 @@
 title: Higher-order resolver
 ---
 
-Creating a higher-order resolver is a good way of managing the dynamic, and often repetitive, nature of the mocked responses. Since [Response resolver](/docs/concepts/response-resolver) is a regular function, you can _return_ it from a higher-order function that can customize the resolver's behavior.
+Creating a higher-order resolver is a good way of managing the dynamic, and often repetitive, nature of the mocked responses. Since [Response resolver](/docs/http/intercepting-requests/#response-resolver) is a regular function, you can _return_ it from a higher-order function that can customize the resolver's behavior.
 
 For example, this is how you can describe protected routes:
 

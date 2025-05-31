@@ -26,11 +26,11 @@ export class CustomRequestHandler extends RequestHandler {
 
 The `RequestHandler` class constructor expects a single `args` object with the following properties:
 
-| Argument name | Type       | Description                                                                                 |
-| ------------- | ---------- | ------------------------------------------------------------------------------------------- |
-| `info`        | `object`   | Request handler [information](#info) object.                                                |
-| `resolver`    | `Function` | [Response resolver](/docs/concepts/response-resolver) function to handle matching requests. |
-| `options`     | `object`   | _Optional_. Request handler [options](#request-handler-options).                            |
+| Argument name | Type       | Description                                                                                                    |
+| ------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| `info`        | `object`   | Request handler [information](#info) object.                                                                   |
+| `resolver`    | `Function` | [Response resolver](/docs/http/intercepting-requests/#response-resolver) function to handle matching requests. |
+| `options`     | `object`   | _Optional_. Request handler [options](#request-handler-options).                                               |
 
 ## Request handler options
 
@@ -195,7 +195,7 @@ export class SearchParamsHandler extends RequestHandler {
     // Iterate over the expected search parameters and
     // make sure that the actual request matches them.
     for (const [expectedParamName, expectedParamValue] of Object.entries(
-      this.expectedParams
+      this.expectedParams,
     )) {
       if (searchParams.get(expectedParamName) !== expectedParamValue) {
         return false

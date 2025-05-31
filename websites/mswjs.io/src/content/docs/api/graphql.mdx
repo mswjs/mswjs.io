@@ -179,7 +179,7 @@ export const handlers = [
 The `.operation()` method intercepts all GraphQL operations regardless of their type and name. It's designed to cover the following scenarios:
 
 - Handling of anonymous GraphQL operations;
-- Resolving any outgoing GraphQL operations against a [mock GraphQL schema](/docs/recipes/mock-graphql-schema).
+- Resolving any outgoing GraphQL operations against a [mock GraphQL schema](/docs/graphql/schema-first-mocking).
 
 ```js {4}
 import { graphql, HttpResponse } from 'msw'

@@ -6,7 +6,7 @@ description: Reset request handlers to the initial list.
 
 ## Call signature
 
-The `worker.resetHandlers()` method can be called without any arguments. When done so, all the [Runtime request handlers](/docs/concepts/request-handler#runtime-request-handler) (those prepended via `worker.use()`) will be removed.
+The `worker.resetHandlers()` method can be called without any arguments. When done so, all the [Runtime request handlers](/docs/best-practices/network-behavior-overrides) (those prepended via `worker.use()`) will be removed.
 
 ```js {4}
 const worker = setupWorker(http.get('/resource', resolver))

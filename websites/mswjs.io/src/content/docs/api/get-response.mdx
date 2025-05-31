@@ -4,14 +4,14 @@ title: getResponse
 description: Resolve a request against request handlers programmatically.
 ---
 
-The `getResponse` function is designed for programmatic resolution of requests. You don't need this function to use MSW for development and testing. You may need this function when building custom packages and functionality on top of MSW. You may also need this function for more complex request flows, such as mocking [batched GraphQL queries](/docs/recipes/graphql-query-batching).
+The `getResponse` function is designed for programmatic resolution of requests. You don't need this function to use MSW for development and testing. You may need this function when building custom packages and functionality on top of MSW. You may also need this function for more complex request flows, such as mocking [batched GraphQL queries](/docs/graphql/mocking-responses/query-batching).
 
 ## Call signature
 
 ```ts
 function getResponse(
   handlers: Array<RequestHandler>,
-  request: Request
+  request: Request,
 ): Promise<Response | undefined>
 ```
 
