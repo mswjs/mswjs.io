@@ -226,14 +226,13 @@
       "statusCode": 301
     },
     {
-      "source": "",
-      "destination": "",
+      "source": "/docs/getting-started",
+      "destination": "/docs/quick-start",
       "statusCode": 301
     },
     {
       "source": "",
-      "destination": "",
-      "statusCode": 301
+      "destination": ""
     },
     {
       "source": "",
