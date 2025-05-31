@@ -230,13 +230,55 @@
       "destination": "/docs/quick-start",
       "statusCode": 301
     },
+
     {
-      "source": "",
-      "destination": ""
+      "source": "/docs/recipes/cookies",
+      "destination": "/docs/http/mocking-responses/cookies",
+      "statusCode": 301
     },
     {
-      "source": "",
-      "destination": "",
+      "source": "/docs/recipes/query-parameters",
+      "destination": "/docs/http/intercepting-requests/query-parameters",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/response-patching",
+      "destination": "/docs/http/mocking-responses/response-patching",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/polling",
+      "destination": "/docs/http/mocking-responses/polling",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/streaming",
+      "destination": "/docs/http/mocking-responses/streaming",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/network-errors",
+      "destination": "/docs/http/mocking-responses/network-errors",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/file-uploads",
+      "destination": "/docs/http/mocking-responses/file-uploads",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/responding-with-binary",
+      "destination": "/docs/http/mocking-responses/binary",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/graphql-query-batching",
+      "destination": "/docs/graphql/mocking-responses/query-batching",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/mock-graphql-schema",
+      "destination": "/docs/graphql/schema-first-mocking",
       "statusCode": 301
     }
   ]
