@@ -3,10 +3,14 @@ export function isPartiallyActiveUrl(
   currentPathname: string,
   options?: {
     standalone?: boolean
-  }
+  },
 ): boolean {
-  if (!url || options?.standalone) {
+  if (!url) {
     return false
+  }
+
+  if (options?.standalone) {
+    return currentPathname === url
   }
 
   const urlSegments = url.replace(/(^\/|\/$)/g, '').split('/')
