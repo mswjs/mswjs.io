@@ -29,7 +29,7 @@ import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
 
 ## Usage
 
-This method is designed to perform HTTP requests outside of the library's interception algorithm. Requests performed via `bypass()` _will never be intercepted_, even if there are otherwise matching request handlers present in the network description. This special behavior enables more complex network scenarios, such as [Response patching](/docs/recipes/response-patching):
+This method is designed to perform HTTP requests outside of the library's interception algorithm. Requests performed via `bypass()` _will never be intercepted_, even if there are otherwise matching request handlers present in the network description. This special behavior enables more complex network scenarios, such as [Response patching](/docs/http/mocking-responses/response-patching):
 
 ```js /bypass/1,3 {7}
 import { http, bypass, HttpResponse } from 'msw'
@@ -73,7 +73,7 @@ import { CubeTransparentIcon, BeakerIcon } from '@heroicons/react/24/outline'
   />
   <PageCard
     icon={BeakerIcon}
-    url="/docs/recipes/response-patching"
+    url="/docs/http/mocking-responses/response-patching"
     title="Response patching"
     description="Combine original and mocked responses."
   />

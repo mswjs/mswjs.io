@@ -1,0 +1,80 @@
+---
+order: 3
+title: Default behaviors
+description: Important default behaviors of Mock Service Worker.
+---
+
+## Default passthrough
+
+MSW embraces a network-first approach, which means that it will not interfere with the network unless you explicitly say so in your handlers.
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  Intercepting WebSockets, however, is _mock-first_ due to the limitations of
+  their specification.
+</Warning>
+
+## Handler fallthrough
+
+Every intercepted request "falls through" the list of your handlers, looking for the first matching handler to return an [instruction](/docs/http/handling-requests) on how to handle the request (mock response, response-patch, passthrough, do nothing). A single request may match _multiple handlers_ at the same time but only _one handler_ can be responsible for handling it.
+
+```ts {5}
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('/user', () => console.log('One')),
+  http.get('/user', () => HttpResponse.json({ name: 'John' })),
+  http.get('/user', () => console.log('Three')),
+]
+```
+
+> In the example above, given an outgoing `GET /user` request, you will see the `"One"` string printed to the console and then receive the mocked JSON response as defined in the second handler. You _will not_ see the `"Three"` string because the third handler is never reached (i.e. request already handled).
+
+You can use fallthrough to a great effect to layer your network behaviors. See [Network behavior overrides](/docs/best-practices/network-behavior-overrides).
+
+## Handler order sensitivity
+
+Derived from the fallthrough behavior, handlers are sensitive to the order in which they are defined. MSW executes them left-to-right, starting from handler overrides, if any, since those are prepended to the list of handlers.
+
+```ts {5-7,14}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node
+
+export const handlers = [
+  http.get('/user', () => console.log('One')),
+  http.get('/user', () => console.log('Two')),
+  http.get('/user', () => console.log('Three')),
+]
+
+const server = setupServer(...handlers)
+server.listen()
+
+server.use(
+  http.get('/user', () => console.log('Override one')),
+)
+```
+
+Given an outgoing `GET /user` request, this is what you will see in the console:
+
+```
+Override one
+One
+Two
+Three
+```
+
+> The request itself will be performed as-is according to the default passthrough since none of the handlers above has handled it.
+
+Use the handler order sensitivity to differentiate between ambiguous request matches:
+
+```js /messages/2 /*/2 {6}
+export const handlers = [
+  // By placing a more specific request predicate first,
+  // the "GET /user/messages" request will be handled
+  // properly, despite it also matching a more permissive
+  // "/user/*" handler below.
+  http.get('/user/messages', messagesResolver)
+  http.get('/user/*', resolverOne),
+]
+```

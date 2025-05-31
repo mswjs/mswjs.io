@@ -7,8 +7,14 @@ title: Limitations
 
 This library uses the Service Worker API to intercept requests in the browser. Any limitations that browsers may have when implementing or executing the said API automatically become the limitations of the Mock Service Worker library. We cannot address this behaviors as they are present in the browser and cannot be circumvented by JavaScript.
 
-### Firefox does not emit "fetch" event on `XMLHttpRequest`
+## Firefox: `fetch` event for `XMLHttpRequest`
 
 Firefox does not notify the worker when an `XMLHttpRequest` happens on the page. This means that the worker and, as the result, this library, do not know when such requests occur. Even if you have a matching request handler for the request, it won't be matched and the mocked response won't be sent if it's an `XMLHttpRequest`.
 
 Mock Service Worker positions itself as a development tool, which means we cannot guarantee 100% compatibility with all modern browsers. In the end, each browser may have its discrepancies in how the Service Worker API is implemented, for which we also cannot account for.
+
+## Node.js limitations
+
+### Direct network connections
+
+Due to technical limitations, MSW cannot intercept requests performed via direct `net.connect()`/`net.createConnection()` calls. Most request libraries in Node.js rely on `http.ClientRequest` to perform requests, which is what MSW intercepts. However, certain libraries, like [Undici](https://github.com/nodejs/undici), tap directly into the `node:net` module to perform requests, and those will not be visible to MSW.

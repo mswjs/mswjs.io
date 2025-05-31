@@ -1,0 +1,114 @@
+---
+order: 5
+title: Event logs
+---
+
+Since MSW implements the WebSocket interception mock-first, no actual connections will be established until you explicitly say so. This means that the mocked scenarios won't appear as network entries in your browser's DevTools and you won't be able to observe them there.
+
+MSW provides custom logging for both mocked and original WebSocket connections **in the browser**.
+
+### Reading the log output
+
+The logger will print out various events occurring during the WebSocket communication as collapsed console groups in your browser's console.
+
+**There are four types of logs you can observe:**
+
+1. <p className="flex items-center gap-2">
+     <span className="text-blue-500">▶■×</span>
+     <span>System events;</span>
+   </p>
+1. <p className="flex items-center gap-2">
+     <span className="text-green-500">⬆⇡</span>
+     <span>Client events;</span>
+   </p>
+1. <p className="flex items-center gap-2">
+     <span className="text-green-500 no-emoji">⬇⇣</span>
+     <span>Server events.</span>
+   </p>
+1. <p className="flex items-center gap-2">
+     <span className="text-primary no-emoji">⬆⬇</span>
+     <span>Mocked events.</span>
+   </p>
+
+### System events
+
+#### <span className="text-blue-500">▶</span> Connection opened
+
+```
+[MSW] 12:34:56 ▶ wss://example.com
+```
+
+Dispatched when the connection is open (i.e. the WebSocket client emits the `open` event).
+
+#### <span className="text-blue-500">×</span> Connection errored
+
+```
+[MSW] 12:34:56 × wss://example.com
+```
+
+Dispatched when the client receives an error (i.e. the WebSocket client emits the `error` event).
+
+#### <span className="text-blue-500">■</span> Connection closed
+
+```
+[MSW] 12:34:56 ■ wss://example.com
+```
+
+Dispatched when the connection is closed (i.e. the WebSocket client emits the `close` event).
+
+### Message events
+
+Any message, be it outgoing or incoming message, follows the same structure:
+
+```txt /00:00:00.000/#v /⬆/#g /hello from client/ /17/#b
+        timestamp         sent data
+[MSW] 00:00:00.000 ⬆ hello from client 17
+                  icon              byte length
+```
+
+Binary messages print a text preview of the sent binary alongside its full byte length:
+
+```
+[MSW] 12:34:56.789 ⬆ Blob(hello world) 11
+[MSW] 12:34:56.789 ⬆ ArrayBuffer(preview) 7
+```
+
+Long text messages and text previews are truncated:
+
+```
+[MSW] 12:34:56.789 ⬆ this is a very long stri… 17
+```
+
+> You can access the full message by clicking on its console group and inspecting the original `MessageEvent` instance.
+
+#### <span className="text-green-500 no-emoji">⬆⇡</span> Outgoing client message
+
+```
+[MSW] 12:34:56.789 ⬆ hello from client 17
+```
+
+A raw message sent by the WebSocket client in your application. If the arrow is dashed, the forwarding of this message event has been prevented in the event handler.
+
+#### <span className="text-primary no-emoji">⬆</span> Outgoing mocked client message
+
+```
+[MSW] 12:34:56.789 ⬆ hello from mock 15
+```
+
+A message sent from the client by the event handler via `server.send()`. Requires an [open server connection](/docs/websocket/server-events/establishing-server-connection).
+
+#### <span className="text-red-500 no-emoji">⬇⇣</span> Incoming server message
+
+```
+[MSW] 12:34:56.789 ⬇ hello from server 17
+```
+
+An incoming message sent from the original server. Requires an [open server connection](/docs/websocket/server-events/establishing-server-connection). If the arrow is dashed, the forwarding of this message event has been prevented in the event handler.
+
+#### <span className="text-primary no-emoji">⬇</span> Incoming mocked server message
+
+```
+[MSW] 12:34:56.789 ⬇ hello from mock 15
+```
+
+A mocked message sent to the client from the event handler via `client.send()`.

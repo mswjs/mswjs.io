@@ -58,7 +58,7 @@ import PromoBanner from '@mswjs/shared/components/PromoBanner.astro'
 <BaseLayout
   displayTitle={`${SITE_TITLE} - ${SITE_DESCRIPTION}`}
 >
-  <Hero repoUrl="https://github.com/mswjs/msw" class="lg:-mt-20">
+  <Hero repoUrl="https://github.com/mswjs/msw" gettingStartedUrl="/docs/quick-start" class="lg:-mt-20">
     <PromoBanner slot="headnote" actionText="Watch now" actionUrl="https://egghead.io/courses/mocking-websocket-apis-with-mock-service-worker-9933b7f5">
       <div class="flex items-center">
         <EggheadIcon
@@ -147,14 +147,14 @@ import PromoBanner from '@mswjs/shared/components/PromoBanner.astro'
               <p class="text-neutral-400">
                 Intercept both{' '}
                 <a
-                  href="/docs/network-behavior/rest"
+                  href="/docs/http"
                   class="text-white hover:underline"
                 >
                   REST
                 </a>{' '}
                 and{' '}
                 <a
-                  href="/docs/network-behavior/graphql"
+                  href="/docs/graphql"
                   class="text-white hover:underline"
                 >
                   GraphQL API
@@ -404,7 +404,7 @@ import PromoBanner from '@mswjs/shared/components/PromoBanner.astro'
     iconUrl={mswLogo.src}
     iconAlt="Mock Service Worker logo"
     linkText="Get started in 3 steps"
-    linkUrl="/docs/getting-started"
+    linkUrl="/docs/quick-start"
   >
     <span class="text-white">Mock Service Worker</span> is the best
     way to integrate API mocking across your entire stack. Test,

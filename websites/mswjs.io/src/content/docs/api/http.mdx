@@ -94,7 +94,7 @@ http.patch('/cart/:cartId/order/:orderId', async ({ request, params }) => {
     'Updating order "%s" in cart "%s":',
     orderId,
     cartId,
-    orderUpdates
+    orderUpdates,
   )
 })
 ```
@@ -147,11 +147,11 @@ export const handlers = [
 
 The response resolver function for every `http.*` method has the following keys in its argument object:
 
-| Name      | Type                                                                  | Description                                                                       |
-| --------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `request` | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                                         |
-| `params`  | `object`                                                              | Request's [path parameters](/docs/network-behavior/rest#reading-path-parameters). |
-| `cookies` | `object`                                                              | Request's [cookies](/docs/network-behavior/rest#reading-request-cookies).         |
+| Name      | Type                                                                  | Description                                                      |
+| --------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `request` | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                        |
+| `params`  | `object`                                                              | Request's [path parameters](/docs/http#reading-path-parameters). |
+| `cookies` | `object`                                                              | Request's [cookies](/docs/http#reading-request-cookies).         |
 
 You access these arguments on the response resolver argument object.
 
@@ -183,7 +183,7 @@ import { NodejsIcon } from '../../../components/react/icons/nodejs'
 
 <PageCard
   icon={NodejsIcon}
-  url="/docs/network-behavior/rest"
+  url="/docs/http"
   title="Describing REST API"
   description="Learn about describing RESTful APIs."
 />

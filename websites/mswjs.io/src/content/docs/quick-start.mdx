@@ -1,0 +1,177 @@
+---
+order: 1
+title: Quick start
+description: Get MSW up and running in under five minutes.
+---
+
+This guide will take you through the barebones setup of MSW for intercepting HTTP requests in **your Node.js tests with [Vitest](https://vitest.dev/)**.
+
+## 1. Installation
+
+```
+npm i msw --save-dev
+```
+
+## 2. Request handlers
+
+Import the `http` namespace from the `msw` package and create your first _request handler_. Those are functions responsible for intercepting requests and handling their responses.
+
+Let's define a request handler for a `GET https://api.example.com/user` request:
+
+```ts {5-11} /http/1,2
+// src/mocks/handlers.ts
+import { http, HttpResponse } from 'msw'
+
+export const handlers = [
+  http.get('https://api.example.com/user', () => {
+    return HttpResponse.json({
+      id: 'abc-123',
+      firstName: 'John',
+      lastName: 'Maverick',
+    })
+  }),
+]
+```
+
+> MSW supports intercepting both [HTTP](/docs/http), [GraphQL](/docs/graphql), and [WebSocket](/docs/websocket) APIs.
+
+## 3. Process-level integration
+
+One of the core benefits of MSW is the ability to reuse the same mocks (e.g. `handlers.ts`) across different tools and environments. On their own, request handlers don't do anything. They have to be provided to the `setupServer` or `setupWorker` functions to configure API mocking in a Node.js or a browser process, respectively.
+
+Since Vitest tests run in a Node.js process, let's use `setupServer` from `msw/node` and create a `node.ts` integration point:
+
+```ts /setupServer/1,2 /handlers/1,3#v
+// src/mocks/node.ts
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers.js'
+
+export const server = setupServer(...handlers)
+```
+
+> This integration has nothing specific to Vitest. You can reuse it to apply MSW to any Node.js process.
+
+## 4. Tool-level integration
+
+At this step, you find the appropriate place to enable API mocking in your Node.js process. In the case of Vitest, that place is the _test setup_ file, which runs before your tests. Open that file (or create it) and call `server.listen()` in enable mocking as follows:
+
+```ts /server/
+// vitest.setup.ts
+import { beforeAll, afterEach, afterAll } from 'vitest'
+import { server } from './mocks/node.js'
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
+```
+
+> Make sure you have the `vitest.setup.ts` module listed in the `test.setupFiles` array in your `vitest.config.ts`.
+
+## 5. Run tests
+
+Once MSW is integrated into your Vitest setup, it will control the network as defined in your handlers.
+
+```ts
+// test/example.test.ts
+// @vitest-environment node
+import { test, expect } from 'vitest'
+
+test('responds with the user', async () => {
+  const response = await fetch('https://api.example.com/user')
+
+  await expect(response.json()).resolves.toEqual({
+    id: 'abc-123',
+    firstName: 'John',
+    lastName: 'Maverick',
+  })
+})
+```
+
+```
+npx vitest
+```
+
+```
+ ✓ test/example.test.ts (1 test) 1ms
+   ✓ responds with the user 0ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  12:15:23
+   Duration  166ms (transform 19ms, setup 0ms, collect 7ms, tests 1ms, environment 0ms, prepare 43ms)
+```
+
+## Usage examples
+
+MSW applies on the environment level (Node.js or browser). Integrating it with different tools will come down to finding the appropriate environment entrypoint provided to you by that tool and following the same setup as you did above.
+
+For reference, we've prepared a curated collection of usage examples:
+
+import { PageCard } from '../../components/react/pageCard'
+import { WindowIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  url="https://github.com/mswjs/examples"
+  icon={WindowIcon}
+  title="Usage examples"
+  description="Examples of Mock Service Worker usage with various frameworks and libraries."
+/>
+
+## Next steps
+
+This guide is a good starting point but you can do so much more with the library. We highly encourage you to explore this documentation to learn more about the capabilities of MSW. Here are some great topics to follow up on:
+
+import { Bars2Icon, ServerIcon, TrophyIcon } from '@heroicons/react/24/outline'
+
+<div className="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon={Bars2Icon}
+    url="/docs/integrations/browser"
+    title="Browser integration"
+    description="Set up Mock Service Worker in the browser."
+  />
+  <PageCard
+    icon={Bars2Icon}
+    url="/docs/defaults"
+    title="Default behaviors"
+    description="Important default behaviors of Mock Service Worker."
+  />
+  <PageCard
+    icon={ServerIcon}
+    url="/docs/http/intercepting-requests"
+    title="Intercepting requests"
+    description="Learn how to intercept outgoing requests."
+  />
+  <PageCard
+    icon={TrophyIcon}
+    url="/docs/best-practices"
+    title="Best practices"
+    description="Tips & tricks for getting the most out of Mock Service Worker."
+  />
+</div>
+
+## Need help?
+
+Starting with a new tool can be difficult but you don't have go through that alone. Whenever you encounter an issue, the best place to go is our Debugging runbook:
+
+import { BugAntIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={BugAntIcon}
+  url="/docs/runbook"
+  title="Debugging runbook"
+  description="Steps to debug common issues with the library."
+/>
+
+We are always happy to help you with any questions you might have. There are multiple ways you can reach out to us or other community members to get help:
+
+import { DISCORD_URL } from '@mswjs/shared/consts'
+import { DiscordIcon } from '@mswjs/shared/components/react/icons/discord'
+
+- <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
+    <DiscordIcon className="inline mr-1.5 w-5 align-text-top" />
+    <strong>Join MSW Discord</strong>
+  </a>
+- [Start a discussion on GitHub](https://github.com/mswjs/msw/discussions)
+
+And remember, there is always a person who's one problem behind you. Be kind and offer help when you can.

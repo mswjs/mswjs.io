@@ -13,22 +13,22 @@
 
     {
       "source": "/docs/getting-started/install",
-      "destination": "/docs/getting-started#step-1-install",
+      "destination": "/docs/quick-start#1-installation",
       "statusCode": 301
     },
     {
       "source": "/docs/getting-started/mocks",
-      "destination": "/docs/getting-started#step-2-write-network-behavior",
+      "destination": "/docs/quick-start#2-request-handlers",
       "statusCode": 301
     },
     {
       "source": "/docs/getting-started/mocks/rest-api",
-      "destination": "/docs/network-behavior/rest",
+      "destination": "/docs/http",
       "statusCode": 301
     },
     {
       "source": "/docs/getting-started/mocks/graphql-api",
-      "destination": "/docs/network-behavior/graphql",
+      "destination": "/docs/graphql",
       "statusCode": 301
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "source": "/docs/getting-started/integrate",
-      "destination": "/docs/getting-started#step-3-integrate-anywhere",
+      "destination": "/docs/quick-start#3-process-level-integration",
       "statusCode": 301
     },
     {
@@ -54,22 +54,22 @@
 
     {
       "source": "/docs/basics/request-handler",
-      "destination": "/docs/concepts/request-handler",
+      "destination": "/docs/http/intercepting-requests/",
       "statusCode": 301
     },
     {
       "source": "/docs/basics/response-resolver",
-      "destination": "/docs/concepts/response-resolver",
+      "destination": "/docs/http/intercepting-requests/#response-resolver",
       "statusCode": 301
     },
     {
       "source": "/docs/basics/response-transformer",
-      "destination": "/docs/basics/mocking-responses",
+      "destination": "/docs/http/mocking-responses",
       "statusCode": 301
     },
     {
       "source": "/docs/basics/request-matching",
-      "destination": "/docs/basics/intercepting-requests",
+      "destination": "/docs/http/intercepting-requests",
       "statusCode": 301
     },
 
@@ -130,17 +130,17 @@
     },
     {
       "source": "/docs/api/context/data",
-      "destination": "/docs/network-behavior/graphql#mocking-responses",
+      "destination": "/docs/graphql/mocking-responses",
       "statusCode": 301
     },
     {
       "source": "/docs/api/context/extensions",
-      "destination": "/docs/network-behavior/graphql#mocking-responses",
+      "destination": "/docs/graphql/mocking-responses",
       "statusCode": 301
     },
     {
       "source": "/docs/api/context/errors",
-      "destination": "/docs/network-behavior/graphql#mocking-responses",
+      "destination": "/docs/graphql/mocking-responses",
       "statusCode": 301
     },
     {
@@ -189,24 +189,96 @@
       "destination": "/docs/best-practices/avoid-request-assertions",
       "statusCode": 301
     },
+
     {
-      "source": "",
-      "destination": "",
+      "source": "/basics/intercepting-requests",
+      "destination": "/docs/http/intercepting-requests/",
       "statusCode": 301
     },
     {
-      "source": "",
-      "destination": "",
+      "source": "/basics/mocking-responses",
+      "destination": "/docs/http/mocking-responses/",
       "statusCode": 301
     },
     {
-      "source": "",
-      "destination": "",
+      "source": "/docs/basics/handling-websocket-events",
+      "destination": "/docs/websocket/",
       "statusCode": 301
     },
     {
-      "source": "",
-      "destination": "",
+      "source": "/docs/concepts/request-namespace",
+      "destination": "/docs/http/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/concepts/request-handler#execution-order",
+      "destination": "/docs/defaults#handler-order-sensitivity",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/concepts/request-handler",
+      "destination": "/docs/http/intercepting-requests/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/concepts/response-resolver",
+      "destination": "/docs/http/intercepting-requests/#response-resolver",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/getting-started",
+      "destination": "/docs/quick-start",
+      "statusCode": 301
+    },
+
+    {
+      "source": "/docs/recipes/cookies",
+      "destination": "/docs/http/mocking-responses/cookies",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/query-parameters",
+      "destination": "/docs/http/intercepting-requests/query-parameters",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/response-patching",
+      "destination": "/docs/http/mocking-responses/response-patching",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/polling",
+      "destination": "/docs/http/mocking-responses/polling",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/streaming",
+      "destination": "/docs/http/mocking-responses/streaming",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/network-errors",
+      "destination": "/docs/http/mocking-responses/network-errors",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/file-uploads",
+      "destination": "/docs/http/mocking-responses/file-uploads",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/responding-with-binary",
+      "destination": "/docs/http/mocking-responses/binary",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/graphql-query-batching",
+      "destination": "/docs/graphql/mocking-responses/query-batching",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/mock-graphql-schema",
+      "destination": "/docs/graphql/schema-first-mocking",
       "statusCode": 301
     }
   ]

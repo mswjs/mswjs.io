@@ -1,0 +1,79 @@
+---
+order: 1
+title: Path parameters
+keywords:
+  - params
+  - semicolon
+  - escape
+  - dynamic
+  - segment
+---
+
+## Simple path parameter
+
+You can define a path parameter by including a colon `:` followed by the parameter name in the path of the request handler.
+
+```ts /id/1 /:id/
+//         👇 describe parameter types
+http.get<{ id: string }>('/posts/:id', () => {})
+//                               👆 describe parameter position
+```
+
+A path parameter represents a dynamic portion of the request URL that won't be matched literally. Instead, whatever string is present at the parameter's location will be stored in the `params` object exposed in the response resolver argument.
+
+You can access path parameter values through the `params` object in the response resolver argument.
+
+```ts {2} /params/
+http.get<{ id: string }>('/posts/:id', ({ params }) => {
+  const { id } = params
+})
+```
+
+import { Success } from '@mswjs/shared/components/react/success'
+
+<Success>
+  Note that you can include multiple different path parameters within the same
+  request path, like `/users/:userId/books/:bookId`.
+</Success>
+
+## Optional path parameters
+
+Use the question mark (`?`) as the suffix of a path parameter to indicate that it's optional. Since their values are potentially nullable, make sure to reflect that in their types.
+
+```ts {2} /id/1 /:id?/
+http.get<{ id?: string }>('/posts/:id?', ({ params }) => {
+  const { id } = params
+})
+```
+
+With the request handler above, both `GET /post` and `GET /post/abc-123` requests will match, but `GET /post/abc-123/edit` will not.
+
+## Repeating path parameter
+
+Use the plus (`+`) as the suffix of a path parameter to indicate that its value repeats. Repeating path parameters will be represented as array of values in the `params` object.
+
+```ts /foo/1 /:foo+/
+http.get<{ segments: string[] }>('/settings/:segments+', ({ params }) => {
+  console.log(params.segments)
+})
+```
+
+Given the request handler above, here are the path parameters that will be matched:
+
+| Request URL                   | `params.segments`             |
+| ----------------------------- | ----------------------------- |
+| `/settings/user`              | `["user"]`                    |
+| `/settings/user/privacy`      | `["user", "privacy"]`         |
+| `/settings/user/profile/edit` | `["user", "profile", "edit"]` |
+
+## Escaping semicolon
+
+Sometimes you might want to include a semicolon (`;`) in the request path without it becoming a parameter. Use double backslash (`\\`) to escape such semicolons:
+
+```ts
+http.get('/songs/\\:genre/\\:artist', () => {})
+```
+
+## Type safety
+
+MSW provides no path parameter parsing, which means that all `params` values are either strings or arrays of strings. We strongly encourage to reflect that in the path parameter type argument in your request handlers. If you need additional path parameter parsing, please introduce it manually.

@@ -1,0 +1,78 @@
+---
+order: 4
+title: Server-to-client forwarding
+description: Manage the server event forwarding.
+---
+
+Once you establish the actual server connection by calling `server.connect()`, all the server events will be forwarded to the client, and all the client events will be forwarded to the original server. In this sense, your event handler becomes a proxy sitting in-between the two.
+
+You can manage that event forwarding in multiple ways:
+
+- Proxy the events (i.e. do nothing);
+- Send modified server events to the client;
+- Prevent server events from reaching the client entirely.
+
+## Preventing server events
+
+You can prevent any event received from the original server by calling `event.preventDefault()` in the respective event listener.
+
+```ts {5}
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+
+  server.addEventListener('message', (event) => {
+    event.preventDefault()
+  })
+})
+```
+
+For example, here we are preventing any `message` events from ever reaching the WebSocket client. You are still able to observe the received message events in the listener but they will not be forwarded to the client anymore.
+
+> Since the server-to-client event forwarding is the _default_ behavior in MSW, all you have to do to opt out from it is call `event.preventDefault()`.
+
+Just like with regular events, you can prevent the default _conditionally_:
+
+```ts {4-6}
+api.addEventListener('connection', ({ server }) => {
+  server.addEventListener('message', (event) => {
+    // Skip forwarding only for particular server messages.
+    if (event.data === 'hello world') {
+      event.preventDefault()
+    }
+  })
+})
+```
+
+## Modifying server events
+
+Modifying a server event comes down to two steps:
+
+1. Preventing the forwarding for that event (i.e. `event.preventDefault()`);
+1. Sending a modified (mocked) event to the client instead (i.e. `client.send()`).
+
+Let's expand on the previous example and send a modified server event after it's been prevented:
+
+```ts {5} /client/
+api.addEventListener('connection', ({ server, client }) => {
+  server.addEventListener('message', (event) => {
+    if (event.data === 'hello world') {
+      event.preventDefault()
+      client.send('goodbye cosmos')
+    }
+  })
+})
+```
+
+## Related materials
+
+In a similar manner, you can manage the forwarding of the client events.
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/client-events/client-to-server-forwarding"
+  title="Client-to-server forwarding"
+  description="Manage the client event forwarding."
+/>

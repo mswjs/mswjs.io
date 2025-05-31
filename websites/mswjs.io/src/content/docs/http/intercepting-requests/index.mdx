@@ -1,0 +1,123 @@
+---
+order: 1
+title: Intercepting requests
+description: Learn how to intercept outgoing requests.
+---
+
+To inspect and handle outgoing requests you have to intercept them first. In MSW, you do that by defining functions called _request handlers_. Here's an example of one:
+
+```ts
+http.get('/resource', ({ request }) => {
+  console.log(request.method, request.url)
+})
+```
+
+> This is a request handler that will intercept all `GET /resource` requests and print their information to the console.
+
+This page will get you familiar with the structure of request handlers and the supported ways of intercepting HTTP requests. Please refer to additional resources in this section on particular use cases and best practices.
+
+## Anatomy of a request handler
+
+Every request handler consists of two parts: a _predicate_ and a _response resolver_.
+
+```ts
+//       👇 This is a predicate.
+http.get('/resource', () => {})
+//                    👆 This is a resolver.
+```
+
+A predicate decides which requests to intercept, and a resolver decides what to do with those requests. On this page, we will take a look at the different ways to define a predicate for your request handlers. You can learn more about handling requests in the "Mocked responses" section:
+
+import { ServerIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+
+<PageCard
+  icon={ServerIcon}
+  url="/docs/http/handling-requests"
+  title="Handling requests"
+  description="Different ways to handle an intercepted request."
+/>
+
+## Predicate
+
+### Request URL
+
+You can provide a _string_ as a request handler predicate that represents an entire request URL or its portion. MSW will use [`path-to-regexp@6`](https://github.com/pillarjs/path-to-regexp/tree/6.x) to match your predicate against outgoing requests to determine if they match. We highly recommend you familiarize yourself with the feature set of that library.
+
+#### Relative URL
+
+When you provide a _relative request URL_ as a predicate, it will be resolved against the current document (`document.baseUri`). This is handy for in-browser mocking, but bear in mind that you need to configure the base URL in your Node.js tests because that's not a thing in Node.js.
+
+```ts
+http.get('/users/:id', () => {})
+```
+
+> This request handler will match the `GET http://localhost:3000/users/abc-123` request, given your application is running at `http://localhost:3000`.
+
+#### Query/search parameters
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>Do not include query parameters in your request predicate.</Warning>
+
+Query parameters do not describe resource paths but rather additional data sent with the request. As such, they must not be present in the request predicate. Any query parameters accidentally included in the request predicate **will automatically be removed** and have no effect on the URL matching.
+
+You intercepted requests can still have query parameters, and you can access them in the response resolver. Learn more about how on this page:
+
+<PageCard
+  icon={ServerIcon}
+  url="/docs/http/intercepting-requests/query-parameters"
+  title="Query parameters"
+  description="Read and write request query parameters."
+/>
+
+#### Absolute URL
+
+When you provide an _absolute request URL_ as a predicate, the outgoing request must match its scheme, host, and pathname to trigger the request handler.
+
+```ts
+http.post('https://api.github.com/repos/:owner/:repo', () => {})
+```
+
+#### Special tokens
+
+When using a string request predicate, you can include special tokens in it to represent different matching behaviors:
+
+- `*` (wildcard), to match any URL or a portion of the URL in its place;
+- `:foo` (parameter), to match a named parameter in the URL (see [Path parameters](/docs/http/intercepting-requests/path-parameters)).
+
+### Regular expression
+
+You can provide a _regular expression_ as a request handler predicate. MSW will test it against the outgoing request URLs to determine if they match.
+
+```ts
+http.get(/\/settings\/(profile|settings)/, () => {})
+```
+
+It's generally recommended to use request paths/URLs predicates, but you can rely on regular expressions for the most complex matching scenarios.
+
+## Response resolver
+
+The following properties are available on the response resolver object argument for `http.*` handlers:
+
+| Property    | Type                                 | Description                                                                                   |
+| ----------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `request`   | [`Request`](#)                       | Fetch API `Request` representation of the intercepted request.                                |
+| `requestId` | `string`                             | UUID representing the intercepted request.                                                    |
+| `params`    | `Record<string, string \| string[]>` | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
+| `cookies`   | `Record<string, string>`             | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
+
+```ts /request/ /params/#g /cookies/#v
+http.get('/resource', ({ request, params, cookies }) => {})
+```
+
+## Next steps
+
+Now that you know how to intercept HTTP requests, proceed by learning how to handle their responses:
+
+<PageCard
+  icon={ServerIcon}
+  url="/docs/http/mocking-responses"
+  title="Mocking responses"
+  description="Different ways to handle an intercepted HTTP request."
+/>

@@ -1,0 +1,68 @@
+---
+order: 1
+title: Establishing server connection
+---
+
+By default, MSW **does not establish a WebSocket connection to the actual server**. You can, however, establish such a connection at any point in your event handler by calling `server.connect()`.
+
+```ts {5}
+const api = ws.link('wss://api.example.com')
+
+export const handlers = [
+  api.addEventListener('connection', ({ server }) => {
+    server.connect()
+  }),
+]
+```
+
+In the example above, `server.connect()` will establish a new, bypassed WebSocket connection to the underlying WebSocket URL (`'wss://api.example.com'`).
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  Just like establishing connections with `new WebSocket()`, you do _not_ have
+  to await the `server.connect()` call.
+</Warning>
+
+## API reference
+
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { PageCard } from '../../../../components/react/pageCard'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/ws#connect"
+  title="server.connect()"
+  description="The `server.connect()` API reference."
+/>
+
+## Managing the connection
+
+Once you establish the connection, the `server` object becomes your point of entry to managing the said connection. For example, you can listen to the original connection erroring by adding an `error` listener to the `server` object:
+
+```ts {2}
+server.connect()
+server.addEventListener('error', (event) => {
+  // Handle the original connection error.
+})
+```
+
+> Explore the "Server events" section to learn more about all the ways to manage server connections.
+
+## Event forwarding
+
+Bear in mind that once the original server connection has been established, all the server events will be forwarded to the client, and all the client events will be forwarded to the original server. Learn how to manage that forwarding:
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/server-events/server-to-client-forwarding"
+  title="Server-to-client forwarding"
+  description="Manage the server event forwarding."
+/>
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/websocket/client-events/client-to-server-forwarding"
+  title="Client-to-server forwarding"
+  description="Manage the client event forwarding."
+/>
