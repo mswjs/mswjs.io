@@ -13,12 +13,12 @@
 
     {
       "source": "/docs/getting-started/install",
-      "destination": "/docs/getting-started#step-1-install",
+      "destination": "/docs/quick-start#1-installation",
       "statusCode": 301
     },
     {
       "source": "/docs/getting-started/mocks",
-      "destination": "/docs/getting-started#step-2-write-network-behavior",
+      "destination": "/docs/quick-start#2-request-handlers",
       "statusCode": 301
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "source": "/docs/getting-started/integrate",
-      "destination": "/docs/getting-started#step-3-integrate-anywhere",
+      "destination": "/docs/quick-start#3-process-level-integration",
       "statusCode": 301
     },
     {

@@ -10,7 +10,7 @@
 ## Table of Contents
 
 - [**Documentation**](https://mswjs.io/docs)
-- [**Getting started**](https://mswjs.io/docs/getting-started)
+- [**Quick start**](https://mswjs.io/docs/quick-start)
 - [Examples](https://github.com/mswjs/examples)
 
 ## Sponsors
