@@ -211,6 +211,11 @@
       "statusCode": 301
     },
     {
+      "source": "/docs/concepts/request-handler#execution-order",
+      "destination": "/docs/defaults#handler-order-sensitivity",
+      "statusCode": 301
+    },
+    {
       "source": "/docs/concepts/request-handler",
       "destination": "/docs/http/intercepting-requests/",
       "statusCode": 301

@@ -4,55 +4,76 @@ title: Default behaviors
 description: Important default behaviors of Mock Service Worker.
 ---
 
-## Passthrough by default
+## Default passthrough
+
+MSW embraces a network-first approach, which means that it will not interfere with the network unless you explicitly say so in your handlers.
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  Intercepting WebSockets, however, is _mock-first_ due to the limitations of
+  their specification.
+</Warning>
 
 ## Handler fallthrough
 
-## Handler order sensitivity
+Every intercepted request "falls through" the list of your handlers, looking for the first matching handler to return an [instruction](/docs/http/handling-requests) on how to handle the request (mock response, response-patch, passthrough, do nothing). A single request may match _multiple handlers_ at the same time but only _one handler_ can be responsible for handling it.
 
-Handlers execute in the order they have been defined, left-to-right. If multiple handlers match the same request, MSW will keep iterating over them until any handler returns an [explicit instruction](/docs/concepts/response-resolver#resolver-instructions) on how to handle that request.
-
-```js
-import { http, HttpResponse, passthrough } from 'msw'
+```ts {5}
+import { http, HttpResponse } from 'msw'
 
 export const handlers = [
-  // This handler will be called first but since
-  // it doesn't return anything from its resolver,
-  // MSW will continue looking for a handler that does.
-  http.get('/user', ({ request }) => {
-    console.log('Just observing:', request.method, request.url)
-  }),
-
-  // This handler is called next (2nd), and it returns
-  // a JSON response from its resolver. MSW will stop looking
-  // for handlers and will consider this one to be relevant
-  // to the intercepted request.
-  http.get('/user', () => {
-    return HttpResponse.json({ name: 'John' })
-  }),
-
-  // Although this handler also matches the request,
-  // it will never be called because the previous handler
-  // returned a mocked response.
-  http.get('/user', () => passthrough()),
+  http.get('/user', () => console.log('One')),
+  http.get('/user', () => HttpResponse.json({ name: 'John' })),
+  http.get('/user', () => console.log('Three')),
 ]
 ```
 
-Understanding the handler execution order is important when declaring your network behavior. You can declare handlers that will trigger first, observing the traffic, followed by the handlers responsible for yielding responses.
+> In the example above, given an outgoing `GET /user` request, you will see the `"One"` string printed to the console and then receive the mocked JSON response as defined in the second handler. You _will not_ see the `"Three"` string because the third handler is never reached (i.e. request already handled).
 
-import { Success } from '@mswjs/shared/components/react/success'
+You can use fallthrough to a great effect to layer your network behaviors. See [Network behavior overrides](/docs/best-practices/network-behavior-overrides).
 
-<Success>
-  Correctly structuring your handlers is the key to differentiate between
-  ambiguous resources:
-</Success>
+## Handler order sensitivity
 
-```js /messages/ /*/2 {6}
+Derived from the fallthrough behavior, handlers are sensitive to the order in which they are defined. MSW executes them left-to-right, starting from handler overrides, if any, since those are prepended to the list of handlers.
+
+```ts {5-7,14}
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node
+
 export const handlers = [
-  // By placing a more specific pathname first,
+  http.get('/user', () => console.log('One')),
+  http.get('/user', () => console.log('Two')),
+  http.get('/user', () => console.log('Three')),
+]
+
+const server = setupServer(...handlers)
+server.listen()
+
+server.use(
+  http.get('/user', () => console.log('Override one')),
+)
+```
+
+Given an outgoing `GET /user` request, this is what you will see in the console:
+
+```
+Override one
+One
+Two
+Three
+```
+
+> The request itself will be performed as-is according to the default passthrough since none of the handlers above has handled it.
+
+Use the handler order sensitivity to differentiate between ambiguous request matches:
+
+```js /messages/2 /*/2 {6}
+export const handlers = [
+  // By placing a more specific request predicate first,
   // the "GET /user/messages" request will be handled
   // properly, despite it also matching a more permissive
-  // handler below.
+  // "/user/*" handler below.
   http.get('/user/messages', messagesResolver)
   http.get('/user/*', resolverOne),
 ]
