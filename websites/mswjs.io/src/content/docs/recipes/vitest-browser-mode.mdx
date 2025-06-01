@@ -35,8 +35,9 @@ export const test = testBase.extend({
       // Expose the worker object on the test's context.
       await use(worker)
 
-      // Stop the worker after the test is done.
-      worker.stop()
+      // Remove any request handlers added in individual test cases.
+      // This prevents them from affecting unrelated tests.
+      worker.resetHandlers()
     },
     {
       auto: true,
