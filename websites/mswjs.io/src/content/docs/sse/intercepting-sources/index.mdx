@@ -1,0 +1,23 @@
+---
+order: 2
+title: Intercepting sources
+description: Intercepting and handling event sources
+---
+
+You can intercept any `EventSource` in your applicatio by defining a request handler for it using the `sse` namespace. For example, consider this event source:
+
+```ts
+new EventSource('https://api.example.com/events')
+```
+
+Intercept it by its URL and start handling the connection:
+
+```ts
+import { sse } from 'msw/browser'
+
+export const handlers = [
+  sse('https://api.example.com/events', ({ request, client, server }) => {
+    console.log(request.url)
+  }),
+]
+```
