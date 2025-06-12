@@ -52,6 +52,8 @@ Running this command will save the `./public` directory in your `package.json`:
 
 If this property is present, whenever you install the `msw` package, the worker script will be copied to the `msw.workerDirectory` destination automatically. This ensures the worker script being in sync with the currently installed version of the library.
 
+> As a counterpart to the `--save` flag, you can provide the `--no-save` flag that will not prompt you to save the worker script location. This can be handy when running MSW in automated environments where terminal interactivity is not desirabble. Note that even with the `--no-save` flag provided, if you have worker script locations previously saved under `msw.workerDirectory` in `package.json`, MSW will _still update those locations_ as a part of the `init` command.
+
 ## Related materials
 
 import { PageCard } from '../../../components/react/pageCard'
