@@ -64,7 +64,7 @@
     },
     {
       "source": "/docs/basics/response-transformer",
-      "destination": "/docs/http/mocking-responses",
+      "destination": "/docs/http/mocking-responses/",
       "statusCode": 301
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "source": "/docs/api/response",
-      "destination": "/docs/basics/mocking-responses",
+      "destination": "/docs/basics/mocking-responses/",
       "statusCode": 301
     },
     {
@@ -130,17 +130,17 @@
     },
     {
       "source": "/docs/api/context/data",
-      "destination": "/docs/graphql/mocking-responses",
+      "destination": "/docs/graphql/mocking-responses/",
       "statusCode": 301
     },
     {
       "source": "/docs/api/context/extensions",
-      "destination": "/docs/graphql/mocking-responses",
+      "destination": "/docs/graphql/mocking-responses/",
       "statusCode": 301
     },
     {
       "source": "/docs/api/context/errors",
-      "destination": "/docs/graphql/mocking-responses",
+      "destination": "/docs/graphql/mocking-responses/",
       "statusCode": 301
     },
     {
@@ -196,7 +196,7 @@
       "statusCode": 301
     },
     {
-      "source": "/basics/mocking-responses",
+      "source": "/basics/mocking-responses/",
       "destination": "/docs/http/mocking-responses/",
       "statusCode": 301
     },
