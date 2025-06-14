@@ -47,7 +47,9 @@ export const handlers = [
 
     return new Response(stream, {
       headers: {
+        connection: 'keep-alive',
         'content-type': 'text/event-stream',
+        'cache-control': 'no-cache',
       },
     })
   }),
