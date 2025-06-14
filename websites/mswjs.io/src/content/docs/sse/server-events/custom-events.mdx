@@ -1,0 +1,28 @@
+---
+order: 2
+title: Custom events
+description: Mocking custom server events.
+---
+
+You can specify the custom event type by providing the `event` key on the client message:
+
+```ts {6}
+import { sse } from 'msw'
+
+export const handlers = [
+  sse('/stream', ({ client }) => {
+    client.send({
+      event: 'greeting',
+      data: 'hello world',
+    })
+  }),
+]
+```
+
+This will result in the following message received by the client:
+
+```
+event:greeting
+data:hello world
+
+```

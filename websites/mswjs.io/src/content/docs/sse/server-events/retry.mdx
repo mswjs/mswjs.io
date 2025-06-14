@@ -1,0 +1,31 @@
+---
+order: 3
+title: Retry
+description: Mocking the reconnection time.
+---
+
+You can mock the reconnection time instruction from the server by sending the [`retry`](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#retry) message to the client. The value of the `retry` key will control the reconnection time if the underlying connection is lost.
+
+```ts {5}
+import { sse } from 'msw'
+
+export const handlers = [
+  sse('/stream', ({ client }) => {
+    client.send({ retry: 1000 })
+  }),
+]
+```
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>
+  If present, the `retry` key must be the only key on the object provided to
+  `client.send()`. All the other keys will be ignored.
+</Warning>
+
+This will result in the following message received by the client:
+
+```
+retry:1000
+
+```
