@@ -1,0 +1,26 @@
+---
+order: 1
+title: Message events
+description: Mocking server message events.
+---
+
+You can send a mock message event to the client by calling `client.send()` and providing it with the message data:
+
+```ts {5}
+import { sse } from 'msw'
+
+export const handlers = [
+  sse('/stream', ({ client }) => {
+    client.send({ data: 'hello world' })
+  }),
+]
+```
+
+> Providing an explicit `event: 'message'` has no effect and is equivalent to not providing the `event` property at all.
+
+This will result in the following message received by the client:
+
+```
+data:hello world
+
+```

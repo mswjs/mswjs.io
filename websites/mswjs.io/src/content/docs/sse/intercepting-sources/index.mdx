@@ -13,7 +13,7 @@ new EventSource('https://api.example.com/events')
 Intercept it by its URL and start handling the connection:
 
 ```ts
-import { sse } from 'msw/browser'
+import { sse } from 'msw'
 
 export const handlers = [
   sse('https://api.example.com/events', ({ request, client, server }) => {

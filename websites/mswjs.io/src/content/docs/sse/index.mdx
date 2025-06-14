@@ -16,7 +16,7 @@ keywords:
 Mock Service Worker ships with a first-class API for intercepting and mocking [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) (SSE) via the `sse` namespace provided by the library:
 
 ```ts
-import { sse } from 'msw/browser'
+import { sse } from 'msw'
 ```
 
 import { PageCard } from '@mswjs/shared/components/react/pageCard'
@@ -62,7 +62,7 @@ Handling SSE via the `http` namespace, however, has a number of disadvantages:
 In comparison, the `sse` namespace provides you a type-safe, high-level experience of working with SSE:
 
 ```ts {5,8} /sse/
-import { sse } from 'msw/browser'
+import { sse } from 'msw'
 
 export const handlers = [
   sse<{ message: string }>('/stream', ({ client }) => {
