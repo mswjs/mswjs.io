@@ -28,7 +28,7 @@ http.get('/resource', () => {})
 
 A predicate decides which requests to intercept, and a resolver decides what to do with those requests. On this page, we will take a look at the different ways to define a predicate for your request handlers. You can learn more about handling requests in the "Mocked responses" section:
 
-import { ServerIcon } from '@heroicons/react/24/outline'
+import { ServerIcon } from '@heroicons/react/24/solid'
 import { PageCard } from '@mswjs/shared/components/react/pageCard'
 
 <PageCard
@@ -100,12 +100,12 @@ It's generally recommended to use request paths/URLs predicates, but you can rel
 
 The following properties are available on the response resolver object argument for `http.*` handlers:
 
-| Property    | Type                                 | Description                                                                                   |
-| ----------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
-| `request`   | [`Request`](#)                       | Fetch API `Request` representation of the intercepted request.                                |
-| `requestId` | `string`                             | UUID representing the intercepted request.                                                    |
-| `params`    | `Record<string, string \| string[]>` | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
-| `cookies`   | `Record<string, string>`             | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
+| Property    | Type                                                                  | Description                                                                                   |
+| ----------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `request`   | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Fetch API `Request` representation of the intercepted request.                                |
+| `requestId` | `string`                                                              | UUID representing the intercepted request.                                                    |
+| `params`    | `Record<string, string \| string[]>`                                  | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
+| `cookies`   | `Record<string, string>`                                              | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
 
 ```ts /request/ /params/#g /cookies/#v
 http.get('/resource', ({ request, params, cookies }) => {})

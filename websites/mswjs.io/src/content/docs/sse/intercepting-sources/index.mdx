@@ -17,7 +17,61 @@ import { sse } from 'msw'
 
 export const handlers = [
   sse('https://api.example.com/events', ({ request, client, server }) => {
-    console.log(request.url)
+    client.send({ data: 'hello world' })
   }),
 ]
 ```
+
+## Predicate
+
+You can use the same predicate types for Server-Sent Events as you would use for [HTTP requests](/docs/http/intercepting-requests/#predicate), which includes:
+
+- Relative URLs;
+- Absolute URLs;
+- Regular expressions.
+
+For example, here's how you can intercept an `EventSource` to a remote server with a dynamic path segment `id`:
+
+```ts /:id/1#g /id/2#g
+sse('https://api.example.com/events/:id', ({ params }) => {
+  console.log(params.id)
+})
+```
+
+## Response resolver
+
+The following properties are available on the response resolver object argument for the `sse` handler:
+
+| Property    | Type                                                                  | Description                                                                                   |
+| ----------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `client`    | `ServerSentEventClient`                                               | Intercepted `EventSource` client connection object.                                           |
+| `server`    | `ServerSentEventServer`                                               | Actual `EventSource` server connection object.                                                |
+| `request`   | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Fetch API representation of the intercepted request.                                          |
+| `requestId` | `string`                                                              | UUID representing the intercepted request.                                                    |
+| `params`    | `Record<string, string \| string[]>`                                  | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
+| `cookies`   | `Record<string, string>`                                              | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
+
+## Related materials
+
+Much like Server-Sent Events utilize HTTP, working with the `sse` namespace has a significant overlap with the `http` namespace. We highly recommend getting yourself familiar with intercepting HTTP requests with MSW since that will answer a lot of questions you might have around Server-Sent Events.
+
+<PageCard
+  icon={ServerIcon}
+  url="/docs/http/intercepting-requests/"
+  title="Intercepting requests"
+  description="Learn how to intercept outgoing requests."
+/>
+
+## Next steps
+
+Now that you know how to intercept `EventSource` connections, it's time to learn more about handling them (sending mock events, connecting to the real server, etc).
+
+import { ServerIcon, CloudArrowDownIcon } from '@heroicons/react/24/solid'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+
+<PageCard
+  icon={CloudArrowDownIcon}
+  url="/docs/sse/server-events/"
+  title="Server events"
+  description="Mocking Server-Sent Events."
+/>
