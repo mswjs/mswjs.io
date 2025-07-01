@@ -39,7 +39,7 @@ Derived from the fallthrough behavior, handlers are sensitive to the order in wh
 
 ```ts {5-7,14}
 import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node
+import { setupServer } from 'msw/node'
 
 export const handlers = [
   http.get('/user', () => console.log('One')),
