@@ -272,6 +272,11 @@
       "statusCode": 301
     },
     {
+      "source": "/docs/recipes/responding-with-binary/",
+      "destination": "/docs/http/mocking-responses/binary",
+      "statusCode": 301
+    },
+    {
       "source": "/docs/recipes/graphql-query-batching",
       "destination": "/docs/graphql/mocking-responses/query-batching",
       "statusCode": 301
