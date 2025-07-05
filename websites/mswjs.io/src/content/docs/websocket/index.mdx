@@ -59,7 +59,7 @@ const chat = ws.link('wss://chat.example.com')
 
 A link preconfigures the interceptor to match WebSocket connections that match the provided predicate (e.g. URL).
 
-Add a `connectin` event listener on the link to intercept an outgoing client connection:
+Add a `connection` event listener on the link to intercept an outgoing client connection:
 
 ```ts {2-4} /'connection'/
 export const handlers = [
