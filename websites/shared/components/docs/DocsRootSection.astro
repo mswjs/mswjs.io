@@ -8,7 +8,8 @@ import {
   TrophyIcon,
   CommandLineIcon,
   ServerIcon,
-  ChatBubbleBottomCenterIcon
+  ChatBubbleBottomCenterIcon,
+  CloudArrowDownIcon as ServerSentEventsIcon,
 } from '@heroicons/react/24/solid'
 import type { DocsItem } from '../../utils/buildNavTree'
 import DocsNavTree from './DocsNavTree.astro'
@@ -26,6 +27,7 @@ const rootSectionIcons: Record<
   React.FC<{ className?: string }>
 > = {
   'Mocking HTTP': ServerIcon,
+  'Mocking SSE': ServerSentEventsIcon,
   'Mocking GraphQL': GraphQLIcon,
   'Mocking WebSocket': ChatBubbleBottomCenterIcon,
 
