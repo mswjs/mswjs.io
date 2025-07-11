@@ -1,5 +1,70 @@
 ---
 order: 3
 title: Server events
-description: Mocking Server-Sent Events.
+keywords:
+  - sse
+  - mock
+  - event
+  - payload
 ---
+
+Mocks must resemble actual usage. That is a core philosophy when it comes to designing APIs in MSW. While Server-Sent Events are consumed via the `EventSource` standard API, there is no standard way of defining such events from the server. Because of that, MSW takes the liberty of designing a custom API that remains standard-based while providing a type-safe and ergonomic way of working with Server-Sent Events.
+
+## Event object
+
+A server event is an object of the following shape:
+
+| Property | Type                | Description        |
+| -------- | ------------------- | ------------------ |
+| `id`     | `string` (Optional) | Custom event ID.   |
+| `data`   | `string`            | Event payload.     |
+| `event`  | `string` (Optional) | Custom event name. |
+| `retry`  | `number` (Optional) | Reconnection time. |
+
+## Sending events
+
+To send a mock server-sent event, call `client.send()` and provide it with the [event object](#event-object):
+
+```ts {2} /client/#g
+sse('/stream', ({ client }) => {
+  client.send({ data: 'hello world' })
+})
+```
+
+Creating this request handler will send the "hello world" event to the `EventSource` matching the handler's predicate (`/stream`):
+
+```ts
+// your-app.ts
+const source = new EventSource('/stream')
+event.addEventListener('message', (event) => {
+  console.log(event.data) // "hello world"
+})
+```
+
+## Next steps
+
+Explore what you can do with the `sse` API on the following pages:
+
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { CloudArrowDownIcon } from '@heroicons/react/24/solid'
+
+<PageCard
+  icon={CloudArrowDownIcon}
+  url="/docs/sse/server-events/message-events"
+  title="Message events"
+  description="Mocking server message events."
+/>
+
+<PageCard
+  icon={CloudArrowDownIcon}
+  url="/docs/sse/server-events/custom-events"
+  title="Custom events"
+  description="Mocking custom server events."
+/>
+
+<PageCard
+  icon={CloudArrowDownIcon}
+  url="/docs/sse/server-events/retry"
+  title="Retry"
+  description="Mocking the reconnection time."
+/>
