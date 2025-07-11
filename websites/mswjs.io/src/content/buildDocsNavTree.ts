@@ -20,6 +20,11 @@ export function buildDocsNavTree(
     },
     {
       kind: 'group',
+      title: 'Mocking SSE',
+      children: builder.get('sse/**/*.mdx'),
+    },
+    {
+      kind: 'group',
       title: 'Mocking GraphQL',
       children: builder.get('graphql/**/*.mdx'),
     },
