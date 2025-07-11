@@ -46,7 +46,7 @@ You can provide a _string_ as a request handler predicate that represents an ent
 
 #### Relative URL
 
-When you provide a _relative request URL_ as a predicate, it will be resolved against the current document (`document.baseUri`). This is handy for in-browser mocking, but bear in mind that you need to configure the base URL in your Node.js tests because that's not a thing in Node.js.
+When you provide a _relative request URL_ as a predicate, it will be resolved against the current document (`location.href`). This is handy for in-browser mocking, but bear in mind that you need to configure the base URL in your Node.js tests because that's not a thing in Node.js.
 
 ```ts
 http.get('/users/:id', () => {})

@@ -18,7 +18,7 @@ import { http, HttpResponse, bypass } from 'msw'
 
 http.get('/resource', async ({ request }) => {
   // Get the original JSON response from the server.
-  const originalData = await bypass(request).then((response) => response.json())
+  const originalData = await fetch(bypass(request)).then((response) => response.json())
 
   return HttpResponse.json({
     // Combine the original data with the mocked data.

@@ -10,6 +10,6 @@ You can intercept any GraphQL operation regardless of its kind by defining a `gr
 graphql.operation(() => {})
 ```
 
-> You can still access all the [Response resolver arguments](/docs/graphql/interception/#response-resolver) of the intercepted GraphQL operation, like `operationName`, `variables`, etc.
+> You can still access all the [Response resolver arguments](/docs/graphql/intercepting-operations/#response-resolver) of the intercepted GraphQL operation, like `operationName`, `variables`, etc.
 
 This type of interception is handy when you want to delegate the request handling to an external source, like a mocked GraphQL schema. For that, see [Schema-first mocking](/docs/graphql/schema-first-mocking).

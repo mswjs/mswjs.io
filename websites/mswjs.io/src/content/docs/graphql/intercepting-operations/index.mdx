@@ -35,13 +35,13 @@ The library supports intercepting GraphQL queries and mutations (subscriptions s
 <div className="md:grid md:grid-cols-2 md:gap-x-5">
   <PageCard
     icon={GraphQLIcon}
-    url="/docs/graphql/interception/queries"
+    url="/docs/graphql/intercepting-operations/queries"
     title="Queries"
     description="Learn about interceping GraphQL queries"
   />
   <PageCard
     icon={GraphQLIcon}
-    url="/docs/graphql/interception/mutations"
+    url="/docs/graphql/intercepting-operations/mutations"
     title="Mutations"
     description="Learn about interceping GraphQL mutations"
   />
@@ -51,7 +51,7 @@ You can also **intercept any GraphQL operation** regardless of its kind, which i
 
 <PageCard
   icon={GraphQLIcon}
-  url="/docs/graphql/interception/operations"
+  url="/docs/graphql/intercepting-operations/operations"
   title="Operations"
   description="Learn about interceping any GraphQL operation"
 />
@@ -108,12 +108,12 @@ graphql.mutation(/user/i, () => {})
 
 The following properties are available on the response resolver object argument for `graphql.*` handlers:
 
-| Property        | Type                     | Description                                                                       |
-| --------------- | ------------------------ | --------------------------------------------------------------------------------- |
-| `cookies`       | `Record<string, string>` | Parsed requets cookies.                                                           |
-| `query`         | `string`                 | Raw GraphQL [query string](/docs/graphql/interception/queries#reading-raw-query). |
-| `variables`     | `Record<string, any>`    | Parsed [variables](/docs/graphql/interception/variables) of this operation.       |
-| `operationName` | `string`                 | Operation name (e.g. `'GetUser'`).                                                |
+| Property        | Type                     | Description                                                                                  |
+| --------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
+| `cookies`       | `Record<string, string>` | Parsed requets cookies.                                                                      |
+| `query`         | `string`                 | Raw GraphQL [query string](/docs/graphql/intercepting-operations/queries#reading-raw-query). |
+| `variables`     | `Record<string, any>`    | Parsed [variables](/docs/graphql/intercepting-operations/variables) of this operation.       |
+| `operationName` | `string`                 | Operation name (e.g. `'GetUser'`).                                                           |
 
 ```ts /cookies/#g /query/ /variables/#v /operationName/
 graphql.mutation(

@@ -57,7 +57,7 @@ Outgoing: GET https://api.example.com/some/request
 Outgoing: POST http://localhost/post/abc-123
 ```
 
-**You must see the request's method and the absolute request URL**. If the request method is different, adjust your request handler to reflect it. If you see a _relative request URL_, your request client or your testing environment are not configured correctly. You must configure the base URL option of your request client to produce absolute request URLs, and your test environment to have `document.baseURI` set.
+**You must see the request's method and the absolute request URL**. If the request method is different, adjust your request handler to reflect it. If you see a _relative request URL_, your request client or your testing environment are not configured correctly. You must configure the base URL option of your request client to produce absolute request URLs, and your test environment to have `location.href` set.
 
 Otherwise, **verify that the problematic request is printed.** If it is, continue to the next step.
 
