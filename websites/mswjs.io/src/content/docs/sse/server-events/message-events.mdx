@@ -30,6 +30,21 @@ data:hello world
 
 ```
 
+## Payload
+
+You can send any serializable payload as the message data. For example, you can send a JSON:
+
+```ts {2-7}
+client.send({
+  data: {
+    user: {
+      id: 'abc-123',
+      name: 'John',
+    },
+  },
+})
+```
+
 ## Custom event ID
 
 You can attach a [custom ID field](https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation) to the sent message event by providing the `id` property alongside the sent event:
