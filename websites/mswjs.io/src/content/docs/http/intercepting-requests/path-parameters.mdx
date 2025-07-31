@@ -66,9 +66,9 @@ Given the request handler above, here are the path parameters that will be match
 | `/settings/user/privacy`      | `["user", "privacy"]`         |
 | `/settings/user/profile/edit` | `["user", "profile", "edit"]` |
 
-## Escaping semicolon
+## Escaping colons
 
-Sometimes you might want to include a semicolon (`;`) in the request path without it becoming a parameter. Use double backslash (`\\`) to escape such semicolons:
+Sometimes you might want to include a colon (`:`) in the request path without it becoming a parameter. Use double backslash (`\\`) to escape such colons:
 
 ```ts
 http.get('/songs/\\:genre/\\:artist', () => {})
