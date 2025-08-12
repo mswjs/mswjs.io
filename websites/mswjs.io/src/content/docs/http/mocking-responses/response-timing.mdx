@@ -37,7 +37,7 @@ import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 
 ## Stream latency
 
-You can use `delay()` anywhere during the response resolution, including in-between the streamed chunks if [responding with a stream](/docs/http/responses/streaming):
+You can use `delay()` anywhere during the response resolution, including in-between the streamed chunks if [responding with a stream](/docs/http/mocking-responses/streaming):
 
 ```ts {5,7}
 http.get('/stream', () => {
