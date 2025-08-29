@@ -104,6 +104,22 @@ graphql.mutation(/user/i, () => {})
 
 > This handler will match both `CreateUser` and `UpdateUser` mutations.
 
+### Custom predicate function
+
+For more nuanced use cases, you can provide a function as the predicate. That function must return a `boolean` indicating whether the intercepted GraphQL query should match your request handler.
+
+```ts
+graphql.query(
+  ({ operationType, operationName, query, variables, request, cookies }) => {
+    // Match all GraphQL queries whose name includes "user".
+    return operationName.toLowerCase().includes('user')
+  },
+  resolver,
+)
+```
+
+> Note that your custom predicate function is called _after_ MSW parses the outgoing request as a valid GraphQL query. That way, you can access the query's information, like `query` and `variables`, without having to manually ensure the query validity.
+
 ## Response resolver
 
 The following properties are available on the response resolver object argument for `graphql.*` handlers:
