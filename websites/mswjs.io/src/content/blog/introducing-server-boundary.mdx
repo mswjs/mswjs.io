@@ -41,7 +41,7 @@ Internally, MSW keeps the list of current request handlers in-memory, and resolv
 
 ```js {8}
 class SetupServerApi {
-  construtor(...initialHandlers) {
+  constructor(...initialHandlers) {
     this.initialHandlers = initialHandlers
     this.currentHandlers = [...this.initialHandlers]
   }

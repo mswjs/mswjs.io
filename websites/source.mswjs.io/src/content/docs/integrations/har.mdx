@@ -136,7 +136,7 @@ fromTraffic(har, (entry) => {
 })
 ```
 
-In this example, we are locating requests to `example.com` and rewriting their hostname to point to the `BASE_URL` we use in tests. This is handy if the recorded traffic was on production while we want to run tests aginst staging or local.
+In this example, we are locating requests to `example.com` and rewriting their hostname to point to the `BASE_URL` we use in tests. This is handy if the recorded traffic was on production while we want to run tests against staging or local.
 
 Using the map function also allows you to repurpose a single network archive by transforming its entries based on the test cases or debugging scenarios.
 
