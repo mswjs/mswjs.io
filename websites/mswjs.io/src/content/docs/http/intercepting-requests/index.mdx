@@ -100,7 +100,7 @@ It's generally recommended to use request paths/URLs predicates, but you can rel
 
 For more nuanced use cases, you can provide a function as the predicate. That function must return a `boolean` indicating whether the intercepted request should match your request handler.
 
-```ts {3}
+```ts {5}
 http.get(({ request, cookies }) => {
   const url = new URL(request.url)
 
@@ -120,7 +120,7 @@ The custom predicate function may also return an extended matching result, which
 
 The extended matching result is particularly handy if you want to preserve the path parameter parsing behavior of the default URL-based matchers. When using a custom predicate function, you must parse the path parameters from the intercepted request URL yourself, using the `matchRequestUrl()` function exported by `msw`.
 
-```ts {8-10} /matchRequestUrl/
+```ts {8-11} /matchRequestUrl/
 import { http, matchRequestUrl, HttpResponse } from 'msw'
 
 http.get(
