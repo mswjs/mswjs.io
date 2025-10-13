@@ -152,7 +152,7 @@ http.get('/posts', () => {
 
 [Mirage](https://github.com/miragejs/miragejs) is an API mocking library that lets you build, test and share a complete working JavaScript application without having to rely on any backend services.
 
-> Mirage is centered around data modeling to emulate more complex server behaviors. Mock Service Worker doesn't come with a built-in data modeling capabilities and instead exposes them in a separate package called [`@mswjs/data`](https://github.com/mswjs/data). This way you can bring modeling to the table once you need it.
+> Mirage is centered around data modeling to emulate more complex server behaviors. Mock Service Worker doesn't come with a built-in data modeling capabilities and instead exposes them in a separate package called [`@msw/data`](https://github.com/mswjs/data). This way you can bring modeling to the table once you need it.
 
 ### API support
 
@@ -257,18 +257,19 @@ const castMembers = new Collection({ schema: castMemberSchema })
 movies.defineRelations(({ many }) => ({
   castMembers: many(castMembers),
 }))
-
 castMembers.defineRelations(({ one }) => ({
   movie: one(movies),
 }))
 
 // Seed your collections with data.
-await movies.create({
+await castMembers.create({
   id: '1',
-  title: 'Interstellar',
-  castMembers: [
-    await castMembers.create({ id: '1', name: 'Matthew McConaughey' }),
-  ],
+  name: 'Matthew McConaughey',
+  movie: await movies.create({
+    id: '1',
+    title: 'Interstellar',
+    castMembers: [],
+  }),
 })
 ```
 
