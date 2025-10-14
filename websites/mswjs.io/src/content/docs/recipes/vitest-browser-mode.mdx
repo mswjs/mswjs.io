@@ -21,7 +21,7 @@ import { Warning } from '@mswjs/shared/components/react/warning'
 
 We recommend integrating MSW with Vitest Browser Mode by [extending the test context](https://vitest.dev/guide/test-context.html#extend-test-context).
 
-```ts {6-20}
+```ts {6-23}
 // test-extend.ts
 import { test as testBase } from 'vitest'
 import { worker } from './mocks/browser.js'
@@ -38,6 +38,9 @@ export const test = testBase.extend({
       // Remove any request handlers added in individual test cases.
       // This prevents them from affecting unrelated tests.
       worker.resetHandlers()
+
+      // Stop the worker after the test.
+      worker.stop()
     },
     {
       auto: true,
