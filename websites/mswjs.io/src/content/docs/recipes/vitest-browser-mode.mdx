@@ -9,7 +9,7 @@ keywords:
   - use
 ---
 
-import { Warning } from '@mswjs/shared/components/react/warning'
+import { Warning } from "@mswjs/shared/components/react/warning";
 
 [Vitest Browser Mode](https://main.vitest.dev/guide/browser/) is a fantastic tool for testing your UI components in the actual browser. There are a few things to consider when integrating MSW with the Browser Mode:
 
@@ -23,27 +23,30 @@ We recommend integrating MSW with Vitest Browser Mode by [extending the test con
 
 ```ts {6-20}
 // test-extend.ts
-import { test as testBase } from 'vitest'
-import { worker } from './mocks/browser.js'
+import { test as testBase } from "vitest";
+import { worker } from "./mocks/browser.js";
 
 export const test = testBase.extend({
   worker: [
     async ({}, use) => {
       // Start the worker before the test.
-      await worker.start()
+      await worker.start();
 
       // Expose the worker object on the test's context.
-      await use(worker)
+      await use(worker);
 
       // Remove any request handlers added in individual test cases.
       // This prevents them from affecting unrelated tests.
-      worker.resetHandlers()
+      worker.resetHandlers();
+
+      // Stop the worker after the test.
+      await worker.stop();
     },
     {
       auto: true,
     },
   ],
-})
+});
 ```
 
 <Warning>
@@ -56,15 +59,15 @@ export const test = testBase.extend({
 Any `test()` now runs against the initial, happy-path request handlers (like those in `handlers.ts`) without explicitly referencing MSW. Leverage this for cleaner test suites and predictable baseline behavior.
 
 ```ts {1}
-import { test } from './test-extend'
-import { Dashboard } from './components/dashboard.js'
+import { test } from "./test-extend";
+import { Dashboard } from "./components/dashboard.js";
 
-test('renders the dashboard', () => {
+test("renders the dashboard", () => {
   // Uses only the happy-path request handlers.
-  render(<Dashboard />)
+  render(<Dashboard />);
 
   // Your actions and assertions...
-})
+});
 ```
 
 ### Overriding request handlers
@@ -72,23 +75,23 @@ test('renders the dashboard', () => {
 You can [override request handlers](/docs/best-practices/network-behavior-overrides) by accessing the `worker` object of your test's context and calling `.use()`, providing it with the request handlers that should take priority:
 
 ```ts {2,10-14} /worker/1,3
-import { http, HttpResponse } from 'msw'
-import { test } from './test-extend'
-import { Dashboard } from './components/dashboard.js'
+import { http, HttpResponse } from "msw";
+import { test } from "./test-extend";
+import { Dashboard } from "./components/dashboard.js";
 
-test('displays a notification if fetching the dashboard failed', async ({
+test("displays a notification if fetching the dashboard failed", async ({
   worker,
 }) => {
   // Prepend overrides to the happy-path handlers
   // on the `worker` object from the test's context.
   worker.use(
-    http.post('/dashboard', () => {
-      return new HttpResponse(null, { status: 500 })
-    }),
-  )
+    http.post("/dashboard", () => {
+      return new HttpResponse(null, { status: 500 });
+    })
+  );
 
-  render(<Dashboard />)
+  render(<Dashboard />);
 
   // Your actions and assertions...
-})
+});
 ```
