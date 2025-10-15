@@ -152,7 +152,7 @@ http.get('/posts', () => {
 
 [Mirage](https://github.com/miragejs/miragejs) is an API mocking library that lets you build, test and share a complete working JavaScript application without having to rely on any backend services.
 
-> Mirage is centered around data modeling to emulate more complex server behaviors. Mock Service Worker doesn't come with a built-in data modeling capabilities and instead exposes them in a separate package called [`@mswjs/data`](https://github.com/mswjs/data). This way you can bring modeling to the table once you need it.
+> Mirage is centered around data modeling to emulate more complex server behaviors. Mock Service Worker doesn't come with a built-in data modeling capabilities and instead exposes them in a separate package called [`@msw/data`](https://github.com/mswjs/data). This way you can bring modeling to the table once you need it.
 
 ### API support
 
@@ -226,38 +226,51 @@ http.get('/movies', () => {
 })
 ```
 
-Although MSW doesn't ship data modeling capabilities built-in, it leverages ecosystem packages, like [`@mswjs/data`](https://github.com/mswjs/data), to give you a data-first approach to API mocking if you choose it.
+Although MSW doesn't ship data modeling capabilities built-in, it leverages ecosystem packages, like [`@msw/data`](https://github.com/mswjs/data), to give you a data-first approach to API mocking if you choose it.
 
 ```js
-import { factory, primaryKey, oneOf, manyOf } from '@mswjs/data'
+import { Collection } from '@msw/data'
+import { z } from 'zod'
 
-// Model the data.
-const db = factory({
-  movie: {
-    id: primaryKey(randomUuid),
-    title: String,
-    castMembers: manyOf('castMember'),
-  },
-  castMember: {
-    id: primaryKey(randomUuid),
-    name: String,
-    movie: oneOf('movie'),
+// Define schemas for your data models.
+const movieSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  get castMembers() {
+    return z.array(castMemberSchema)
   },
 })
 
-// Generate request handlers based on the models.
-// - GET /movies
-// - GET /movies/:id
-// - POST /movies
-// - ...
-db.toHandlers('rest')
+const castMemberSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  get movie() {
+    return movieSchema
+  },
+})
 
-// Including GraphQL queries!
-// - query ListMovies
-// - query GetMovie
-// - mutation AddMovie
-// - ...
-db.toHandlers('graphql')
+// Create collections for each model.
+const movies = new Collection({ schema: movieSchema })
+const castMembers = new Collection({ schema: castMemberSchema })
+
+// Define relations between collections.
+movies.defineRelations(({ many }) => ({
+  castMembers: many(castMembers),
+}))
+castMembers.defineRelations(({ one }) => ({
+  movie: one(movies),
+}))
+
+// Seed your collections with data.
+await castMembers.create({
+  id: '1',
+  name: 'Matthew McConaughey',
+  movie: await movies.create({
+    id: '1',
+    title: 'Interstellar',
+    castMembers: [],
+  }),
+})
 ```
 
 ## Cypress - `cy.intercept()`
