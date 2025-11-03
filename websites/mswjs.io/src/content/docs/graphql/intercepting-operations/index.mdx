@@ -10,7 +10,7 @@ This page will walk you through the possible ways to intercept a GraphQL operati
 
 ## Endpoint-first mocking
 
-By default, the library **ignores the server sendpoint** when matching GraphQL operations. That is a conscious decision since it is rare that a single application would interact with multiple GraphQL APIs. It means that the same handler will match a `GetUser` operation even if one is sent to `/api/graphql` and the other to `https://api.example.com`.
+By default, the library **ignores the servers endpoint** when matching GraphQL operations. That is a conscious decision since it is rare that a single application would interact with multiple GraphQL APIs. It means that the same handler will match a `GetUser` operation even if one is sent to `/api/graphql` and the other to `https://api.example.com`.
 
 This default is supported for backward-compatibility, but it is **strongly recommended** to use [`graphql.link()`](/docs/api/graphql#graphqllinkurl) to scope GraphQL mocking to a particular server endpoint.
 
@@ -104,13 +104,29 @@ graphql.mutation(/user/i, () => {})
 
 > This handler will match both `CreateUser` and `UpdateUser` mutations.
 
+### Custom predicate function
+
+For more nuanced use cases, you can provide a function as the predicate. That function must return a `boolean` indicating whether the intercepted GraphQL query should match your request handler.
+
+```ts
+graphql.query(
+  ({ operationType, operationName, query, variables, request, cookies }) => {
+    // Match all GraphQL queries whose name includes "user".
+    return operationName.toLowerCase().includes('user')
+  },
+  resolver,
+)
+```
+
+> Note that your custom predicate function is called _after_ MSW parses the outgoing request as a valid GraphQL query. That way, you can access the query's information, like `query` and `variables`, without having to manually ensure the query validity.
+
 ## Response resolver
 
 The following properties are available on the response resolver object argument for `graphql.*` handlers:
 
 | Property        | Type                     | Description                                                                                  |
 | --------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
-| `cookies`       | `Record<string, string>` | Parsed requets cookies.                                                                      |
+| `cookies`       | `Record<string, string>` | Parsed request cookies.                                                                      |
 | `query`         | `string`                 | Raw GraphQL [query string](/docs/graphql/intercepting-operations/queries#reading-raw-query). |
 | `variables`     | `Record<string, any>`    | Parsed [variables](/docs/graphql/intercepting-operations/variables) of this operation.       |
 | `operationName` | `string`                 | Operation name (e.g. `'GetUser'`).                                                           |

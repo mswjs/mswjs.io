@@ -12,7 +12,7 @@ ws.link<Arg1, Arg2>(url)
 //     ^^^^^^^^^^^^ Type error!
 ```
 
-The reasoning behing this decision is twofold:
+The reasoning behind this decision is twofold:
 
 1. Narrowing down the data type doesn't guarantee that a different data type wouldn't be sent over the network (the classic types vs runtime debate);
 1. The `event.data` value you receive in the message event listener will always be of type `string | Blob | ArrayBuffer` because MSW provides no message parsing.

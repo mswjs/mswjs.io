@@ -96,6 +96,49 @@ http.get(/\/settings\/(profile|settings)/, () => {})
 
 It's generally recommended to use request paths/URLs predicates, but you can rely on regular expressions for the most complex matching scenarios.
 
+### Custom predicate function
+
+For more nuanced use cases, you can provide a function as the predicate. That function must return a `boolean` indicating whether the intercepted request should match your request handler.
+
+```ts {5}
+http.get(({ request, cookies }) => {
+  const url = new URL(request.url)
+
+  // Match all GET requests whose query params include "mock".
+  return url.searchParams.has('mock')
+}, resolver)
+```
+
+The custom predicate function may also return an extended matching result, which is an object of the following shape:
+
+```ts
+{
+  matches: boolean
+  params: Record<string, string | string[]>
+}
+```
+
+The extended matching result is particularly handy if you want to preserve the path parameter parsing behavior of the default URL-based matchers. When using a custom predicate function, you must parse the path parameters from the intercepted request URL yourself, using the `matchRequestUrl()` function exported by `msw`.
+
+```ts {8-11} /matchRequestUrl/
+import { http, matchRequestUrl, HttpResponse } from 'msw'
+
+http.get(
+  ({ request }) => {
+    const url = new URL(request.url)
+    const matches = url.searchParams.has('mock')
+
+    return {
+      matches,
+      params: matchRequestUrl(url, '/user/:id'),
+    }
+  },
+  ({ params }) => {
+    return HttpResponse.json({ id: params.id })
+  },
+)
+```
+
 ## Response resolver
 
 The following properties are available on the response resolver object argument for `http.*` handlers:

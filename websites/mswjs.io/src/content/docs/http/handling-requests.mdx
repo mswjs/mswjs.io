@@ -58,7 +58,7 @@ http.get('https://api.example.com/resource', async ({ request }) => {
 
 ### Return nothing
 
-You can also return nothing from the response resolver, either explicitly or implicitly. If that happens, MSW will continue to look for other request handlers that might match ths request. You can utilize this for network introspection or any other side effects that do not involve responding to the request.
+You can also return nothing from the response resolver, either explicitly or implicitly. If that happens, MSW will continue to look for other request handlers that might match this request. You can utilize this for network introspection or any other side effects that do not involve responding to the request.
 
 ```ts {3}
 export const handlers = [
@@ -71,4 +71,4 @@ export const handlers = [
 ]
 ```
 
-> In this example, the first request handler will match, log the message to the console, and, since it returns nothing, finish. The second request hander will then match the same request and handle it with a mocked response, as an example.
+> In this example, the first request handler will match, log the message to the console, and, since it returns nothing, finish. The second request handler will then match the same request and handle it with a mocked response, as an example.
