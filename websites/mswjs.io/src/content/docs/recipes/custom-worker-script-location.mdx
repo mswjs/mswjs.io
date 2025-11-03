@@ -12,6 +12,10 @@ await worker.start({
     // This is useful if your application follows
     // a strict directory structure.
     url: '/assets/mockServiceWorker.js',
+    options: {
+      // Required if you opt-in to Service-Worker-Allowed header
+      scope: "YOUR_TARGET_SCOPE",
+    },
   },
 })
 ```
