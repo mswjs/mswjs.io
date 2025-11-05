@@ -1,0 +1,184 @@
+---
+title: Server-Sent Events Are Here!
+slug: server-sent-events-are-here
+description: First-class support for mocking Server-Sent Events lands in MSW.
+publishedAt: 2025-11-05
+thumbnailUrl: /thumbnails/introducing-msw-2.0.png
+author:
+  name: Artem Zakharchenko
+  twitterHandle: kettanaito
+keywords:
+  - sse
+  - server-sent
+  - event
+  - mock
+  - llm
+---
+
+MSW v2.12.0 brings the first-class support for mocking [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) with the new `sse()` API. It allows you to intercept and handle outgoing (and incoming) events in a standard-based and type-safe manner. Much like the `EventSource` itself, the new API is meant primarily for the _browsers_ but will function in any environment that faithfully implements the global `EventSource` class.
+
+## The new API
+
+```ts {1,4-6}
+import { sse } from 'msw'
+
+export const handlers = [
+  sse('https://acme.com/api/ping', ({ client }) => {
+    client.send({ data: 'hello world' })
+  })
+]
+```
+
+> Calling `client.send()` dispatches a `"message"` event to the connected client (i.e. your app).
+
+In this example, we are intercepting an event source connection to `https://acme.com/api/ping` and sending a data frame (`client.send()`) as soon as the connection has been established. Pretty basic. Let's see what else we can do.
+
+### Periodic pushes
+
+```ts {5,9-16}
+import { faker } from '@faker-js/faker'
+
+export const handlers = [
+  sse('https://acme.com/api/stocks', ({ client }) => {
+    setInterval(() => {
+      const price = faker.number.float({ min: 180, max: 200, precision: 0.01 })
+      const change = faker.number.float({ min: -2, max: 2, precision: 0.01 })
+
+      client.send({
+        data: {
+          symbol: 'AAPL',
+          price,
+          change: change >= 0 ? `+${change}` : change
+        }
+      })
+    }, 1000)
+  })
+]
+```
+
+How about pushing dynamic, changing data periodically? As simple as combining `setInterval` and `client.send()`! But none of this is really type-safe though... We can do better.
+
+### Type-safe events
+
+```ts {1-7,10} /StockEvents/#g
+interface StockEvents {
+  message: {
+    symbol: string
+    price: number
+    change: string
+  }
+}
+
+export const handlers = [
+  sse<StockEvents>('https://acme.com/api/stocks', ({ client }) => {
+    setInterval(() => {
+      const price = /* ... */
+      const change = /* ... */
+
+      client.send({
+        data: {
+          symbol: 'AAPL',
+          price,
+          change: /* ... */
+        }
+      })
+    }, 1000)
+  })
+]
+```
+
+Nice, but where does the `message` property come from? Is that some sort of magic string? Nope, straight from the spec:
+
+> The default event type is "message".
+>
+>— 9.2.1 Introduction, [HTML Living Standard](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events-intro)
+
+The type argument that the `sse()` function accepts describes all the supported event types in a following shape:
+
+```ts
+sse<{ [eventType: string]: Data }>()
+```
+
+And now with our `StockEvents` interface, all the `message` events sent from the handler are strongly-typed. Feel free to pull the exact types from your API specification or a third-party SDK or from anywhere else.
+
+But wait, if there are default events, there must be _custom_ ones too, right? Of course!
+
+### Custom events
+
+```ts {7-9,15-16} /StockEvents/#g
+interface StockEvents {
+  message: {
+    symbol: string
+    price: number
+    change: string
+  }
+  marketStatus: {
+    state: 'open' | 'closed'
+  }
+}
+
+export const handlers = [
+  sse<StockEvents>('https://acme.com/api/stocks', ({ client }) => {
+    client.send({
+      event: 'marketStatus',
+      data: { state: 'closed' },
+    })
+  })
+]
+```
+
+Here, we've described a custom `marketStatus` event that notifies all the subscribers about the change in the stocks market. The `client.send()` function knows to infer the correct `data` type based on the `event` value provided so your mocks remain type-safe even when mixing default and custom events.
+
+That being said, mocking isn't the only way to use MSW.
+
+### Establishing connections
+
+You can establish a connection to the original URL and subcribe to the real server data at any point in your handler by calling `server.connect()`:
+
+```ts {3} /server/
+export const handlers = [
+  sse<StockEvents>('https://acme.com/api/stocks', ({ client, server }) => {
+    const source = server.connect()
+
+    source.addEventListener('legacyMarketStatus', (event) => {
+      event.preventDefault()
+      const legacyData = JSON.parse(event.data)
+
+      client.send({
+        event: 'marketStatus',
+        data: { state: legacyData.nextState },
+      })
+    })
+  })
+]
+```
+
+Taking inspiration from the work we did with the [WebSocket API](http://localhost:4321/docs/websocket/), you can use `server.connect()` and the returned `EventSource` to implement all sorts of behaviors, turning your handler into a proxy. Like above, where we are listening to the `'legacyMarketStatus'` from the server, preventing its default forwarding to the client, and mapping the old API shape to the new one.
+
+Every API shipped in MSW is designed with education, standard-compliance, and versatility in mind. It's honestly such a joy that `sse()` joins the list of first-class handlers! I can't wait for you to give it a try.
+
+## Try it
+
+The most powerful API mocking library is free, open sourced, and at your disposal on NPM:
+
+```sh
+npm i msw@latest
+```
+
+Learn more about all the supported features when working with SSE in our documentation:
+
+import { CloudArrowDownIcon } from '@heroicons/react/24/solid'
+import { PageCard } from '../../components/react/pageCard'
+
+<PageCard
+  icon={CloudArrowDownIcon}
+  url="/docs/sse/"
+  title="Mocking Server-Sent Events"
+  description="Intercept and mock Server-Sent Events (SSE)."
+/>
+
+## Special thanks
+
+I would like to express special thanks to [Alex O'Callaghan](https://alexocallaghan.com/) for the [original write-up](https://alexocallaghan.com/mock-sse-with-msw) about using MSW for mocking Server-Sent Events and [Mateusz Burzyński](https://github.com/Andarist) for the signature phenomenal contributions that made `sse()` type-safe and awesome to use. Thank you!
+
+And the warmest of thanks to all our [GitHub sponsors](https://github.com/sponsors/mswjs) and [Open Collective supporters](https://opencollective.com/mswjs). You make it possible for me to develop MSW full-time, spend weeks in the specs, go through multiple iterations, and often collaborate with other teams to make sure every release pushes the capabilities of API mocking on the web further. Thank you!
