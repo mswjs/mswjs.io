@@ -153,7 +153,7 @@ export const handlers = [
 ]
 ```
 
-Taking inspiration from the work we did with the [WebSocket API](http://localhost:4321/docs/websocket/), you can use `server.connect()` and the returned `EventSource` to implement all sorts of behaviors, turning your handler into a proxy. Like above, where we are listening to the `'legacyMarketStatus'` from the server, preventing its default forwarding to the client, and mapping the old API shape to the new one.
+Taking inspiration from the work we did with the [WebSocket API](/docs/websocket/), you can use `server.connect()` and the returned `EventSource` to implement all sorts of behaviors, turning your handler into a proxy. Like above, where we are listening to the `'legacyMarketStatus'` from the server, preventing its default forwarding to the client, and mapping the old API shape to the new one.
 
 Every API shipped in MSW is designed with education, standard-compliance, and versatility in mind. It's honestly such a joy that `sse()` joins the list of first-class handlers! I can't wait for you to give it a try.
 
