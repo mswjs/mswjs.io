@@ -1,0 +1,100 @@
+---
+order: -1
+standalone: true
+title: Introduction
+displayTitle: Mocking Server-Sent Events
+description: Intercept and mock Server-Sent Events (SSE).
+keywords:
+  - sse
+  - server-sent events
+  - eventsource
+  - mock
+  - intercept
+  - api
+---
+
+Mock Service Worker ships with a first-class API for intercepting and mocking [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) (SSE) via the `sse` namespace provided by the library:
+
+```ts
+import { sse } from 'msw'
+```
+
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+
+<PageCard
+  icon={CubeTransparentIcon}
+  url="/docs/api/sse"
+  title="sse"
+  description="API reference for the `sse` namespace."
+/>
+
+## Difference from `http`
+
+The stream of server events is still a regular HTTP connection, which means you can intercept and mock with the `http` namespace as you would any other HTTP request:
+
+```ts {5-10} /stream/2,3
+import { http } from 'msw'
+
+export const handlers = [
+  http.get('/stream', ({ request }) => {
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode('data: Hello World\n\n'))
+        controller.close()
+      },
+    })
+
+    return new Response(stream, {
+      headers: {
+        connection: 'keep-alive',
+        'content-type': 'text/event-stream',
+        'cache-control': 'no-cache',
+      },
+    })
+  }),
+]
+```
+
+Handling SSE via the `http` namespace, however, has a number of disadvantages:
+
+- You have to manually construct the stream;
+- You have to encode sent messages and make sure they adhere to the standard;
+
+In comparison, the `sse` namespace provides you a type-safe, high-level experience of working with SSE:
+
+```ts {5,8} /sse/
+import { sse } from 'msw'
+
+export const handlers = [
+  sse<{ message: string }>('/stream', ({ client }) => {
+    client.send({ data: 'hello world' })
+
+    queueMicrotask(() => {
+      client.close()
+    })
+  }),
+]
+```
+
+The implementation details of the comnunication, such as managing the stream and queuing messages, are abstracted away, allowing you to focus on describing the network behavior you want. The `sse` namespace also enables additional feature otherwise unavailable when working with `EventSource` directly, such as forwarding of the original server events with ambiguous names.
+
+## Next steps
+
+The following sections will guide you through everything you need to know about intercepting and mocking Server-Sent Events:
+
+import { CloudArrowDownIcon } from '@heroicons/react/24/solid'
+
+<PageCard
+  icon={CloudArrowDownIcon}
+  url="/docs/sse/intercepting-sources/"
+  title="Intercepting sources"
+  description="Intercepting and handling event sources."
+/>
+
+<PageCard
+  icon={CloudArrowDownIcon}
+  url="/docs/sse/server-events/"
+  title="Server events"
+  description="Mocking Server-Sent Events."
+/>
