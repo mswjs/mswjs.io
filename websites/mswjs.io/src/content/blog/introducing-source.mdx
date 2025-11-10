@@ -44,7 +44,7 @@ Source is a simple function of `X -> RequestHandler[]`. It is meant to be used a
 This is an example of your workflow with MSW when using Source and OpenAPI:
 
 ```js {1,4}
-import { fromOpenApi } from '@mswjs/source/open-api'
+import { fromOpenApi } from '@msw/source/open-api'
 import api from './api.json'
 
 export const handlers = await fromOpenApi(api)
@@ -79,7 +79,7 @@ That being said, supporting HAR was what inspired me the most when building Sour
 Most of your tests run against the "expected" state (your specification). But there are those that should run against the runtime behaviors. Like a flaky bug you have finally managed to record, for example. Now you can put that network recording next to a regression test for the issue and receive a 1-1 reliable reproduction for it in tests. Every time, all the time.
 
 ```js {1,4}
-import { fromTraffic } from '@mswjs/source/traffic'
+import { fromTraffic } from '@msw/source/traffic'
 import har from './recordings/issue-201.har'
 
 export const handlers = fromTraffic(har)

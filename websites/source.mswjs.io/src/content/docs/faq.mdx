@@ -10,7 +10,7 @@ No. Source currently only supports runtime request handlers generation. That is 
 
 ## Can I generate request handlers from XYZ?
 
-Yes, you can. That doesn't mean that we need to ship a designated API for XYZ from Source. Use [`@mswjs/source`](https://github.com/mswjs/source) for inspiration to build a request generation utility, which you can then even publish to NPM for others to use!
+Yes, you can. That doesn't mean that we need to ship a designated API for XYZ from Source. Use [`@msw/source`](https://github.com/mswjs/source) for inspiration to build a request generation utility, which you can then even publish to NPM for others to use!
 
 ## Can I spawn an HTTP server from Source?
 
@@ -18,7 +18,7 @@ No, but you can spawn an HTTP server from the request handlers using the [`@mswj
 
 ```js {1,6-7}
 import { createServer } from '@mswjs/http-middleware'
-import { fromOpenApi } from '@mswjs/source/open-api'
+import { fromOpenApi } from '@msw/source/open-api'
 import api from './api.spec.json'
 
 const handlers = await fromOpenApi(api)

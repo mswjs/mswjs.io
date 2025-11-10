@@ -6,10 +6,10 @@ description: Learn how to generate request handlers from OpenAPI documents.
 
 ## Import
 
-Import the `fromOpenApi()` function from `@mswjs/source/open-api`:
+Import the `fromOpenApi()` function from `@msw/source/open-api`:
 
 ```js
-import { fromOpenApi } from '@mswjs/source/open-api'
+import { fromOpenApi } from '@msw/source/open-api'
 ```
 
 ## OpenAPI document
@@ -23,7 +23,7 @@ Import the OpenAPI document and provide it as an argument to the `fromOpenApi()`
 import { Warning } from '@mswjs/shared/components/react/warning'
 
 ```js /fromOpenApi/ /await/#v
-import { fromOpenApi } from '@mswjs/source/open-api'
+import { fromOpenApi } from '@msw/source/open-api'
 import spec from './api.spec.json'
 
 const handlers = await fromOpenApi(spec)
