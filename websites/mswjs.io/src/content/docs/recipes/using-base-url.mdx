@@ -1,0 +1,25 @@
+---
+title: Using base URL
+keywords:
+  - base
+  - url
+  - relative
+---
+
+Mock Service Worker does not provide any configuration to apply a base URL to multiple handlers. That is a deliberate choice to minimize the configuration area and keep hidden complexity away from your test setups. Instead, we highly recommend you using custom utility functions that build absolute URLs from relative paths. That way, you get practical convenience while remaining explicit and clear.
+
+For example, here's how you can create a `github()` helper for building URLs against the GitHub API:
+
+```ts /github/1,3
+function github(path) {
+  return new URL(path, 'https://github.com').href
+}
+
+export const handlers = [
+  http.get(github('/user/:login'), ({ params }) => {
+    //
+  })
+]
+```
+
+> Use the global [`URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL) constructor to resolve relative URLs.
