@@ -6,10 +6,10 @@ description: Three steps to get started with Source.
 
 ## Step 1: Install
 
-Add `@mswjs/source` as a dependency to your project:
+Add `@msw/source` as a dependency to your project:
 
 ```sh
-npm install msw @mswjs/source --save-dev
+npm i msw @msw/source --save-dev
 ```
 
 > Source is meant to be used with [`msw`](https://mswjs.io/) so we will install it too.
@@ -187,11 +187,11 @@ In this tutorial, we will use a [network archive](<https://en.wikipedia.org/wiki
 
 > You can copy the contents of the HAR file above or [make your own traffic recording in the browser](/docs/recipes/recording-har).
 
-Import the `fromTraffic` function from `@mswjs/source/traffic` and provide the HAR file as an argument to that function:
+Import the `fromTraffic` function from `@msw/source/traffic` and provide the HAR file as an argument to that function:
 
 ```js {3} /fromTraffic/
 // src/mocks/handlers.js
-import { fromTraffic } from '@mswjs/source/traffic'
+import { fromTraffic } from '@msw/source/traffic'
 import traffic from './api.har'
 
 export const handlers = [...fromTraffic(traffic)]

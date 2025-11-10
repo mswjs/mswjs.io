@@ -19,7 +19,7 @@ function fromOpenApi(document: OpenAPI.Document): Promise<RequestHandler[]>
 There are multiple ways to describe an OpenAPI document. The `fromOpenApi` function expects an _object_ as the input, which means that other formats, like YAML, have to be parsed into JSON before they are used with this function.
 
 ```js
-import { fromOpenApi } from '@mswjs/source/open-api'
+import { fromOpenApi } from '@msw/source/open-api'
 import api from './api.spec.json'
 
 const handlers = await fromOpenApi(api)

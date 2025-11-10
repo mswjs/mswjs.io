@@ -20,7 +20,7 @@ function fromTraffic(
 The `fromTraffic` function accepts a _parsed_ HAR file, which is a plain JavaScript object. Depending on your project, you can either import the `*.har` file directly, or read it from the file system and parse it via `JSON.parse()`.
 
 ```js /fromTraffic/
-import { fromTraffic } from '@mswjs/source/traffic'
+import { fromTraffic } from '@msw/source/traffic'
 import har from './api.har'
 
 const handlers = fromTraffic(har)

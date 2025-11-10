@@ -6,10 +6,10 @@ description: Learn how to generate request handlers from HAR files.
 
 ## Import
 
-Import the `fromTraffic()` function from `@mswjs/source/traffic`:
+Import the `fromTraffic()` function from `@msw/source/traffic`:
 
 ```js
-import { fromTraffic } from '@mswjs/source/traffic'
+import { fromTraffic } from '@msw/source/traffic'
 ```
 
 ## Network archive
@@ -31,7 +31,7 @@ import { PageCard } from '@mswjs/shared/components/react/pageCard'
 Import the HAR file and provided it as an argument to the `fromTraffic()` function:
 
 ```js /fromTraffic/
-import { fromTraffic } from '@mswjs/source/traffic'
+import { fromTraffic } from '@msw/source/traffic'
 import traffic from './api.har'
 
 const handlers = fromTraffic(traffic)

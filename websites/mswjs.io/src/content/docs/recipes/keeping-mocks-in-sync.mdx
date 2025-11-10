@@ -12,7 +12,7 @@ It's recommended to rely on a specification file that both backend and frontend 
 
 ### OpenAPI (Swagger)
 
-If you have an OpenAPI specification file, consider using the [`msw-auto-mock`](https://github.com/zoubingwu/msw-auto-mock) package to generate request handlers from it.
+If you have an OpenAPI specification file, consider using [`@msw/source`](https://source.mswjs.io) to generate request handlers from your specifications. A number of community-driven packages are also available, like [`msw-auto-mock`](https://github.com/zoubingwu/msw-auto-mock).
 
 ### GraphQL schema
 
@@ -22,26 +22,18 @@ In the case of a GraphQL server, consider using [GraphQL Code Generator](https:/
 
 In the case when there is no API specification available, you can record network behavior in the browser and store it in a `*.har` file. Then, it becomes a fixed source of truth you can use to generate handlers from.
 
-In the example below we'are going to use a community-authored [`msw-webarchive`](https://github.com/Tapico/tapico-msw-webarchive) package to generate request handlers from an HAR file on runtime.
+MSW provides a designated [Source](https://source.mswjs.io) package to help you create request handlers out of various sources, like OpenAPI specifications or HAR files. Here's how you use it:
 
 ```js
 // mocks/browser.js
 import { setupWorker } from 'msw'
-import { setRequestHandlersByWebarchive } from '@tapico/webarchive'
-import * as snapshot from './snapshort.har'
+import { fromTraffic } from '@msw/source/traffic'
+import * as har from './snapshort.har'
 
-export const worker = setupWorker()
+const handlers = fromTraffic(har)
 
-// Augment the worker with request handlers
-// generated from the given network snapshot
-setRequestHandlersByWebarchive(worker, snapshot)
+export const worker = setupWorker(...handlers)
 ```
-
-import { Warning } from '@mswjs/shared/components/react/warning'
-
-<Warning>
-  The `msw-webarchive` package currently doesn't support Node.js.
-</Warning>
 
 ## Automate the process
 
