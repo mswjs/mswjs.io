@@ -44,7 +44,7 @@ Since Vitest tests run in a Node.js process, let's use `setupServer` from `msw/n
 ```ts /setupServer/1,2 /handlers/1,3#v
 // src/mocks/node.ts
 import { setupServer } from 'msw/node'
-import { handlers } from './handlers.js'
+import { handlers } from './handlers.ts'
 
 export const server = setupServer(...handlers)
 ```
@@ -58,7 +58,7 @@ At this step, you find the appropriate place to enable API mocking in your Node.
 ```ts /server/
 // vitest.setup.ts
 import { beforeAll, afterEach, afterAll } from 'vitest'
-import { server } from './mocks/node.js'
+import { server } from './mocks/node.ts'
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
