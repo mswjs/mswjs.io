@@ -28,7 +28,7 @@ http.get<{ id: string }>('/books/:id', ({ params }) => {
 Type safety of your error responses depends on how you define them. When using shorthands that infer the expected response body type, like `HttpResponse.text()` and `HttpResponse.json()`, error responses will remain type-safe:
 
 ```ts {4}
-http.get<never, never { id: string } | { error: message }>('/resource', ({ request }) => {
+http.get<never, never, { id: string } | { error: message }>('/resource', ({ request }) => {
   if (!request.headers.has('authorization')) {
     return HttpResponse.json(
       { error: 'Unauthorized' },
