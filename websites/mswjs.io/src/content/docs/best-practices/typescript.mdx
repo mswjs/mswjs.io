@@ -28,8 +28,8 @@ http.get<Params, RequestBodyType, ResponseBodyType, Path>(path, resolver)
 | Argument name      | Type     | Description                                                                                              |
 | ------------------ | -------- | -------------------------------------------------------------------------------------------------------- |
 | `Params`           | `object` | Request path parameters. Narrows the `params` response resolver argument type.                           |
-| `RequestBodyType`  | `object` | Request path parameters. Narrows the `request.json()` return type.                                       |
-| `ResponseBodyType` | `object` | Request path parameters. Narrows the `HttpResponse.text()` and `HttpResponse.json()` response body type. |
+| `RequestBodyType`  | `object` | Request body type. Narrows the `request.json()` return type.                                             |
+| `ResponseBodyType` | `object` | Response body type. Narrows the `HttpResponse.text()` and `HttpResponse.json()` response body type.      |
 | `Path`             | `string` | Request path. Narrows the `path` argument on the request handler.                                        |
 
 ```ts
