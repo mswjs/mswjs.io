@@ -177,6 +177,14 @@ it.concurrent(
 
 Although each test case relies on a particular network state, using the `server.boundary()` API allows to scope and "freeze" that state, resulting in predictable network behavior in concurrent test runs.
 
+> In test runners that support `aroundEach()` (for example, Vitest), you can run each test within a server boundary automatically:
+>
+> ```js
+> aroundEach((runTest) => server.boundary(runTest)())
+> ```
+>
+> This can be a simpler alternative to wrapping each test with `server.boundary()` manually.
+
 ### Nested boundaries
 
 Whenever a server boundary is created, it treats whichever existing request handlers from the higher scope as the initial request handlers.
