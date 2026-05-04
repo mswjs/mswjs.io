@@ -25,7 +25,7 @@ http.get('/product', ({ request }) => {
     return new HttpResponse(null, { status: 404 })
   }
 
-  return HttResponse.json({ id: productId })
+  return HttpResponse.json({ id: productId })
 })
 ```
 
