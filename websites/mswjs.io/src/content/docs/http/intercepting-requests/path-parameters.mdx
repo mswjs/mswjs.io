@@ -46,7 +46,7 @@ http.get<{ id?: string }>('/posts/:id?', ({ params }) => {
 })
 ```
 
-With the request handler above, both `GET /post` and `GET /post/abc-123` requests will match, but `GET /post/abc-123/edit` will not.
+With the request handler above, both `GET /posts` and `GET /posts/abc-123` requests will match, but `GET /posts/abc-123/edit` will not.
 
 ## Repeating path parameter
 
