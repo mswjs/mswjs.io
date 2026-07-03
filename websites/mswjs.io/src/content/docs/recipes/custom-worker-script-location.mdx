@@ -67,3 +67,5 @@ service-worker-allowed: /
 
 <CONTENTS OF THE FILE>
 ```
+
+<Warning>Note that the `Service-Worker-Allowed` response header controls the _maximum allowed scope_, whereas individual worker registrations can still have a narrower scope. If unsure, align the `serviceWorker.options.scope` to be the same as the `Service-Worker-Allowed` value.</Warning>
