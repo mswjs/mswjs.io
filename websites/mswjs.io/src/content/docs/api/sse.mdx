@@ -91,13 +91,26 @@ The `ServerSentEventClient` object represents a connection to the actual server.
 
 ### `.connect()`
 
-...TODO
+Establishes connection to the actual server.
 
 ```ts
 const source = server.connect()
 ```
 
-> ...TODO What is returned as `source` and what you can use it for (listen to messages, close the connection).
+Returns an [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) instance representing the actual server connection. Use it to listen to the events sent from the server or close the connection:
+
+```ts
+const source = server.connect()
+
+source.addEventListener('message', (event) => {
+  console.log('Received event from the server:', event)
+})
+
+// Close the actual server connection.
+source.close()
+```
+
+> Once connected, all server events are forwarded to the client by default. Call `event.preventDefault()` on a server event to prevent it from being forwarded.
 
 ## Related materials
 
