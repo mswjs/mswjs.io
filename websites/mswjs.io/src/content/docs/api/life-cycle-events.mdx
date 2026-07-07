@@ -84,6 +84,10 @@ The `request:end` event is emitted whenever a request has ended. This event is e
 
 ## Response events
 
+import { Warning } from '@mswjs/shared/components/react/warning'
+
+<Warning>Response events for [Server-Sent Events](/docs/sse) will have a missing body stream because cloning it for observability would buffer the entire event stream in memory for as long as the connection lives and prevent client disconnects from ever reaching the handler.</Warning>
+
 ### `response:mocked`
 
 The `response:mocked` event is emitted whenever a mocked response is sent. You can access both the `response` reference and the respective `request` reference in the listener to this event.
