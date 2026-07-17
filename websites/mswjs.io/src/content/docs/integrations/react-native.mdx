@@ -65,14 +65,10 @@ export const server = setupServer(...handlers)
 
 ### Development
 
-Import `server` in the entrypoint of your React Native application and call `server.listen()` _conditionally_.
+Import `server` at the top of your React Native application, call `server.listen()` _conditionally_, and wait for MSW to initialize before rendering your app component.
 
 ```js {6-14} /enableMocking/
-// index.js
-import { AppRegistry } from 'react-native'
-import App from './src/App'
-import { name as appName } from './app.json'
-
+// App.tsx
 async function enableMocking() {
   if (!__DEV__) {
     return
@@ -83,9 +79,27 @@ async function enableMocking() {
   server.listen()
 }
 
-enableMocking().then(() => {
-  AppRegistry.registerComponent(appName, () => App)
-})
+export function App() {
+  const [isMockingReady, setIsMockingReady] = useState(!__DEV__);
+
+  useEffect(() => {
+    if (!__DEV__) return
+
+    async function enableMocking() {
+      // @ts-ignore
+      await import("../msw.polyfills")
+      const { server } = await import("./mocks/server")
+      server.listen()
+      setIsMockingReady(true)
+    }
+
+    enableMocking()
+  }, [])
+
+  if (!isMockingReady) return null
+
+  return <View>{...}</View>
+}
 ```
 
 > Don't forget to import the `msw.polyfills.js` module!
