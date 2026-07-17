@@ -80,6 +80,7 @@ async function enableMocking() {
 }
 
 export function App() {
+  // In production builds, this will start `true` and we skip flipping it in the `useEffect`
   const [isMockingReady, setIsMockingReady] = useState(!__DEV__);
 
   useEffect(() => {
