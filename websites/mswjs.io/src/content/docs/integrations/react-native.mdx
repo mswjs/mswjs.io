@@ -86,7 +86,6 @@ export function App() {
     if (!__DEV__) return
 
     async function enableMocking() {
-      // @ts-ignore
       await import("../msw.polyfills")
       const { server } = await import("./mocks/server")
       server.listen()
