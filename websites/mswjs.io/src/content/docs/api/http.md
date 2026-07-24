@@ -53,9 +53,9 @@ http.head('/resource', () => {
   return new Response(null, {
     status: 200,
     headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': 1270,
-      'Last-Modified': 'Mon, 13 Jul 2020 15:00:00 GMT',
+      'content-type': 'application/json',
+      'content-length': 1270,
+      'last-modified': 'Mon, 13 Jul 2020 15:00:00 GMT',
     },
   })
 })
@@ -112,7 +112,7 @@ http.options('https://api.example.com', () => {
   return new Response(null, {
     status: 200,
     headers: {
-      Allow: 'GET,HEAD,POST',
+      allow: 'GET,HEAD,POST',
     },
   })
 })

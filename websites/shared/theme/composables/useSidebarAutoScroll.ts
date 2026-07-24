@@ -7,6 +7,8 @@ const ACTIVE_LINK_SELECTOR =
 
 export function useSidebarAutoScroll(): void {
   let scheduledFrame: number | null = null
+  let sidebarObserver: MutationObserver | null = null
+  let activeLinkObserver: IntersectionObserver | null = null
 
   const getSidebar = () => {
     return document.querySelector<HTMLElement>('.VPSidebar')
@@ -22,26 +24,25 @@ export function useSidebarAutoScroll(): void {
       return
     }
 
-    const sidebarRect = sidebar.getBoundingClientRect()
-    const activeLinkRect = activeLink.getBoundingClientRect()
-    const isAboveViewport = activeLinkRect.top < sidebarRect.top
-    const isBelowViewport = activeLinkRect.bottom > sidebarRect.bottom
+    activeLinkObserver?.disconnect()
+    activeLinkObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          activeLink.scrollIntoView({
+            block: 'center',
+            behavior: 'auto',
+          })
+        }
 
-    if (!isAboveViewport && !isBelowViewport) {
-      return
-    }
-
-    const activeLinkTop =
-      activeLinkRect.top - sidebarRect.top + sidebar.scrollTop
-    const centeredScrollTop =
-      activeLinkTop -
-      sidebar.clientHeight / 2 +
-      activeLinkRect.height / 2
-
-    sidebar.scrollTo({
-      top: centeredScrollTop,
-      behavior: 'auto',
-    })
+        activeLinkObserver?.disconnect()
+        activeLinkObserver = null
+      },
+      {
+        root: sidebar,
+        threshold: 0.1,
+      },
+    )
+    activeLinkObserver.observe(activeLink)
   }
 
   const scheduleReveal = () => {
@@ -55,13 +56,36 @@ export function useSidebarAutoScroll(): void {
     })
   }
 
+  const observeSidebar = () => {
+    const sidebar = getSidebar()
+
+    if (!sidebar) {
+      return
+    }
+
+    sidebarObserver?.disconnect()
+    sidebarObserver = new MutationObserver(scheduleReveal)
+    sidebarObserver.observe(sidebar, {
+      attributes: true,
+      attributeFilter: ['class'],
+      childList: true,
+      subtree: true,
+    })
+  }
+
   const restoreScrollPosition = () => {
     const sidebar = getSidebar()
-    const storedScrollPosition = Number(
-      sessionStorage.getItem(SIDEBAR_SCROLL_KEY),
+    const storedScrollValue = sessionStorage.getItem(
+      SIDEBAR_SCROLL_KEY,
     )
 
-    if (!sidebar || !Number.isFinite(storedScrollPosition)) {
+    if (!sidebar || storedScrollValue == null) {
+      return
+    }
+
+    const storedScrollPosition = Number.parseInt(storedScrollValue, 10)
+
+    if (!Number.isFinite(storedScrollPosition)) {
       return
     }
 
@@ -80,14 +104,20 @@ export function useSidebarAutoScroll(): void {
 
   onMounted(() => {
     restoreScrollPosition()
+    observeSidebar()
     scheduleReveal()
     window.addEventListener('beforeunload', saveScrollPosition)
   })
 
-  onContentUpdated(scheduleReveal)
+  onContentUpdated(() => {
+    observeSidebar()
+    scheduleReveal()
+  })
 
   onBeforeUnmount(() => {
     window.removeEventListener('beforeunload', saveScrollPosition)
+    sidebarObserver?.disconnect()
+    activeLinkObserver?.disconnect()
 
     if (scheduledFrame != null) {
       cancelAnimationFrame(scheduledFrame)

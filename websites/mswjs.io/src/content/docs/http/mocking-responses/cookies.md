@@ -16,7 +16,7 @@ Mocking response cookies using the direct Fetch API `Response` instance proves p
 http.post('/login', () => {
   return new HttpResponse(null, {
     headers: {
-      // Setting the "Set-Cookie" header on the mocked response
+      // Setting the "set-cookie" header on the mocked response
       // will set the cookies on the `document` as if they were
       // received from the server.
       'set-cookie': 'authToken=abc-123',

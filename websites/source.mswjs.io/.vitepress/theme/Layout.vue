@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import { useData, useRoute } from 'vitepress'
 import SiteFooter from '@mswjs/shared/theme/components/SiteFooter.vue'
 import FooterSection from '@mswjs/shared/theme/components/FooterSection.vue'

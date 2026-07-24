@@ -18,7 +18,7 @@ export function withAuth(resolver) {
   return (input) => {
     const { request } = input
 
-    if (!request.headers.get('Authorization')) {
+    if (!request.headers.get('authorization')) {
       return new HttpResponse(null, { status: 401 })
     }
 
@@ -38,7 +38,7 @@ import { withAuth } from './middleware'
 export const handlers = [
   // Using the "withAuth" higher-order response resolver
   // will require the outgoing requests to "POST /comment"
-  // to have the "Authorization" header set before it returns
+  // to have the "authorization" header set before it returns
   // a mocked JSON response.
   http.post('/comment', withAuth(({ request }) => {
     const { author, text } = await request.json()

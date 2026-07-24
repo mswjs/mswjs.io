@@ -2,12 +2,13 @@
 dist/
 
 # VitePress
-.vitepress/dist/
-.vitepress/cache/
-.vitepress/.temp/
+**/.vitepress/dist/
+**/.vitepress/cache/
+**/.vitepress/.temp/
 
 # dependencies
 node_modules/
+.pnpm-store
 
 # logs
 npm-debug.log*

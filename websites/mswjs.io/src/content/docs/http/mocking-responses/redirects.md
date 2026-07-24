@@ -13,14 +13,14 @@ keywords:
 You can mock a redirect response by constructing a valid redirect `Response` instance and returning it from the response resolver. This implies setting a redirect status code (`3xx`) and the `location` header that points to the destination URL.
 
 ```ts {3-6} /301/
-http.get('/resource-a', () => {
+http.get('/target', () => {
   return new HttpResponse(null, {
     status: 301,
     headers: {
-      location: '/resource-b',
+      location: '/destination',
     },
   })
 })
 ```
 
-> In this example, the `GET /resource-a` request will be redirected to `/resource-b`, which in this scenario is unhandled. You can define a request handler for it, too, and it will be matched as usual!
+> In this example, the `GET /target` request will be redirected to `/destination`, which in this scenario is unhandled. You can define a request handler for it, too, and it will be matched as usual!

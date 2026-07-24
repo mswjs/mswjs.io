@@ -15,6 +15,8 @@ const SITE_DESCRIPTION =
 const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID || ''
 const ALGOLIA_SEARCH_API_KEY = process.env.PUBLIC_ALGOLIA_SEARCH_API_KEY || ''
 const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
+const GOOGLE_FONTS_STYLESHEET_URL =
+  'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&family=Geist+Mono:ital,wght@0,400..700;1,400..700&display=swap&subset=latin'
 
 export default defineConfig({
   title: SITE_TITLE,
@@ -31,36 +33,28 @@ export default defineConfig({
   },
 
   head: [
-    // Font preloads.
     [
       'link',
       {
-        rel: 'preload',
-        href: '/fonts/inter/inter-variable.woff2',
-        as: 'font',
-        type: 'font/woff',
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
       },
     ],
     [
       'link',
       {
-        rel: 'preload',
-        href: '/fonts/monolisa/0-normal.woff2',
-        as: 'font',
-        type: 'font/woff',
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: '',
       },
     ],
     [
       'link',
       {
-        rel: 'preload',
-        href: '/fonts/monolisa/1-italic.woff2',
-        as: 'font',
-        type: 'font/woff',
+        rel: 'stylesheet',
+        href: GOOGLE_FONTS_STYLESHEET_URL,
       },
     ],
-    ['link', { rel: 'stylesheet', href: '/fonts/inter/inter.css' }],
-    ['link', { rel: 'stylesheet', href: '/fonts/monolisa/monolisa.css' }],
     // Favicon.
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' }],
     ['link', { rel: 'icon', type: 'image/png', sizes: 'any', href: '/icon.png' }],

@@ -5,7 +5,7 @@ title: Limitations
 
 ## Browser limitations
 
-This library uses the Service Worker API to intercept requests in the browser. Any limitations that browsers may have when implementing or executing the said API automatically become the limitations of the Mock Service Worker library. We cannot address this behaviors as they are present in the browser and cannot be circumvented by JavaScript.
+This library uses the Service Worker API to intercept requests in the browser. Any limitations of that API or any limitations of its implementation in individual browsers are transitively inherited by MSW. We cannot address those as they are outside of the library's scope.
 
 ### XMLHttpRequest: progress events
 

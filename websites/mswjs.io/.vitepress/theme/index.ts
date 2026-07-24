@@ -1,5 +1,5 @@
 import type { Theme } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import Layout from './Layout.vue'
 
 // Components available to Markdown content globally.

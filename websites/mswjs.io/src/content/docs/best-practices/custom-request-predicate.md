@@ -77,7 +77,7 @@ export function withJsonBody(expectedBody, resolver) {
     const { request } = args
 
     // Ignore requests that have a non-JSON body.
-    const contentType = request.headers.get('Content-Type') || ''
+    const contentType = request.headers.get('content-type') || ''
     if (!contentType.includes('application/json')) {
       return
     }

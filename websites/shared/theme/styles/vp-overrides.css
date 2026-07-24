@@ -11,8 +11,8 @@
   --vp-c-brand-soft: color-mix(in srgb, var(--primary) 16%, transparent);
 
   /* Typography */
-  --vp-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
-  --vp-font-family-mono: 'Mono Lisa', ui-monospace, SFMono-Regular, monospace;
+  --vp-font-family-base: 'Geist', system-ui, -apple-system, sans-serif;
+  --vp-font-family-mono: 'Geist Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
 .dark {
@@ -219,6 +219,13 @@
   margin-right: 0;
 }
 
+@media (min-width: 768px) {
+  .VPNavBar .container {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
 .branding-usage-example {
   isolation: isolate;
 }
@@ -248,42 +255,25 @@
   }
 
   .VPNavBar:not(.has-sidebar) .content {
-    padding-right: 32px;
+    padding-right: 0;
     padding-left: var(--vp-sidebar-width);
   }
 
   /*
-   * The navbar content mirrors the doc layout as grid tracks:
-   * doc paddings (64) | gutter | content (688) | gutter |
-   * aside lane (256 + 32). The search sits in the content
-   * track — the same column the page text starts in — on
-   * every page.
+   * Keep the search on the same horizontal padding track as
+   * the document content. The menu consumes the remaining
+   * space and stays pinned to the right.
    */
   .VPNavBar .content .content-body {
-    display: grid;
-    grid-template-columns:
-      64px
-      minmax(0, 1fr)
-      minmax(auto, 688px)
-      minmax(0, 1fr)
-      288px;
-    grid-template-rows: 100%;
-    align-items: center;
-  }
-
-  .VPNavBar .content .content-body > * {
-    grid-row: 1;
+    @apply pl-16;
   }
 
   .VPNavBar .content .content-body > .VPNavBarSearch {
-    grid-column: 3;
-    justify-self: start;
     padding: 0;
   }
 
   .VPNavBar .content .content-body > .VPNavBarMenu {
-    grid-column: 4 / 6;
-    justify-self: end;
+    margin-left: auto;
   }
 }
 
@@ -300,10 +290,99 @@
   }
 
   .VPNavBar:not(.has-sidebar) .content {
-    padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
+    padding-right: calc((100vw - var(--vp-layout-max-width)) / 2);
     padding-left: calc(
       (100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)
     );
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .VPLocalNav.has-sidebar > .container {
+    justify-content: flex-end;
+  }
+
+  .VPNavBar.has-sidebar .content,
+  .VPLocalNav.has-sidebar > .container {
+    @apply pr-8;
+  }
+
+  .VPNavBar.has-sidebar .content .content-body {
+    @apply pl-16;
+  }
+
+  .VPLocalNav .VPLocalNavOutlineDropdown {
+    @apply relative;
+  }
+
+  .VPLocalNav .VPLocalNavOutlineDropdown .items {
+    @apply top-full right-0 left-auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .VPLocalNav .VPLocalNavOutlineDropdown {
+    padding-right: 8px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 959px) {
+  .VPNavBar .wrapper {
+    @apply px-8;
+  }
+
+  .VPLocalNav > .container {
+    @apply pr-8;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .VPLocalNav .VPLocalNavOutlineDropdown {
+    @apply pr-0;
+  }
+}
+
+/*
+ * The document and navbar share one padding track. VitePress
+ * centers ".content-container" at a fixed maximum width by
+ * default, which makes their left edges diverge as the
+ * viewport grows.
+ */
+@media (min-width: 960px) {
+  .VPContent .VPDoc {
+    @apply pl-16 pr-8;
+  }
+
+  .VPContent .VPDoc > .container > .content {
+    @apply mx-0 px-0 min-w-0;
+  }
+
+  .VPContent .VPDoc.has-aside > .container > .content > .content-container {
+    @apply mx-0 max-w-none;
+  }
+}
+
+/*
+ * Keep the Partners column available from Tailwind's large
+ * breakpoint. The document uses an explicit content/aside
+ * grid, so spacing and edge alignment come from tracks and
+ * gaps instead of flex sizing or element padding.
+ */
+.VPContent .VPDoc > .container {
+  @apply lg:grid lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-16;
+}
+
+.VPContent .VPDoc > .container > .content {
+  @apply lg:col-start-1 lg:row-start-1;
+}
+
+.VPContent .VPDoc > .container > .aside {
+  @apply lg:block lg:col-start-2 lg:row-start-1 lg:p-0 lg:w-auto lg:max-w-none;
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .VPDoc .aside .VPDocAsideOutline {
+    display: none;
   }
 }
 
@@ -373,6 +452,28 @@
   border: none;
   transform: none;
   top: 0;
+}
+
+@media (max-width: 767px) {
+  .DocSearch-Button {
+    justify-content: center;
+  }
+
+  .VPNavScreen {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .VPNavScreen > .container {
+    max-width: none;
+    padding-top: 14px;
+  }
+
+  .VPNavScreenMenu > .sponsor-link {
+    display: flex;
+    margin-top: 24px;
+    width: fit-content;
+  }
 }
 
 /* The Sponsor nav item spacing and typography. */

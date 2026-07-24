@@ -67,7 +67,7 @@ Similar to the regular `Response` constructor, you can provide `HttpResponse` wi
 new HttpResponse('Not found', {
   status: 404,
   headers: {
-    'Content-Type': 'text/plain',
+    'content-type': 'text/plain',
   },
 })
 ```
@@ -166,7 +166,7 @@ Creates a new `Response` instance with the given `ArrayBuffer` body. Automatical
 ```js
 HttpResponse.arrayBuffer(buffer, {
   headers: {
-    'Content-Type': 'application/octet-stream',
+    'content-type': 'application/octet-stream',
   },
 })
 ```

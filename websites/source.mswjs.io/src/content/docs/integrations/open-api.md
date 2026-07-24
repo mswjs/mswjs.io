@@ -279,7 +279,7 @@ You can choose a different content types by specifying as the value of the `Acce
 ```js {2-4}
 await fetch('/resource', {
   headers: {
-    Accept: 'application/xml',
+    accept: 'application/xml',
   },
 }).then((res) => res.json())
 // 200 OK

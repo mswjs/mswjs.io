@@ -26,6 +26,10 @@ import { sse } from 'msw'
   description="API reference for the `sse` namespace."
 />
 
+::: warning
+The `EventSource` API isn't currently supported in Node.js, limiting the SSE interception to the browser only.
+:::
+
 ## Difference from `http`
 
 The stream of server events is still a regular HTTP connection, which means you can intercept and mock with the `http` namespace as you would any other HTTP request:

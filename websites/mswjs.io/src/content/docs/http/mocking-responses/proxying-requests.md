@@ -22,7 +22,7 @@ export const handlers = [
     // Construct a proxy request.
     const proxyRequest = new Request(proxyUrl, {
       headers: {
-        'content-type': request.headers.get('Content-Type'),
+        'content-type': request.headers.get('content-type'),
         'x-proxy-header': 'abc-123',
       },
     })

@@ -51,7 +51,7 @@ You can tell the browser to ignore the default worker scope limitation by sendin
 ```js {3}
 app.get('/assets/mockServiceWorker.js', (req, res, next) => {
   // Allow the worker to control all the pages of the app.
-  res.setHeader('Service-Worker-Allowed', '/')
+  res.setHeader('service-worker-allowed', '/')
   next()
 })
 ```

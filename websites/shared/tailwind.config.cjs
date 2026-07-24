@@ -8,19 +8,12 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: [
-        [
-          'Inter',
-          'system-ui',
-          '-apple-system',
-          ...defaultTheme.fontFamily.sans,
-        ],
+        'Geist',
+        'system-ui',
+        '-apple-system',
+        ...defaultTheme.fontFamily.sans,
       ],
-      mono: [
-        ['"Mono Lisa"', ...defaultTheme.fontFamily.mono],
-        {
-          fontFeatureSettings: '"ss03"',
-        },
-      ],
+      mono: ['"Geist Mono"', ...defaultTheme.fontFamily.mono],
     },
     extend: {
       transitionDuration: {

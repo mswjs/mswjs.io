@@ -85,7 +85,7 @@ export const handlers = [
 
     return new HttpResponse(stream, {
       headers: {
-        'Content-Type': 'video/mp4',
+        'content-type': 'video/mp4',
       },
     })
   }),
