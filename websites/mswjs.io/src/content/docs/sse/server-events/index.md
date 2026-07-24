@@ -33,13 +33,16 @@ sse('/stream', ({ client }) => {
 
 Creating this request handler will send the "hello world" event to the `EventSource` matching the handler's predicate (`/stream`):
 
-```ts
-// your-app.ts
+::: code-group
+
+```ts [your-app.ts]
 const source = new EventSource('/stream')
 event.addEventListener('message', (event) => {
   console.log(event.data) // "hello world"
 })
 ```
+
+:::
 
 ## Next steps
 

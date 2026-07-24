@@ -32,7 +32,7 @@ If you have never tried MSW before or unsure where to start, look no further tha
   url="/docs/quick-start"
   icon="WindowIcon"
   title="Quick start"
-  description="Get MSW up and running in under five minutes."
+  description="Add MSW to your project in under five minutes."
 />
 
 ## Learn with Egghead

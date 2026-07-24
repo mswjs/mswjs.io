@@ -15,8 +15,9 @@ The browser can only register a single Service Worker per scope. This means that
 
 First, modify your existing worker script to conditionally import `/mockServiceWorker.js`. Use the [`importScripts()` API](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts) available globally in the worker's scope.
 
-```js {4-6}
-// public/existing-worker.js
+::: code-group
+
+```js [public/existing-worker.js] {3-5}
 const url = new URL(location.href)
 
 if (url.searchParams.get('enableApiMocking') === 'true') {
@@ -27,16 +28,18 @@ if (url.searchParams.get('enableApiMocking') === 'true') {
 // self.addEventListener('fetch', listener)
 ```
 
-<Warning>
-  Make sure to complete the [Browser integration](/docs/integrations/browser) to
-  have the `mockServiceWorker.js` script generated in your public directory and
-  thus available from the root of your application.
-</Warning>
+:::
+
+::: warning
+  Make sure to follow the [Browser integration](/docs/integrations/browser) to
+  generate the `mockServiceWorker.js` script and have it in your public directory.
+:::
 
 <Action>Enable API mocking conditionally</Action>
 
-```js {4-9}
-// src/app.js
+::: code-group
+
+```js [src/app.js] {3-8}
 const workerUrl = new URL('/existing-worker.js', location.origin)
 
 // In your application code, set the "enableApiMocking" search parameter
@@ -48,6 +51,8 @@ if (process.env.NODE_ENV === 'development') {
 
 navigator.serviceWorker.register(workerUrl.href)
 ```
+
+:::
 
 <Action>Set up MSW to use your worker</Action>
 

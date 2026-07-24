@@ -13,8 +13,9 @@ Let's implement both of these custom request predicates.
 
 You can implement a custom request predicate using a [higher-order resolver](/docs/recipes/higher-order-resolver) function. In the example below, we will create a `withSearchParams` function that will help us match requests that satisfy a custom `predicate` based on the request's query parameters.
 
-```js
-// withSearchParams.js
+::: code-group
+
+```js [withSearchParams.js]
 import { passthrough } from 'msw'
 
 export function withSearchParams(predicate, resolver) {
@@ -31,12 +32,15 @@ export function withSearchParams(predicate, resolver) {
 }
 ```
 
+:::
+
 > The `resolver` argument is the actual response resolver we will specify upon usage. The logic around it determines when to call it, allowing for conditional response resolution.
 
 We can then use the `withSearchParams` function instead of the response resolver anywhere we wish:
 
-```js
-// handlers.js
+::: code-group
+
+```js [handlers.js]
 import { http, HttpResponse } from 'msw'
 import { withSearchParams } from './withSearchParams'
 
@@ -57,12 +61,15 @@ export const handlers = [
 ]
 ```
 
+:::
+
 ## Request body predicate
 
 Implementing a custom request body predicate is no different from the query predicate. We will create a `withJsonBody` function that will provide the matching logic and call the `resolver` conditionally.
 
-```js
-// withJsonBody.js
+::: code-group
+
+```js [withJsonBody.js]
 import isEqual from 'lodash.isequal'
 
 export function withJsonBody(expectedBody, resolver) {
@@ -88,10 +95,12 @@ export function withJsonBody(expectedBody, resolver) {
 }
 ```
 
-<Warning>
+:::
+
+::: warning
   Make sure to *clone the request* before reading its body. If you don't, you
   won't be able to read it in the `resolver`.
-</Warning>
+:::
 
 ```js
 http.post(

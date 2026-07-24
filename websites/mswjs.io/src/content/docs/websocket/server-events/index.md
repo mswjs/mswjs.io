@@ -21,11 +21,11 @@ api.addEventListener('connection', ({ server }) => {
 })
 ```
 
-<Warning>
+::: warning
   You must [establish the server
   connection](/docs/websocket/server-events/establishing-server-connection)
   before you can listen to any server events.
-</Warning>
+:::
 
 ## Intercepting server events
 

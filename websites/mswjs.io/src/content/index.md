@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: page
 title: Mock Service Worker - API mocking library for browser and Node.js
 displayTitle: Mock Service Worker - API mocking library for browser and Node.js
 titleTemplate: false
@@ -11,3 +11,9 @@ keywords:
   - service
   - worker
 ---
+
+<script setup>
+import HomePage from '../../.vitepress/theme/home/HomePage.vue'
+</script>
+
+<HomePage />

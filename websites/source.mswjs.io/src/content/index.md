@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: page
 title: Source - Generate request handlers from HAR files, OpenAPI documents, and other sources.
 displayTitle: Source - Generate request handlers from HAR files, OpenAPI documents, and other sources.
 titleTemplate: false
@@ -14,3 +14,9 @@ keywords:
   - handlers
   - msw
 ---
+
+<script setup>
+import HomePage from '../../.vitepress/theme/home/HomePage.vue'
+</script>
+
+<HomePage />

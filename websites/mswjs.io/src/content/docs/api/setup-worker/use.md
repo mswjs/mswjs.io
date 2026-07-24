@@ -15,10 +15,10 @@ import { worker } from './mocks/browser'
 worker.use(http.get('/resource'), http.post('/resource'))
 ```
 
-<Info>
+::: info
   Similar to `worker.start()`, you can spread a list of request handlers as
   arguments to the `worker.use()` method. No need to call it multiple times!
-</Info>
+:::
 
 The prepended request handlers persist on the worker as long as the current runtime exists (thus, they are often referred to as "runtime request handlers").
 

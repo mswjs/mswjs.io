@@ -4,11 +4,11 @@ title: RequestHandler
 description: The base class for request handler implementation.
 ---
 
-<Warning>
+::: warning
   This class is meant for creating custom request handlers. Please prefer using
   the standard [`http`](/docs/api/http) and [`graphql`](/docs/api/graphql)
   namespaces before creating a custom request handler.
-</Warning>
+:::
 
 ## Call signature
 
@@ -77,12 +77,12 @@ console.log(handler.info.method) // "GET"
 console.log(handler.info.path) // "/user"
 ```
 
-<Warning>
+::: warning
   The `info` object is meant for representing public information about the
   request handler. Do not use this object for internal handler context. Instead,
   declare whichever additional properties you need as private properties on the
   custom request handler class.
-</Warning>
+:::
 
 ## Methods
 
@@ -135,8 +135,9 @@ First, the intercepted request instance will be parsed using the `parse()` metho
 
 Let's create a custom `SearchParamsHandler` that will only handle requests whose search parameters will match the expected object.
 
-```js {18-20}
-// SearchParamsHandler.js
+::: code-group
+
+```js [SearchParamsHandler.js] {17-19}
 import { RequestHandler } from 'msw'
 
 export class SearchParamsHandler extends RequestHandler {
@@ -160,14 +161,17 @@ export class SearchParamsHandler extends RequestHandler {
 }
 ```
 
+:::
+
 ### Phase 2: Predicate
 
 The next phase determines if the intercepted request should be handled by this request handler. The intercepted request instance and the parsing result returned from the `parse()` method are passed to the `predicate()` method of the request handler. The predicate method must return a boolean indicating whether this handler is meant to handle the intercepted request.
 
 For example, let's iterate on the custom `SearchParamsHandler` request handler to only match the intercepted requests whose search parameters match the provided `expectedParams` object.
 
-```js {21-35}
-// SearchParamsHandler.js
+::: code-group
+
+```js [SearchParamsHandler.js] {20-34}
 import { RequestHandler } from 'msw'
 
 export class SearchParamsHandler extends RequestHandler {
@@ -205,14 +209,17 @@ export class SearchParamsHandler extends RequestHandler {
 }
 ```
 
+:::
+
 ### Phrase 3: Resolution
 
 If the request handler returned `true` in the predicate phase, the resolution phase begins. The parent `RequestHandler` class handles the request resolution by executing the provided `resolver` function with the `request` instance and whichever additional information returned from the `extendResolverArgs()` method. The response returned from the resolver function is propagated to MSW and it applies it to the request.
 
 Here's an example of using the `extendResolverArgs()` method to extract `URLSearchParams` from the intercepted request's URL and expose them as additional data on the response resolver argument.
 
-```js /parsedResult.searchParams/ {15-17,26}
-// SearchParamsHandler.js
+::: code-group
+
+```js [SearchParamsHandler.js] /parsedResult.searchParams/ {14-16,25}
 import { RequestHandler } from 'msw'
 
 export class SearchParamsHandler extends RequestHandler {
@@ -243,8 +250,11 @@ export class SearchParamsHandler extends RequestHandler {
 }
 ```
 
-```js /searchParams/1
-// handlers.js
+:::
+
+::: code-group
+
+```js [handlers.js] /searchParams/1
 import { HttpResponse } from 'msw'
 import { SearchParamsHandler } from './SearchParamsHandler'
 
@@ -258,3 +268,5 @@ export const handlers = [
   }),
 ]
 ```
+
+:::

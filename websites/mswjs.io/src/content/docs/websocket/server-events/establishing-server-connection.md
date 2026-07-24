@@ -17,10 +17,10 @@ export const handlers = [
 
 In the example above, `server.connect()` will establish a new, bypassed WebSocket connection to the underlying WebSocket URL (`'wss://api.example.com'`).
 
-<Warning>
+::: warning
   Just like establishing connections with `new WebSocket()`, you do _not_ have
   to await the `server.connect()` call.
-</Warning>
+:::
 
 ## API reference
 

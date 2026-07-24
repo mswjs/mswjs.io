@@ -24,8 +24,9 @@ In the case when there is no API specification available, you can record network
 
 MSW provides a designated [Source](https://source.mswjs.io) package to help you create request handlers out of various sources, like OpenAPI specifications or HAR files. Here's how you use it:
 
-```js
-// mocks/browser.js
+::: code-group
+
+```js [mocks/browser.js]
 import { setupWorker } from 'msw'
 import { fromTraffic } from '@msw/source/traffic'
 import * as har from './snapshort.har'
@@ -34,6 +35,8 @@ const handlers = fromTraffic(har)
 
 export const worker = setupWorker(...handlers)
 ```
+
+:::
 
 ## Automate the process
 

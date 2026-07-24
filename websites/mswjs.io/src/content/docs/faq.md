@@ -10,9 +10,9 @@ keywords:
   - cache
 ---
 
-<Info>
+::: info
 Have a question not present in the list? Open a [Discussion](https://github.com/mswjs/msw/discussions/new) on GitHub and get help from our community.
-</Info>
+:::
 
 ## How is it different than library XYZ?
 
@@ -112,8 +112,9 @@ beforeEach(() => {
 
 The Apollo Client team recommends creating a new client instance for each test.
 
-```js {8-13}
-// src/apollo-client.js
+::: code-group
+
+```js [src/apollo-client.js] {7-12}
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 
 const httpLink = new HttpLink({
@@ -128,8 +129,11 @@ export function makeClient() {
 }
 ```
 
-```js /makeClient/
-// test/Component.test.jsx
+:::
+
+::: code-group
+
+```js [test/Component.test.jsx] /makeClient/
 import { makeClient } from '../src/apollo-client'
 
 it('renders the component', async () => {
@@ -137,6 +141,8 @@ it('renders the component', async () => {
   // ...use your client in test.
 })
 ```
+
+:::
 
 > Learn more in the [Apollo Client documentation](https://www.apollographql.com/docs/react/development-testing/schema-driven-testing/#should-i-share-a-single-apolloclient-instance-between-tests).
 
@@ -155,8 +161,8 @@ If your test suite features multiple concurrent test that modify the network beh
   description="Scope the network interception to the given boundary."
 />
 
-<Warning>
+::: warning
   You can only use `server.boundary()` with `setupServer()`. Browser tests do
   not suffer from concurrency issues because the client runtime provides the
   network isolation automatically.
-</Warning>
+:::

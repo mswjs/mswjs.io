@@ -189,13 +189,16 @@ In this tutorial, we will use a [network archive](<https://en.wikipedia.org/wiki
 
 Import the `fromTraffic` function from `@msw/source/traffic` and provide the HAR file as an argument to that function:
 
-```js {3} /fromTraffic/
-// src/mocks/handlers.js
+::: code-group
+
+```js [src/mocks/handlers.js] {2} /fromTraffic/
 import { fromTraffic } from '@msw/source/traffic'
 import traffic from './api.har'
 
 export const handlers = [...fromTraffic(traffic)]
 ```
+
+:::
 
 As a result, you will get an array of request handlers to use with MSW.
 

@@ -1,6 +1,7 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import matter from 'gray-matter'
+import type { DefaultTheme } from 'vitepress'
 
 export interface DocsFrontmatter {
   title: string
@@ -245,21 +246,54 @@ function createNavTreeBuilder(files: Array<DocsFile>) {
   return builder
 }
 
+function toDefaultThemeItem(item: SidebarItem): DefaultTheme.SidebarItem {
+  if (item.kind === 'group') {
+    return {
+      text: item.title,
+      items: item.children.map(toDefaultThemeItem),
+    }
+  }
+
+  if (item.kind === 'page-with-children') {
+    return {
+      text: item.title,
+      link: item.url,
+      collapsed: true,
+      items: item.children.map(toDefaultThemeItem),
+    }
+  }
+
+  return {
+    text: item.title,
+    link: item.url,
+  }
+}
+
 export function buildDocsSidebar(
   docsDirectory: string,
   groups: Array<[title: string, pattern: string]>,
-): Array<SidebarItem> {
+): Array<DefaultTheme.SidebarItem> {
   const files = collectDocsFiles(docsDirectory)
   const builder = createNavTreeBuilder(files)
 
-  return [
-    ...builder.get('*.md'),
-    ...groups.map(([title, pattern]): SidebarGroup => {
+  const rootPages = builder.get('*.md')
+  const tree: Array<SidebarItem> = groups.map(
+    ([title, pattern]): SidebarGroup => {
       return {
         kind: 'group',
         title,
         children: builder.get(pattern),
       }
-    }),
+    },
+  )
+
+  return [
+    // Root-level pages live in a single untitled section so
+    // that pages with children (e.g. "Migrations") stay inline
+    // with their siblings instead of forming their own section.
+    {
+      items: rootPages.map(toDefaultThemeItem),
+    },
+    ...tree.map(toDefaultThemeItem),
   ]
 }

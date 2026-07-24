@@ -11,11 +11,11 @@ You can manage that event forwarding in multiple ways:
 - Send modified client events to the server;
 - Prevent client events from reaching the server entirely.
 
-<Warning>
+::: warning
   Client-to-server forwarding is only relevant in the context of you
   establishing the actual server connection. If you are developing or testing
   against mocks, there is no forwarding involved.
-</Warning>
+:::
 
 ## Preventing client events
 

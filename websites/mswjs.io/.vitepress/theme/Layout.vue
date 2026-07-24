@@ -1,124 +1,153 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, watchEffect } from 'vue'
+import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute } from 'vitepress'
-import SiteHeader from '@mswjs/shared/theme/components/SiteHeader.vue'
 import SiteFooter from '@mswjs/shared/theme/components/SiteFooter.vue'
-import PageBanner from '@mswjs/shared/theme/components/PageBanner.vue'
-import DocsLayout from '@mswjs/shared/theme/docs/DocsLayout.vue'
 import FooterSection from '@mswjs/shared/theme/components/FooterSection.vue'
-import mswLogo from '../../src/images/msw.svg'
-import BlogPostLayout from './blog/BlogPostLayout.vue'
-import BlogIndexPage from './blog/BlogIndexPage.vue'
-import HomePage from './home/HomePage.vue'
-import EcosystemPage from './pages/EcosystemPage.vue'
-import BrandingPage from './pages/BrandingPage.vue'
-import NotFoundPage from '@mswjs/shared/theme/pages/NotFoundPage.vue'
+import ReactIsland from '@mswjs/shared/theme/components/ReactIsland.vue'
+import DocsPageHeader from '@mswjs/shared/theme/docs/DocsPageHeader.vue'
+import { useOutlineAutoScroll } from '@mswjs/shared/theme/composables/useOutlineAutoScroll'
+import DocsSidebarPartners from '@mswjs/shared/theme/docs/DocsSidebarPartners.vue'
+import Ads from '@mswjs/shared/theme/docs/Ads.vue'
+import { FeedbackWidget } from '@mswjs/shared/theme/react/feedbackWidget'
+import BlogPostHeader from './blog/BlogPostHeader.vue'
+import { useSidebarAutoScroll } from '@mswjs/shared/theme/composables/useSidebarAutoScroll'
 
-const { page, frontmatter } = useData()
+const { page, frontmatter, theme } = useData()
 const route = useRoute()
+
+useOutlineAutoScroll()
+useSidebarAutoScroll()
 
 const isDocsPage = computed(() => {
   return route.path.startsWith('/docs') && !page.value.isNotFound
 })
 
-const pageKind = computed(() => {
-  if (page.value.isNotFound) {
-    return 'not-found'
-  }
+const isBlogPost = computed(() => {
+  return route.path.startsWith('/blog/') && !page.value.isNotFound
+})
 
-  if (frontmatter.value.layout === 'home') {
-    return 'home'
-  }
+const feedbackPageTitle = computed(() => {
+  return frontmatter.value.displayTitle || frontmatter.value.title
+})
 
-  if (frontmatter.value.layout === 'ecosystem') {
-    return 'ecosystem'
-  }
+// Right-clicking the logo leads to the Branding page.
+onMounted(() => {
+  const logoLink = document.querySelector('.VPNavBarTitle a')
 
-  if (frontmatter.value.layout === 'branding') {
-    return 'branding'
-  }
+  logoLink?.addEventListener('contextmenu', (event) => {
+    event.preventDefault()
+    location.href = '/branding'
+  })
+})
 
-  if (frontmatter.value.layout === 'blog-index') {
-    return 'blog-index'
+// Offset the fixed navbar and sidebar by the height of the
+// "MSW 1.x" banner, shown on docs pages only.
+watchEffect(() => {
+  if (typeof document !== 'undefined') {
+    document.documentElement.style.setProperty(
+      '--vp-layout-top-height',
+      isDocsPage.value ? '36px' : '0px',
+    )
   }
-
-  if (route.path.startsWith('/blog/')) {
-    return 'blog-post'
-  }
-
-  if (route.path.startsWith('/docs')) {
-    return 'docs'
-  }
-
-  return 'page'
 })
 </script>
 
 <template>
-  <PageBanner v-if="isDocsPage">
-    <p>
-      You are viewing the docs for <strong>MSW 2.0</strong>. To access the 1.x
-      docs
-      <a
-        href="https://v1.mswjs.io/"
-        class="text-primary hover:underline"
-        target="_blank"
-        rel="noopener noreferrer"
-        >click here</a
-      >.
-    </p>
-  </PageBanner>
+  <DefaultTheme.Layout>
+    <template #layout-top>
+      <aside
+        v-if="isDocsPage"
+        class="docs-version-banner fixed top-0 inset-x-0 z-[60] flex items-center justify-center h-[36px] px-5 border-b border-neutral-700 bg-neutral-950 text-neutral-200 text-sm text-center font-medium"
+      >
+        <p>
+          You are viewing the docs for <strong>MSW 2.0</strong>. To access the
+          1.x docs
+          <a
+            href="https://v1.mswjs.io/"
+            class="text-primary hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            >click here</a
+          >.
+        </p>
+      </aside>
+    </template>
 
-  <SiteHeader :logo="mswLogo" :compact="isDocsPage" />
+    <template #doc-before>
+      <template v-if="isDocsPage">
+        <DocsPageHeader />
+        <Ads v-if="theme.ads" publisher="mswjsio" />
+      </template>
+      <BlogPostHeader v-if="isBlogPost" />
+    </template>
 
-  <main>
-    <NotFoundPage v-if="pageKind === 'not-found'" />
-    <HomePage v-else-if="pageKind === 'home'" />
-    <EcosystemPage v-else-if="pageKind === 'ecosystem'" />
-    <BrandingPage v-else-if="pageKind === 'branding'" />
-    <BlogIndexPage v-else-if="pageKind === 'blog-index'" />
-    <BlogPostLayout v-else-if="pageKind === 'blog-post'">
-      <Content />
-    </BlogPostLayout>
-    <DocsLayout v-else-if="pageKind === 'docs'" />
-    <Content v-else />
-  </main>
+    <template #doc-after>
+      <ClientOnly v-if="isDocsPage">
+        <ReactIsland
+          :component="FeedbackWidget"
+          :component-props="{ pageTitle: feedbackPageTitle }"
+        />
+      </ClientOnly>
+    </template>
 
-  <SiteFooter :compact="isDocsPage">
-    <template #sections>
-      <div class="sm:col-span-2">
-        <FooterSection title="Library">
-          <li><a href="/docs">Documentation</a></li>
-          <li><a href="/branding">Branding</a></li>
-          <li><a href="/blog" target="_blank">Blog</a></li>
-        </FooterSection>
-      </div>
-
-      <div class="sm:col-span-2">
-        <FooterSection title="Resources">
-          <li><a href="/docs/quick-start">Quick start</a></li>
-          <li><a href="/docs/best-practices">Best practices</a></li>
-          <li>
-            <a href="https://github.com/mswjs/examples" target="_blank"
-              >Examples</a
-            >
-          </li>
-        </FooterSection>
-      </div>
-
-      <div class="sm:col-span-2">
-        <FooterSection title="Community">
-          <li>
-            <a href="https://github.com/mswjs/msw" target="_blank">GitHub</a>
-          </li>
-          <li>
-            <a href="https://twitter.com/ApiMocking" target="_blank">Twitter</a>
-          </li>
-          <li>
-            <a href="https://kettanaito.com/discord" target="_blank">Discord</a>
-          </li>
-        </FooterSection>
+    <template #aside-outline-after>
+      <div class="aside-extras shrink-0 space-y-8 text-sm font-medium text-neutral-400">
+        <div>
+          <h4 class="mb-2 text-xs font-bold tracking-widest text-white uppercase">
+            Partners
+          </h4>
+          <DocsSidebarPartners />
+        </div>
       </div>
     </template>
-  </SiteFooter>
+
+    <template #layout-bottom>
+      <div class="site-footer" :class="{ 'footer-with-sidebar': isDocsPage }">
+        <SiteFooter>
+          <template #sections>
+            <div class="sm:col-span-2">
+              <FooterSection title="Library">
+                <li><a href="/docs">Documentation</a></li>
+                <li><a href="/branding">Branding</a></li>
+                <li><a href="/blog" target="_blank">Blog</a></li>
+              </FooterSection>
+            </div>
+
+            <div class="sm:col-span-2">
+              <FooterSection title="Resources">
+                <li><a href="/docs/quick-start">Quick start</a></li>
+                <li><a href="/docs/best-practices">Best practices</a></li>
+                <li>
+                  <a href="https://github.com/mswjs/examples" target="_blank"
+                    >Examples</a
+                  >
+                </li>
+              </FooterSection>
+            </div>
+
+            <div class="sm:col-span-2">
+              <FooterSection title="Community">
+                <li>
+                  <a href="https://github.com/mswjs/msw" target="_blank"
+                    >GitHub</a
+                  >
+                </li>
+                <li>
+                  <a href="https://twitter.com/ApiMocking" target="_blank"
+                    >Twitter</a
+                  >
+                </li>
+                <li>
+                  <a href="https://kettanaito.com/discord" target="_blank"
+                    >Discord</a
+                  >
+                </li>
+              </FooterSection>
+            </div>
+          </template>
+        </SiteFooter>
+      </div>
+    </template>
+  </DefaultTheme.Layout>
 </template>

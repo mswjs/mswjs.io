@@ -29,10 +29,10 @@ http.get<{ id: string }>('/posts/:id', ({ params }) => {
 })
 ```
 
-<Success>
+::: tip
   Note that you can include multiple different path parameters within the same
   request path, like `/users/:userId/books/:bookId`.
-</Success>
+:::
 
 ## Optional path parameters
 

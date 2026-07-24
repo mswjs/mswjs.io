@@ -2,8 +2,7 @@
 order: 3
 title: Comparison
 description: Mock Service Worker comparison with similar tools.
-tableOfContents:
-  maxDepth: 2
+outline: 2
 keywords:
   - comparison
   - nock
@@ -17,12 +16,12 @@ keywords:
 
 Choosing the right tool for the job is crucial. We tried our best to provide a comprehensive and unbiased comparison between Mock Service Worker and other open-source API mocking libraries below.
 
-<Warning>
+::: warning
   The purpose of this page is not to reason about what technology is better or
   worse. All the libraries listed here have a place to be, and grading them is
   not only subjective, but also disrespectful towards the people who really
   should be using one over another.
-</Warning>
+:::
 
 ## Comparison criteria
 

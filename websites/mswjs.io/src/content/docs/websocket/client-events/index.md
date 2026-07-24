@@ -58,8 +58,9 @@ api.addEventListener('connection', ({ client }) => {
 
 Your mocks are always written from _the server's perspective_, which means the `message` event will be dispatched when your client _sends_ some data:
 
-```ts {5}
-// app.js
+::: code-group
+
+```ts [app.js] {4}
 const ws = new WebSocket(url)
 
 ws.onopen = () => {
@@ -67,6 +68,8 @@ ws.onopen = () => {
   // "Client sent data: hello world"
 }
 ```
+
+:::
 
 ### The `close` event
 

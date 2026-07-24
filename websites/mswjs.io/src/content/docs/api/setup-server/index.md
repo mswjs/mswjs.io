@@ -43,17 +43,18 @@ const server = setupServer(
 server.listen()
 ```
 
-<Warning>
+::: warning
   Pay attention that `setupServer` is imported from `msw/node`, while the
   request handlers are imported from `msw` as usual.
-</Warning>
+:::
 
 One of the most common usages of Mock Service Worker in Node.js is during integration tests. Integrate API mocking as a part of your testing setup to make sure you start and clean up the request interception logic appropriately.
 
 Take a look at the testing setup example using [Jest](https://jestjs.io/) testing framework:
 
-```js
-// jest.setup.js
+::: code-group
+
+```js [jest.setup.js]
 import { setupServer } from 'msw/node'
 import { handlers } from './handlers'
 
@@ -75,5 +76,7 @@ afterAll(() => {
   server.close()
 })
 ```
+
+:::
 
 > While we commend setting up request interception globally, as a part of your testing setup, you may also use `setupServer` in individual tests, if you want to. Just make sure to choose _one_ pattern and follow it throughout your tests—multiple `setupServer` calls is **not** a good idea!

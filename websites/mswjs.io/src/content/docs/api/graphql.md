@@ -35,7 +35,9 @@ graphql.query<Query, Variables>(
 
 The `graphql` namespace contains keys that represent GraphQL operation types (e.g. "query", "mutation").
 
-<Warning>GraphQL subscriptions are currently not supported.</Warning>
+::: warning
+GraphQL subscriptions are currently not supported.
+:::
 
 ### `graphql.query(queryName, resolver)`
 

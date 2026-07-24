@@ -40,8 +40,9 @@ npx msw init ./public --save
 
 Running this command will save the `./public` directory in your `package.json`:
 
-```json {4-6}
-// package.json
+::: code-group
+
+```json [package.json] {3-5}
 {
   "name": "my-app",
   "msw": {
@@ -49,6 +50,8 @@ Running this command will save the `./public` directory in your `package.json`:
   }
 }
 ```
+
+:::
 
 If this property is present, whenever you install the `msw` package, the worker script will be copied to the `msw.workerDirectory` destination automatically. This ensures the worker script being in sync with the currently installed version of the library.
 

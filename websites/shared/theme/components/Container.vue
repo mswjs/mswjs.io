@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="compact ? 'px-5' : 'container'">
+  <div :class="compact ? 'px-5' : 'msw-container'">
     <slot />
   </div>
 </template>

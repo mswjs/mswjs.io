@@ -14,6 +14,12 @@ keywords:
   - v2
   - fetch
   - api
+aside: false
+outline: false
+editLink: false
+lastUpdated: false
+prev: false
+next: false
 ---
 
 This November marks five years since Mock Service Worker has been first added to a `package.json`. Over that time, I have learned a lot about building libraries, designing APIs, and cultivating communities, which makes today's announcement all the more special.
@@ -89,8 +95,9 @@ See, as a developer, you can polyfill `fetch` in your project in many ways, most
 
 Every `fetch` polyfill locks the identity of its internal classes like `Request`, `Response` and `Headers`. This means that none of those classes would pass the `instanceof` check, as one example, unless both you and MSW use the same polyfill, which is virtually impossible to predict.
 
-```js
-// somewhere/in/msw.js
+::: code-group
+
+```js [somewhere/in/msw.js]
 import { Request } from 'polyfill-that-msw-uses'
 
 function isRequest(request: Request) {
@@ -100,6 +107,8 @@ function isRequest(request: Request) {
   return request instanceof Request
 }
 ```
+
+:::
 
 Inferring the polyfilled classes isn't a reliable route either. It implies that the polyfill is set globally but it may not be the case. It also makes TypeScript definitions insanely difficult to get right as some polyfills deviate from the specification.
 

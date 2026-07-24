@@ -6,8 +6,9 @@ Creating a higher-order resolver is a good way of managing the dynamic, and ofte
 
 For example, this is how you can describe protected routes:
 
-```js
-// mocks/middleware.js
+::: code-group
+
+```js [mocks/middleware.js]
 import { HttpResponse } from 'msw'
 
 // A higher-order response resolver that validates
@@ -26,8 +27,11 @@ export function withAuth(resolver) {
 }
 ```
 
-```js {3,10} /withAuth/1,3
-// mocks/handlers.js
+:::
+
+::: code-group
+
+```js [mocks/handlers.js] {2,9} /withAuth/1,3
 import { http, HttpResponse } from 'msw'
 import { withAuth } from './middleware'
 
@@ -42,3 +46,5 @@ export const handlers = [
   }))
 ]
 ```
+
+:::

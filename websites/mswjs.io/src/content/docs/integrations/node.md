@@ -16,13 +16,16 @@ In Node.js, MSW enables API mocking by patching native request-issuing modules, 
 
 Import the `setupServer` function from `msw/node` and call it, providing your request handlers as the argument.
 
-```js
-// src/mocks/node.js
+::: code-group
+
+```js [src/mocks/node.js]
 import { setupServer } from 'msw/node'
 import { handlers } from './handlers'
 
 export const server = setupServer(...handlers)
 ```
+
+:::
 
 You then use the returned `server` object to control API mocking in the current Node.js process.
 
@@ -34,14 +37,17 @@ You then use the returned `server` object to control API mocking in the current 
 
 Import the `server` anywhere in your Node.js application and call the `.listen()` method to enable API mocking. We recommend doing this as the first thing in your application's entry module so MSW would affect all the requests early on.
 
-```js {4}
-// src/index.js
+::: code-group
+
+```js [src/index.js] {3}
 import { server } from './mocks/node'
 
 server.listen()
 
 // ...the rest of your Node.js application.
 ```
+
+:::
 
 > `server.listen()` is a _synchronous_ API so you don't have to await it.
 
@@ -55,15 +61,16 @@ One of the most common uses of MSW in Node.js is with test runners like Jest or 
 1. Reset any request handlers _between_ tests (`server.resetHandlers()`);
 1. Restore native request-issuing modules _after_ all tests run (`server.close()`).
 
-<Info>
+::: info
   Consult your test runner's documentation on the correct API to implement those
   steps.
-</Info>
+:::
 
 For example, this is how you would set up MSW in Vitest, using its `beforeAll`, `afterEach`, and `afterAll` hooks:
 
-```js
-// vitest.setup.js
+::: code-group
+
+```js [vitest.setup.js]
 import { beforeAll, afterEach, afterAll } from 'vitest'
 import { server } from './src/mocks/node'
 
@@ -71,6 +78,8 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 ```
+
+:::
 
 ## Confirmation
 

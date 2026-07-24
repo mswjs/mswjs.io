@@ -13,6 +13,12 @@ keywords:
   - real-time
   - msw
   - mocking
+aside: false
+outline: false
+editLink: false
+lastUpdated: false
+prev: false
+next: false
 ---
 
 It's been a little more than a year since our last major announcement for MSW. The reception of the [Fetch-based API mocking](/blog/introducing-msw-2.0) has been incredible! By the time of writing this, the overwhelming majority of developers are running standard-based MSW 2.0, exposing themselves to web APIs and becoming better engineers in the process.

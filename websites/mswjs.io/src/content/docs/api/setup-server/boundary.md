@@ -22,11 +22,11 @@ function boundary<Callback extends (...args: Array<unknown>) => unknown>(
 
 ## Usage
 
-<Warning>
+::: warning
   The `server.boundary()` API is Node.js only, which means it can only be used
   with `setupServer()`. Network isolation in the browser is automatically
   achieved by the client runtime (each tab is a separate, isolated runtime).
-</Warning>
+:::
 
 The `server.boundary()` API is designed to provide the network behavior isolation. Any modifications to the request interception made within a boundary will only affect that boundary and nothing else.
 

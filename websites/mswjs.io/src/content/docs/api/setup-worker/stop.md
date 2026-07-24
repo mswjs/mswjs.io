@@ -16,8 +16,9 @@ Although it's a logical opposite to `worker.start()`, the `worker.stop()` method
 
 This method is designed to be called on runtime to control the request interception flow. You do so by exposing the `worker` reference globally and calling `window.worker.stop()` in any time in the browser.
 
-```js
-// mocks/browser.js
+::: code-group
+
+```js [mocks/browser.js]
 import { setupWorker } from 'msw/browser'
 import { handlers } from './handlers'
 
@@ -27,7 +28,9 @@ export const worker = setupWorker(...handlers)
 window.worker = worker
 ```
 
-<Info>
+:::
+
+::: info
   When stopping the worker on runtime, the stopped state will not persist across
   page reloads.
-</Info>
+:::

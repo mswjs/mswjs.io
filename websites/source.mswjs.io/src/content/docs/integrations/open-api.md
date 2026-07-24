@@ -27,10 +27,10 @@ import spec from './api.spec.json'
 const handlers = await fromOpenApi(spec)
 ```
 
-<Warning>
+::: warning
   Generating request handlers from an OpenAPI document is an _asynchronous_
   operation because parsing the document is an asynchronous operation.
-</Warning>
+:::
 
 If your OpenAPI document was not authored in JSON, you would have to convert it to JSON before using `fromOpenApi()`.
 

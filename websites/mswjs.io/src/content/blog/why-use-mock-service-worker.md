@@ -16,6 +16,12 @@ keywords:
   - mocking
   - mock service worker
   - javascript
+aside: false
+outline: false
+editLink: false
+lastUpdated: false
+prev: false
+next: false
 ---
 
 I doubt you can build a meaningful application without communicating with some APIs one way or the other. Whenever you do, you reach out to API mocking to establish proper boundaries in testing and even help you prototype and debug more efficiently. As it often happens in JavaScript, there are a lot of options to choose from to add API mocking to your project. I happened to build one of those options, and so today I'd like to talk about why to even consider using Mock Service Worker in your project.

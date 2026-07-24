@@ -16,12 +16,12 @@ await worker.start({
 })
 ```
 
-<Warning>
+::: warning
   Changing the worker script's location affects the scope at which the Service
   Worker can intercept requests. For example, serving the worker script from a
   `/assets/` directory means that only the pages served under the `/assets/`
   path and deeper can be affected by the worker (i.e. MSW).
-</Warning>
+:::
 
 ## Custom worker scope
 
@@ -66,4 +66,6 @@ service-worker-allowed: /
 <CONTENTS OF THE FILE>
 ```
 
-<Warning>Note that the `Service-Worker-Allowed` response header controls the _maximum allowed scope_, whereas individual worker registrations can still have a narrower scope. If unsure, align the `serviceWorker.options.scope` to be the same as the `Service-Worker-Allowed` value.</Warning>
+::: warning
+Note that the `Service-Worker-Allowed` response header controls the _maximum allowed scope_, whereas individual worker registrations can still have a narrower scope. If unsure, align the `serviceWorker.options.scope` to be the same as the `Service-Worker-Allowed` value.
+:::

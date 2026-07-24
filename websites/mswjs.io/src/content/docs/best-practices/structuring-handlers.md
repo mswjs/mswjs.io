@@ -15,8 +15,9 @@ keywords:
 
 We recommend utilizing a single `handlers.js` module to describe the successful states (happy paths) of your network. Going success behavior-first, you always have a base request handling in addition to any runtime overrides you may add.
 
-```js
-// mocks/handlers.js
+::: code-group
+
+```js [mocks/handlers.js]
 import { http, HttpResponse } from 'msw'
 
 export const handlers = [
@@ -25,6 +26,8 @@ export const handlers = [
   }),
 ]
 ```
+
+:::
 
 ```js {5,21-25}
 import { http } from 'msw'
@@ -80,8 +83,9 @@ mocks/
     index.js
 ```
 
-```js
-// mocks/handlers/user.js
+::: code-group
+
+```js [mocks/handlers/user.js]
 import { http } from 'msw'
 
 // These request handlers focus on the endpoints
@@ -93,8 +97,11 @@ export const handlers = [
 ]
 ```
 
-```js {2-3,8}
-// mocks/handlers/index.js
+:::
+
+::: code-group
+
+```js [mocks/handlers/index.js] {1-2,7}
 import { handlers as userHandlers } from './user'
 import { handlers as checkoutHandlers } from './checkout'
 
@@ -104,15 +111,20 @@ import { handlers as checkoutHandlers } from './checkout'
 export const handlers = [...userHandlers, ...checkoutHandlers]
 ```
 
+:::
+
 Grouping the request handlers can also be beneficial in large test suites as you can apply only a subset of handlers during a particular test.
 
-```js
-// test/user/login.test.js
+::: code-group
+
+```js [test/user/login.test.js]
 import { server } from '../../mocks/node'
 import { handlers as userHandlers } from '../../mocks/handlers/user'
 
 server.use(...userHandlers)
 ```
+
+:::
 
 > To take the full advantage of domain-based request handlers, you may consider calling `setupServer()` without any base request handlers.
 

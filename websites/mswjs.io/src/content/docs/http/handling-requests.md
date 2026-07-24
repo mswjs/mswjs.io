@@ -1,12 +1,18 @@
 ---
 order: 3
 title: Handling requests
-description: Different ways to handle an intercepted HTTP request.
+description: What you can do with the intercepted requests.
 ---
 
-This page will walk you through all the possible ways to handle an intercepted request in MSW. It is up to you to choose the right approach, or a combination of them, based on what you want to achieve in your mocks.
+Once you've [intercepted a request](/docs/http/intercepting-requests), there are several things you can do with it:
 
-### Respond with a mocked response
+- Respond to it with a mocked response;
+- Let it pass through (i.e. perform it as-is);
+- Do nothing (i.e. observe it passively).
+
+Let's take a look at each of these options in more detail below.
+
+### Mock a response
 
 If you return a `Response` instance from the response resolver, that response will be used as the mocked response for the request. Please learn more about mocking responses on this page:
 
@@ -29,11 +35,11 @@ http.get('/resource', () => {
 })
 ```
 
-<Warning>
+::: warning
   Note that passthrough requests are still _considered handled_. This means that
-  once you return `passthrough()`, no other request handlers will be able to
-  affect this request, even if they would match it otherwise.
-</Warning>
+  once you return `passthrough()`, no other request handlers will
+  affect this request, even if they match it otherwise.
+:::
 
 This is especially useful when you only want to mock a response in certain situations and perform the request as-is otherwise.
 

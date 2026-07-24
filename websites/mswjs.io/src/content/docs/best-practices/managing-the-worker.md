@@ -46,14 +46,17 @@ The client-side code of MSW can pick up any worker script within the same major 
 
 When run with the `--save` flag, the `msw init` command will save the used public path in `package.json`. Later, whenever you upgrade or downgrade the `msw` dependency, it will automatically generate the worker script at the saved path to keep you in-sync.
 
-```json {3-5}
-// package.json
+::: code-group
+
+```json [package.json] {2-4}
 {
   "msw": {
     "workerDirectory": "./public"
   }
 }
 ```
+
+:::
 
 <PageCard
   icon="CommandLineIcon"
@@ -66,8 +69,9 @@ When run with the `--save` flag, the `msw init` command will save the used publi
 
 MSW supports an array of public directories as the value of the `msw.workerDirectory` property. This is especially handy when using MSW in multiple packages in a monorepo.
 
-```json {5-9}
-// package.json
+::: code-group
+
+```json [package.json] {4-8}
 {
   "name": "my-monorepo-root",
   "msw": {
@@ -79,6 +83,8 @@ MSW supports an array of public directories as the value of the `msw.workerDirec
   }
 }
 ```
+
+:::
 
 Anytime you run `msw init` with the `--save` flag and a public directory not previously stored in `msw.workerDirectory`, MSW will automatically save the new public directory in your `package.json`.
 

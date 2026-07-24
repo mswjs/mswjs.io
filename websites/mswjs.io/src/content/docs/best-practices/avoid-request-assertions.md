@@ -15,10 +15,10 @@ When testing, it may be tempting to write assertions against the intercepted req
 
 **We highly discourage against such assertions** as they represent implementation detail testing and sway you into testing how your application is written instead of what it does. Treat this as the default recommendation when testing with MSW.
 
-<Success>
+::: tip
   Instead of asserting that a particular request was made, test **how your
   application reacts to that request**.
-</Success>
+:::
 
 ## Request validity
 

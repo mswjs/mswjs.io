@@ -13,6 +13,12 @@ keywords:
   - concurrent
   - parallel
   - asynclocalstorage
+aside: false
+outline: false
+editLink: false
+lastUpdated: false
+prev: false
+next: false
 ---
 
 Support for [concurrent test runs](https://github.com/mswjs/msw/issues/474) in Mock Service Worker has been one of the most anticipated features for years. Today, we are announcing a brand new API to provide that support called _server boundary_.

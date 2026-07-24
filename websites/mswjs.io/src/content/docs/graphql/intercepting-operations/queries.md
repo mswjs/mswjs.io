@@ -40,9 +40,9 @@ graphql.query('ListUsers', ({ query }) => {
 })
 ```
 
-<Success>
+::: tip
   Reading the raw query is handy if you plan on resolving the mocked response
   from a different source, like a mocked GraphQL schema. You can learn more
   about that approach in the [Schema-first
   mocking](/docs/graphql/schema-first-mocking).
-</Success>
+:::

@@ -22,10 +22,10 @@ export const handlers = [
 ]
 ```
 
-<Warning>
+::: warning
   If present, the `retry` key must be the only key on the object provided to
   `client.send()`. All the other keys will be ignored.
-</Warning>
+:::
 
 This will result in the following message received by the client:
 

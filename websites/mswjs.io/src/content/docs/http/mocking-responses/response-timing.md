@@ -74,8 +74,9 @@ export const handlers = [
 
 Another option would be to define a _higher-order response resolver_ that encapsulates the delay logic and applies it selectively to some response resolvers.
 
-```ts {6-8}
-// with-delay.ts
+::: code-group
+
+```ts [with-delay.ts] {5-7}
 import { delay, type HttpResponseResolver } from 'msw'
 
 export async function withDelay(resolver: HttpResponseResolver) {
@@ -88,8 +89,11 @@ export async function withDelay(resolver: HttpResponseResolver) {
 }
 ```
 
-```ts {7,13} /withDelay/2,3
-// handlers.ts
+:::
+
+::: code-group
+
+```ts [handlers.ts] {6,12} /withDelay/2,3
 import { withDelay } from './with-delay'
 
 export const handlers = [
@@ -110,3 +114,5 @@ export const handlers = [
   }),
 ]
 ```
+
+:::

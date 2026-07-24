@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import Warning from '../content/Warning.vue'
 
 defineProps<{
   publisher: string
@@ -27,10 +26,12 @@ onMounted(() => {
       data-ea-type="text"
     />
     <div v-if="isAdBlockerDetected" id="adblocker-warning">
-      <Warning>
-        <strong>Please consider disabling AdBlocker for this site.</strong>
-        Thank you for supporting the project.
-      </Warning>
+      <div class="warning custom-block">
+        <p>
+          <strong>Please consider disabling AdBlocker for this site.</strong>
+          Thank you for supporting the project.
+        </p>
+      </div>
     </div>
   </div>
 </template>

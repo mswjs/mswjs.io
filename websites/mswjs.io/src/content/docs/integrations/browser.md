@@ -13,11 +13,11 @@ keywords:
 
 In the browser, MSW works by registering a Service Worker responsible for request interception on the network level.
 
-<Info>
+::: info
   Although Service Workers are meant to be served via HTTPS, browsers allow
   registering workers on HTTP while developing on `localhost`. If you need a
   local HTTPS development, see [this recipe](/docs/recipes/using-local-https).
-</Info>
+:::
 
 ## Generating the worker script
 
@@ -42,13 +42,16 @@ Once copied, navigate to the `/mockServiceWorker.js` URL of your application in 
 
 ## Setup
 
-```js
-// src/mocks/browser.js
+::: code-group
+
+```js [src/mocks/browser.js]
 import { setupWorker } from 'msw/browser'
 import { handlers } from './handlers'
 
 export const worker = setupWorker(...handlers)
 ```
+
+:::
 
 > Learn about the [`setupWorker` API](/docs/api/setup-worker).
 
@@ -58,8 +61,9 @@ Lastly, we need to start the worker by calling `worker.start()`, which will regi
 
 Because registering the Service Worker is an asynchronous operation, it's a good idea to defer the rendering of your application until the registration Promise resolves.
 
-```js /enableMocking/ {6-16}
-// src/index.jsx
+::: code-group
+
+```js [src/index.jsx] /enableMocking/ {5-15}
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { App } from './App'
@@ -81,11 +85,13 @@ enableMocking().then(() => {
 })
 ```
 
-<Warning>
+:::
+
+::: warning
   Make sure to await the `worker.start()` Promise! Service Worker registration
   is asynchronous and failing to await it may result in a race condition between
   the worker registration and the initial requests your application makes.
-</Warning>
+:::
 
 ## Confirmation
 

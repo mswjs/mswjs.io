@@ -13,7 +13,7 @@ defineProps<{
       :href="courseUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="relative group my-10 px-5 py-5 min-h-[125px] grid grid-rows-[160px,1fr] @lg:grid-rows-1 @lg:grid-cols-[150px_1fr] gap-5 @lg:gap-8 items-center bg-neutral-800 bg-opacity-40 border border-neutral-800 rounded-lg no-underline hover:bg-opacity-70"
+      class="egghead-banner relative group my-10 px-5 py-5 min-h-[125px] grid grid-rows-[160px,1fr] @lg:grid-rows-1 @lg:grid-cols-[150px_1fr] gap-5 @lg:gap-8 items-center bg-neutral-800 bg-opacity-40 border border-neutral-800 rounded-lg no-underline hover:bg-opacity-70"
     >
       <img
         :src="thumbnailUrl"

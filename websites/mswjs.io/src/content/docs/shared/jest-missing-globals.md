@@ -6,12 +6,15 @@ To fix this, use the [`jest-fixed-jsdom`](https://github.com/mswjs/jest-fixed-js
 npm i jest-fixed-jsdom
 ```
 
-```js
-// jest.config.js
+::: code-group
+
+```js [jest.config.js]
 module.exports = {
   testEnvironment: 'jest-fixed-jsdom',
 }
 ```
+
+:::
 
 This custom environment is a superset of `jest-environment-jsdom` with the built-in Node.js modules added back. That being said, there are a lot of things that Jest/JSDOM breaks in your test environment that are problematic to fix. **This setup is a workaround**.
 

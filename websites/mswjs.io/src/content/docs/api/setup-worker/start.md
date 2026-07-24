@@ -18,12 +18,12 @@ const worker = setupWorker(...handlers)
 await worker.start() // Promise<{ pending }>
 ```
 
-<Warning>
+::: warning
   Note that registering and activating the Service Worker is an asynchronous
   action. The `worker.start()` returns you a promise that resolves when the
   worker is ready. Do not forget to await it to prevent race conditions between
   the worker registration and your network-dependent code.
-</Warning>
+:::
 
 You can see a confirmation message printed in the browser's console when MSW is active.
 
@@ -49,11 +49,11 @@ worker.start({
 })
 ```
 
-<Warning>
+::: warning
   Keep in mind that a Service Worker can only control the network from the
   clients (pages) hosted at its level or down. You likely always want to
   register the worker at the root.
-</Warning>
+:::
 
 #### `options`
 
@@ -137,7 +137,7 @@ worker.start({
 
 Defers any application requests that happen during the Service Worker registration.
 
-<Warning>
+::: warning
   Disabling this option is **not recommended** as this will create a race
   condition between the worker registration and your application's runtime.
-</Warning>
+:::

@@ -84,7 +84,9 @@ The `request:end` event is emitted whenever a request has ended. This event is e
 
 ## Response events
 
-<Warning>Response events for [Server-Sent Events](/docs/sse) will have a missing body stream because cloning it for observability would buffer the entire event stream in memory for as long as the connection lives and prevent client disconnects from ever reaching the handler.</Warning>
+::: warning
+Response events for [Server-Sent Events](/docs/sse) will have a missing body stream because cloning it for observability would buffer the entire event stream in memory for as long as the connection lives and prevent client disconnects from ever reaching the handler.
+:::
 
 ### `response:mocked`
 

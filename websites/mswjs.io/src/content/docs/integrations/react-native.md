@@ -12,12 +12,12 @@ keywords:
 
 In React Native, MSW works similarly to Node.js, but omits certain request interceptors for modules that are not present in React Native, like the standard `http` module in Node.js.
 
-<Warning>
+::: warning
   **This integration is potentially incomplete**. If you are a React Native
   developer, please follow these steps and share any discrepancies/missing
   pieces with us on [GitHub](https://github.com/mswjs/mswjs.io/issues). Let's
   improve the React Native integration guidelines together.
-</Warning>
+:::
 
 ## Prerequisites
 
@@ -31,11 +31,14 @@ npm install react-native-url-polyfill fast-text-encoding
 
 Create a new `msw.polyfills.js` file with the following content:
 
-```js
-// msw.polyfills.js
+::: code-group
+
+```js [msw.polyfills.js]
 import 'fast-text-encoding'
 import 'react-native-url-polyfill/auto'
 ```
+
+:::
 
 We will import this file later, when [Enabling mocking](#enable-mocking).
 
@@ -43,21 +46,24 @@ We will import this file later, when [Enabling mocking](#enable-mocking).
 
 Import the `setupServer` function from `msw/native` and call it, providing your request handlers as the argument.
 
-```js {2}
-// src/mocks/server.js
+::: code-group
+
+```js [src/mocks/server.js] {1}
 import { setupServer } from 'msw/native'
 import { handlers } from './handlers'
 
 export const server = setupServer(...handlers)
 ```
 
+:::
+
 > Learn more about the [`setupServer` API](/docs/api/setup-server). It's the same for Node.js and React Native.
 
-<Warning>
+::: warning
   In React Native, import `setupServer` from `msw/native`. The `/native` export
   contains pre-configured interceptors relevant for the React Native
   environment.
-</Warning>
+:::
 
 ## Enable mocking
 
@@ -65,8 +71,9 @@ export const server = setupServer(...handlers)
 
 Import `server` in the entrypoint of your React Native application and call `server.listen()` _conditionally_.
 
-```js {6-14} /enableMocking/
-// index.js
+::: code-group
+
+```js [index.js] {5-13} /enableMocking/
 import { AppRegistry } from 'react-native'
 import App from './src/App'
 import { name as appName } from './app.json'
@@ -85,6 +92,8 @@ enableMocking().then(() => {
   AppRegistry.registerComponent(appName, () => App)
 })
 ```
+
+:::
 
 > Don't forget to import the `msw.polyfills.js` module!
 

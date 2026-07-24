@@ -19,11 +19,11 @@ http.post<{ id: string }, Post>('/posts/:id', async ({ request }) => {
 })
 ```
 
-<Success>
+::: tip
   It's highly recommended to _clone_ the intercepted request before reading its
   body. While it's okay to read the request body directly if you plan to mock
   its response, reading it without cloning in passthrough/bypass scenarios will
   result in an exception (streams cannot be read twice).
-</Success>
+:::
 
 The same is true for the other methods like `.text()`, `.formData()`, `.blob()`, etc.

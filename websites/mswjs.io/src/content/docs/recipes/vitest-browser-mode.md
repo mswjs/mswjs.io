@@ -19,8 +19,9 @@ keywords:
 
 We recommend integrating MSW with Vitest Browser Mode by [extending the test context](https://vitest.dev/guide/test-context.html#extend-test-context).
 
-```ts {6-23}
-// test-extend.ts
+::: code-group
+
+```ts [test-extend.ts] {5-22}
 import { test as testBase } from 'vitest'
 import { worker } from './mocks/browser.js'
 
@@ -44,10 +45,12 @@ export const test = testBase.extend({
 })
 ```
 
-<Warning>
+:::
+
+::: warning
   Provide the `auto: true` fixture option so MSW would affect the tests that
   don't reference the `worker` fixture explicitly.
-</Warning>
+:::
 
 We recommend skipping `worker.stop()` at the end of the fixture because there's no practical reason for it. `worker.stop()` only controls whether the current client should be visible by the registered worker. It does not unregister the worker as that is a costly operation that is entirely redundant when testing in the browser (page context provides the network isolation).
 

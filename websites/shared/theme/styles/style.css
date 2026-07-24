@@ -14,7 +14,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @apply scroll-pt-20;
   color-scheme: dark;
 }
 
@@ -25,12 +24,8 @@ body {
   overflow-wrap: break-word;
 }
 
-a {
-  @apply hover:text-white;
-}
-
-.header {
-  -ms-layout-grid: white;
+:not(pre) > code {
+  white-space: nowrap;
 }
 
 .grid > * {
@@ -41,7 +36,11 @@ a {
   @apply hover:underline;
 }
 
-/* Typography */
+/*
+ * Typography for the custom (non-doc) pages. The
+ * ".vp-doc" element rules take precedence within
+ * rendered Markdown content.
+ */
 h1 {
   @apply mb-10 text-4xl md:text-5xl font-extrabold tracking-tight;
 }
@@ -56,10 +55,6 @@ h3 {
 
 h3:not(:first-child) {
   @apply mt-8;
-}
-
-hr {
-  @apply border-neutral-800;
 }
 
 blockquote em {
@@ -91,22 +86,12 @@ blockquote em {
   @apply hover:border-neutral-500 hover:bg-white hover:bg-opacity-5;
 }
 
-/* Code */
-code {
-  @apply font-mono;
-}
-
-:not(pre) > code {
-  /* Prevent inline code snippets from wrappig to new line */
-  @apply font-normal sm:whitespace-nowrap;
-}
-
 /*
- * Static code example markup (the homepage renders a
+ * Static code example markup (the homepages render a
  * pre-highlighted "pre[data-language]" component).
  */
 pre[data-language] {
-  @apply my-5 py-3 rounded-lg text-sm border border-neutral-700 overflow-x-auto max-w-full;
+  @apply my-5 py-3 rounded-lg text-sm border border-neutral-700 overflow-x-auto max-w-full text-left;
 
   background-color: #171717 !important;
   line-height: 1.5;
@@ -127,119 +112,17 @@ pre[data-language] code {
   @apply inline-block w-[3ch] text-neutral-500;
 }
 
-/*
- * Fenced code blocks (VitePress emits
- * "div.language-* > pre.shiki > code" with "span.line" rows).
- */
-div[class*='language-'] {
-  @apply my-5 rounded-lg text-sm border border-neutral-700;
-
-  background-color: #171717;
-}
-
-div[class*='language-'] > pre {
-  @apply my-0 py-3 overflow-x-auto max-w-full;
-
-  background-color: #171717 !important;
-  line-height: 1.5;
-}
-
-/* Hide the VitePress-native copy button and language label. */
-div[class*='language-'] > button.copy,
-div[class*='language-'] > span.lang {
-  @apply hidden;
-}
-
-div[class*='language-'] code {
-  @apply grid;
-
-  counter-reset: line;
-}
-
-.shiki .line {
-  @apply px-4;
-}
-
-.shiki .line::before {
-  counter-increment: line;
-  content: counter(line);
-
-  @apply inline-block w-[3ch] text-neutral-500;
-}
-
 span[style*='color:#6A737D'] {
   @apply italic;
 }
 
-.shiki .line.highlighted {
-  @apply bg-neutral-800 bg-opacity-60 border-l border-primary;
-}
-
-.shiki .line.highlighted::before {
-  @apply text-neutral-400 -mr-px;
-}
-
-.highlighted-word {
+/* Word highlights from the code fence meta. */
+.highlighted-word,
+.vp-doc .highlighted-word {
   @apply px-0.5 bg-amber-700 bg-opacity-40 border-b-2 border-amber-500 font-bold rounded-sm !text-amber-200;
 }
-.highlighted-word[data-chars-id='v'] {
-  @apply bg-violet-700 border-violet-400 !text-violet-100;
-}
-.highlighted-word[data-chars-id='g'] {
-  @apply bg-green-700 border-green-400 !text-green-100;
-}
-.highlighted-word[data-chars-id='b'] {
-  @apply bg-blue-700 border-blue-400 !text-blue-100;
-}
 
-/* Sections */
-#mobile-menu-container {
-  @apply z-[3];
-}
-#mobile-menu-container > div {
-  @apply p-5;
-}
-#mobile-menu a {
-  @apply block border-b border-neutral-800 hover:bg-neutral-800;
-}
-#mobile-menu .menu-link-active {
-  @apply mb-0 bg-neutral-800 bg-opacity-50 border-primary;
-}
-
-/* Docs */
-.prose h2 a,
-.prose h3 a,
-.prose h4 a {
-  @apply text-white no-underline;
-  font-weight: inherit;
-}
-
-.prose h2 a::after,
-.prose h3 a::after,
-.prose h4 a::after {
-  @apply hidden ml-1 text-neutral-500;
-  content: '#';
-}
-
-.prose h2 a:hover::after,
-.prose h3 a:hover::after,
-.prose h4 a:hover::after {
-  @apply inline;
-}
-
-.docs-group-item > summary {
-  @apply list-none;
-}
-.docs-group-item > summary::-webkit-details-marker {
-  @apply hidden;
-}
-.docs-group-item .icon {
-  @apply w-4 inline-block text-neutral-400;
-}
-.docs-group-item[open] .icon {
-  @apply text-white rotate-90;
-}
-
+/* Content components */
 .action {
   @apply my-5;
 }

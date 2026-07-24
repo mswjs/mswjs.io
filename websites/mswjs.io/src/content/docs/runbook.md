@@ -73,8 +73,9 @@ If there's no message printed for the problematic request (or any requests), MSW
 
 Go to the request handler you've created for the problematic request and add a console statement in its resolver function.
 
-```js {6}
-// src/mocks/handlers.js
+::: code-group
+
+```js [src/mocks/handlers.js] {5}
 import { http } from 'msw'
 
 export const handlers = [
@@ -85,6 +86,8 @@ export const handlers = [
   }),
 ]
 ```
+
+:::
 
 You should see this console message when the problematic request happens on the page/tests. If you do, continue to the next step.
 
@@ -106,8 +109,9 @@ If unsure, please read through the documentation on intercepting requests with M
 
 If the request handler is invoked but the request still doesn't get the mocked response, the next place to check is the mocked response itself. In the request handler, jump to the mock response(s) you define.
 
-```js {8}
-// src/mocks/handlers.js
+::: code-group
+
+```js [src/mocks/handlers.js] {7}
 import { http, HttpResponse } from 'msw'
 
 export const handlers = [
@@ -118,6 +122,8 @@ export const handlers = [
   }),
 ]
 ```
+
+:::
 
 **Verify that you are constructing a valid response**. You can assign the response to a variable and print it out to inspect. You can also do an early return of a dummy mocked response and see if it's received by your application.
 
@@ -155,10 +161,10 @@ First, check what version of Node.js you are using by running this command in th
 node -v
 ```
 
-<Success>
+::: tip
   If the version printed is lower than v17, [upgrade to the latest Node.js
   version](https://nodejs.org/)
-</Success>
+:::
 
 The newer Node.js versions ship with the global Fetch API, which includes the global `fetch` function.
 
@@ -166,7 +172,9 @@ The newer Node.js versions ship with the global Fetch API, which includes the gl
 
 Some tools, like Jest, meddle with your Node.js environment, forcefully removing present globals. If you are using such tools, make sure you add those globals back in their configurations.
 
-<Success>Configure your tools to include the Fetch API globals</Success>
+::: tip
+Configure your tools to include the Fetch API globals
+:::
 
 Here's an example of how to configure Jest to work with the global Fetch API in Node.js.
 
@@ -178,8 +186,9 @@ Here's an example of how to configure Jest to work with the global Fetch API in 
 
 HTTP requests have asynchronous nature. When testing code that depends on the resolution of those requests, like a UI element that renders once the response is received, you need to account for that asynchronicity. This often means using the right tools of your testing framework to properly await UI elements.
 
-```js /await/ {11}
-// test/suite.test.ts
+::: code-group
+
+```js [test/suite.test.ts] /await/ {10}
 import { render, screen } from '@testing-library/react'
 import { Welcome } from '../components/Welcome'
 
@@ -193,9 +202,11 @@ it('renders the welcome text', async () => {
 })
 ```
 
-<Success>
+:::
+
+::: tip
   Use your testing framework's recommended way of awaiting asynchronous code
-</Success>
+:::
 
 Do not introduce arbitrary `setTimeout`/`sleep` functions because they subject your tests to race conditions! The only reliable way to await asynchronous code is to await the state that derives from it (i.e. that a certain UI element has appeared in the DOM).
 
@@ -205,14 +216,17 @@ Do not introduce arbitrary `setTimeout`/`sleep` functions because they subject y
 
 Modern request libraries, like SWR, React Query, or Apollo, often introduce cache to guarantee great user experience and optimal runtime performance. Note that caching is not automatically disabled while testing, which may lead to your tests receiving stale/wrong data across different test suites.
 
-<Success>Disable cache in your request library in tests</Success>
+::: tip
+Disable cache in your request library in tests
+:::
 
 > Please refer to your request library's documentation on how to correctly disable cache in tests.
 
 For example, here's how to disable cache using SWR:
 
-```js {2,7}
-// test/suite.test.ts
+::: code-group
+
+```js [test/suite.test.ts] {1,6}
 import { cache } from 'swr'
 
 beforeEach(() => {
@@ -222,13 +236,17 @@ beforeEach(() => {
 })
 ```
 
+:::
+
 ---
 
 ### Requests are not resolving when using `jest.useFakeTimers`
 
 When using fake timers in Jest, all timer APIs are mocked, including `queueMicrotask`. The `queueMicrotask` API is used internally by the global fetch in Node.js to parse request/response bodies. Because of this, when using `jest.useFakeTimers()` with the default configuration, body reading methods like `await request.text()` and `await request.json()` will not resolve properly.
 
-<Success>Configure Jest not to mock calls to `queueMicrotask`</Success>
+::: tip
+Configure Jest not to mock calls to `queueMicrotask`
+:::
 
 For example, here's how to prevent Jest from faking the `queueMicrotask` calls when using `jest.useFakeTimers()`:
 
@@ -247,7 +265,9 @@ jest.useFakeTimers({
 
 A common mistake when using RTK Query is not setting the `baseUrl` in the `baseQuery` configuration. Without this, the requests will have _relative URLs_, which is a no-op in Node.js (see [this issue](https://github.com/reduxjs/redux-toolkit/issues/3284) for more details).
 
-<Success>Set the `baseUrl` in your `baseQuery`:</Success>
+::: tip
+Set the `baseUrl` in your `baseQuery`:
+:::
 
 ```js
 createApi({

@@ -13,14 +13,12 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
-    "@docsearch/css": "^3.5.2",
     "@heroicons/vue": "^2.2.0",
     "@mswjs/shared": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "markdown-it-anchor": "^9.2.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",

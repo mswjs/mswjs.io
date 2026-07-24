@@ -1,5 +1,5 @@
 ---
-layout: blog-index
+layout: page
 title: Blog
 description: News and announcements from the Mock Service Worker team.
 keywords:
@@ -9,3 +9,9 @@ keywords:
   - msw
   - mswjs
 ---
+
+<script setup>
+import BlogIndexPage from '../../../.vitepress/theme/blog/BlogIndexPage.vue'
+</script>
+
+<BlogIndexPage />

@@ -1,7 +1,7 @@
 ---
 order: 1
 title: Quick start
-description: Get MSW up and running in under five minutes.
+description: Add MSW to your project in under five minutes.
 ---
 
 This guide will take you through the barebones setup of MSW for intercepting HTTP requests in **your Node.js tests with [Vitest](https://vitest.dev/)**.
@@ -18,8 +18,9 @@ Import the `http` namespace from the `msw` package and create your first _reques
 
 Let's define a request handler for a `GET https://api.example.com/user` request:
 
-```ts {5-11} /http/1,2
-// src/mocks/handlers.ts
+::: code-group
+
+```ts [src/mocks/handlers.ts] {4-10} /http/1,2
 import { http, HttpResponse } from 'msw'
 
 export const handlers = [
@@ -33,6 +34,8 @@ export const handlers = [
 ]
 ```
 
+:::
+
 > MSW supports intercepting both [HTTP](/docs/http), [GraphQL](/docs/graphql), and [WebSocket](/docs/websocket) APIs.
 
 ## 3. Process-level integration
@@ -41,13 +44,16 @@ One of the core benefits of MSW is the ability to reuse the same mocks (e.g. `ha
 
 Since Vitest tests run in a Node.js process, let's use `setupServer` from `msw/node` and create a `node.ts` integration point:
 
-```ts /setupServer/1,2 /handlers/1,3#v
-// src/mocks/node.ts
+::: code-group
+
+```ts [src/mocks/node.ts] /setupServer/1,2 /handlers/1,3#v
 import { setupServer } from 'msw/node'
 import { handlers } from './handlers.js'
 
 export const server = setupServer(...handlers)
 ```
+
+:::
 
 > This integration has nothing specific to Vitest. You can reuse it to apply MSW to any Node.js process.
 
@@ -55,8 +61,9 @@ export const server = setupServer(...handlers)
 
 At this step, you find the appropriate place to enable API mocking in your Node.js process. In the case of Vitest, that place is the _test setup_ file, which runs before your tests. Open that file (or create it) and call `server.listen()` in enable mocking as follows:
 
-```ts /server/
-// vitest.setup.ts
+::: code-group
+
+```ts [vitest.setup.ts] /server/
 import { beforeAll, afterEach, afterAll } from 'vitest'
 import { server } from './mocks/node.js'
 
@@ -65,14 +72,17 @@ afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 ```
 
+:::
+
 > Make sure you have the `vitest.setup.ts` module listed in the `test.setupFiles` array in your `vitest.config.ts`.
 
 ## 5. Run tests
 
 Once MSW is integrated into your Vitest setup, it will control the network as defined in your handlers.
 
-```ts
-// test/example.test.ts
+::: code-group
+
+```ts [test/example.test.ts]
 // @vitest-environment node
 import { test, expect } from 'vitest'
 
@@ -86,6 +96,8 @@ test('responds with the user', async () => {
   })
 })
 ```
+
+:::
 
 ```
 npx vitest

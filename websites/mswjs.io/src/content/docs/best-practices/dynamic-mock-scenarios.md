@@ -6,8 +6,9 @@ When developing or presenting your work, you may need to switch between differen
 
 One of the ways to achieve this is to declare a set of scenarios (handler overrides) and conditionally apply them based on some runtime criteria, like query parameters.
 
-```js
-// mocks/scenarios.js
+::: code-group
+
+```js [mocks/scenarios.js]
 import { http, HttpResponse } from 'msw'
 
 export const scenarios = {
@@ -24,8 +25,11 @@ export const scenarios = {
 }
 ```
 
-```js
-// mocks/browser.js
+:::
+
+::: code-group
+
+```js [mocks/browser.js]
 import { handlers } from './handlers'
 import { scenarios } from './scenarios'
 
@@ -36,6 +40,8 @@ const runtimeScenarios = scenarios[scenarioName] || []
 
 const worker = setupWorker(...runtimeScenarios, ...handlers)
 ```
+
+:::
 
 > Note that the order of handlers is important: the left-most handlers take precedence during request resolution.
 

@@ -60,7 +60,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
           </div>
         </section>
 
-        <hr />
+        <hr class="border-neutral-800" />
 
         <section class="flex flex-col gap-10">
           <div>
@@ -74,7 +74,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
               class="flex flex-col sm:flex-row items-center md:justify-items-center gap-10 -space-x-px"
             >
               <div
-                class="relative flex flex-col gap-5 size-64 items-center justify-center"
+                class="branding-usage-example relative flex flex-col gap-5 size-64 items-center justify-center"
               >
                 <InlineSvg
                   :svg="usageGridRaw"
@@ -88,7 +88,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
                 </div>
               </div>
               <div
-                class="relative flex flex-col gap-5 size-64 items-center justify-center"
+                class="branding-usage-example relative flex flex-col gap-5 size-64 items-center justify-center"
               >
                 <InlineSvg
                   :svg="usageGridRaw"
@@ -121,7 +121,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
               class="flex flex-col sm:flex-row items-center md:justify-items-center gap-10 -space-x-px"
             >
               <div
-                class="relative flex flex-col gap-5 size-64 items-center justify-center"
+                class="branding-usage-example relative flex flex-col gap-5 size-64 items-center justify-center"
               >
                 <InlineSvg
                   :svg="usageGridRaw"
@@ -135,7 +135,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
                 </div>
               </div>
               <div
-                class="relative flex flex-col gap-5 size-64 items-center justify-center"
+                class="branding-usage-example relative flex flex-col gap-5 size-64 items-center justify-center"
               >
                 <InlineSvg
                   :svg="usageGridRaw"
@@ -167,7 +167,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
               class="flex flex-col sm:flex-row items-center md:justify-items-center gap-10 -space-x-px"
             >
               <div
-                class="relative flex flex-col gap-5 size-64 items-center justify-center"
+                class="branding-usage-example relative flex flex-col gap-5 size-64 items-center justify-center"
               >
                 <InlineSvg
                   :svg="usageGridRaw"
@@ -181,7 +181,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
                 </div>
               </div>
               <div
-                class="relative flex flex-col gap-5 size-64 items-center justify-center"
+                class="branding-usage-example relative flex flex-col gap-5 size-64 items-center justify-center"
               >
                 <InlineSvg
                   :svg="usageGridRaw"

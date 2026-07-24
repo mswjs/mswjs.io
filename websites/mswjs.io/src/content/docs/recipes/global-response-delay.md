@@ -42,8 +42,9 @@ This option provides you with a consistent delay across all request handlers but
 
 You can create a higher-order response resolver that encapsulates the delay logic while giving you the flexibility over which responses to delay.
 
-```ts {6} /delay/
-// withDelay.ts
+::: code-group
+
+```ts [withDelay.ts] {5} /delay/
 import { delay, HttpResponseResolver } from 'msw'
 
 export async function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
@@ -54,10 +55,13 @@ export async function withDelay(resolver: HttpResponseResolver): HttpResponseRes
 }
 ```
 
+:::
+
 > You can design the `withDelay()` function as you wish. For example, instead of hard-coding the delay duration, you can expose it as an argument to the `withDelay()` function for each individual request handler to specify.
 
-```ts /withDelay/1,3,4
-// handlers.ts
+::: code-group
+
+```ts [handlers.ts] /withDelay/1,3,4
 import { http, HttpResponse } from 'msw'
 import { withDelay } from './withDelay'
 
@@ -73,6 +77,8 @@ export const handlers = [
   })
 ]
 ```
+
+:::
 
 In the example above, the `GET /user` and `POST /cart/:cartId` requests will be delayed by 1000ms because their response resolvers are wrapped in the `withDelay()` higher-order resolver. Note that the `GET /products` request _will no have any delay_, respectively.
 

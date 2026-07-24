@@ -13,6 +13,12 @@ keywords:
   - event
   - mock
   - llm
+aside: false
+outline: false
+editLink: false
+lastUpdated: false
+prev: false
+next: false
 ---
 
 MSW v2.12.0 brings the first-class support for mocking [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) with the new `sse()` API. It allows you to intercept and handle outgoing (and incoming) events in a standard-based and type-safe manner. Much like the `EventSource` itself, the new API is meant primarily for the _browsers_ but will function in any environment that faithfully implements the global `EventSource` class.

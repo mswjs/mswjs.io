@@ -48,10 +48,10 @@ export const handlers = [
 ]
 ```
 
-<Info>
+::: info
   You can use `bypass()` anywhere in your application/tests, it's not limited to
   the response resolver.
-</Info>
+:::
 
 Unlike [`passthrough()`](/docs/api/passthrough), the `bypass()` function _results in an additional request being made_. You can think of it as a server requesting additional resources while handling a request. Because of this, `bypass()` must not be used when all you wish is to perform the intercepted request as-is (use `passthrough()` in that case).
 

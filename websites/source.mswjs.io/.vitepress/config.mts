@@ -1,9 +1,11 @@
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
-import anchor from 'markdown-it-anchor'
 import { buildDocsSidebar } from '../../shared/sidebar'
-import { wordHighlightTransformer } from '../../shared/codeHighlight'
+import {
+  wordHighlightTransformer,
+  wordHighlightMetaPlugin,
+} from '../../shared/codeHighlight'
 
 const SITE_URL = 'https://source.mswjs.io'
 const SITE_TITLE = 'Source'
@@ -23,6 +25,7 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: true,
+  appearance: 'force-dark',
   sitemap: {
     hostname: SITE_URL,
   },
@@ -63,30 +66,15 @@ export default defineConfig({
     ['link', { rel: 'icon', type: 'image/png', sizes: 'any', href: '/icon.png' }],
     ['link', { rel: 'apple-touch-icon', href: '/icon-apple.png' }],
     ['link', { rel: 'manifest', href: '/manifest.json' }],
-    // DocSearch (Algolia).
-    ...(ALGOLIA_APP_ID
-      ? ([
-          [
-            'link',
-            {
-              rel: 'preconnect',
-              href: `https://${ALGOLIA_APP_ID}-dsn.algolia.net`,
-              crossorigin: '',
-            },
-          ],
-        ] as Array<HeadConfig>)
-      : []),
   ],
 
   markdown: {
     theme: 'github-dark',
-    headers: {
-      level: [2, 3, 4],
-    },
-    anchor: {
-      permalink: anchor.permalink.headerLink(),
-    },
+    lineNumbers: true,
     codeTransformers: [wordHighlightTransformer()],
+    config(md) {
+      wordHighlightMetaPlugin(md)
+    },
   },
 
   vite: {
@@ -95,49 +83,70 @@ export default defineConfig({
       jsxImportSource: 'react',
     },
     optimizeDeps: {
-      include: ['react', 'react-dom/client', '@docsearch/react'],
+      include: ['react', 'react-dom/client'],
     },
     ssr: {
-      noExternal: ['@docsearch/react', '@docsearch/css', '@mswjs/shared'],
+      noExternal: ['@mswjs/shared'],
     },
   },
 
   themeConfig: {
-    links: [
-      { label: 'Docs', href: '/docs' },
-      { label: 'Blog', href: 'https://mswjs.io/blog', target: '_blank' },
+    logo: '/logo.svg',
+    siteTitle: false,
+
+    nav: [
+      { text: 'Docs', link: '/docs/', activeMatch: '^/docs' },
+      { text: 'Blog', link: 'https://mswjs.io/blog', target: '_blank' },
+      { component: 'SponsorLink' },
     ],
-    sidebar: buildDocsSidebar(
-      path.resolve(
-        path.dirname(fileURLToPath(import.meta.url)),
-        '../src/content/docs',
+
+    sidebar: {
+      '/docs/': buildDocsSidebar(
+        path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '../src/content/docs',
+        ),
+        [
+          ['Integrations', 'integrations/**/*.md'],
+          ['API', 'api/**/*.md'],
+          ['Recipes', 'recipes/**/*.md'],
+        ],
       ),
-      [
-        ['Integrations', 'integrations/**/*.md'],
-        ['API', 'api/**/*.md'],
-        ['Recipes', 'recipes/**/*.md'],
-      ],
-    ),
+    },
+
+    outline: {
+      level: 'deep',
+      label: 'Contents',
+    },
+
+    search: ALGOLIA_APP_ID
+      ? {
+          provider: 'algolia',
+          options: {
+            appId: ALGOLIA_APP_ID,
+            apiKey: ALGOLIA_SEARCH_API_KEY,
+            indexName: ALGOLIA_INDEX_NAME,
+          },
+        }
+      : {
+          provider: 'local',
+        },
+
+    editLink: {
+      pattern:
+        'https://github.com/mswjs/mswjs.io/edit/main/websites/source.mswjs.io/src/content/:path',
+      text: 'Edit this page on GitHub',
+    },
+
+    lastUpdated: {
+      text: 'Last updated on',
+    },
+
     docsLinks: {
       gitHubUrl: 'https://github.com/mswjs/source',
       blogUrl: 'https://mswjs.io/blog',
     },
-    editLink: {
-      pattern:
-        'https://github.com/mswjs/mswjs.io/edit/main/websites/source.mswjs.io/src/content/:path',
-    },
-    algolia: {
-      appId: ALGOLIA_APP_ID,
-      apiKey: ALGOLIA_SEARCH_API_KEY,
-      indexName: ALGOLIA_INDEX_NAME,
-    },
     ads: Boolean(process.env.ADS),
-  },
-
-  // The site is dark-only. The "data-theme" attribute drives
-  // the DocSearch (Algolia) dark color scheme.
-  transformHtml(code) {
-    return code.replace('<html lang="en"', '<html lang="en" data-theme="dark"')
   },
 
   transformHead(context) {

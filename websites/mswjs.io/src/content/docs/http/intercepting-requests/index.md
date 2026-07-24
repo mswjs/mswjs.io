@@ -4,7 +4,7 @@ title: Intercepting requests
 description: Learn how to intercept outgoing requests.
 ---
 
-To inspect and handle outgoing requests you have to intercept them first. In MSW, you do that by defining functions called _request handlers_. Here's an example of one:
+You can intercept a request by defining a _request handler_ for it. Here's an example of a request handler:
 
 ```ts
 http.get('/resource', ({ request }) => {
@@ -12,9 +12,7 @@ http.get('/resource', ({ request }) => {
 })
 ```
 
-> This is a request handler that will intercept all `GET /resource` requests and print their information to the console.
-
-This page will get you familiar with the structure of request handlers and the supported ways of intercepting HTTP requests. Please refer to additional resources in this section on particular use cases and best practices.
+The request handler above intercepts a `GET /resource` request and prints its method and URL to the console. Let's take a closer look at the structure of request handlers and what they can do.
 
 ## Anatomy of a request handler
 
@@ -53,7 +51,9 @@ http.get('/users/:id', () => {})
 
 #### Query/search parameters
 
-<Warning>Do not include query parameters in your request predicate.</Warning>
+::: warning
+Do not include query parameters in your request predicate.
+:::
 
 Query parameters do not describe resource paths but rather additional data sent with the request. As such, they must not be present in the request predicate. Any query parameters accidentally included in the request predicate **will automatically be removed** and have no effect on the URL matching.
 

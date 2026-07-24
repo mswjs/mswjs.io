@@ -2,6 +2,9 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  corePlugins: {
+    container: false,
+  },
   theme: {
     fontFamily: {
       sans: [
@@ -20,74 +23,6 @@ module.exports = {
       ],
     },
     extend: {
-      container: {
-        center: true,
-        padding: '1.25rem',
-      },
-      typography: ({ theme }) => ({
-        DEFAULT: {
-          css: {
-            '--tw-prose-links': theme('colors.primary'),
-            color: theme('colors.neutral.200'),
-            'h1, h2, h3, h4': {
-              color: theme('colors.white'),
-            },
-            h2: {
-              borderTop: `1px solid ${theme('colors.neutral.800')}`,
-              paddingTop: '2em',
-              fontWeight: theme('font.bold'),
-            },
-            h4: {
-              fontSize: theme('fontSize.lg'),
-            },
-            a: {
-              color: theme('colors.primary'),
-            },
-            strong: {
-              color: null,
-            },
-            pre: null,
-            code: {
-              color: theme('colors.neutral.200'),
-              background: theme('colors.neutral.800'),
-              border: `1px solid ${theme('colors.neutral.700')}`,
-              borderRadius: theme('borderRadius.md'),
-              padding: `0 ${theme('padding.1')}`,
-            },
-            'code::before': null,
-            'code::after': null,
-            kbd: {
-              color: theme('colors.neutral.200'),
-              background: theme('colors.neutral.800'),
-              border: `1px solid ${theme('colors.neutral.700')}`,
-              borderRadius: theme('borderRadius.md'),
-              padding: `0 ${theme('padding.1')}`,
-            },
-            blockquote: {
-              color: theme('colors.neutral.400'),
-              borderColor: theme('colors.neutral.700'),
-              borderLeftWidth: 2,
-              fontStyle: 'normal',
-              fontWeight: theme('font.semibold'),
-              lineHeight: 1.5,
-            },
-            'blockquote p:first-of-type::before': null,
-            'blockquote p:first-of-type::after': null,
-            hr: {
-              borderColor: theme('colors.neutral.800'),
-            },
-            thead: {
-              borderColor: theme('colors.neutral.600'),
-            },
-            th: {
-              color: theme('colors.neutral.300'),
-            },
-            tr: {
-              borderColor: theme('colors.neutral.700'),
-            },
-          },
-        },
-      }),
       transitionDuration: {
         long: '5000ms',
       },
@@ -106,7 +41,6 @@ module.exports = {
     animation: ['motion-safe', 'motion-reduce'],
   },
   plugins: [
-    require('@tailwindcss/typography'),
     require('@tailwindcss/container-queries'),
   ],
 }

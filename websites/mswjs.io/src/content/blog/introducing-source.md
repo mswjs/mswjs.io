@@ -13,6 +13,12 @@ keywords:
   - har
   - generate
   - handlers
+aside: false
+outline: false
+editLink: false
+lastUpdated: false
+prev: false
+next: false
 ---
 
 Today, I am happy to announce [Source](https://source.mswjs.io)—an open-source library that helps you generate request handlers from various sources. It has been in development for a really long time, and now you can finally get your hands on it. Let's take a moment to talk about what problems the library solves and how it was created.

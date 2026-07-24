@@ -8,10 +8,10 @@ description: Important default behaviors of Mock Service Worker.
 
 MSW embraces a network-first approach, which means that it will not interfere with the network unless you explicitly say so in your handlers.
 
-<Warning>
+::: warning
   Intercepting WebSockets, however, is _mock-first_ due to the limitations of
   their specification.
-</Warning>
+:::
 
 ## Handler fallthrough
 
