@@ -1,2 +1,5 @@
 packages:
   - websites/*
+allowBuilds:
+  esbuild: false
+  sharp: false

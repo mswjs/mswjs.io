@@ -1,0 +1,119 @@
+---
+order: 5
+title: sse
+description: Intercept Server-Sent Events.
+keywords:
+  - sse
+  - event
+  - server
+  - handler
+  - api
+---
+
+The `sse` function is a subset of the [`http`](/docs/api/http) namespace that helps you create request handlers to intercept Server-Sent Events.
+
+## Call signature
+
+```ts
+sse<EventMap, Params>(predicate: Path, resolver: ServerSentEventResolver<EventMap, Params>)
+```
+
+<PageCard
+  icon="CodeBracketSquareIcon"
+  url="https://github.com/mswjs/msw/tree/main/src/core/sse.ts"
+  title="sse.ts"
+  description="Source code for the `sse` function."
+/>
+
+## Resolver argument
+
+In addition to all the arguments exposed by the [`http`](/docs/api/http/#resolver-argument) namespace, the `sse` handler has the following response resolver properties:
+
+| Name     | Type                                              | Description                                               |
+| -------- | ------------------------------------------------- | --------------------------------------------------------- |
+| `client` | [`ServerSentEventClient`](#serversenteventclient) | Representation of the intercepted `EventSource` instance. |
+| `server` | [`ServerSentEventServer`](#serversenteventserver) | Actual server connection object.                          |
+
+## `ServerSentEventClient`
+
+The `ServerSentEventClient` object represents the intercepted `EventSource` instance. You use this object to send mock messages to the client, close or error the underlying connection.
+
+### `.send(payload)`
+
+- `payload`
+  - `id`, `string` (Optional), a custom event ID.
+  - `data`, `string`, the sent data of this event.
+  - `event`, `string` (Optional), a custom event type.
+  - `retry`, `number` (Optional), a custom reconnection time. If this option is provided, no other properties must be set on the `payload` argument.
+
+Sends a mocked event to the client.
+
+```ts
+// Send a default "message" event.
+client.send({ data: 'hello world' })
+
+// Send a custom "greeting" event.
+client.send({
+	event: 'greeting'
+  data: 'Hello, John!',
+})
+
+// Send an event with a custom ID.
+client.send({
+	id: 'abc-123',
+	event: 'greeting'
+  data: 'Hello, John!',
+})
+```
+
+### `.error()`
+
+Errors the underlying HTTP connection.
+
+```ts
+client.error()
+```
+
+### `.close()`
+
+Gracefully closes the underlying HTTP connection.
+
+```ts
+client.close()
+```
+
+## `ServerSentEventServer`
+
+The `ServerSentEventClient` object represents a connection to the actual server. Use it to establish that connection and listen to the received events from the server.
+
+### `.connect()`
+
+Establishes connection to the actual server.
+
+```ts
+const source = server.connect()
+```
+
+Returns an [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) instance representing the actual server connection. Use it to listen to the events sent from the server or close the connection:
+
+```ts
+const source = server.connect()
+
+source.addEventListener('message', (event) => {
+  console.log('Received event from the server:', event)
+})
+
+// Close the actual server connection.
+source.close()
+```
+
+> Once connected, all server events are forwarded to the client by default. Call `event.preventDefault()` on a server event to prevent it from being forwarded.
+
+## Related materials
+
+<PageCard
+  icon="NodejsIcon"
+  url="/docs/http"
+  title="Describing REST API"
+  description="Learn about describing RESTful APIs."
+/>

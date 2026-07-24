@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  presets: [require('@mswjs/shared/tailwind.config')],
-  content: [`../shared/**/*.{astro,ts,tsx}`, `./src/**/*.{astro,ts,tsx,mdx}`],
+  presets: [require('@mswjs/shared/tailwind.config.cjs')],
+  content: [
+    './.vitepress/theme/**/*.{vue,ts,tsx}',
+    '../shared/theme/**/*.{vue,ts,tsx}',
+    './src/content/**/*.md',
+  ],
   theme: {
     extend: {
       colors: {
@@ -9,5 +13,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/container-queries')],
 }

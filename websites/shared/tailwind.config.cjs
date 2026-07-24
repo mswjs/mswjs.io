@@ -1,4 +1,3 @@
-const path = require('node:path')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
@@ -106,5 +105,8 @@ module.exports = {
   variants: {
     animation: ['motion-safe', 'motion-reduce'],
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/container-queries'),
+  ],
 }

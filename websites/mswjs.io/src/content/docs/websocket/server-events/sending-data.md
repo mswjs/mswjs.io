@@ -1,0 +1,27 @@
+---
+order: 2
+title: Sending data
+description: Sending mock data to the original WebSocket server.
+---
+
+Once you establish the actual server connection by calling `server.connect()`, your event handler can start sending mock data to the original server via the `server.send()` method.
+
+```ts {3}
+api.addEventListener('connection', ({ server }) => {
+  server.connect()
+  server.send('hello world')
+})
+```
+
+> `server.send()` has the same call signature as supported data types as `client.send()`.
+
+This is handy for triggering a particular server behavior by emulating a client-sent event (including those the client hasn't sent).
+
+## API reference
+
+<PageCard
+  icon="CubeTransparentIcon"
+  url="/docs/api/ws#senddata-1"
+  title="server.send()"
+  description="The `server.send()` API reference."
+/>

@@ -1,0 +1,5 @@
+export const SITE_URL = 'https://mswjs.io'
+export const SITE_TITLE = 'Mock Service Worker'
+export const SITE_DESCRIPTION = 'API mocking library for browser and Node.js'
+export const DISCORD_URL = 'https://kettanaito.com/discord'
+export const GITHUB_URL = 'https://github.com/mswjs/msw'
