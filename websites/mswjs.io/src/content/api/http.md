@@ -10,7 +10,7 @@ keywords:
 standalone: true
 ---
 
-The `http` namespace helps you create request handlers to intercept HTTP requests. This namespace is primarily useful for working with REST APIs since you can use its methods, like [`http.get()`](#httpget) and [`http.post()`](#httppost), to describe resource operations.
+The `http` namespace helps you create request handlers to intercept HTTP requests. This namespace is primarily useful for working with REST APIs since you can use its methods, like [`http.get()`](#http-get) and [`http.post()`](#http-post), to describe resource operations.
 
 ## Call signature
 

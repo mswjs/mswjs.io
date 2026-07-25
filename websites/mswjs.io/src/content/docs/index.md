@@ -1,18 +1,17 @@
 ---
 order: 1
 title: Introduction
-description: Welcome to the Mock Service Worker documentation!
 ---
 
-Mock Service Worker (MSW) is an API mocking library for browser and Node.js. With MSW, you can intercept outgoing requests, observe them, and respond to them using mocked responses.
+Mock Service Worker (MSW) is an API mocking library for browser and Node.js. It helps you intercept, observe, and affect the network of your application.
 
-What sets MSW apart is that it heavily advocates for a standalone API mocking layer, creating a single source of truth for your network behavior and integrating it across whichever tools you're using. This leads to a more resilient setup and, paired with other library features, creates a truly seamless API mocking experience.
+What sets MSW apart is that it heavily advocates for a standalone API mocking layer, creating a single source of truth for your API mocks across your entire stack. This results in a more resilient setup and, paired with other library features, creates a truly seamless API mocking experience.
 
 ## Features
 
 ### Agnostic
 
-MSW is designed to be fully environment-, framework- and tool-agnostic. You can use it in any browser or Node.js process without additional configurations, adapters, or plugins. It works with all request clients, be it a native `window.fetch()` or third-party libraries like Axios, React Query, or Apollo.
+MSW is designed to be fully environment-, framework- and tool-agnostic. You can use it in any browser or Node.js process without additional configurations, adapters, or plugins. It works with all request clients, be it a native `fetch` or third-party libraries like Axios, React Query, or Apollo.
 
 ### Seamless
 

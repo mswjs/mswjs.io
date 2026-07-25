@@ -1,5 +1,4 @@
 import type { Theme } from 'vitepress'
-import DefaultTheme from 'vitepress/theme-without-fonts'
 import Layout from './Layout.vue'
 
 // Components available to Markdown content globally.
@@ -9,12 +8,11 @@ import EggheadCourseBanner from './content/EggheadCourseBanner.vue'
 import DiscordIcon from '@mswjs/shared/theme/components/icons/discord.vue'
 
 import '@mswjs/shared/theme/styles/style.css'
-import '@mswjs/shared/theme/styles/vp-overrides.css'
+import '@mswjs/shared/theme/styles/vitepress-content.css'
 import '@mswjs/shared/theme/styles/ads.css'
 import './site.css'
 
 export default {
-  extends: DefaultTheme,
   Layout,
   enhanceApp({ app }) {
     app.component('Action', Action)

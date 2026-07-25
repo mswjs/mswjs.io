@@ -1,0 +1,276 @@
+/*
+ * Compatibility styles for sites that still use VitePress's
+ * default theme. The custom mswjs.io theme does not import this.
+ */
+.VPNav h1,
+.VPNav h2,
+.VPNav h3,
+.VPNav h4,
+.VPSidebar h1,
+.VPSidebar h2,
+.VPSidebar h3,
+.VPSidebar h4,
+.VPSidebar h5,
+.VPSidebar h6,
+.VPDocAside h1,
+.VPDocAside h2,
+.VPDocAside h3,
+.VPLocalNav h1,
+.VPLocalNav h2,
+.VPLocalNav h3 {
+  margin: 0;
+  letter-spacing: normal;
+}
+
+:root {
+  --vp-nav-logo-height: 36px;
+}
+
+.VPNavBarTitle .title {
+  display: inline-flex;
+  width: auto;
+}
+
+.VPNavBarTitle.has-sidebar {
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.VPNavBar .VPNavBarTitle.has-sidebar .title {
+  border-bottom-color: transparent;
+}
+
+.VPNavBarTitle .logo {
+  margin-right: 0;
+}
+
+@media (min-width: 768px) {
+  .VPNavBar .container {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .VPNavBar:not(.has-sidebar) .container {
+    max-width: 100%;
+  }
+
+  .VPNavBar:not(.has-sidebar) .container > .title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    padding: 0 32px;
+    width: var(--vp-sidebar-width);
+    height: var(--vp-nav-height);
+    background-color: transparent;
+  }
+
+  .VPNavBar:not(.has-sidebar) .content {
+    padding-right: 0;
+    padding-left: var(--vp-sidebar-width);
+  }
+
+  .VPNavBar:not(.has-sidebar) .content .content-body {
+    @apply pl-16;
+  }
+
+  .VPNavBar .content .content-body > .VPNavBarSearch {
+    padding: 0;
+  }
+
+  .VPNavBar .content .content-body > .VPNavBarMenu {
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 1440px) {
+  .VPNavBar:not(.has-sidebar) .container > .title {
+    padding-left: max(
+      32px,
+      calc((100% - (var(--vp-layout-max-width) - 64px)) / 2)
+    );
+    width: calc(
+      (100% - (var(--vp-layout-max-width) - 64px)) / 2 +
+        var(--vp-sidebar-width) - 32px
+    );
+  }
+
+  .VPNavBar:not(.has-sidebar) .content {
+    padding-right: calc(
+      (100vw - var(--vp-layout-max-width)) / 2
+    );
+    padding-left: calc(
+      (100vw - var(--vp-layout-max-width)) / 2 +
+        var(--vp-sidebar-width)
+    );
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .VPLocalNav.has-sidebar > .container {
+    justify-content: flex-end;
+  }
+
+  .VPNavBar.has-sidebar .content,
+  .VPLocalNav.has-sidebar > .container {
+    @apply pr-8;
+  }
+
+  .VPLocalNav .VPLocalNavOutlineDropdown {
+    @apply relative;
+  }
+
+  .VPLocalNav .VPLocalNavOutlineDropdown .items {
+    @apply top-full right-0 left-auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .VPLocalNav .VPLocalNavOutlineDropdown {
+    padding-right: 8px;
+  }
+
+  .VPNavScreen {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .VPNavScreen > .container {
+    max-width: none;
+    padding-top: 14px;
+  }
+
+  .VPNavScreenMenu > .sponsor-link {
+    display: flex;
+    margin-top: 24px;
+    width: fit-content;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 959px) {
+  .VPNavBar .wrapper {
+    @apply px-8;
+  }
+
+  .VPLocalNav > .container {
+    @apply pr-8;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .VPLocalNav .VPLocalNavOutlineDropdown {
+    @apply pr-0;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPNavBar.has-sidebar .content .content-body,
+  .VPContent .VPDoc {
+    @apply pl-16;
+  }
+
+  .VPContent .VPDoc {
+    @apply pr-8;
+  }
+
+  .VPContent .VPDoc > .container > .content {
+    @apply mx-0 px-0 min-w-0;
+  }
+
+  .VPContent
+    .VPDoc.has-aside
+    > .container
+    > .content
+    > .content-container {
+    @apply mx-0 max-w-none;
+  }
+}
+
+.VPContent .VPDoc > .container {
+  @apply lg:grid lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-16;
+}
+
+.VPContent .VPDoc > .container > .content {
+  @apply lg:col-start-1 lg:row-start-1;
+}
+
+.VPContent .VPDoc > .container > .aside {
+  @apply lg:block lg:col-start-2 lg:row-start-1 lg:p-0 lg:w-auto lg:max-w-none;
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .VPDoc .aside .VPDocAsideOutline {
+    display: none;
+  }
+}
+
+.VPNavBar .content .VPNavBarMenu {
+  @apply grid grid-flow-col items-center gap-4;
+
+  font-size: 14px;
+}
+
+.VPNavBar .content .VPNavBarMenu > * {
+  margin: 0;
+}
+
+.VPNavBar .VPNavBarExtra:not(:has(.group)) {
+  display: none;
+}
+
+.VPDocAsideOutline.has-outline + .aside-extras {
+  margin-top: 32px;
+}
+
+.VPDoc .aside .aside-container {
+  position: sticky;
+  top: calc(
+    var(--vp-nav-height) +
+      var(--vp-layout-top-height, 0px) + 12px
+  );
+  padding-top: 0;
+  height: auto;
+  max-height: calc(
+    100vh - var(--vp-nav-height) -
+      var(--vp-layout-top-height, 0px) - 12px
+  );
+  overflow: visible;
+}
+
+.VPDoc .aside .aside-content {
+  max-height: calc(
+    100vh - var(--vp-nav-height) -
+      var(--vp-layout-top-height, 0px) - 12px
+  );
+  min-height: 0;
+}
+
+.VPDoc .aside .VPDocAside {
+  min-height: 0;
+}
+
+.VPDoc .aside .VPDocAsideOutline {
+  min-height: 0;
+  flex-shrink: 1;
+  overflow-y: auto;
+}
+
+.VPDoc .aside .aside-curtain {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .footer-with-sidebar {
+    padding-left: var(--vp-sidebar-width);
+  }
+}
+
+@media (min-width: 1440px) {
+  .footer-with-sidebar {
+    padding-left: calc(
+      (100vw - var(--vp-layout-max-width)) / 2 +
+        var(--vp-sidebar-width)
+    );
+  }
+}

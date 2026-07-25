@@ -8,7 +8,8 @@ import PageCard from '@mswjs/shared/theme/content/PageCard.vue'
 import SponsorLink from '@mswjs/shared/theme/components/SponsorLink.vue'
 
 import '@mswjs/shared/theme/styles/style.css'
-import '@mswjs/shared/theme/styles/vp-overrides.css'
+import '@mswjs/shared/theme/styles/vitepress-content.css'
+import '@mswjs/shared/theme/styles/default-theme-shell.css'
 import '@mswjs/shared/theme/styles/ads.css'
 import './site.css'
 

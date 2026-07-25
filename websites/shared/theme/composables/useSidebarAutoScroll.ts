@@ -2,8 +2,7 @@ import { onBeforeUnmount, onMounted } from 'vue'
 import { onContentUpdated } from 'vitepress'
 
 const SIDEBAR_SCROLL_KEY = 'docs-sidebar-scroll'
-const ACTIVE_LINK_SELECTOR =
-  '.VPSidebarItem.is-active > .item > .link'
+const ACTIVE_LINK_SELECTOR = '[data-sidebar-active]'
 
 export function useSidebarAutoScroll(): void {
   let scheduledFrame: number | null = null
@@ -11,7 +10,9 @@ export function useSidebarAutoScroll(): void {
   let activeLinkObserver: IntersectionObserver | null = null
 
   const getSidebar = () => {
-    return document.querySelector<HTMLElement>('.VPSidebar')
+    return document.querySelector<HTMLElement>(
+      '[data-docs-sidebar]',
+    )
   }
 
   const revealActiveLink = () => {

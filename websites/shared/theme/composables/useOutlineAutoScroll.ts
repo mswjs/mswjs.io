@@ -1,31 +1,33 @@
 import { onBeforeUnmount, onMounted } from 'vue'
 import { onContentUpdated } from 'vitepress'
 
-/**
- * Keeps the active heading indicator visible within the
- * internally-scrollable outline (table of contents). VitePress
- * positions the ".outline-marker" element next to the active
- * link as the page scrolls; follow it by scrolling the outline
- * container whenever it leaves the visible band.
- */
 export function useOutlineAutoScroll(): void {
   let observer: MutationObserver | null = null
 
-  const followMarker = (outline: HTMLElement, marker: HTMLElement) => {
-    const outlineRect = outline.getBoundingClientRect()
-    const markerRect = marker.getBoundingClientRect()
+  const revealActiveLink = () => {
+    const outline = document.querySelector<HTMLElement>(
+      '[data-document-outline]',
+    )
+    const activeLink = outline?.querySelector<HTMLElement>(
+      '[data-outline-active]',
+    )
 
-    // The marker's position within the outline's scroll space.
-    const markerTop = markerRect.top - outlineRect.top + outline.scrollTop
-    const visibleTop = outline.scrollTop
-    const visibleBottom = visibleTop + outline.clientHeight
-    const margin = 48
+    if (!outline || !activeLink) {
+      return
+    }
 
-    if (markerTop < visibleTop + margin) {
-      outline.scrollTo({ top: markerTop - margin })
-    } else if (markerRect.height + markerTop > visibleBottom - margin) {
-      outline.scrollTo({
-        top: markerTop - outline.clientHeight + margin,
+    const outlineBounds = outline.getBoundingClientRect()
+    const activeLinkBounds = activeLink.getBoundingClientRect()
+    const visibleMargin = 48
+
+    if (
+      activeLinkBounds.top < outlineBounds.top + visibleMargin ||
+      activeLinkBounds.bottom >
+        outlineBounds.bottom - visibleMargin
+    ) {
+      activeLink.scrollIntoView({
+        block: 'center',
+        behavior: 'auto',
       })
     }
   }
@@ -34,25 +36,21 @@ export function useOutlineAutoScroll(): void {
     observer?.disconnect()
     observer = null
 
-    const outline = document.querySelector<HTMLElement>('.VPDocAsideOutline')
-    const marker = outline?.querySelector<HTMLElement>('.outline-marker')
+    const outline = document.querySelector<HTMLElement>(
+      '[data-document-outline]',
+    )
 
-    if (!outline || !marker) {
+    if (!outline) {
       return
     }
 
-    observer = new MutationObserver(() => {
-      // Follow after the layout settles for the new marker position.
-      requestAnimationFrame(() => {
-        followMarker(outline, marker)
-      })
-    })
-    observer.observe(marker, {
+    observer = new MutationObserver(revealActiveLink)
+    observer.observe(outline, {
       attributes: true,
-      attributeFilter: ['style'],
+      attributeFilter: ['data-outline-active'],
+      subtree: true,
     })
-
-    followMarker(outline, marker)
+    revealActiveLink()
   }
 
   onMounted(attach)

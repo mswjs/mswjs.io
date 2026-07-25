@@ -9,7 +9,7 @@ const { frontmatter } = useData()
 
 <template>
   <aside
-    class="blog-post-back-link sticky z-[2] py-2 text-sm font-medium bg-neutral-900 border-b border-neutral-800"
+    class="blog-post-back-link sticky top-16 z-[2] py-2 text-sm font-medium bg-neutral-900 border-b border-neutral-800"
   >
     <a
       href="/blog"
@@ -53,14 +53,6 @@ const { frontmatter } = useData()
 </template>
 
 <style scoped>
-:global(.Layout:has(.blog-post-back-link) .VPDoc) {
-  @apply pt-2;
-}
-
-.blog-post-back-link {
-  top: 0;
-}
-
 .blog-post-back-link::before {
   position: absolute;
   inset: 0;
@@ -97,24 +89,4 @@ const { frontmatter } = useData()
   }
 }
 
-@media (min-width: 960px) {
-  .blog-post-back-link {
-    top: 4rem;
-  }
-}
-
-@media (max-width: 959px) {
-  :global(.Layout:has(.blog-post-back-link) .VPNav) {
-    position: sticky;
-    top: var(--vp-layout-top-height, 0px);
-  }
-
-  :global(.Layout:has(.blog-post-back-link) .VPLocalNav.empty) {
-    display: none;
-  }
-
-  .blog-post-back-link {
-    top: var(--vp-nav-height);
-  }
-}
 </style>
