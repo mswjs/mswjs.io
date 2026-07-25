@@ -35,7 +35,7 @@
     },
     {
       "source": "/docs/api/graphql/operation",
-      "destination": "/docs/api/graphql#graphqloperationresolver",
+      "destination": "/api/graphql#graphqloperationresolver",
       "statusCode": 301
     },
     {
@@ -45,12 +45,12 @@
     },
     {
       "source": "/docs/getting-started/integrate/browser",
-      "destination": "/docs/integrations/browser",
+      "destination": "/guides/integrations/browser",
       "statusCode": 301
     },
     {
       "source": "/docs/getting-started/integrate/node",
-      "destination": "/docs/integrations/node",
+      "destination": "/guides/integrations/node",
       "statusCode": 301
     },
 
@@ -77,12 +77,12 @@
 
     {
       "source": "/docs/api/setup-worker/print-handlers",
-      "destination": "/docs/api/setup-worker/list-handlers",
+      "destination": "/api/setup-worker/list-handlers",
       "statusCode": 301
     },
     {
       "source": "/docs/api/rest",
-      "destination": "/docs/api/http",
+      "destination": "/api/http",
       "statusCode": 301
     },
     {
@@ -92,12 +92,12 @@
     },
     {
       "source": "/docs/api/response/once",
-      "destination": "/docs/api/http#once",
+      "destination": "/api/http#once",
       "statusCode": 301
     },
     {
       "source": "/docs/api/response/network-error",
-      "destination": "/docs/recipes/network-errors",
+      "destination": "/docs/http/mocking-responses/network-errors",
       "statusCode": 301
     },
     {
@@ -127,7 +127,7 @@
     },
     {
       "source": "/docs/api/context/xml",
-      "destination": "/docs/api/http-response#httpresponsexmlbody-init",
+      "destination": "/api/http-response#httpresponsexmlbody-init",
       "statusCode": 301
     },
     {
@@ -147,17 +147,17 @@
     },
     {
       "source": "/docs/api/context/delay",
-      "destination": "/docs/api/delay",
+      "destination": "/api/delay",
       "statusCode": 301
     },
     {
       "source": "/docs/api/context/fetch",
-      "destination": "/docs/api/bypass",
+      "destination": "/api/bypass",
       "statusCode": 301
     },
     {
       "source": "/docs/extensions/life-cycle-events",
-      "destination": "/docs/api/life-cycle-events",
+      "destination": "/api/life-cycle-events",
       "statusCode": 301
     },
 
@@ -168,12 +168,12 @@
     },
     {
       "source": "/docs/recipes/usage-with-cdn",
-      "destination": "/docs/recipes/using-cdn",
+      "destination": "/guides/recipes/using-cdn",
       "statusCode": 301
     },
     {
       "source": "/docs/recipes/binary-response-type",
-      "destination": "/docs/recipes/responding-with-binary",
+      "destination": "/docs/http/mocking-responses/binary",
       "statusCode": 301
     },
     {
@@ -183,12 +183,12 @@
     },
     {
       "source": "/docs/recipes/deferred-mounting",
-      "destination": "/docs/integrations/browser#conditionally-enable-mocking",
+      "destination": "/guides/integrations/browser#conditionally-enable-mocking",
       "statusCode": 301
     },
     {
       "source": "/docs/recipes/request-assertions",
-      "destination": "/docs/best-practices/avoid-request-assertions",
+      "destination": "/guides/best-practices/avoid-request-assertions",
       "statusCode": 301
     },
 
@@ -286,6 +286,36 @@
     {
       "source": "/docs/recipes/mock-graphql-schema",
       "destination": "/docs/graphql/schema-first-mocking",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/vitest-browser-mode",
+      "destination": "/guides/integrations/vitest",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/cli/:path*",
+      "destination": "/api/cli/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/integrations/:path*",
+      "destination": "/guides/integrations/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/best-practices/:path*",
+      "destination": "/guides/best-practices/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/recipes/:path*",
+      "destination": "/guides/recipes/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/api/:path*",
+      "destination": "/api/:path*",
       "statusCode": 301
     }
   ]

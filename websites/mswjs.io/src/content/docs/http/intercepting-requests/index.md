@@ -144,7 +144,7 @@ The following properties are available on the response resolver object argument 
 | `requestId` | `string`                                                              | UUID representing the intercepted request.                                                    |
 | `params`    | `Record<string, string \| string[]>`                                  | Request [path parameters](/docs/http/intercepting-requests/path-parameters) (e.g. `:userId`). |
 | `cookies`   | `Record<string, string>`                                              | Parsed [request cookies](/docs/http/intercepting-requests/cookies).                           |
-| [`finalize`](/docs/api/finalize)  | `Function` | A function to schedule cleanup after the request handler completion. |
+| [`finalize`](/api/finalize)  | `Function` | A function to schedule cleanup after the request handler completion. |
 
 ```ts /request/ /params/#g /cookies/#v
 http.get('/resource', ({ request, params, cookies }) => {})

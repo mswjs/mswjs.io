@@ -21,7 +21,7 @@ import { sse } from 'msw'
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/sse"
+  url="/api/sse"
   title="sse"
   description="API reference for the `sse` namespace."
 />

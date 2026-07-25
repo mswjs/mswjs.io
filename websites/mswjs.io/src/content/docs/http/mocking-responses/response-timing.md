@@ -10,7 +10,7 @@ keywords:
   - pause
 ---
 
-You can control the server response time when handling intercepted requests using the [`delay()`](/docs/api/delay) function from MSW. Under the hood, the `delay()` function returns a promise that resolves after a certain amount of time.
+You can control the server response time when handling intercepted requests using the [`delay()`](/api/delay) function from MSW. Under the hood, the `delay()` function returns a promise that resolves after a certain amount of time.
 
 ```ts {4} /delay/
 import { http, HttpResponse, delay } from 'msw'
@@ -27,7 +27,7 @@ Learn more about using the `delay()` API, its default behavior, and the delay mo
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/delay"
+  url="/api/delay"
   title="delay()"
   description="API reference for the `delay` function."
 />

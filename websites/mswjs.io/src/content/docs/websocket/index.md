@@ -14,7 +14,7 @@ import { ws } from 'msw'
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/ws"
+  url="/api/ws"
   title="ws"
   description="API reference for the `ws` namespace."
 />

@@ -16,7 +16,7 @@ api.addEventListener('connection', ({ client }) => {
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/ws#closecode-reason"
+  url="/api/ws#closecode-reason"
   title="client.close(code, reason)"
   description="The `client.close()` API reference."
 />

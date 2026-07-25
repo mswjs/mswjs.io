@@ -21,7 +21,7 @@ This is handy for triggering a particular server behavior by emulating a client-
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/ws#senddata-1"
+  url="/api/ws#senddata-1"
   title="server.send()"
   description="The `server.send()` API reference."
 />

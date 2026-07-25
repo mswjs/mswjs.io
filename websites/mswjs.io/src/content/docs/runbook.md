@@ -48,7 +48,7 @@ server.events.on('request:start', ({ request }) => {
 })
 ```
 
-> You can learn more about the [Life-cycle events API](/docs/api/life-cycle-events).
+> You can learn more about the [Life-cycle events API](/api/life-cycle-events).
 
 With this listener in place, you should see the console message _on every outgoing request_ that MSW intercepts. The console message should look like this:
 

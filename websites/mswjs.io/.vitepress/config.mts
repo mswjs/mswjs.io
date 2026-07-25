@@ -88,9 +88,10 @@ export default defineConfig({
 
     nav: [
       { text: 'Docs', link: '/docs/', activeMatch: '^/docs' },
+      { text: 'Guides', link: '/guides/', activeMatch: '^/guides' },
+      { text: 'API', link: '/api/', activeMatch: '^/api' },
       { text: 'Ecosystem', link: '/ecosystem', activeMatch: '^/ecosystem' },
       { text: 'Blog', link: '/blog/', activeMatch: '^/blog' },
-      { component: 'SponsorLink' },
     ],
 
     sidebar: {
@@ -101,15 +102,35 @@ export default defineConfig({
         ),
         [
           ['Mocking HTTP', 'http/**/*.md'],
-        ['Mocking SSE', 'sse/**/*.md'],
-        ['Mocking GraphQL', 'graphql/**/*.md'],
-        ['Mocking WebSocket', 'websocket/**/*.md'],
-        ['Integrations', 'integrations/**/*.md'],
-        ['API', 'api/**/*.md'],
-        ['CLI', 'cli/**/*.md'],
+          ['Mocking SSE', 'sse/**/*.md'],
+          ['Mocking GraphQL', 'graphql/**/*.md'],
+          ['Mocking WebSocket', 'websocket/**/*.md'],
+        ],
+      ),
+      '/guides/': buildDocsSidebar(
+        path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '../src/content/guides',
+        ),
+        [
+          ['Integrations', 'integrations/**/*.md'],
           ['Best practices', 'best-practices/**/*.md'],
           ['Recipes', 'recipes/**/*.md'],
         ],
+        '/guides',
+      ),
+      '/api/': buildDocsSidebar(
+        path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '../src/content/api',
+        ),
+        [
+          ['CLI', 'cli/**/*.md'],
+          ['Browser', 'setup-worker/**/*.md'],
+          ['Node.js', 'setup-server/**/*.md'],
+          ['Experimental', 'experimental/**/*.md'],
+        ],
+        '/api',
       ),
     },
 
@@ -134,9 +155,7 @@ export default defineConfig({
 
     editLink: {
       pattern({ filePath }) {
-        const sourcePath = filePath.replace(/\.md$/, '.mdx')
-
-        return `https://github.com/mswjs/mswjs.io/edit/main/websites/mswjs.io/src/content/${sourcePath}`
+        return `https://github.com/mswjs/mswjs.io/edit/main/websites/mswjs.io/src/content/${filePath}`
       },
       text: 'Edit this page on GitHub',
     },

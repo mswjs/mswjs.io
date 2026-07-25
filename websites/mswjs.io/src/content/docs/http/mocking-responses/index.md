@@ -15,7 +15,7 @@ While you always write your mocks from the _server's perspective_, the Fetch API
 - Some response headers, like `Set-Cookie`, are [forbidden](https://fetch.spec.whatwg.org/#forbidden-response-header-name);
 - Setting status codes outside of the `2xx`-`5xx` range are forbidden;
 
-**None of these restrictions apply when mocking responses with MSW**. You can mock [cookies](/docs/http/mocking-responses/cookies), set otherwise non-configurable status codes, like `101 Switching Protocols`, and declare mocked responses as you would server responses. That is achieved by using the [`HttpResponse`](/docs/api/http-response) superset class provided by the library. Please prefer using it when declaring mocked responses.
+**None of these restrictions apply when mocking responses with MSW**. You can mock [cookies](/docs/http/mocking-responses/cookies), set otherwise non-configurable status codes, like `101 Switching Protocols`, and declare mocked responses as you would server responses. That is achieved by using the [`HttpResponse`](/api/http-response) superset class provided by the library. Please prefer using it when declaring mocked responses.
 
 ## Responding to requests
 
@@ -33,7 +33,7 @@ export const handlers = [
 ]
 ```
 
-> You can return a plain Fetch API `Response` instance, too. It's recommended to use the [`HttpResponse`](/docs/api/http-response) class instead, which is a drop-in replacement for `Response` but provides improved developer experience and unlocks otherwise unavailable features, like mocking the `set-cookie` header.
+> You can return a plain Fetch API `Response` instance, too. It's recommended to use the [`HttpResponse`](/api/http-response) class instead, which is a drop-in replacement for `Response` but provides improved developer experience and unlocks otherwise unavailable features, like mocking the `set-cookie` header.
 
 ### Throw a mocked response
 
@@ -91,7 +91,7 @@ http.get('/resource', () => {
 })
 ```
 
-> Learn more about the static shorthand methods like `.text()`, `.json()`, and others in the [`HttpResponse` API reference](/docs/api/http-response).
+> Learn more about the static shorthand methods like `.text()`, `.json()`, and others in the [`HttpResponse` API reference](/api/http-response).
 
 ## Next steps
 

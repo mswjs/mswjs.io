@@ -5,7 +5,6 @@ import Layout from './Layout.vue'
 // Components available to Markdown content globally.
 import Action from '@mswjs/shared/theme/content/Action.vue'
 import PageCard from '@mswjs/shared/theme/content/PageCard.vue'
-import SponsorLink from '@mswjs/shared/theme/components/SponsorLink.vue'
 import EggheadCourseBanner from './content/EggheadCourseBanner.vue'
 import DiscordIcon from '@mswjs/shared/theme/components/icons/discord.vue'
 
@@ -20,7 +19,6 @@ export default {
   enhanceApp({ app }) {
     app.component('Action', Action)
     app.component('PageCard', PageCard)
-    app.component('SponsorLink', SponsorLink)
     app.component('EggheadCourseBanner', EggheadCourseBanner)
     app.component('DiscordIcon', DiscordIcon)
   },

@@ -27,7 +27,7 @@ The original server connection will be closed automatically when the underlying 
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/ws#closecode-reason-1"
+  url="/api/ws#closecode-reason-1"
   title="server.close()"
   description="The `server.close()` API reference."
 />

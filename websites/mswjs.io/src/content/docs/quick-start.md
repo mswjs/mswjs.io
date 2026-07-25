@@ -133,7 +133,7 @@ This guide is a good starting point but you can do so much more with the library
 <div class="md:grid md:grid-cols-2 md:gap-x-5">
   <PageCard
     icon="Bars2Icon"
-    url="/docs/integrations/browser"
+    url="/guides/integrations/browser"
     title="Browser integration"
     description="Set up Mock Service Worker in the browser."
   />
@@ -151,7 +151,7 @@ This guide is a good starting point but you can do so much more with the library
   />
   <PageCard
     icon="TrophyIcon"
-    url="/docs/best-practices"
+    url="/guides/best-practices"
     title="Best practices"
     description="Tips & tricks for getting the most out of Mock Service Worker."
   />

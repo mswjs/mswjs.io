@@ -12,7 +12,7 @@ This page will walk you through the possible ways to intercept a GraphQL operati
 
 By default, the library **ignores the servers endpoint** when matching GraphQL operations. That is a conscious decision since it is rare that a single application would interact with multiple GraphQL APIs. It means that the same handler will match a `GetUser` operation even if one is sent to `/api/graphql` and the other to `https://api.example.com`.
 
-This default is supported for backward-compatibility, but it is **strongly recommended** to use [`graphql.link()`](/docs/api/graphql#graphqllinkurl) to scope GraphQL mocking to a particular server endpoint.
+This default is supported for backward-compatibility, but it is **strongly recommended** to use [`graphql.link()`](/api/graphql#graphqllinkurl) to scope GraphQL mocking to a particular server endpoint.
 
 ```ts {7,8} /graphql.link/
 import { graphql } from 'msw'
@@ -130,7 +130,7 @@ The following properties are available on the response resolver object argument 
 | `query`         | `string`                 | Raw GraphQL [query string](/docs/graphql/intercepting-operations/queries#reading-raw-query). |
 | `variables`     | `Record<string, any>`    | Parsed [variables](/docs/graphql/intercepting-operations/variables) of this operation.       |
 | `operationName` | `string`                 | Operation name (e.g. `'GetUser'`).                                                           |
-| [`finalize`](/docs/api/finalize)  | `Function` | A function to schedule cleanup after the request handler completion. |
+| [`finalize`](/api/finalize)  | `Function` | A function to schedule cleanup after the request handler completion. |
 
 ```ts /cookies/#g /query/ /variables/#v /operationName/
 graphql.mutation(

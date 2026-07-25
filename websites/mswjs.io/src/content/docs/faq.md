@@ -30,7 +30,7 @@ Yes. Although there's no Service Worker in Node.js, MSW provides you with a desi
 
 <PageCard
   icon="CommandLineIcon"
-  url="/docs/integrations/node"
+  url="/guides/integrations/node"
   title="Node.js integration"
   description="Learn how to integrate Mock Service Worker in any Node.js process."
 />
@@ -41,7 +41,7 @@ Yes, you can use MSW while developing and testing your React Native application.
 
 <PageCard
   icon="DevicePhoneMobileIcon"
-  url="/docs/integrations/node"
+  url="/guides/integrations/node"
   title="Node.js integration"
   description="Learn how to integrate Mock Service Worker in a Node.js process."
 />
@@ -156,7 +156,7 @@ If your test suite features multiple concurrent test that modify the network beh
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/setup-server/boundary"
+  url="/api/setup-server/boundary"
   title="server.boundary()"
   description="Scope the network interception to the given boundary."
 />

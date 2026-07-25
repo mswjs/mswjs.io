@@ -53,6 +53,10 @@ const { frontmatter } = useData()
 </template>
 
 <style scoped>
+:global(.Layout:has(.blog-post-back-link) .VPDoc) {
+  @apply pt-2;
+}
+
 .blog-post-back-link {
   top: 0;
 }

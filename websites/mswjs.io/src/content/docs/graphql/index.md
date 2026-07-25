@@ -14,7 +14,7 @@ import { graphql } from 'msw'
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/graphql"
+  url="/api/graphql"
   title="graphql"
   description="API reference for the `graphql` namespace."
 />

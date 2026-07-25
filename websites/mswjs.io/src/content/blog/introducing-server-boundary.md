@@ -284,7 +284,7 @@ You can learn more about the Server Boundary API in the documentation:
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/setup-server/boundary"
+  url="/api/setup-server/boundary"
   title="server.boundary()"
   description="Scope the network interception to the given boundary."
 />

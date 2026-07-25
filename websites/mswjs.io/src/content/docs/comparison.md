@@ -425,4 +425,4 @@ http.post('/fruits', async ({ request }) => {
 
 > The alternative for `route.continue()` in MSW is simply returning nothing from a response resolver. But since we can narrow down the request interception to both the method (`POST`) and path (`/fruits`), our request handler never concerns itself with other requests.
 
-MSW uses the custom [`bypass()`](/docs/api/bypass) function that wraps any given `Request` instance to prevent it from being affected by any other otherwise matching request handlers.
+MSW uses the custom [`bypass()`](/api/bypass) function that wraps any given `Request` instance to prevent it from being affected by any other otherwise matching request handlers.

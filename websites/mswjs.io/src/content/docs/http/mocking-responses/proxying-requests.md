@@ -7,7 +7,7 @@ keywords:
   - bypass
 ---
 
-You can proxy the intercepted request by constructing a proxy Fetch API `Request` instance and performing it using the [`bypass()`](/docs/api/bypass) function to prevent it from matching the same request handler again. This can turn your MSW setup into a proxy server that affects both local and external traffic.
+You can proxy the intercepted request by constructing a proxy Fetch API `Request` instance and performing it using the [`bypass()`](/api/bypass) function to prevent it from matching the same request handler again. This can turn your MSW setup into a proxy server that affects both local and external traffic.
 
 ```ts /bypass/ {7-8,10-16,18-19}
 import { http, bypass } from 'msw'
@@ -37,7 +37,7 @@ export const handlers = [
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/bypass"
+  url="/api/bypass"
   title="bypass"
   description="API reference for the `bypass` function."
 />

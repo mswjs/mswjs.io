@@ -58,9 +58,9 @@ function matchesPattern(relativePath: string, pattern: string): boolean {
   return false
 }
 
-function toUrl(relativePath: string): string {
+function toUrl(relativePath: string, basePath: string): string {
   const cleanPath = relativePath.replace(/(index)?\.md$/, '')
-  return `/docs/${cleanPath}`
+  return `${basePath}/${cleanPath}`
 }
 
 function sortByOrder(
@@ -119,7 +119,7 @@ function collectDocsFiles(docsDirectory: string): Array<DocsFile> {
   return files
 }
 
-function createNavTreeBuilder(files: Array<DocsFile>) {
+function createNavTreeBuilder(files: Array<DocsFile>, basePath: string) {
   // Sort the pages ending with "index.md" to be first
   // in the list of pages. This way, we can analyze them as
   // potentially pages with children and remove any matching
@@ -165,7 +165,7 @@ function createNavTreeBuilder(files: Array<DocsFile>) {
           continue
         }
 
-        const url = toUrl(relativePath)
+        const url = toUrl(relativePath, basePath)
         orders.set(url, frontmatter.order)
 
         // Treat nested pages ending with "index.md" as
@@ -227,7 +227,7 @@ function createNavTreeBuilder(files: Array<DocsFile>) {
       // only works because "index.md" files are sorted first.
       for (const item of result) {
         const index = pages.findIndex((page) => {
-          return toUrl(page.relativePath) === item.url
+          return toUrl(page.relativePath, basePath) === item.url
         })
 
         if (index !== -1) {
@@ -272,9 +272,10 @@ function toDefaultThemeItem(item: SidebarItem): DefaultTheme.SidebarItem {
 export function buildDocsSidebar(
   docsDirectory: string,
   groups: Array<[title: string, pattern: string]>,
+  basePath = '/docs',
 ): Array<DefaultTheme.SidebarItem> {
   const files = collectDocsFiles(docsDirectory)
-  const builder = createNavTreeBuilder(files)
+  const builder = createNavTreeBuilder(files, basePath)
 
   const rootPages = builder.get('*.md')
   const tree: Array<SidebarItem> = groups.map(

@@ -15,7 +15,7 @@ There is, however, a workaround you can employ by using the `XMLHttpRequestInter
 
 <PageCard
   icon="solid/BeakerIcon"
-  url="/docs/recipes/xmlhttprequest-progress-events"
+  url="/guides/recipes/xmlhttprequest-progress-events"
   title="XMLHttpRequest progress events"
   description="Support progress events on XMLHttpRequest."
 />

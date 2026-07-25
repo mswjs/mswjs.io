@@ -26,7 +26,7 @@ In the example above, `server.connect()` will establish a new, bypassed WebSocke
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/ws#connect"
+  url="/api/ws#connect"
   title="server.connect()"
   description="The `server.connect()` API reference."
 />

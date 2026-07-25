@@ -15,12 +15,17 @@ import { useSidebarAutoScroll } from '@mswjs/shared/theme/composables/useSidebar
 
 const { page, frontmatter, theme } = useData()
 const route = useRoute()
+const documentationRootPaths = ['/docs', '/guides', '/api']
 
 useOutlineAutoScroll()
 useSidebarAutoScroll()
 
-const isDocsPage = computed(() => {
-  return route.path.startsWith('/docs') && !page.value.isNotFound
+const isDocumentationPage = computed(() => {
+  const hasDocumentationRoot = documentationRootPaths.some((rootPath) => {
+    return route.path === rootPath || route.path.startsWith(`${rootPath}/`)
+  })
+
+  return hasDocumentationRoot && !page.value.isNotFound
 })
 
 const isBlogPost = computed(() => {
@@ -47,7 +52,7 @@ watchEffect(() => {
   if (typeof document !== 'undefined') {
     document.documentElement.style.setProperty(
       '--vp-layout-top-height',
-      isDocsPage.value ? '36px' : '0px',
+      isDocumentationPage.value ? '36px' : '0px',
     )
   }
 })
@@ -57,7 +62,7 @@ watchEffect(() => {
   <DefaultTheme.Layout>
     <template #layout-top>
       <aside
-        v-if="isDocsPage"
+        v-if="isDocumentationPage"
         class="docs-version-banner fixed top-0 inset-x-0 z-[60] flex items-center justify-center h-[36px] px-5 border-b border-neutral-700 bg-neutral-950 text-neutral-200 text-sm text-center font-medium"
       >
         <p>
@@ -75,7 +80,7 @@ watchEffect(() => {
     </template>
 
     <template #doc-before>
-      <template v-if="isDocsPage">
+      <template v-if="isDocumentationPage">
         <DocsPageHeader />
         <Ads v-if="theme.ads" publisher="mswjsio" />
       </template>
@@ -83,7 +88,7 @@ watchEffect(() => {
     </template>
 
     <template #doc-after>
-      <ClientOnly v-if="isDocsPage">
+      <ClientOnly v-if="isDocumentationPage">
         <ReactIsland
           :component="FeedbackWidget"
           :component-props="{ pageTitle: feedbackPageTitle }"
@@ -103,7 +108,10 @@ watchEffect(() => {
     </template>
 
     <template #layout-bottom>
-      <div class="site-footer" :class="{ 'footer-with-sidebar': isDocsPage }">
+      <div
+        class="site-footer"
+        :class="{ 'footer-with-sidebar': isDocumentationPage }"
+      >
         <SiteFooter>
           <template #sections>
             <div class="sm:col-span-2">

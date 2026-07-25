@@ -264,7 +264,7 @@
    * the document content. The menu consumes the remaining
    * space and stays pinned to the right.
    */
-  .VPNavBar .content .content-body {
+  .VPNavBar:not(.has-sidebar) .content .content-body {
     @apply pl-16;
   }
 
@@ -307,10 +307,6 @@
     @apply pr-8;
   }
 
-  .VPNavBar.has-sidebar .content .content-body {
-    @apply pl-16;
-  }
-
   .VPLocalNav .VPLocalNavOutlineDropdown {
     @apply relative;
   }
@@ -349,8 +345,13 @@
  * viewport grows.
  */
 @media (min-width: 960px) {
+  .VPNavBar.has-sidebar .content .content-body,
   .VPContent .VPDoc {
-    @apply pl-16 pr-8;
+    @apply pl-16;
+  }
+
+  .VPContent .VPDoc {
+    @apply pr-8;
   }
 
   .VPContent .VPDoc > .container > .content {
@@ -476,15 +477,14 @@
   }
 }
 
-/* The Sponsor nav item spacing and typography. */
-.VPNavBarMenu .VPNavBarMenuLink + a,
-.VPNavBarMenu > a:last-child {
-  margin-left: 16px;
+.VPNavBar .content .VPNavBarMenu {
+  @apply grid grid-flow-col items-center gap-4;
+
+  font-size: 14px;
 }
 
-.VPNavBarMenu {
-  align-items: center;
-  font-size: 14px;
+.VPNavBar .content .VPNavBarMenu > * {
+  margin: 0;
 }
 
 /*

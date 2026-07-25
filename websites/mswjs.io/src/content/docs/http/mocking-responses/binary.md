@@ -27,4 +27,4 @@ http.get('/images/:imageId', async ({ params }) => {
 })
 ```
 
-> Using [`HttpResponse.arrayBuffer()`](/docs/api/http-response#httpresponsearraybufferbody-init) static method will automatically set `content-length` on the mocked response. Make sure to still set the appropriate `content-type` header!
+> Using [`HttpResponse.arrayBuffer()`](/api/http-response#httpresponsearraybufferbody-init) static method will automatically set `content-length` on the mocked response. Make sure to still set the appropriate `content-type` header!

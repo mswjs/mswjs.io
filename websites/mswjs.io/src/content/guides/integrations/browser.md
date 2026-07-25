@@ -1,0 +1,121 @@
+---
+order: 1
+title: Browser
+description: Set up Mock Service Worker in the browser.
+keywords:
+  - integrate
+  - integration
+  - setup
+  - browser
+  - client
+  - worker
+---
+
+In the browser, MSW works by registering a Service Worker responsible for request interception on the network level.
+
+::: info
+  Although Service Workers are meant to be served via HTTPS, browsers allow
+  registering workers on HTTP while developing on `localhost`. If you need a
+  local HTTPS development, see [this recipe](/guides/recipes/using-local-https).
+:::
+
+## Generating the worker script
+
+If your application registers a Service Worker it must **host and serve it**. The library CLI provides you with the `init` command to quickly copy the `./mockServiceWorker.js` worker script into your application's public directory.
+
+```sh
+npx msw init <PUBLIC_DIR> --save
+```
+
+> Learn more about the [`init` CLI command](/api/cli/init).
+
+Once copied, navigate to the `/mockServiceWorker.js` URL of your application in your browser (e.g. if your application is running on `http://localhost:3000`, go to the `http://localhost:3000/mockServiceWorker.js` route). You should see the worker script contents. If you see a 404 or a MIME type error, make sure you are specifying the correct `PUBLIC_DIR` when running the `init` command, and that you adjust any potential configuration of your application that would affect serving static files.
+
+> Learn more about managing the worker script while using the library:
+
+<PageCard
+  icon="CommandLineIcon"
+  url="/guides/best-practices/managing-the-worker"
+  title="Managing the worker"
+  description="Learn how to manage the worker script updates."
+/>
+
+## Setup
+
+::: code-group
+
+```js [src/mocks/browser.js]
+import { setupWorker } from 'msw/browser'
+import { handlers } from './handlers'
+
+export const worker = setupWorker(...handlers)
+```
+
+:::
+
+> Learn about the [`setupWorker` API](/api/setup-worker).
+
+## Conditionally enable mocking
+
+Lastly, we need to start the worker by calling `worker.start()`, which will register and activate the Service Worker. We also only want to enable API mocking in development so our production traffic is unaffected.
+
+Because registering the Service Worker is an asynchronous operation, it's a good idea to defer the rendering of your application until the registration Promise resolves.
+
+::: code-group
+
+```js [src/index.jsx] /enableMocking/ {5-15}
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { App } from './App'
+
+async function enableMocking() {
+  if (process.env.NODE_ENV !== 'development') {
+    return
+  }
+
+  const { worker } = await import('./mocks/browser')
+
+  // `worker.start()` returns a Promise that resolves
+  // once the Service Worker is up and ready to intercept requests.
+  return worker.start()
+}
+
+enableMocking().then(() => {
+  ReactDOM.render(<App />, rootElement)
+})
+```
+
+:::
+
+::: warning
+  Make sure to await the `worker.start()` Promise! Service Worker registration
+  is asynchronous and failing to await it may result in a race condition between
+  the worker registration and the initial requests your application makes.
+:::
+
+## Confirmation
+
+Go to your application in the browser and open the Console in the Developer Tools. If the integration was successful, you will see the following message being printed:
+
+```sh
+[MSW] Mocking enabled.
+```
+
+If you don't see this message or see an error instead, please follow this page from the beginning and make sure you've completed all the steps.
+
+## Related materials
+
+<div class="md:grid md:grid-cols-2 md:gap-x-5">
+  <PageCard
+    icon="NodejsIcon"
+    url="/docs/http"
+    title="Mocking HTTP"
+    description="Learn about intercepting HTTP requests."
+  />
+  <PageCard
+    icon="GraphQLIcon"
+    url="/docs/graphql"
+    title="Describing GraphQL API"
+    description="Learn about describing GraphQL APIs."
+  />
+</div>

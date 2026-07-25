@@ -29,7 +29,7 @@ export const handlers = [
 
 > In the example above, given an outgoing `GET /user` request, you will see the `"One"` string printed to the console and then receive the mocked JSON response as defined in the second handler. You _will not_ see the `"Three"` string because the third handler is never reached (i.e. request already handled).
 
-You can use fallthrough to a great effect to layer your network behaviors. See [Network behavior overrides](/docs/best-practices/network-behavior-overrides).
+You can use fallthrough to a great effect to layer your network behaviors. See [Network behavior overrides](/guides/best-practices/network-behavior-overrides).
 
 ## Handler order sensitivity
 

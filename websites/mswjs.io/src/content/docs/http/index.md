@@ -14,7 +14,7 @@ import { http } from 'msw'
 
 <PageCard
   icon="CubeTransparentIcon"
-  url="/docs/api/http"
+  url="/api/http"
   title="http"
   description="API reference for the `http` namespace."
 />
