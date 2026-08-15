@@ -90,6 +90,24 @@ enableMocking().then(() => {
 
 > Don't forget to import the `msw.polyfills.js` module!
 
+### Expo Router
+
+When using Expo Router, use a custom entry module and name it `index.cjs` to declare it as CommonJS.
+
+```js
+// index.cjs
+require('@expo/metro-runtime')
+
+if (__DEV__) {
+  require('./msw.polyfills.js')
+
+  const { server } = require('./src/mocks/server.js')
+  server.listen()
+}
+
+require('expo-router/entry')
+```
+
 ### Testing
 
 When testing your React Native application, the way you set up MSW will differ based on how you run your tests. For example, for unit/integration testing where you render your React components in isolation, you should follow the regular [Node.js integration](/docs/integrations/node) to configure MSW with tools like Vitest or Jest.
