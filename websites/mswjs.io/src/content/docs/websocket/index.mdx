@@ -71,6 +71,8 @@ export const handlers = [
 
 You will be handling both client and server events from this connection listener.
 
+When using a third-party WebSocket client, such as Socket.IO, make sure to [initialize the client after enabling API mocking](/docs/websocket/client-initialization).
+
 ## Important defaults
 
 The library implements a set of default behaviors to guarantee good developer experience for different testing and development scenarios. You can opt out from all of these and fine-tune the interception to suit your needs.
