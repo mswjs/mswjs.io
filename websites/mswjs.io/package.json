@@ -2,6 +2,9 @@
   "name": "mswjs.io",
   "type": "module",
   "version": "0.0.0",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
