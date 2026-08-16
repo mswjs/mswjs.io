@@ -32,12 +32,13 @@ export const test = testBase.extend({
       // Start the worker before the test.
       await worker.start()
 
-      // Expose the worker object on the test's context.
-      await use(worker)
-
       // Remove any request handlers added in individual test cases.
       // This prevents them from affecting unrelated tests.
+      // Doing so before each test to match other clenups and enabling screenshots after each test run
       worker.resetHandlers()
+
+      // Expose the worker object on the test's context.
+      await use(worker)
     },
     {
       auto: true,
