@@ -37,21 +37,42 @@ Create a new `msw.polyfills.js` file with the following content:
 // msw.polyfills.js
 import 'fast-text-encoding'
 import 'react-native-url-polyfill/auto'
+import "web-streams-polyfill/dist/polyfill"
+
+if (typeof globalThis.MessageEvent === "undefined") {
+  globalThis.MessageEvent = class MessageEvent {
+    constructor(type, init) {
+      this.type = type
+      this.data = init?.data ?? null
+      this.origin = init?.origin ?? ""
+      this.lastEventId = init?.lastEventId ?? ""
+      this.source = init?.source ?? null
+      this.ports = init?.ports ?? []
+    }
+  }
+}
+
+if (typeof globalThis.BroadcastChannel === "undefined") {
+  globalThis.BroadcastChannel = class BroadcastChannel {
+    constructor(_name) {}
+    postMessage() {}
+    close() {}
+    addEventListener() {}
+    removeEventListener() {}
+    dispatchEvent() {
+      return true
+    }
+  }
+}
 ```
 
 We will import this file later, when [Enabling mocking](#enable-mocking).
 
-## Setup
+## Enable mocking
 
-Import the `setupServer` function from `msw/native` and call it, providing your request handlers as the argument.
+### Development
 
-```js {2}
-// src/mocks/server.js
-import { setupServer } from 'msw/native'
-import { handlers } from './handlers'
-
-export const server = setupServer(...handlers)
-```
+Import the `setupServer` function from `msw/native` and call it _conditionally_, providing your request handlers as the argument
 
 > Learn more about the [`setupServer` API](/docs/api/setup-server). It's the same for Node.js and React Native.
 
@@ -61,12 +82,6 @@ export const server = setupServer(...handlers)
   environment.
 </Warning>
 
-## Enable mocking
-
-### Development
-
-Import `server` in the entrypoint of your React Native application and call `server.listen()` _conditionally_.
-
 ```js {6-14} /enableMocking/
 // index.js
 import { AppRegistry } from 'react-native'
@@ -74,21 +89,17 @@ import App from './src/App'
 import { name as appName } from './app.json'
 
 async function enableMocking() {
-  if (!__DEV__) {
-    return
-  }
+  if (!__DEV__) return
 
-  await import('./msw.polyfills')
-  const { server } = await import('./src/mocks/server')
+  require("./msw.polyfills")
+  const { setupServer } = require("msw/native")
+  const { handlers } = require("./app/mocks/handlers")
+  const server = setupServer(...handlers)
   server.listen()
 }
 
-enableMocking().then(() => {
-  AppRegistry.registerComponent(appName, () => App)
-})
+enableMocking().then(() => registerRootComponent(App))
 ```
-
-> Don't forget to import the `msw.polyfills.js` module!
 
 ### Testing
 
