@@ -2,7 +2,10 @@
   "private": true,
   "type": "module",
   "name": "websites",
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
-    "@types/node": "^20.8.0"
+    "@types/node": "^24.0.0"
   }
 }
