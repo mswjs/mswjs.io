@@ -33,6 +33,10 @@ You can add your self-signed certificate to the system's trusted certificates. P
 
 > If encountering certificate fetching/validation issues, set the `ignore-certificate-errors` flag to "Enabled".
 
+### Chrome on Windows
+1. Open PowerShell and go to the Chrome installation path (eg `cd C:\Program Files\Google\Chrome\Application`)
+2. Run `./chrome --allow-insecure-localhost --ignore-certificate-errors https://localhost` where "localhost" is your server address. This will open your chrome browser that will now allow to register the Service Worker
+
 ### Firefox
 
 1. Open your local application served by HTTPS;
