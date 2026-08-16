@@ -1,0 +1,50 @@
+---
+order: 1
+title: Client initialization
+description: Initialize WebSocket clients for request interception.
+keywords:
+  - websocket
+  - socket.io
+  - initialization
+  - import
+---
+
+import { Warning } from '@mswjs/shared/components/react/warning'
+import { PageCard } from '@mswjs/shared/components/react/pageCard'
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline'
+
+The order in which you start MSW and load your WebSocket client matters. Follow this sequence in your application entry point:
+
+1. Start the worker and await the `worker.start()` Promise.
+2. Import the WebSocket client.
+3. Create the WebSocket connection.
+
+<Warning>
+  If Socket.IO is imported before MSW starts, matching WebSocket handlers will
+  not receive its connections.
+</Warning>
+
+```js {3,5-9}
+const { worker } = await import('./mocks/browser')
+
+await worker.start()
+
+const { io } = await import('socket.io-client')
+
+const socket = io('https://api.example.com', {
+  transports: ['websocket'],
+})
+```
+
+Use a dynamic import for the WebSocket client to preserve this initialization order.
+
+## Next steps
+
+Use the Socket.IO binding to handle Socket.IO events and messages:
+
+<PageCard
+  icon={CodeBracketSquareIcon}
+  url="/docs/websocket/bindings"
+  title="Bindings"
+  description="Mock third-party WebSocket clients like Socket.IO."
+/>
