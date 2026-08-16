@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  *,
+  ::before,
+  ::after {
+    @apply border-neutral-800;
+  }
+}
+
 @layer utilities {
   .no-emoji {
     font-family: sans-serif;

@@ -40,7 +40,7 @@ watch(
   <aside
     v-if="items.length > 0"
     data-docs-sidebar
-    class="fixed bottom-0 left-0 z-40 w-[calc(100vw-4rem)] max-w-80 -translate-x-full overflow-y-auto overscroll-contain border-r border-neutral-700 bg-neutral-900 px-8 pb-24 pt-8 opacity-0 transition min-[960px]:top-[calc(var(--site-layout-top-height)+4rem)] min-[960px]:block min-[960px]:w-[var(--vp-sidebar-width)] min-[960px]:max-w-none min-[960px]:translate-x-0 min-[960px]:opacity-100 min-[1440px]:left-[calc((100vw-var(--vp-layout-max-width))/2)]"
+    class="fixed bottom-0 left-0 z-40 w-[calc(100vw-4rem)] max-w-80 -translate-x-full overflow-y-auto overscroll-contain border-r border bg-neutral-900 px-8 pb-24 pt-8 opacity-0 transition min-[960px]:top-[calc(var(--site-layout-top-height)+4rem)] min-[960px]:block min-[960px]:w-[var(--vp-sidebar-width)] min-[960px]:max-w-none min-[960px]:translate-x-0 min-[960px]:opacity-100 min-[1440px]:left-[calc((100vw-var(--vp-layout-max-width))/2)]"
     :class="{
       'top-[calc(var(--site-layout-top-height)+7rem)] translate-x-0 opacity-100':
         open,

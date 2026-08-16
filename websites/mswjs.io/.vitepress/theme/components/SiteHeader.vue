@@ -50,30 +50,28 @@ onMounted(() => {
     :style="{ top: 'var(--site-layout-top-height)' }"
   >
     <div
-      class="relative mx-auto grid h-16 max-w-[var(--vp-layout-max-width)] grid-cols-[auto_minmax(0,1fr)] px-6 md:px-8 min-[960px]:grid-cols-[var(--vp-sidebar-width)_minmax(0,1fr)] min-[960px]:px-0"
+      class="relative mx-auto grid h-16 border-x max-w-[var(--vp-layout-max-width)] grid-cols-[auto_minmax(0,1fr)] px-6 md:px-8 min-[960px]:grid-cols-[var(--vp-sidebar-width)_minmax(0,1fr)] min-[960px]:px-0"
     >
-      <div
-        class="flex items-center min-[960px]:border-b min-[960px]:border-neutral-800 min-[960px]:px-8"
-      >
+      <div class="flex items-center">
         <a
           ref="logoLink"
           href="/"
-          class="inline-flex"
+          class="px-4 border-r h-full flex items-center justify-center"
           aria-label="Mock Service Worker home"
         >
           <img src="/logo.svg" alt="" class="h-9 w-9" />
         </a>
       </div>
 
-      <div
-        class="grid min-w-0 grid-cols-[1fr_auto] items-center gap-4 min-[960px]:pl-16 min-[960px]:pr-8"
-      >
-        <div class="justify-self-end md:justify-self-start">
+      <div class="grid min-w-0 grid-cols-[1fr_auto] items-center gap-4">
+        <div
+          class="justify-self-end md:justify-self-start border-x px-4 h-full flex items-center justify-center"
+        >
           <VPNavBarSearch class="!p-0" />
         </div>
 
         <nav
-          class="hidden grid-flow-col items-center gap-4 text-sm font-medium md:grid"
+          class="hidden grid-flow-col items-center gap-4 px-4 border-l text-sm font-medium md:grid"
           aria-label="Main navigation"
         >
           <a
