@@ -6,8 +6,9 @@
     "dev": "vitepress dev",
     "test": "node --test .vitepress/tests/*.test.mjs",
     "start": "vitepress dev",
-    "build": "vitepress build",
-    "preview": "vitepress preview"
+    "build": "pnpm api:generate && vitepress build",
+    "preview": "vitepress preview",
+    "api:generate": "node scripts/generate-api.mjs"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,9 @@
     "feed": "^6.0.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.3",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.13.0",
+    "typedoc-vitepress-theme": "^1.1.4",
     "typescript": "^5.2.2",
     "vitepress": "^1.6.4"
   }

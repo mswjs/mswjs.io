@@ -23,3 +23,7 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# Build-time API reference from the latest MSW release
+websites/mswjs.io/src/content/api/reference/
+websites/mswjs.io/src/content/api/reference.pending/

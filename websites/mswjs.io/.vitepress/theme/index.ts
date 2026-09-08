@@ -1,5 +1,6 @@
 import type { Theme } from 'vitepress'
 import Layout from './Layout.vue'
+import { preserveHmrScroll } from './hmrScroll.mjs'
 
 // Components available to Markdown content globally.
 import Action from '@mswjs/shared/theme/content/Action.vue'
@@ -14,6 +15,11 @@ import './site.css'
 
 export default {
   Layout,
+  setup() {
+    if (import.meta.hot) {
+      preserveHmrScroll(import.meta.hot)
+    }
+  },
   enhanceApp({ app }) {
     app.component('Action', Action)
     app.component('PageCard', PageCard)

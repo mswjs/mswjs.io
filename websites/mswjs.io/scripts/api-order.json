@@ -1,0 +1,14 @@
+{
+  "API": [
+    "http",
+    "graphql",
+    "ws",
+    "HttpResponse",
+    "delay",
+    "passthrough",
+    "bypass"
+  ],
+  "Browser": ["setupWorker", "SetupWorkerApi"],
+  "Node.js": ["setupServer", "SetupServerApi"],
+  "Experimental": ["defineNetwork"]
+}

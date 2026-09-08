@@ -2,6 +2,7 @@ import {
   getScrollOffset,
   onContentUpdated,
   useData,
+  useRoute,
 } from 'vitepress'
 import {
   onBeforeUnmount,
@@ -137,13 +138,17 @@ function buildOutlineTree(
 
 export function useDocumentOutline() {
   const { frontmatter, theme } = useData<DefaultTheme.Config>()
+  const route = useRoute()
   const items = shallowRef<Array<DocumentOutlineItem>>([])
   const activeLink = ref<string | null>(null)
   let headings: Array<FlatDocumentHeading> = []
   let scheduledFrame: number | null = null
 
   const refresh = () => {
-    const outline = frontmatter.value.outline ?? theme.value.outline
+    const outline: DefaultTheme.Config['outline'] =
+      route.path === '/api' || route.path.startsWith('/api/')
+        ? [2, 3]
+        : frontmatter.value.outline ?? theme.value.outline
     headings = collectHeadings(outline)
     items.value = buildOutlineTree(headings)
     updateActiveLink()

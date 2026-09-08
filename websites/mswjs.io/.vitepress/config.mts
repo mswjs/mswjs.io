@@ -2,6 +2,8 @@ import { localSearchRanking } from './localSearchRanking'
 import { splitSearchSections } from '../../shared/searchSections'
 import { createExternalLinkChecker } from '../../shared/externalLinks'
 import * as path from 'node:path'
+import { existsSync, readFileSync } from 'node:fs'
+import type { DefaultTheme } from 'vitepress'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
@@ -22,7 +24,7 @@ const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
 const GOOGLE_FONTS_STYLESHEET_URL =
   'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&display=swap&subset=latin'
 
-const apiSidebar = buildDocsSidebar(
+const handwrittenApiSidebar = buildDocsSidebar(
   path.resolve(
     path.dirname(fileURLToPath(import.meta.url)),
     '../src/content/api',
@@ -37,7 +39,51 @@ const apiSidebar = buildDocsSidebar(
   'API',
 )
 
-const apiEntryPath = apiSidebar[0].items?.[0].link ?? '/api/http'
+const generatedSidebarPath = fileURLToPath(
+  new URL('../src/content/api/reference/typedoc-sidebar.json', import.meta.url),
+)
+const generatedApiSidebar: Array<DefaultTheme.SidebarItem> = existsSync(
+  generatedSidebarPath,
+)
+  ? JSON.parse(readFileSync(generatedSidebarPath, 'utf8'))
+  : []
+const apiSidebar =
+  generatedApiSidebar.length > 0
+    ? [
+        ...generatedApiSidebar,
+        ...handwrittenApiSidebar.filter((section) => {
+          return section.text === 'CLI'
+        }),
+      ]
+    : handwrittenApiSidebar
+
+function firstPage(items: Array<DefaultTheme.SidebarItem>): string | undefined {
+  for (const item of items) {
+    if (item.link) {
+      return item.link
+    }
+    const childLink = item.items && firstPage(item.items)
+    if (childLink) {
+      return childLink
+    }
+  }
+}
+
+const apiEntryPath = firstPage(apiSidebar) ?? '/api/http'
+const apiReleasePath = fileURLToPath(
+  new URL('../src/content/api/reference/release.json', import.meta.url),
+)
+const apiRelease: unknown = existsSync(apiReleasePath)
+  ? JSON.parse(readFileSync(apiReleasePath, 'utf8'))
+  : undefined
+const apiReleaseTag =
+  generatedApiSidebar.length > 0 &&
+  typeof apiRelease === 'object' &&
+  apiRelease !== null &&
+  'tag' in apiRelease &&
+  typeof apiRelease.tag === 'string'
+    ? apiRelease.tag
+    : undefined
 
 function redirectApiIndex(
   request: IncomingMessage,
@@ -63,7 +109,7 @@ export default defineConfig({
   description: SITE_DESCRIPTION,
   lang: 'en',
   srcDir: 'src/content',
-  srcExclude: ['docs/shared/**'],
+  srcExclude: ['docs/shared/**', 'api/reference.pending/**'],
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: false,
@@ -97,7 +143,10 @@ export default defineConfig({
     ],
     // Favicon.
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' }],
-    ['link', { rel: 'icon', type: 'image/png', sizes: 'any', href: '/icon.png' }],
+    [
+      'link',
+      { rel: 'icon', type: 'image/png', sizes: 'any', href: '/icon.png' },
+    ],
     ['link', { rel: 'apple-touch-icon', href: '/icon-apple.png' }],
     ['link', { rel: 'manifest', href: '/manifest.json' }],
   ],
@@ -142,6 +191,7 @@ export default defineConfig({
   },
 
   themeConfig: {
+    apiReleaseTag,
     logo: '/logo.svg',
     siteTitle: false,
 
@@ -245,7 +295,10 @@ export default defineConfig({
           'meta',
           { 'http-equiv': 'refresh', content: `0;url=${frontmatter.redirect}` },
         ],
-        ['link', { rel: 'canonical', href: `${SITE_URL}${frontmatter.redirect}` }],
+        [
+          'link',
+          { rel: 'canonical', href: `${SITE_URL}${frontmatter.redirect}` },
+        ],
       ]
     }
 
