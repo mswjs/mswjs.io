@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vitepress dev",
+    "test": "node --test .vitepress/tests/*.test.mjs",
     "start": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview"

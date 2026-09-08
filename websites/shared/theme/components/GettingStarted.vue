@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { CommandLineIcon } from '@heroicons/vue/24/outline'
 import Container from './Container.vue'
-import PageHeaderSubtitle from './PageHeaderSubtitle.vue'
 import IconBlock from './IconBlock.vue'
 
 defineProps<{
@@ -20,7 +19,9 @@ defineProps<{
 
       <div class="max-w-2xl mx-auto">
         <h2 class="mt-12 mb-8 capitalize">{{ title }}</h2>
-        <PageHeaderSubtitle class="text-left md:text-center"><slot /></PageHeaderSubtitle>
+        <p class="mx-auto text-xl leading-8 font-medium text-neutral-400 text-balance text-left md:text-center">
+          <slot />
+        </p>
 
         <a
           :href="linkUrl"

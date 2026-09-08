@@ -5,6 +5,6 @@
       <p class="mb-1 text-lg font-bold leading-5">Porcelain Mug</p>
       <p class="text-neutral-400">$9.99</p>
     </div>
-    <button class="bg-transparent border border-primary text-primary font-semibold rounded-full px-4 py-1 pointer-events-none">Buy</button>
+    <button class="bg-primary/10 border border-primary text-primary font-semibold rounded-full px-4 py-1 pointer-events-none">Buy</button>
   </div>
 </template>

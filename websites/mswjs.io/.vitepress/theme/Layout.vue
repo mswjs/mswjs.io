@@ -20,7 +20,6 @@ import DocumentLayout from './components/DocumentLayout.vue'
 import NotFoundPage from './components/NotFoundPage.vue'
 import { useDocumentOutline } from './composables/useDocumentOutline'
 import { useSidebarAutoScroll } from '@mswjs/shared/theme/composables/useSidebarAutoScroll'
-import { useOutlineAutoScroll } from '@mswjs/shared/theme/composables/useOutlineAutoScroll'
 
 const { page, frontmatter } = useData<DefaultTheme.Config>()
 const route = useRoute()
@@ -107,10 +106,6 @@ watchEffect(() => {
   const overlaysOpen =
     navigationOpen.value || sidebarOpen.value
   document.body.style.overflow = overlaysOpen ? 'hidden' : ''
-  document.documentElement.style.setProperty(
-    '--site-layout-top-height',
-    isDocumentationPage.value ? '36px' : '0px',
-  )
 })
 
 onMounted(() => {
@@ -126,7 +121,6 @@ onBeforeUnmount(() => {
 })
 
 useSidebarAutoScroll()
-useOutlineAutoScroll()
 </script>
 
 <template>
@@ -137,24 +131,6 @@ useOutlineAutoScroll()
     class="flex min-h-screen flex-col bg-neutral-900 pt-[var(--site-layout-top-height)]"
     :class="frontmatter.pageClass"
   >
-    <aside
-      v-if="isDocumentationPage"
-      class="fixed inset-x-0 top-0 z-[60] flex h-9 items-center justify-center border-b border-neutral-700 bg-neutral-950 px-5 text-center text-sm font-medium text-neutral-200"
-    >
-      <p>
-        You are viewing the docs for <strong>MSW 2.0</strong>. To
-        access the 1.x docs
-        <a
-          href="https://v1.mswjs.io/"
-          class="text-primary hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          click here
-        </a>.
-      </p>
-    </aside>
-
     <a
       href="#main-content"
       class="fixed left-4 top-4 z-[70] -translate-y-24 rounded bg-neutral-800 px-4 py-2 font-medium text-white transition-transform focus:translate-y-0"
@@ -171,7 +147,7 @@ useOutlineAutoScroll()
 
     <div class="flex-1 min-[960px]:pt-16">
       <LocalNav
-        v-if="!isStandalonePage && !page.isNotFound"
+        v-if="!isStandalonePage && !isBlogPost && !page.isNotFound"
         :has-sidebar="hasDocumentationSidebar"
         :sidebar-open="sidebarOpen"
         :outline-items="documentOutline.items.value"
@@ -180,8 +156,9 @@ useOutlineAutoScroll()
       />
 
       <div
-        class="mx-auto w-full max-w-[var(--vp-layout-max-width)]"
+        class="w-full"
         :class="{
+          'mx-auto max-w-[var(--vp-layout-max-width)]': !isStandalonePage,
           'min-[960px]:pl-[var(--vp-sidebar-width)]':
             hasDocumentationSidebar,
         }"
@@ -213,9 +190,10 @@ useOutlineAutoScroll()
     />
 
     <div
-      class="mx-auto w-full max-w-[var(--vp-layout-max-width)]"
+      v-if="route.path !== '/docs' && !route.path.startsWith('/docs/')"
+      class="w-full"
       :class="{
-        'min-[960px]:pl-[var(--vp-sidebar-width)]':
+        'mx-auto max-w-[var(--vp-layout-max-width)] min-[960px]:pl-[var(--vp-sidebar-width)]':
           hasDocumentationSidebar,
       }"
     >

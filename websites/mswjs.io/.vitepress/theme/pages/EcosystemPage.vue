@@ -29,7 +29,7 @@ import sourceLogo from '../../../../source.mswjs.io/src/images/source.svg'
         />
         <div>
           <h2 class="mt-7">Data</h2>
-          <p class="text-lg text-neutral-400 text-pretty">
+          <p class="text-lg leading-tight text-neutral-400 text-pretty">
             Data modeling and relation library for testing JavaScript
             applications.
           </p>
@@ -48,7 +48,7 @@ import sourceLogo from '../../../../source.mswjs.io/src/images/source.svg'
         <IconBlock :image-url="sourceLogo" alt="Source logo" />
         <div>
           <h2 class="mt-7">Source</h2>
-          <p class="text-lg text-neutral-400 text-pretty">
+          <p class="text-lg leading-tight text-neutral-400 text-pretty">
             Generate request handler from various sources, like HAR files or
             OpenAPI specifications.
           </p>

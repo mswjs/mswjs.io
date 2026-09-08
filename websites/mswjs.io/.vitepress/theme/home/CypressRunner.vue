@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-neutral-700 rounded-lg overflow-hidden ml-auto">
+  <div class="cypress-runner border border-neutral-700 rounded-lg overflow-hidden ml-auto">
     <ul class="p-4 border-l-4 border-green-600">
       <li>
         <p class="text-lg font-bold">Product detail page</p>

@@ -32,7 +32,7 @@ watch(
   <button
     v-if="open"
     type="button"
-    class="fixed inset-0 z-40 bg-black/60 min-[960px]:hidden"
+    class="docs-sidebar-mask fixed inset-0 z-40 bg-black/60 min-[960px]:hidden"
     aria-label="Close documentation navigation"
     @click="$emit('close')"
   />

@@ -273,8 +273,11 @@ export function buildDocsSidebar(
   docsDirectory: string,
   groups: Array<[title: string, pattern: string]>,
   basePath = '/docs',
+  rootSectionTitle?: string,
 ): Array<DefaultTheme.SidebarItem> {
-  const files = collectDocsFiles(docsDirectory)
+  const files = collectDocsFiles(docsDirectory).filter((file) => {
+    return !rootSectionTitle || file.relativePath !== 'index.md'
+  })
   const builder = createNavTreeBuilder(files, basePath)
 
   const rootPages = builder.get('*.md')
@@ -289,10 +292,10 @@ export function buildDocsSidebar(
   )
 
   return [
-    // Root-level pages live in a single untitled section so
-    // that pages with children (e.g. "Migrations") stay inline
-    // with their siblings instead of forming their own section.
+    // Root pages share one section. A named section replaces its index
+    // page; otherwise that page remains alongside the other root pages.
     {
+      text: rootSectionTitle,
       items: rootPages.map(toDefaultThemeItem),
     },
     ...tree.map(toDefaultThemeItem),

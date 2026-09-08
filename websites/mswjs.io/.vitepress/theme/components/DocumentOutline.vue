@@ -27,7 +27,7 @@ const title = computed(() => {
   <nav
     v-if="props.items.length > 0"
     data-document-outline
-    class="min-h-0 overflow-y-auto text-[13px] font-medium"
+    class="min-h-0 overflow-y-auto text-sm font-medium"
     :aria-label="title"
   >
     <h2 class="m-0 text-sm font-semibold leading-8 tracking-normal text-white">

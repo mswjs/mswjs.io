@@ -57,7 +57,7 @@ Unlike [`passthrough()`](/api/passthrough), the `bypass()` function _results in 
 
 ## Related materials
 
-<div class="md:grid md:grid-cols-2 md:gap-x-5">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="CubeTransparentIcon"
     url="/api/passthrough"

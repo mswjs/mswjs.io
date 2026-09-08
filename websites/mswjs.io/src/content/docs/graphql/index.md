@@ -36,7 +36,7 @@ Here are some of the benefits when using MSW for mocking GraphQL:
 
 The following sections will guide you through everything you need to know about intercepting and mocking GraphQL APIs:
 
-<div class="grid md:grid-cols-2 gap-x-8">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="GraphQLIcon"
     url="/docs/graphql/intercepting-operations/"

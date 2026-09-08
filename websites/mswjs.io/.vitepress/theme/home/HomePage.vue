@@ -64,7 +64,7 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
         <div class="flex items-center">
           <EggheadIcon
             class="absolute w-8"
-            style="filter: drop-shadow(2px 6px 0 #171717)"
+            style="filter: drop-shadow(2px 6px 0 var(--vp-c-bg))"
           />
           <span class="pl-[44px]">
             Learn mocking WebSockets in our new course!
@@ -210,7 +210,7 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           </div>
           <div class="mt-8 lg:text-right">
             <p class="text-xl font-bold">Local development</p>
-            <p class="mt-2 ml-auto text-lg text-neutral-400 lg:max-w-lg">
+            <p class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg">
               Create, change, and debug fast by augmenting existing APIs—both
               third-party and local—or designing them as you go.
             </p>
@@ -226,7 +226,7 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           <VitestRunner />
           <div class="mt-8">
             <p class="text-xl font-bold">Integration tests</p>
-            <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
+            <p class="mt-2 text-lg leading-tight text-neutral-400 lg:max-w-lg">
               Test happy paths and override network behavior on a per-test basis
               to test even the most trickest of edge cases.
             </p>
@@ -237,7 +237,7 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           <CypressRunner />
           <div class="mt-8 lg:text-right">
             <p class="text-xl font-bold">End-to-end tests</p>
-            <p class="mt-2 ml-auto text-lg text-neutral-400 lg:max-w-lg">
+            <p class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg">
               Take any HTTP call out of your test's equation and focus on the
               user experience, mocking local or external APIs.
             </p>
@@ -248,7 +248,7 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           <StorybookShowcase />
           <div class="mt-8">
             <p class="text-xl font-bold">Storybook showcase</p>
-            <p class="mt-2 text-lg text-neutral-400 lg:max-w-lg">
+            <p class="mt-2 text-lg leading-tight text-neutral-400 lg:max-w-lg">
               Emulate the precise network state to share how your components
               handle it with the entire team.
             </p>
@@ -261,12 +261,12 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           <em class="not-italic text-primary">ever will be</em>
         </UppercaseLabel>
         <div class="inline-grid items-center grid-cols-6 gap-10 text-neutral-500">
-          <ReactIcon class="w-10 text-white" />
-          <VueIcon class="w-10 text-white" />
-          <AngularIcon class="w-10 text-white" />
-          <SvelteIcon class="w-10 text-white" />
-          <NextJsIcon class="w-10 text-white" />
-          <RemixIcon class="w-8 text-white" />
+          <ReactIcon class="w-10" />
+          <VueIcon class="w-10" />
+          <AngularIcon class="w-10" />
+          <SvelteIcon class="w-10" />
+          <NextJsIcon class="w-10" />
+          <RemixIcon class="w-8" />
         </div>
       </footer>
     </Container>

@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title: Vitest
 description: Integrate Mock Service Worker with Vitest.
 keywords:
@@ -26,7 +26,7 @@ We recommend integrating MSW with Vitest Browser Mode by [extending the test con
 
 ::: code-group
 
-```ts [test-extend.ts] {5-22}
+```ts [test-extend.ts] {5-21}
 import { test as testBase } from 'vitest'
 import { worker } from './mocks/browser.js'
 

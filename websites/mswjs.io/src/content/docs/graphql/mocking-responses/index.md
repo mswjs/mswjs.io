@@ -65,7 +65,7 @@ api.query<User>('GetUser', () => {
 
 There is a lot you can do when it comes to mocking GraphQL APIs. Please take a look at the collection of recipes listed in this section. Here are a few noteworthy ones:
 
-<div class="grid md:grid-cols-2 gap-x-8">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="GraphQLIcon"
     url="/docs/graphql/mocking-responses/errors/"

@@ -32,7 +32,7 @@ By defining GraphQL links, you tell MSW to take the server endpoint into account
 
 The library supports intercepting GraphQL queries and mutations (subscriptions support coming soon). Learn more about intercepting the operation kind you need:
 
-<div class="md:grid md:grid-cols-2 md:gap-x-5">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="GraphQLIcon"
     url="/docs/graphql/intercepting-operations/queries"

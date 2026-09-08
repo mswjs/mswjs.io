@@ -29,7 +29,6 @@ const feedbackPageTitle = computed(() => {
   <div
     class="w-full px-6 pb-24 md:px-8 md:pb-32"
     :class="{
-      'pt-2': blogPost,
       'pt-8 md:pt-12': !blogPost,
       'min-[960px]:pl-16 min-[960px]:pr-8': documentationPage,
     }"
@@ -39,7 +38,7 @@ const feedbackPageTitle = computed(() => {
       :class="{
         'lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-16':
           documentationPage,
-        'max-w-[1104px] min-[1280px]:grid-cols-[minmax(0,784px)_14rem] min-[1280px]:gap-16':
+        'max-w-[784px]':
           !documentationPage,
       }"
     >

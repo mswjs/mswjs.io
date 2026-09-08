@@ -40,7 +40,7 @@ Here are some of the benefits of using MSW for mocking HTTP APIs:
 
 The following sections will guide you through everything you need to know about intercepting and mocking HTTP requests:
 
-<div class="grid md:grid-cols-2 gap-x-8">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="ServerIcon"
     url="/docs/http/intercepting-requests/"

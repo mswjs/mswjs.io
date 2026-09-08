@@ -51,6 +51,13 @@
   margin-top: 16px;
 }
 
+/* File tabs and their code share one outline and one separator. */
+.vp-doc .vp-code-group .tabs {
+  border: 1px solid var(--vp-c-border);
+  border-bottom: 0;
+  box-shadow: none;
+}
+
 /* Original, more compact code block padding. */
 .vp-doc div[class*='language-'] pre {
   padding-top: 8px;
@@ -104,6 +111,11 @@
 
 .vp-doc .custom-block :not(pre) > code {
   border-color: rgb(0 0 0 / 30%);
+}
+
+/* Linked tokens follow the link, including inside themed callouts. */
+.vp-doc a > code {
+  color: inherit !important;
 }
 
 /*
@@ -269,7 +281,8 @@
 }
 
 .vp-doc .page-card .page-card-title {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  line-height: 1.25;
 }
 
 .vp-doc .page-card .page-card-description {
@@ -278,4 +291,12 @@
 
 .vp-doc .egghead-banner h4 {
   margin: 0 0 8px;
+}
+
+.page-card-grid > .page-card {
+  margin-block: 0;
+}
+
+.page-card-grid {
+  margin-block: 20px;
 }

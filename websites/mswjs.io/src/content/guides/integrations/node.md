@@ -97,7 +97,7 @@ Get to the state of your application that performs any HTTP requests and confirm
 
 ## Related materials
 
-<div class="md:grid md:grid-cols-2 md:gap-x-5">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="NodejsIcon"
     url="/docs/http"

@@ -105,7 +105,7 @@ If you don't see this message or see an error instead, please follow this page f
 
 ## Related materials
 
-<div class="md:grid md:grid-cols-2 md:gap-x-5">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="NodejsIcon"
     url="/docs/http"

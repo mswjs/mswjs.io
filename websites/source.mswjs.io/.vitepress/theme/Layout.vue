@@ -5,7 +5,6 @@ import { useData, useRoute } from 'vitepress'
 import SiteFooter from '@mswjs/shared/theme/components/SiteFooter.vue'
 import FooterSection from '@mswjs/shared/theme/components/FooterSection.vue'
 import DocsPageHeader from '@mswjs/shared/theme/docs/DocsPageHeader.vue'
-import { useOutlineAutoScroll } from '@mswjs/shared/theme/composables/useOutlineAutoScroll'
 import DocsSidebarLinks from '@mswjs/shared/theme/docs/DocsSidebarLinks.vue'
 import DocsSidebarPartners from '@mswjs/shared/theme/docs/DocsSidebarPartners.vue'
 import Ads from '@mswjs/shared/theme/docs/Ads.vue'
@@ -13,7 +12,6 @@ import Ads from '@mswjs/shared/theme/docs/Ads.vue'
 const { page, theme } = useData()
 const route = useRoute()
 
-useOutlineAutoScroll()
 
 const isDocsPage = computed(() => {
   return route.path.startsWith('/docs') && !page.value.isNotFound

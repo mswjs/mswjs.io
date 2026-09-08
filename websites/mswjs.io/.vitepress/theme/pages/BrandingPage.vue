@@ -65,7 +65,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
         <section class="flex flex-col gap-10">
           <div>
             <h2>Background</h2>
-            <p>
+            <p class="text-base">
               Keep the dark background of the logo to create a proper contrast.
             </p>
           </div>
@@ -111,7 +111,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
         <section class="flex flex-col gap-10">
           <div>
             <h2>Primary color</h2>
-            <p>
+            <p class="text-base">
               Keep the orange (<code class="text-primary">#FF6A33</code>) fill
               color for the arrows.
             </p>
@@ -158,7 +158,7 @@ import usageGridRaw from '../../../src/images/usage-grid.svg?raw'
         <section class="flex flex-col gap-10">
           <div>
             <h2>Monochrome variant</h2>
-            <p>
+            <p class="text-base">
               Use a designated monochrome variant for the black-and-white logo.
             </p>
           </div>

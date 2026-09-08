@@ -3,6 +3,16 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/api",
+      "destination": "/api/http",
+      "statusCode": 302
+    },
+    {
+      "source": "/api/",
+      "destination": "/api/http",
+      "statusCode": 302
+    },
+    {
       "source": "/examples",
       "destination": "https://github.com/mswjs/examples",
       "statusCode": 301

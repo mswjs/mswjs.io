@@ -7,7 +7,7 @@ standalone: true
 
 Our mission is to help you describe the network you want. With that in mind, we have prepared a set of best practices you can employ to improve your network descriptions.
 
-<div class="grid md:grid-cols-2 md:gap-x-8">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="CommandLineIcon"
     url="/guides/best-practices/structuring-handlers"

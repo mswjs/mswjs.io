@@ -1,4 +1,5 @@
 import * as path from 'node:path'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
 import { buildDocsSidebar } from '../../shared/sidebar'
@@ -7,13 +8,48 @@ import {
   wordHighlightMetaPlugin,
 } from '../../shared/codeHighlight'
 import { buildRssFeed } from './rss'
+import cloudflareLight from './themes/cloudflare-light.json'
+import cloudflareDark from './themes/cloudflare-dark.json'
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from './consts'
 
 const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID || ''
 const ALGOLIA_SEARCH_API_KEY = process.env.PUBLIC_ALGOLIA_SEARCH_API_KEY || ''
 const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
 const GOOGLE_FONTS_STYLESHEET_URL =
-  'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&family=Geist+Mono:ital,wght@0,400..700;1,400..700&display=swap&subset=latin'
+  'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&display=swap&subset=latin'
+
+const apiSidebar = buildDocsSidebar(
+  path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    '../src/content/api',
+  ),
+  [
+    ['CLI', 'cli/**/*.md'],
+    ['Browser', 'setup-worker/**/*.md'],
+    ['Node.js', 'setup-server/**/*.md'],
+    ['Experimental', 'experimental/**/*.md'],
+  ],
+  '/api',
+  'API',
+)
+
+const apiEntryPath = apiSidebar[0].items?.[0].link ?? '/api/http'
+
+function redirectApiIndex(
+  request: IncomingMessage,
+  response: ServerResponse,
+  next: () => void,
+): void {
+  const url = new URL(request.url ?? '/', 'http://localhost')
+
+  if (url.pathname === '/api' || url.pathname === '/api/') {
+    response.writeHead(302, { Location: `${apiEntryPath}${url.search}` })
+    response.end()
+    return
+  }
+
+  next()
+}
 
 export default defineConfig({
   title: SITE_TITLE,
@@ -25,7 +61,7 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: true,
-  appearance: 'force-dark',
+  appearance: true,
   sitemap: {
     hostname: SITE_URL,
   },
@@ -61,7 +97,10 @@ export default defineConfig({
   ],
 
   markdown: {
-    theme: 'github-dark',
+    theme: {
+      light: { ...cloudflareLight, type: 'light' },
+      dark: { ...cloudflareDark, type: 'dark' },
+    },
     lineNumbers: true,
     codeTransformers: [wordHighlightTransformer()],
     config(md) {
@@ -70,6 +109,17 @@ export default defineConfig({
   },
 
   vite: {
+    plugins: [
+      {
+        name: 'api-index-redirect',
+        configureServer(server) {
+          server.middlewares.use(redirectApiIndex)
+        },
+        configurePreviewServer(server) {
+          server.middlewares.use(redirectApiIndex)
+        },
+      },
+    ],
     esbuild: {
       jsx: 'automatic',
       jsxImportSource: 'react',
@@ -89,9 +139,13 @@ export default defineConfig({
     nav: [
       { text: 'Docs', link: '/docs/', activeMatch: '^/docs' },
       { text: 'Guides', link: '/guides/', activeMatch: '^/guides' },
-      { text: 'API', link: '/api/', activeMatch: '^/api' },
-      { text: 'Ecosystem', link: '/ecosystem', activeMatch: '^/ecosystem' },
+      { text: 'API', link: apiEntryPath, activeMatch: '^/api' },
       { text: 'Blog', link: '/blog/', activeMatch: '^/blog' },
+    ],
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/mswjs/msw' },
+      { icon: 'twitter', link: 'https://twitter.com/ApiMocking' },
     ],
 
     sidebar: {
@@ -119,19 +173,7 @@ export default defineConfig({
         ],
         '/guides',
       ),
-      '/api/': buildDocsSidebar(
-        path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          '../src/content/api',
-        ),
-        [
-          ['CLI', 'cli/**/*.md'],
-          ['Browser', 'setup-worker/**/*.md'],
-          ['Node.js', 'setup-server/**/*.md'],
-          ['Experimental', 'experimental/**/*.md'],
-        ],
-        '/api',
-      ),
+      '/api/': apiSidebar,
     },
 
     outline: {
@@ -171,9 +213,25 @@ export default defineConfig({
     ads: Boolean(process.env.ADS),
   },
 
+  transformPageData(pageData) {
+    if (pageData.relativePath === 'api/index.md') {
+      pageData.frontmatter.redirect = apiEntryPath
+    }
+  },
+
   transformHead(context) {
     const { pageData } = context
     const frontmatter = pageData.frontmatter
+
+    if (frontmatter.redirect) {
+      return [
+        [
+          'meta',
+          { 'http-equiv': 'refresh', content: `0;url=${frontmatter.redirect}` },
+        ],
+        ['link', { rel: 'canonical', href: `${SITE_URL}${frontmatter.redirect}` }],
+      ]
+    }
 
     const pagePath = pageData.relativePath
       .replace(/(^|\/)index\.md$/, '$1')

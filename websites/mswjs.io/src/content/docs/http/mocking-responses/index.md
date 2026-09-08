@@ -97,7 +97,7 @@ http.get('/resource', () => {
 
 Please explore the "Mocking HTTP" section for more recipes and advanced mocking scenarios. Here are a few noteworthy ones:
 
-<div class="grid md:grid-cols-2 gap-x-8">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="solid/ServerIcon"
     url="/docs/http/mocking-responses/error-responses"

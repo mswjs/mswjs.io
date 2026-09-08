@@ -7,7 +7,7 @@ description: Integrate Mock Service Worker and apply it effectively in your proj
 Use these guides to integrate MSW with your environment, structure maintainable
 network behavior, and solve common mocking scenarios.
 
-<div class="grid md:grid-cols-2 md:gap-x-8">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="CommandLineIcon"
     url="/guides/integrations/browser"

@@ -7,7 +7,7 @@
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g
         transform="translate(168.000000, 50.000000)"
-        fill="#FFFFFF"
+        fill="currentColor"
         fill-rule="nonzero"
       >
         <path

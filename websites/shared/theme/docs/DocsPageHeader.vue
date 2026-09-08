@@ -14,7 +14,7 @@ const pageTitle = computed(() => {
     <h1 class="docs-page-title mb-3">{{ pageTitle }}</h1>
     <p
       v-if="frontmatter.description"
-      class="mb-6 text-lg font-medium text-neutral-400"
+      class="mb-6 text-lg leading-tight font-medium text-neutral-400"
     >
       {{ frontmatter.description }}
     </p>

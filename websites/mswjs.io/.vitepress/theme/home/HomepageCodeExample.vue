@@ -12,93 +12,93 @@ to keep the rendered output identical to the React original. -->
     data-theme="default"
   ><code data-language="js" data-theme="default" style="display:grid"
     ><span data-line=""
-      ><span style="color:#F97583">import</span
-      ><span style="color:#E1E4E8"> { http, HttpResponse } </span
-      ><span style="color:#F97583">from</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#9ECBFF">'msw'</span
+      ><span style="color:var(--site-code-keyword)">import</span
+      ><span style="color:var(--site-code-text)"> { http, HttpResponse } </span
+      ><span style="color:var(--site-code-keyword)">from</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-string)">'msw'</span
     ></span
     ><span data-line=""
-      ><span style="color:#F97583">import</span
-      ><span style="color:#E1E4E8"> { setupWorker } </span
-      ><span style="color:#F97583">from</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#9ECBFF">'msw/browser'</span
-    ></span
-    ><span data-line=""> </span
-    ><span data-line=""
-      ><span style="color:#6A737D">// Describe the network.</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#F97583">const</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#79B8FF">handlers</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#F97583">=</span
-      ><span style="color:#E1E4E8"> [</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">  http.</span
-      ><span style="color:#B392F0">get</span
-      ><span style="color:#E1E4E8">(</span
-      ><span style="color:#9ECBFF">'https://acme.com/product/:id'</span
-      ><span style="color:#E1E4E8">, ({ </span
-      ><span style="color:#FFAB70">params</span
-      ><span style="color:#E1E4E8"> }) </span
-      ><span style="color:#F97583">=&gt;</span
-      ><span style="color:#E1E4E8"> {</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">  </span
-      ><span style="color:#F97583">  return</span
-      ><span style="color:#E1E4E8"> HttpResponse.</span
-      ><span style="color:#B392F0">json</span
-      ><span style="color:#E1E4E8">({</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">      id: params.id,</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">      title: </span
-      ><span style="color:#9ECBFF">'Porcelain Mug'</span
-      ><span style="color:#E1E4E8">,</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">      price: </span
-      ><span style="color:#79B8FF">9.99</span
-      ><span style="color:#E1E4E8">,</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">    })</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">  }),</span
-    ></span
-    ><span data-line=""
-      ><span style="color:#E1E4E8">]</span
+      ><span style="color:var(--site-code-keyword)">import</span
+      ><span style="color:var(--site-code-text)"> { setupWorker } </span
+      ><span style="color:var(--site-code-keyword)">from</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-string)">'msw/browser'</span
     ></span
     ><span data-line=""> </span
     ><span data-line=""
-      ><span style="color:#6A737D">// Enable API mocking anywhere.</span
+      ><span style="color:var(--site-code-comment)">// Describe the network.</span
     ></span
     ><span data-line=""
-      ><span style="color:#F97583">const</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#79B8FF">worker</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#F97583">=</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#B392F0">setupWorker</span
-      ><span style="color:#E1E4E8">(</span
-      ><span style="color:#F97583">...</span
-      ><span style="color:#E1E4E8">handlers)</span
+      ><span style="color:var(--site-code-keyword)">const</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-constant)">handlers</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-keyword)">=</span
+      ><span style="color:var(--site-code-text)"> [</span
     ></span
     ><span data-line=""
-      ><span style="color:#F97583">await</span
-      ><span style="color:#E1E4E8"> </span
-      ><span style="color:#E1E4E8">worker.</span
-      ><span style="color:#B392F0">start</span
-      ><span style="color:#E1E4E8">()</span
+      ><span style="color:var(--site-code-text)">  http.</span
+      ><span style="color:var(--site-code-function)">get</span
+      ><span style="color:var(--site-code-text)">(</span
+      ><span style="color:var(--site-code-string)">'https://acme.com/product/:id'</span
+      ><span style="color:var(--site-code-text)">, ({ </span
+      ><span style="color:var(--site-code-parameter)">params</span
+      ><span style="color:var(--site-code-text)"> }) </span
+      ><span style="color:var(--site-code-keyword)">=&gt;</span
+      ><span style="color:var(--site-code-text)"> {</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-text)">  </span
+      ><span style="color:var(--site-code-keyword)">  return</span
+      ><span style="color:var(--site-code-text)"> HttpResponse.</span
+      ><span style="color:var(--site-code-function)">json</span
+      ><span style="color:var(--site-code-text)">({</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-text)">      id: params.id,</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-text)">      title: </span
+      ><span style="color:var(--site-code-string)">'Porcelain Mug'</span
+      ><span style="color:var(--site-code-text)">,</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-text)">      price: </span
+      ><span style="color:var(--site-code-constant)">9.99</span
+      ><span style="color:var(--site-code-text)">,</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-text)">    })</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-text)">  }),</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-text)">]</span
+    ></span
+    ><span data-line=""> </span
+    ><span data-line=""
+      ><span style="color:var(--site-code-comment)">// Enable API mocking anywhere.</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-keyword)">const</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-constant)">worker</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-keyword)">=</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-function)">setupWorker</span
+      ><span style="color:var(--site-code-text)">(</span
+      ><span style="color:var(--site-code-keyword)">...</span
+      ><span style="color:var(--site-code-text)">handlers)</span
+    ></span
+    ><span data-line=""
+      ><span style="color:var(--site-code-keyword)">await</span
+      ><span style="color:var(--site-code-text)"> </span
+      ><span style="color:var(--site-code-text)">worker.</span
+      ><span style="color:var(--site-code-function)">start</span
+      ><span style="color:var(--site-code-text)">()</span
     ></span
   ></code></pre>
 </template>

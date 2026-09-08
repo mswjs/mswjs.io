@@ -14,7 +14,8 @@ interface WordHighlight {
   id?: string
 }
 
-const WORD_HIGHLIGHT_REGEXP = /\/((?:\\.|[^/\\])+)\/([\d,]+)?(?:#(\S+))?/g
+// Word markers start a metadata token; slashes inside file paths do not.
+const WORD_HIGHLIGHT_REGEXP = /(?<!\S)\/((?:\\.|[^/\\])+)\/([\d,]+)?(?:#(\S+))?/g
 
 /**
  * Word-highlight specs extracted from fence meta, keyed by the

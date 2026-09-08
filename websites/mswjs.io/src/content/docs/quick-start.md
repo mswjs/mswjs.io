@@ -8,9 +8,21 @@ This guide will take you through the barebones setup of MSW for intercepting HTT
 
 ## 1. Installation
 
+<div class="copyable-code">
+
+::: code-group
+
+```sh [npm]
+npm install msw --save-dev
 ```
-npm i msw --save-dev
+
+```sh [pnpm]
+pnpm add msw --save-dev
 ```
+
+:::
+
+</div>
 
 ## 2. Request handlers
 
@@ -130,7 +142,7 @@ For reference, we've prepared a curated collection of usage examples:
 
 This guide is a good starting point but you can do so much more with the library. We highly encourage you to explore this documentation to learn more about the capabilities of MSW. Here are some great topics to follow up on:
 
-<div class="md:grid md:grid-cols-2 md:gap-x-5">
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="Bars2Icon"
     url="/guides/integrations/browser"

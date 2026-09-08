@@ -13,7 +13,7 @@ const currentYear = new Date().getFullYear()
 
 <template>
   <footer
-    class="footer py-10 text-sm font-medium text-neutral-400"
+    class="footer py-20 text-sm font-medium text-neutral-400"
     :class="{ 'border-t border-neutral-800': !compact }"
   >
     <Container :compact="compact">
