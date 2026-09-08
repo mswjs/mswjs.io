@@ -27,7 +27,7 @@ sse<EventMap, Params>(predicate: Path, resolver: ServerSentEventResolver<EventMa
 
 ## Resolver argument
 
-In addition to all the arguments exposed by the [`http`](/api/http/#resolver-argument) namespace, the `sse` handler has the following response resolver properties:
+In addition to all the arguments exposed by the [`http`](/api/http#resolver-argument) namespace, the `sse` handler has the following response resolver properties:
 
 | Name     | Type                                              | Description                                               |
 | -------- | ------------------------------------------------- | --------------------------------------------------------- |
@@ -113,7 +113,7 @@ source.close()
 
 <PageCard
   icon="NodejsIcon"
-  url="/docs/http"
+  url="/docs/http/"
   title="Mocking HTTP"
   description="Learn about intercepting HTTP requests."
 />

@@ -18,7 +18,7 @@ import { InMemoryHandlersController } from 'msw/experimental'
 
 ### `AsyncHandlersController`
 
-A handlers controller that stores handlers in [`AsyncLocalStorage`]() ...
+A handlers controller that stores handlers in [`AsyncLocalStorage`](https://nodejs.org/api/async_context.html#class-asynclocalstorage) ...
 
 ```ts
 import { defineNetwork, AsyncHandlersController } from 'msw/experimental'

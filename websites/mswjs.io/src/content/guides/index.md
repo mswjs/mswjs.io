@@ -16,13 +16,13 @@ network behavior, and solve common mocking scenarios.
   />
   <PageCard
     icon="CommandLineIcon"
-    url="/guides/best-practices"
+    url="/guides/best-practices/"
     title="Best practices"
     description="Build reliable and maintainable network descriptions."
   />
   <PageCard
     icon="CommandLineIcon"
-    url="/guides/recipes"
+    url="/guides/recipes/"
     title="Recipes"
     description="Solve specific API mocking scenarios."
   />

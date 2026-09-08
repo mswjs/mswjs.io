@@ -63,8 +63,7 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
       >
         <div class="flex items-center">
           <EggheadIcon
-            class="absolute w-8"
-            style="filter: drop-shadow(2px 6px 0 var(--vp-c-bg))"
+            class="homepage-egghead-icon absolute w-8"
           />
           <span class="pl-[44px]">
             Learn mocking WebSockets in our new course!

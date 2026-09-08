@@ -1,3 +1,4 @@
+import { createExternalLinkChecker } from '../../shared/externalLinks'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
@@ -18,6 +19,8 @@ const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
 const GOOGLE_FONTS_STYLESHEET_URL =
   'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&family=Geist+Mono:ital,wght@0,400..700;1,400..700&display=swap&subset=latin'
 
+const externalLinks = createExternalLinkChecker()
+
 export default defineConfig({
   title: SITE_TITLE,
   titleTemplate: `:title - ${SITE_TITLE}`,
@@ -26,7 +29,7 @@ export default defineConfig({
   srcDir: 'src/content',
   cleanUrls: true,
   lastUpdated: true,
-  ignoreDeadLinks: true,
+  ignoreDeadLinks: false,
   appearance: 'force-dark',
   sitemap: {
     hostname: SITE_URL,
@@ -68,10 +71,12 @@ export default defineConfig({
     codeTransformers: [wordHighlightTransformer()],
     config(md) {
       wordHighlightMetaPlugin(md)
+      externalLinks.markdown(md)
     },
   },
 
   vite: {
+    plugins: [externalLinks.plugin],
     esbuild: {
       jsx: 'automatic',
       jsxImportSource: 'react',

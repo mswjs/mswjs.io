@@ -4,7 +4,7 @@ title: Handling requests
 description: What you can do with the intercepted requests.
 ---
 
-Once you've [intercepted a request](/docs/http/intercepting-requests), there are several things you can do with it:
+Once you've [intercepted a request](/docs/http/intercepting-requests/), there are several things you can do with it:
 
 - Respond to it with a mocked response;
 - Let it pass through (i.e. perform it as-is);

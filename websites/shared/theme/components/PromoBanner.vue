@@ -7,7 +7,7 @@ defineProps<{
 
 <template>
   <aside
-    class="relative text-sm leading-4 font-bold rounded-lg bg-slate-500 bg-opacity-20 border border-slate-700 px-4 py-1.5 flex flex-col sm:inline-flex sm:flex-row items-center gap-2 mb-8"
+    class="promo-banner relative text-sm leading-4 font-bold rounded-lg bg-slate-500 bg-opacity-20 border border-slate-700 px-4 py-1.5 flex flex-col sm:inline-flex sm:flex-row items-center gap-2 mb-8"
   >
     <slot />
     <a

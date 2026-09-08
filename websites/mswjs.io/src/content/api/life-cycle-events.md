@@ -19,7 +19,7 @@ Life-cycle events allow you to subscribe to the internal library events occurrin
 
 ### Read-only
 
-The life-cycle events API is **read-only**. This means that you can observe requests and responses but **cannot affect them**. If you wish to affect the request handling, consider using [`setupWorker`](/api/setup-worker) and/or [`setupServer`](/api/setup-server) instead.
+The life-cycle events API is **read-only**. This means that you can observe requests and responses but **cannot affect them**. If you wish to affect the request handling, consider using [`setupWorker`](/api/setup-worker/) and/or [`setupServer`](/api/setup-server/) instead.
 
 ### Clone before reading
 
@@ -85,7 +85,7 @@ The `request:end` event is emitted whenever a request has ended. This event is e
 ## Response events
 
 ::: warning
-Response events for [Server-Sent Events](/docs/sse) will have a missing body stream because cloning it for observability would buffer the entire event stream in memory for as long as the connection lives and prevent client disconnects from ever reaching the handler.
+Response events for [Server-Sent Events](/docs/sse/) will have a missing body stream because cloning it for observability would buffer the entire event stream in memory for as long as the connection lives and prevent client disconnects from ever reaching the handler.
 :::
 
 ### `response:mocked`

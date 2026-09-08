@@ -202,7 +202,7 @@ The response resolver function for every `graphql.*` method has the following ke
 | `variables`     | `object`                                                              | Variables of this GraphQL query.                         |
 | `operationName` | `string`                                                              | Operation name (e.g. `GetUser`).                         |
 | `request`       | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                |
-| `cookies`       | `object`                                                              | Request's [cookies](/docs/http#reading-request-cookies). |
+| `cookies`       | `object`                                                              | Request's [cookies](/docs/http/#reading-request-cookies). |
 
 You access these arguments on the response resolver argument object.
 
@@ -242,7 +242,7 @@ graphql.query(
 
 <PageCard
   icon="GraphQLIcon"
-  url="/docs/graphql"
+  url="/docs/graphql/"
   title="Describing GraphQL API"
   description="Learn about describing GraphQL APIs."
 />

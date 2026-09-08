@@ -57,7 +57,7 @@ export const server = setupServer(...handlers)
 
 :::
 
-> Learn more about the [`setupServer` API](/api/setup-server). It's the same for Node.js and React Native.
+> Learn more about the [`setupServer` API](/api/setup-server/). It's the same for Node.js and React Native.
 
 ::: warning
   In React Native, import `setupServer` from `msw/native`. The `/native` export

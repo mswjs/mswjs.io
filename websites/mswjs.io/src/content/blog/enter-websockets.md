@@ -25,7 +25,7 @@ It's been a little more than a year since our last major announcement for MSW. T
 
 Today, I've got another major news to share.
 
-**You can now [mock WebSocket connections](/docs/websocket) with MSW!** 🎉 Finally, I can say that:
+**You can now [mock WebSocket connections](/docs/websocket/) with MSW!** 🎉 Finally, I can say that:
 
 > Mock Service Worker is the first API mocking library in JavaScript to support mocking REST, GraphQL, and WebSocket APIs at the same time.
 
@@ -147,7 +147,7 @@ This should give you an idea of how it feels to mock WebSocket APIs with MSW. I 
 
 <PageCard
   icon="solid/NewspaperIcon"
-  url="/docs/basics/handling-websocket-events"
+  url="/docs/websocket/"
   title="Handling WebSocket events"
   description="Learn how to intercept and mock WebSocket events."
 />
@@ -156,13 +156,13 @@ This should give you an idea of how it feels to mock WebSocket APIs with MSW. I 
 
 The `WebSocketInterceptor` patches the global `WebSocket` class to provision control over the connection. WebSocket connections aren't visible to the Service Worker, so we have to resort to patching, sadly. As usual, the patching we implement is standard-compliant and seamless by design.
 
-You do lose the ability to view WebSocket events in the browser's Network tab (for mocked connections) and that stinks. That's why we are adding additional [logging](/docs/basics/handling-websocket-events#logging) to the mocked connections that will include all you get in the Network and a few extra practical things (log types, event references, and buffer previews).
+You do lose the ability to view WebSocket events in the browser's Network tab (for mocked connections) and that stinks. That's why we are adding additional [logging](/docs/websocket/event-logs) to the mocked connections that will include all you get in the Network and a few extra practical things (log types, event references, and buffer previews).
 
 ## What about custom transports?
 
 For those sharp of eye, you might have noticed that the `ws` API is sending and receiving a regular `MessageEvent` as per the standard. What about third-party libraries that use abstractions on top?
 
-We are introducing [bindings](/docs/basics/handling-websocket-events#bindings) to solve that. A binding is a standalone package that wraps the raw WebSocket connection and provides an experience similar to a third-party library it binds (ideally, relying on its internals). Right now, we officially support a binding for `socket.io` that you can use like this:
+We are introducing [bindings](/docs/websocket/bindings) to solve that. A binding is a standalone package that wraps the raw WebSocket connection and provides an experience similar to a third-party library it binds (ideally, relying on its internals). Right now, we officially support a binding for `socket.io` that you can use like this:
 
 ```ts {2,9}
 import { ws } from 'msw'

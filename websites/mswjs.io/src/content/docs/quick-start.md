@@ -48,7 +48,7 @@ export const handlers = [
 
 :::
 
-> MSW supports intercepting both [HTTP](/docs/http), [GraphQL](/docs/graphql), and [WebSocket](/docs/websocket) APIs.
+> MSW supports intercepting both [HTTP](/docs/http/), [GraphQL](/docs/graphql/), and [WebSocket](/docs/websocket/) APIs.
 
 ## 3. Process-level integration
 
@@ -157,13 +157,13 @@ This guide is a good starting point but you can do so much more with the library
   />
   <PageCard
     icon="ServerIcon"
-    url="/docs/http/intercepting-requests"
+    url="/docs/http/intercepting-requests/"
     title="Intercepting requests"
     description="Learn how to intercept outgoing requests."
   />
   <PageCard
     icon="TrophyIcon"
-    url="/guides/best-practices"
+    url="/guides/best-practices/"
     title="Best practices"
     description="Tips & tricks for getting the most out of Mock Service Worker."
   />

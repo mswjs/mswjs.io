@@ -148,8 +148,8 @@ The response resolver function for every `http.*` method has the following keys 
 | ----------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | `request`   | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                        |
 | `requestId` | `string`                                                              | Unique ID of the intercepted request.                            |
-| `params`    | `object`                                                              | Request's [path parameters](/docs/http#reading-path-parameters). |
-| `cookies`   | `object`                                                              | Request's [cookies](/docs/http#reading-request-cookies).         |
+| `params`    | `object`                                                              | Request's [path parameters](/docs/http/#reading-path-parameters). |
+| `cookies`   | `object`                                                              | Request's [cookies](/docs/http/#reading-request-cookies).         |
 
 You access these arguments on the response resolver argument object.
 
@@ -179,7 +179,7 @@ http.get('/greeting', () => HttpResponse.text('Hello world'), {
 
 <PageCard
   icon="NodejsIcon"
-  url="/docs/http"
+  url="/docs/http/"
   title="Mocking HTTP"
   description="Learn about intercepting HTTP requests."
 />

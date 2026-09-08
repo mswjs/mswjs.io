@@ -68,7 +68,7 @@ There is a lot you can do when it comes to mocking GraphQL APIs. Please take a l
 <div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="GraphQLIcon"
-    url="/docs/graphql/mocking-responses/errors/"
+    url="/docs/graphql/mocking-responses/errors"
     title="Errors"
     description="Mock GraphQL error responses."
   />

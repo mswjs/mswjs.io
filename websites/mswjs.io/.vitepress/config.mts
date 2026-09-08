@@ -1,3 +1,4 @@
+import { createExternalLinkChecker } from '../../shared/externalLinks'
 import * as path from 'node:path'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
@@ -8,6 +9,7 @@ import {
   wordHighlightMetaPlugin,
 } from '../../shared/codeHighlight'
 import { buildRssFeed } from './rss'
+import { boostSearchDocument, prioritizeSearchResults } from './search'
 import cloudflareLight from './themes/cloudflare-light.json'
 import cloudflareDark from './themes/cloudflare-dark.json'
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from './consts'
@@ -51,6 +53,8 @@ function redirectApiIndex(
   next()
 }
 
+const externalLinks = createExternalLinkChecker()
+
 export default defineConfig({
   title: SITE_TITLE,
   titleTemplate: `:title - ${SITE_TITLE}`,
@@ -60,7 +64,7 @@ export default defineConfig({
   srcExclude: ['docs/shared/**'],
   cleanUrls: true,
   lastUpdated: true,
-  ignoreDeadLinks: true,
+  ignoreDeadLinks: false,
   appearance: true,
   sitemap: {
     hostname: SITE_URL,
@@ -105,11 +109,13 @@ export default defineConfig({
     codeTransformers: [wordHighlightTransformer()],
     config(md) {
       wordHighlightMetaPlugin(md)
+      externalLinks.markdown(md)
     },
   },
 
   vite: {
     plugins: [
+      externalLinks.plugin,
       {
         name: 'api-index-redirect',
         configureServer(server) {
@@ -189,10 +195,17 @@ export default defineConfig({
             appId: ALGOLIA_APP_ID,
             apiKey: ALGOLIA_SEARCH_API_KEY,
             indexName: ALGOLIA_INDEX_NAME,
+            searchParameters: { hitsPerPage: 100 },
+            transformItems: prioritizeSearchResults,
           },
         }
       : {
           provider: 'local',
+          options: {
+            miniSearch: {
+              searchOptions: { boostDocument: boostSearchDocument },
+            },
+          },
         },
 
     editLink: {

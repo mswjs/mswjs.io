@@ -289,3 +289,31 @@ code,
 :root.dark .site-header-logo {
   box-shadow: 0 0 0 1px rgb(var(--site-neutral-700) / 70%);
 }
+
+.promo-banner {
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.promo-banner > a {
+  font-weight: 600;
+}
+
+:root:not(.dark) .promo-banner {
+  background-color: #fff;
+  border-color: #e7e5e4;
+  color: #57534e;
+}
+
+.homepage-egghead-icon {
+  filter: drop-shadow(2px 3px 0 var(--primary));
+}
+
+:root.dark .homepage-egghead-icon {
+  filter: drop-shadow(2px 3px 0 var(--vp-c-bg));
+}
+
+:root.dark .promo-banner {
+  background-color: rgb(115 115 115 / 20%);
+  border-color: rgb(var(--site-neutral-700));
+}

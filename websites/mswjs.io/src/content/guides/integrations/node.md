@@ -29,7 +29,7 @@ export const server = setupServer(...handlers)
 
 You then use the returned `server` object to control API mocking in the current Node.js process.
 
-> Learn more about the [`setupServer` API](/api/setup-server).
+> Learn more about the [`setupServer` API](/api/setup-server/).
 
 ## Enable mocking
 
@@ -100,13 +100,13 @@ Get to the state of your application that performs any HTTP requests and confirm
 <div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="NodejsIcon"
-    url="/docs/http"
+    url="/docs/http/"
     title="Mocking HTTP"
     description="Learn about intercepting HTTP requests."
   />
   <PageCard
     icon="GraphQLIcon"
-    url="/docs/graphql"
+    url="/docs/graphql/"
     title="Describing GraphQL API"
     description="Learn about describing GraphQL APIs."
   />

@@ -53,7 +53,7 @@ export const worker = setupWorker(...handlers)
 
 :::
 
-> Learn about the [`setupWorker` API](/api/setup-worker).
+> Learn about the [`setupWorker` API](/api/setup-worker/).
 
 ## Conditionally enable mocking
 
@@ -108,13 +108,13 @@ If you don't see this message or see an error instead, please follow this page f
 <div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
     icon="NodejsIcon"
-    url="/docs/http"
+    url="/docs/http/"
     title="Mocking HTTP"
     description="Learn about intercepting HTTP requests."
   />
   <PageCard
     icon="GraphQLIcon"
-    url="/docs/graphql"
+    url="/docs/graphql/"
     title="Describing GraphQL API"
     description="Learn about describing GraphQL APIs."
   />
