@@ -48,4 +48,3 @@ The `setupWorker()` function returns you a _worker instance_ that is an object y
 - [`resetHandlers(...handlers)`](/api/setup-worker/reset-handlers)
 - [`restoreHandlers()`](/api/setup-worker/restore-handlers)
 - [`listHandlers()`](/api/setup-worker/list-handlers)
-  - The `.printHandlers()` method on `worker`/`server` has been removed in favor of the new `.listHandlers()` method.

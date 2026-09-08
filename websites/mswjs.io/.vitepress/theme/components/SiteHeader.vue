@@ -71,7 +71,7 @@ function navigateToBranding(): void {
             :href="item.link"
             :target="item.target"
             :rel="item.rel"
-            class="flex h-full items-center transition-colors hover:text-primary"
+            class="flex h-full items-center hover:text-primary"
             :class="isActive(item) ? 'text-primary' : 'text-white'"
             :aria-current="isActive(item) ? 'page' : undefined"
           >
@@ -124,3 +124,16 @@ function navigateToBranding(): void {
     </nav>
   </header>
 </template>
+
+<style scoped>
+header :deep(.VPSocialLink),
+header :deep(.DocSearch-Button),
+header :deep(.DocSearch-Button *),
+header :deep(.VPSwitch) {
+  transition: none !important;
+}
+
+header :deep(.VPSocialLink:hover) {
+  color: var(--primary);
+}
+</style>

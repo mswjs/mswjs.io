@@ -145,9 +145,9 @@ pre[data-language] {
 
 .DocSearch-Button:hover,
 .DocSearch-Button:focus {
-  color: var(--vp-c-text-1);
-  background: var(--vp-c-bg-soft);
-  border-color: var(--vp-c-text-3);
+  color: var(--vp-c-text-2);
+  background: transparent;
+  border-color: var(--vp-c-brand-1);
 }
 
 .DocSearch-Button .DocSearch-Button-Key {

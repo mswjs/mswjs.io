@@ -1,3 +1,5 @@
+import { localSearchRanking } from './localSearchRanking'
+import { splitSearchSections } from '../../shared/searchSections'
 import { createExternalLinkChecker } from '../../shared/externalLinks'
 import * as path from 'node:path'
 import type { IncomingMessage, ServerResponse } from 'node:http'
@@ -9,7 +11,7 @@ import {
   wordHighlightMetaPlugin,
 } from '../../shared/codeHighlight'
 import { buildRssFeed } from './rss'
-import { boostSearchDocument, prioritizeSearchResults } from './search'
+import { prioritizeSearchResults } from './search'
 import cloudflareLight from './themes/cloudflare-light.json'
 import cloudflareDark from './themes/cloudflare-dark.json'
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from './consts'
@@ -115,6 +117,7 @@ export default defineConfig({
 
   vite: {
     plugins: [
+      localSearchRanking(),
       externalLinks.plugin,
       {
         name: 'api-index-redirect',
@@ -203,7 +206,7 @@ export default defineConfig({
           provider: 'local',
           options: {
             miniSearch: {
-              searchOptions: { boostDocument: boostSearchDocument },
+              _splitIntoSections: splitSearchSections,
             },
           },
         },

@@ -75,7 +75,7 @@ function toggle(): void {
         :href="item.link"
         :rel="item.rel"
         :target="item.target"
-        class="min-w-0 flex-1 py-1 leading-6 transition-colors hover:text-primary"
+        class="min-w-0 flex-1 py-[7.25px] leading-tight transition-colors hover:text-primary"
         :class="{
           'font-bold text-white': depth === 0,
           'font-medium text-neutral-400': depth > 0,

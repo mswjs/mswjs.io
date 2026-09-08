@@ -211,6 +211,8 @@ const lastUpdated = computed(() => {
       <a
         v-if="editLink"
         :href="editLink.url"
+        target="_blank"
+        rel="noopener noreferrer"
         class="inline-flex items-center gap-2 text-sm font-medium leading-8 text-primary hover:text-orange-300"
       >
         <PencilSquareIcon class="h-4 w-4" />
