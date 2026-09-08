@@ -1,6 +1,6 @@
 ---
 order: 1
-title: Introduction
+title: Best practices
 contentTitle: Best practices
 standalone: true
 ---

@@ -1,6 +1,6 @@
 ---
 order: 1
-title: Introduction
+title: Recipes
 contentTitle: Recipes
 description: Solutions for common API mocking scenarios.
 standalone: true

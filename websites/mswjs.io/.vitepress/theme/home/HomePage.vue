@@ -197,7 +197,7 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
         </PageHeaderSubtitle>
       </PageHeaderWrapper>
       <div
-        class="relative mx-auto grid max-w-xl gap-x-10 gap-y-32 md:max-w-none lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2"
+        class="relative isolate mx-auto grid max-w-xl gap-x-10 gap-y-32 md:max-w-none lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2"
       >
         <div
           class="absolute inset-0 w-1 h-full m-auto integration-line -z-10 bg-neutral-800 lg:h-1/2"
