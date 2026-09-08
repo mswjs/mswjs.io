@@ -21,7 +21,7 @@ defineProps<{
       />
       <div class="@lg:col-start-2">
         <h4 class="mt-0">{{ title }}</h4>
-        <p class="mb-0 text-neutral-400 leading-6">{{ description }}</p>
+        <p class="mb-0 text-neutral-400 leading-tight">{{ description }}</p>
       </div>
     </a>
   </div>

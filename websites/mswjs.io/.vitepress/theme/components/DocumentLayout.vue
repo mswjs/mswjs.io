@@ -36,7 +36,7 @@ const feedbackPageTitle = computed(() => {
     <div
       class="mx-auto grid w-full min-w-0"
       :class="{
-        'lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-16':
+        'min-[1280px]:grid-cols-[minmax(0,1fr)_14rem] min-[1280px]:gap-16':
           documentationPage,
         'max-w-[784px]':
           !documentationPage,
@@ -59,6 +59,7 @@ const feedbackPageTitle = computed(() => {
           data-document-content
           class="vp-doc"
           :class="{
+            'docs-content': documentationPage,
             'external-link-icon-enabled': theme.externalLinkIcon,
           }"
         />
@@ -75,7 +76,7 @@ const feedbackPageTitle = computed(() => {
 
       <aside
         v-if="documentationPage"
-        class="hidden min-h-0 lg:block"
+        class="hidden min-h-0 min-[1280px]:block"
       >
         <div
           class="sticky top-[calc(var(--site-layout-top-height)+4rem+0.75rem)] grid max-h-[calc(100vh-var(--site-layout-top-height)-4rem-0.75rem)] min-h-0 grid-rows-[minmax(0,auto)_auto]"
@@ -87,9 +88,9 @@ const feedbackPageTitle = computed(() => {
           />
 
           <div
-            class="pt-8 text-sm font-medium text-neutral-400"
+            class="text-sm font-medium text-neutral-400"
             :class="{
-              'min-[1280px]:pt-8': outlineItems.length > 0,
+              'mt-8': outlineItems.length > 0,
             }"
           >
             <h2

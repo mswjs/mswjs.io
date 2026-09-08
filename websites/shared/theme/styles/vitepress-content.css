@@ -42,6 +42,12 @@
 /* Fenced code blocks keep the original bordered-card look. */
 .vp-doc div[class*='language-'] {
   border: 1px solid #404040;
+}
+
+.vp-doc div[class*='language-'],
+.vp-doc .custom-block.info,
+.vp-doc .custom-block.warning,
+.vp-doc .custom-block.tip {
   margin-block: 16px;
 }
 

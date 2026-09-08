@@ -51,6 +51,7 @@ watch(
     <nav
       ref="navigation"
       id="docs-sidebar-navigation"
+      class="text-sm"
       aria-label="Documentation navigation"
       tabindex="-1"
     >

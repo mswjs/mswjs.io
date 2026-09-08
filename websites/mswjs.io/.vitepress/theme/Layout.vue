@@ -204,6 +204,7 @@ useSidebarAutoScroll()
               <li><a href="/docs">Documentation</a></li>
               <li><a href="/branding">Branding</a></li>
               <li><a href="/blog">Blog</a></li>
+              <li><a href="/sponsor">Sponsor</a></li>
             </FooterSection>
           </div>
 

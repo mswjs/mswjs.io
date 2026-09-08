@@ -61,6 +61,10 @@ Any good comparison begins with a clearly defined set of criteria. Here are the 
 | Does not require any changes to the code.                                         | Does not require any changes to the code.                       |
 | Requires additional adapters to intercept specific request clients (e.g. `axios`) | Works with any request client without additional configuration. |
 
+::: info
+Nock uses MSW as the interception algorithm in Node.js, which aligns the two libraries in many aspects, leaving the feature set and the public API as the primary factors to influence their difference.
+:::
+
 ### Definition
 
 #### Nock

@@ -29,7 +29,7 @@ const iconComponent = computed<Component | undefined>(() => {
     :rel="isExternal ? 'noopener noreferrer' : undefined"
     class="page-card block my-5 px-5 py-4 border border-neutral-800 rounded-lg text-white no-underline bg-opacity-40 bg-neutral-800 hover:bg-opacity-70"
   >
-    <article class="flex items-start gap-5">
+    <article class="flex items-start gap-3">
       <div class="bg-primary bg-opacity-10 rounded-md p-2">
         <component
           :is="iconComponent"

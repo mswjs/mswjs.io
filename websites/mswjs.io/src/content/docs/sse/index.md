@@ -27,7 +27,7 @@ import { sse } from 'msw'
 />
 
 ::: warning
-The `EventSource` API isn't currently supported in Node.js, limiting the SSE interception to the browser only.
+The `EventSource` API isn't currently supported in Node.js, limiting the SSE interception to the browser-only.
 :::
 
 ## Difference from `http`

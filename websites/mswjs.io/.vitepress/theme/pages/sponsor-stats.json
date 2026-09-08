@@ -1,0 +1,75 @@
+{
+  "asOf": "2026-09-08",
+  "downloadsThrough": "2026-09-07",
+  "totalDownloads": 1176724857,
+  "githubStars": 18195,
+  "createdAt": "2018-11-13",
+  "annualDownloads": [
+    {
+      "year": 2018,
+      "downloads": 1222
+    },
+    {
+      "year": 2019,
+      "downloads": 1140
+    },
+    {
+      "year": 2020,
+      "downloads": 2119926
+    },
+    {
+      "year": 2021,
+      "downloads": 20994534
+    },
+    {
+      "year": 2022,
+      "downloads": 61499647
+    },
+    {
+      "year": 2023,
+      "downloads": 116412377
+    },
+    {
+      "year": 2024,
+      "downloads": 160847388
+    },
+    {
+      "year": 2025,
+      "downloads": 292600556
+    },
+    {
+      "year": 2026,
+      "downloads": 522248067
+    }
+  ],
+  "sources": {
+    "downloads": "https://api.npmjs.org/downloads/point/",
+    "github": "https://api.github.com/repos/mswjs/msw"
+  },
+  "monthlyDownloads": [
+    {
+      "month": "2026-03",
+      "downloads": 54933557
+    },
+    {
+      "month": "2026-04",
+      "downloads": 64458147
+    },
+    {
+      "month": "2026-05",
+      "downloads": 70461137
+    },
+    {
+      "month": "2026-06",
+      "downloads": 75923681
+    },
+    {
+      "month": "2026-07",
+      "downloads": 84660256
+    },
+    {
+      "month": "2026-08",
+      "downloads": 80231881
+    }
+  ]
+}

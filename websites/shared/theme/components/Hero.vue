@@ -18,7 +18,7 @@ defineProps<{
         <slot name="title" />
       </h1>
       <p
-        class="text-xl tracking-tight text-neutral-400 text-balance md:text-2xl leading-tight"
+        class="text-xl leading-relaxed tracking-tight text-neutral-400 text-balance md:text-2xl md:leading-relaxed"
       >
         <slot name="subtitle" />
       </p>

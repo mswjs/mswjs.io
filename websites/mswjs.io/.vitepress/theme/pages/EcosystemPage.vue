@@ -21,7 +21,7 @@ import sourceLogo from '../../../../source.mswjs.io/src/images/source.svg'
       </div>
     </Grid>
 
-    <Grid class="py-24 gap-y-24">
+    <Grid class="pb-24 gap-y-24">
       <article class="sm:col-span-6 flex items-start gap-8">
         <IconBlock
           image-url="https://raw.githubusercontent.com/mswjs/data/main/logo.svg"

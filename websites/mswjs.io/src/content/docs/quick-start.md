@@ -30,6 +30,8 @@ Import the `http` namespace from the `msw` package and create your first _reques
 
 Let's define a request handler for a `GET https://api.example.com/user` request:
 
+<div class="copyable-code">
+
 ::: code-group
 
 ```ts [src/mocks/handlers.ts] {4-10} /http/1,2
@@ -48,13 +50,17 @@ export const handlers = [
 
 :::
 
-> MSW supports intercepting both [HTTP](/docs/http/), [GraphQL](/docs/graphql/), and [WebSocket](/docs/websocket/) APIs.
+</div>
+
+> MSW supports intercepting [HTTP](/docs/http/), [GraphQL](/docs/graphql/), [SSE](/docs/sse/), and [WebSocket](/docs/websocket/) APIs.
 
 ## 3. Process-level integration
 
 One of the core benefits of MSW is the ability to reuse the same mocks (e.g. `handlers.ts`) across different tools and environments. On their own, request handlers don't do anything. They have to be provided to the `setupServer` or `setupWorker` functions to configure API mocking in a Node.js or a browser process, respectively.
 
 Since Vitest tests run in a Node.js process, let's use `setupServer` from `msw/node` and create a `node.ts` integration point:
+
+<div class="copyable-code">
 
 ::: code-group
 
@@ -67,11 +73,15 @@ export const server = setupServer(...handlers)
 
 :::
 
+</div>
+
 > This integration has nothing specific to Vitest. You can reuse it to apply MSW to any Node.js process.
 
 ## 4. Tool-level integration
 
 At this step, you find the appropriate place to enable API mocking in your Node.js process. In the case of Vitest, that place is the _test setup_ file, which runs before your tests. Open that file (or create it) and call `server.listen()` in enable mocking as follows:
+
+<div class="copyable-code">
 
 ::: code-group
 
@@ -85,6 +95,8 @@ afterAll(() => server.close())
 ```
 
 :::
+
+</div>
 
 > Make sure you have the `vitest.setup.ts` module listed in the `test.setupFiles` array in your `vitest.config.ts`.
 

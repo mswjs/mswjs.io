@@ -213,19 +213,19 @@ const lastUpdated = computed(() => {
         :href="editLink.url"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 text-sm font-medium leading-8 text-primary hover:text-orange-300"
+        class="inline-flex items-center gap-2 text-sm font-medium leading-8 text-neutral-400 hover:text-white"
       >
         <PencilSquareIcon class="h-4 w-4" />
         {{ editLink.text }}
       </a>
-      <p v-if="lastUpdated" class="text-xs font-medium text-neutral-500">
+      <p v-if="lastUpdated" class="text-sm font-medium text-neutral-500">
         {{ theme.lastUpdated?.text ?? 'Last updated' }} {{ lastUpdated }}
       </p>
     </div>
 
     <nav
       v-if="pager.previous?.link || pager.next?.link"
-      class="grid gap-2 border-t border-neutral-800 pt-6 sm:grid-cols-2 sm:gap-4"
+      class="grid gap-6 border-t border-neutral-800 pt-6 sm:grid-cols-2"
       aria-label="Pagination"
     >
       <a
@@ -236,7 +236,7 @@ const lastUpdated = computed(() => {
         <span class="block text-xs font-medium leading-5 text-neutral-400">
           {{ theme.docFooter?.prev || 'Previous page' }}
         </span>
-        <span class="block text-sm font-medium leading-5 text-primary">
+        <span class="block text-sm font-medium leading-5 text-white">
           {{ pager.previous.text }}
         </span>
       </a>
@@ -250,7 +250,7 @@ const lastUpdated = computed(() => {
         <span class="block text-xs font-medium leading-5 text-neutral-400">
           {{ theme.docFooter?.next || 'Next page' }}
         </span>
-        <span class="block text-sm font-medium leading-5 text-primary">
+        <span class="block text-sm font-medium leading-5 text-white">
           {{ pager.next.text }}
         </span>
       </a>

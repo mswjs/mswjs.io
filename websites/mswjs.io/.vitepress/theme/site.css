@@ -17,7 +17,7 @@
 :root {
   --vp-font-family-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
   --site-layout-top-height: 0px;
-  --site-font-size: 14px;
+  --site-font-size: 1rem;
   --site-accent: 255 106 51;
   --site-foreground: 23 23 23;
   --site-neutral-50: 10 10 10;
@@ -51,7 +51,7 @@
   --vp-code-bg: #f0f0f0;
   --vp-code-color: #404040;
   --vp-code-line-highlight-color: rgb(var(--site-accent) / 7%);
-  --vp-code-font-size: var(--site-font-size);
+  --vp-code-font-size: 14px;
 
   --vp-custom-block-warning-border: #ede6d9;
   --vp-custom-block-warning-text: #65553d;
@@ -120,6 +120,16 @@ body {
   line-height: 1.75;
 }
 
+.vp-doc.docs-content h2 {
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.vp-doc :not(pre) > code {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
 .vp-doc div[class*='language-'],
 .vp-doc :not(pre) > code {
   border-color: var(--vp-c-border);
@@ -154,6 +164,18 @@ pre[data-language] {
   color: var(--vp-c-text-2);
   background: var(--vp-c-bg-soft);
   box-shadow: inset 0 0 0 1px var(--vp-c-border);
+}
+
+:root.dark .highlighted-word:not([data-chars-id]) {
+  @apply bg-amber-700/25;
+}
+
+:root.dark .highlighted-word[data-chars-id='g'] {
+  @apply bg-green-700/25;
+}
+
+:root.dark .highlighted-word[data-chars-id='v'] {
+  @apply bg-violet-700/25;
 }
 
 :root:not(.dark) .highlighted-word {

@@ -45,11 +45,11 @@ function navigateToBranding(): void {
 
 <template>
   <header
-    class="top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900 min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
+    class="top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900 text-sm min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
     :class="stickyOnMobile ? 'sticky' : 'relative'"
   >
     <div
-      class="mx-auto flex h-16 max-w-[var(--vp-layout-max-width)] items-center justify-between gap-6 px-6 md:px-8"
+      class="mx-auto flex h-16 max-w-[var(--vp-layout-max-width)] items-center justify-between gap-6 px-6 md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]"
     >
       <div class="flex h-full shrink-0 items-center gap-8">
         <a
@@ -71,7 +71,7 @@ function navigateToBranding(): void {
             :href="item.link"
             :target="item.target"
             :rel="item.rel"
-            class="flex h-full items-center hover:text-primary"
+            class="flex h-full items-center hover:text-primary focus-visible:-outline-offset-2"
             :class="isActive(item) ? 'text-primary' : 'text-white'"
             :aria-current="isActive(item) ? 'page' : undefined"
           >
@@ -114,7 +114,7 @@ function navigateToBranding(): void {
         :href="item.link"
         :target="item.target"
         :rel="item.rel"
-        class="w-full border-b border-neutral-800 py-4 font-medium last:border-b-0 hover:text-primary"
+        class="w-full border-b border-neutral-800 py-4 font-medium last:border-b-0 hover:text-primary focus-visible:-outline-offset-2"
         :class="isActive(item) ? 'text-primary' : 'text-white'"
         @click="emit('closeMenu')"
       >
