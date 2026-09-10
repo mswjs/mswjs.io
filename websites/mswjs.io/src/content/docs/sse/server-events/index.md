@@ -8,7 +8,7 @@ keywords:
   - payload
 ---
 
-Mocks must resemble actual usage. That is a core philosophy when it comes to designing APIs in MSW. While Server-Sent Events are consumed via the `EventSource` standard API, there is no standard way of defining such events from the server. Because of that, MSW takes the liberty of designing a custom API that remains standard-based while providing a type-safe and ergonomic way of working with Server-Sent Events.
+Mocks must resemble actual usage. That is a core philosophy when it comes to designing APIs in MSW. While Server-Sent Events are consumed via the `EventSource` standard API, there is no standard way of defining such events from the server. Because of that, MSW takes the liberty of designing a custom API that remains standards-based while providing a type-safe and ergonomic way of working with Server-Sent Events.
 
 ## Event object
 

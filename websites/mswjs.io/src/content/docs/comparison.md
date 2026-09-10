@@ -30,14 +30,14 @@ Any good comparison begins with a clearly defined set of criteria. Here are the 
 - **Supported API types**. What kinds of API can I mock with the library?
 - **Environment**. In which environments can I use the library?
 - **Implementation**. How does the library implement request interception?
-- **Integration**. How much effort it takes to integrate it into my project?
+- **Integration**. How much effort does it take to integrate it into my project?
 - **Definition**. How do I define mocks?
 
 ## Nock
 
 [Nock](https://github.com/nock/nock) is an HTTP server mocking and expectations library for Node.js.
 
-> Nock is a great library for combining API mocking and assertions in Node.js. While Mock Service Worker doesn't come with a built-in assertion capabilities, it allows you to seamlessly reuse the same mocks across browser and Node.js, as well as providing first-class GraphQL support and standard-based request/response handling.
+> Nock is a great library for combining API mocking and assertions in Node.js. While Mock Service Worker doesn't come with built-in assertion capabilities, it allows you to seamlessly reuse the same mocks across browser and Node.js, as well as providing first-class GraphQL support and standards-based request/response handling.
 
 ### API support
 
@@ -90,7 +90,7 @@ http.get('https://api.example.com/user', async ({ request }) => {
 
 [JSON Server](https://github.com/typicode/json-server) allows you to create an actual HTTP server based on a JSON file.
 
-> JSON Server is an actual HTTP server that utilizes abstract response definition format. This means a server you have to run and maintain. Mock Service Worker doesn't spawn any servers, so its initialization cost is free. Mock Service Worker also allows you to have more error-proof mock definitions by using languages like TypeScript and generating mocks out of the actual backend implementation.
+> JSON Server is an actual HTTP server that uses an abstract response definition format. This means a server you have to run and maintain. Mock Service Worker doesn't spawn any servers, so its initialization cost is free. Mock Service Worker also allows you to have more error-proof mock definitions by using languages like TypeScript and generating mocks out of the actual backend implementation.
 
 ### API support
 
@@ -114,7 +114,7 @@ http.get('https://api.example.com/user', async ({ request }) => {
 
 | JSON Server                                                              | Mock Service Worker                                             |
 | ------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| Requires to change the code to request resources from the mocked server. | Does not require any changes to the code.                       |
+| Requires changing the code to request resources from the mocked server. | Does not require any changes to the code.                       |
 | Works with any request client without additional configuration.          | Works with any request client without additional configuration. |
 
 ### Definition
@@ -147,13 +147,13 @@ http.get('/posts', () => {
 })
 ```
 
-> With MSW, you have to explicitly define server-side operations like `http.get('/posts')` or `http.delete('/posts/:index')`. MSW prioritized explicitness, taking advantage of programmatic request resolution, allowing for more complex network behaviors.
+> With MSW, you have to explicitly define server-side operations like `http.get('/posts')` or `http.delete('/posts/:index')`. MSW prioritizes explicitness, taking advantage of programmatic request resolution, allowing for more complex network behaviors.
 
 ## Mirage
 
 [Mirage](https://github.com/miragejs/miragejs) is an API mocking library that lets you build, test and share a complete working JavaScript application without having to rely on any backend services.
 
-> Mirage is centered around data modeling to emulate more complex server behaviors. Mock Service Worker doesn't come with a built-in data modeling capabilities and instead exposes them in a separate package called [`@msw/data`](https://github.com/mswjs/data). This way you can bring modeling to the table once you need it.
+> Mirage is centered around data modeling to emulate more complex server behaviors. Mock Service Worker doesn't come with built-in data modeling capabilities and instead exposes them in a separate package called [`@msw/data`](https://github.com/mswjs/data). This way you can bring modeling to the table once you need it.
 
 ### API support
 
@@ -187,7 +187,7 @@ http.get('/posts', () => {
 
 #### Mirage
 
-Mirage uses route handlers format to define server-like routes and mocked responses.
+Mirage uses a route-handler format to define server-like routes and mocked responses.
 
 ```js
 createServer({
@@ -289,7 +289,7 @@ await castMembers.create({
 > <sup>1</sup>—Although it is possible to work with GraphQL requests through
 > custom aliasing, it still requires a lot of additional setup. Cypress achieves
 > GraphQL API mocking through HTTP handling (since GraphQL is most commonly
-> implemented over HTTP on the web) instead of a first-class GraphQL support.
+> implemented over HTTP on the web) instead of first-class GraphQL support.
 
 ### Supported environments
 
@@ -349,7 +349,7 @@ http.post('/users', async ({ request }) => {
 })
 ```
 
-MSW gives you a more advanced control over the requests through its `passthrough()` and `bypass()` APIs, which still yield semantic HTTP responses under the hood.
+MSW gives you more advanced control over the requests through its `passthrough()` and `bypass()` APIs, which still yield semantic HTTP responses under the hood.
 
 ## Playwright - `page.route()`
 
@@ -364,7 +364,7 @@ MSW gives you a more advanced control over the requests through its `passthrough
 | WebSocket API | ✅             | ✅                  |
 
 > <sup>1</sup>—You can handle GraphQL requests with `page.route()` since they
-> are also HTTP requests but Playwright does not provide a first-class support
+> are also HTTP requests but Playwright does not provide first-class support
 > for mocking GraphQL APIs.
 
 ### Supported environments

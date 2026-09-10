@@ -16,9 +16,9 @@ Have a question not present in the list? Open a [Discussion](https://github.com/
 
 ## How is it different than library XYZ?
 
-Please see the [Comparison page](/docs/comparison) for detailed technical and conceptual comparison between Mock Service Worker and other popular API mocking libraries.
+Please see the [Comparison page](/docs/comparison) for a detailed technical and conceptual comparison between Mock Service Worker and other popular API mocking libraries.
 
-In a nutshell, most solutions provide requests interception on the application level, while Mock Service Worker intercepts requests on the network level. It also allows you to use the same mock definition not only for testing, but for development and debugging as well, integrating across different tools without configurations, adapters, or plugins.
+In a nutshell, most solutions provide request interception on the application level, while Mock Service Worker intercepts requests on the network level. It also allows you to use the same mock definition not only for testing, but for development and debugging as well, integrating across different tools without configurations, adapters, or plugins.
 
 ## Does it support request library XYZ?
 
@@ -72,7 +72,7 @@ http.get('/post', ({ request }) => {
   const url = new URL(request.url)
 
   // Access the query parameters from the URL instance.
-  // For example: GET /post/id=abc-123 → id: "abc-123"
+  // For example: GET /post?id=abc-123 → id: "abc-123"
   const id = url.searchParams.get('id')
 
   return HttpResponse.json({
@@ -84,7 +84,7 @@ http.get('/post', ({ request }) => {
 
 ## Why do I get stale responses with react-query/SWR/Apollo/etc.?
 
-Caching mechanism of some request clients may produce stale responses in your tests. Make sure you clear the cache before/after each test suite for your tests to remain predictable.
+The caching mechanisms of some request clients may produce stale responses in your tests. Make sure you clear the cache before/after each test suite for your tests to remain predictable.
 
 ### react-query
 
@@ -152,7 +152,7 @@ Whenever you have time to [open a pull request](https://github.com/mswjs/mswjs.i
 
 ## MSW doesn't work in concurrent tests
 
-If your test suite features multiple concurrent test that modify the network behavior (i.e. have `.use()` calls), you must scope the network to each test by using the `server.boundary()` API.
+If your test suite features multiple concurrent tests that modify the network behavior (i.e. have `.use()` calls), you must scope the network to each test by using the `server.boundary()` API.
 
 <PageCard
   icon="CubeTransparentIcon"

@@ -79,7 +79,7 @@ export const server = setupServer(...handlers)
 
 ## 4. Tool-level integration
 
-At this step, you find the appropriate place to enable API mocking in your Node.js process. In the case of Vitest, that place is the _test setup_ file, which runs before your tests. Open that file (or create it) and call `server.listen()` in enable mocking as follows:
+At this step, you find the appropriate place to enable API mocking in your Node.js process. In the case of Vitest, that place is the _test setup_ file, which runs before your tests. Open that file (or create it) and call `server.listen()` to enable mocking as follows:
 
 <div class="copyable-code">
 
@@ -183,7 +183,7 @@ This guide is a good starting point but you can do so much more with the library
 
 ## Need help?
 
-Starting with a new tool can be difficult but you don't have go through that alone. Whenever you encounter an issue, the best place to go is our Debugging runbook:
+Starting with a new tool can be difficult but you don't have to go through that alone. Whenever you encounter an issue, the best place to go is our Debugging runbook:
 
 <PageCard
   icon="BugAntIcon"

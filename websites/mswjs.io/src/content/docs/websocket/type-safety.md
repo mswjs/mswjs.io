@@ -19,7 +19,7 @@ The reasoning behind this decision is twofold:
 
 If you are using objects to communicate with a WebSocket server, those objects have to be stringified and parsed when sending and receiving them, respectively, which already implies a parsing layer being present in your application.
 
-You can achieve a proper type and runtime safety in WebSockets by introducing parsing utilities. Libraries like [Zod](https://github.com/colinhacks/zod) can help you greatly in achieving type and runtime safety.
+You can achieve proper type and runtime safety in WebSockets by introducing parsing utilities. Libraries like [Zod](https://github.com/colinhacks/zod) can help you greatly in achieving type and runtime safety.
 
 ```js
 import { z } from 'zod'

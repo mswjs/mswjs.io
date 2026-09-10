@@ -2,7 +2,7 @@
 title: Custom request predicate
 ---
 
-By default, MSW gives you the means to intercept requests based on their method and path (for HTTP requests) or their operation kind and name (for GraphQL requests). You can, however, create a custom matching logic to intercept requests based on other criteria, for example:
+By default, MSW gives you the means to intercept requests based on their method and path (for HTTP requests) or their operation kind and name (for GraphQL requests). You can, however, create custom matching logic to intercept requests based on other criteria, for example:
 
 - Intercept a request that has a `foo` _query parameter_;
 - Intercept a request that has a JSON _request body_ with a `bar` property.

@@ -28,7 +28,7 @@ api.addEventListener('connection', ({ server }) => {
 
 For example, here we are preventing any `message` events from ever reaching the WebSocket client. You are still able to observe the received message events in the listener but they will not be forwarded to the client anymore.
 
-> Since the server-to-client event forwarding is the _default_ behavior in MSW, all you have to do to opt out from it is call `event.preventDefault()`.
+> Since the server-to-client event forwarding is the _default_ behavior in MSW, all you have to do to opt out of it is call `event.preventDefault()`.
 
 Just like with regular events, you can prevent the default _conditionally_:
 

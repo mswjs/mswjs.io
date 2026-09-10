@@ -48,7 +48,7 @@ With the request handler above, both `GET /posts` and `GET /posts/abc-123` reque
 
 ## Repeating path parameter
 
-Use the plus (`+`) as the suffix of a path parameter to indicate that its value repeats. Repeating path parameters will be represented as array of values in the `params` object.
+Use the plus (`+`) as the suffix of a path parameter to indicate that its value repeats. Repeating path parameters will be represented as an array of values in the `params` object.
 
 ```ts /foo/1 /:foo+/
 http.get<{ segments: string[] }>('/settings/:segments+', ({ params }) => {
@@ -74,4 +74,4 @@ http.get('/songs/\\:genre/\\:artist', () => {})
 
 ## Type safety
 
-MSW provides no path parameter parsing, which means that all `params` values are either strings or arrays of strings. We strongly encourage to reflect that in the path parameter type argument in your request handlers. If you need additional path parameter parsing, please introduce it manually.
+MSW provides no path parameter parsing, which means that all `params` values are either strings or arrays of strings. We strongly encourage you to reflect that in the path parameter type argument in your request handlers. If you need additional path parameter parsing, please introduce it manually.

@@ -25,7 +25,7 @@ By treating API mocking as a standalone layer, MSW can integrate throughout your
 
 ## Start here
 
-If you have never tried MSW before or unsure where to start, look no further than the Quick start tutorial:
+If you have never tried MSW before or are unsure where to start, look no further than the Quick start tutorial:
 
 <PageCard
   url="/docs/quick-start"

@@ -8,7 +8,7 @@ keywords:
   - authentication
 ---
 
-You can read the request's cookies via the `cookies` object provided to you in the response resolver argument. While you can always read the `request.headers.get('cookie')` manually, the `cookie` object parses request cookies for you for convenience.
+You can read the request's cookies via the `cookies` object provided to you in the response resolver argument. While you can always read the `request.headers.get('cookie')` manually, the `cookies` object parses request cookies for you for convenience.
 
 ```ts /cookies/ {2}
 http.get('/api/user', ({ cookies }) => {

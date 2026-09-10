@@ -19,7 +19,7 @@ Mock Service Worker facilitates type-safe API mocking through _generic arguments
 
 ### HTTP handlers
 
-All request handlers in the [`http`](/api/http) namespace support three generic arguments:
+All request handlers in the [`http`](/api/http) namespace support four generic arguments:
 
 ```ts
 http.get<Params, RequestBodyType, ResponseBodyType, Path>(path, resolver)
@@ -73,7 +73,7 @@ http.post<
 
 ### GraphQL handlers
 
-All request handlers in the [`graphql`](/api/graphql) namespace support three generic arguments:
+All request handlers in the [`graphql`](/api/graphql) namespace support two generic arguments:
 
 ```ts
 graphql.query<Query, Variables>(query, resolver)

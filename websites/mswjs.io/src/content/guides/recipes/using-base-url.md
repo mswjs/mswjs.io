@@ -6,7 +6,7 @@ keywords:
   - relative
 ---
 
-Mock Service Worker does not provide any configuration to apply a base URL to multiple handlers. That is a deliberate choice to minimize the configuration area and keep hidden complexity away from your test setups. Instead, we highly recommend you using custom utility functions that build absolute URLs from relative paths. That way, you get practical convenience while remaining explicit and clear.
+Mock Service Worker does not provide any configuration to apply a base URL to multiple handlers. That is a deliberate choice to minimize the configuration area and keep hidden complexity away from your test setups. Instead, we highly recommend using custom utility functions that build absolute URLs from relative paths. That way, you get practical convenience while remaining explicit and clear.
 
 For example, here's how you can create a `github()` helper for building URLs against the GitHub API:
 

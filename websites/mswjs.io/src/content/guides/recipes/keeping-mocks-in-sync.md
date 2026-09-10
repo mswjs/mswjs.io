@@ -4,7 +4,7 @@ title: Keeping mocks in sync
 
 You write mocks to describe a server behavior fixed in time. But as time goes on, that behavior may change, potentially rendering your mocks obsolete.
 
-There are multiple ways to keep your mock definitions in-sync with the actual backend.
+There are multiple ways to keep your mock definitions in sync with the actual backend.
 
 ## Use specification (Recommended)
 
@@ -40,4 +40,4 @@ export const worker = setupWorker(...handlers)
 
 ## Automate the process
 
-Regardless of the approach you chose, consider automating the process by configuring your CI to regularly update the specification/network snapshots. That way we can ensure that the mocks remain relevant over time.
+Regardless of the approach you choose, consider automating the process by configuring your CI to regularly update the specification/network snapshots. That way we can ensure that the mocks remain relevant over time.

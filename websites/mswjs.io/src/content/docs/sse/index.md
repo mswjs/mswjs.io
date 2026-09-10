@@ -27,7 +27,7 @@ import { sse } from 'msw'
 />
 
 ::: warning
-The `EventSource` API isn't currently supported in Node.js, limiting the SSE interception to the browser-only.
+The `EventSource` API isn't currently supported in Node.js, limiting the SSE interception to the browser.
 :::
 
 ## Difference from `http`
@@ -78,7 +78,7 @@ export const handlers = [
 ]
 ```
 
-The implementation details of the communication, such as managing the stream and queuing messages, are abstracted away, allowing you to focus on describing the network behavior you want. The `sse` namespace also enables additional feature otherwise unavailable when working with `EventSource` directly, such as forwarding of the original server events with ambiguous names.
+The implementation details of the communication, such as managing the stream and queuing messages, are abstracted away, allowing you to focus on describing the network behavior you want. The `sse` namespace also enables additional features otherwise unavailable when working with `EventSource` directly, such as forwarding of the original server events with ambiguous names.
 
 ## Next steps
 

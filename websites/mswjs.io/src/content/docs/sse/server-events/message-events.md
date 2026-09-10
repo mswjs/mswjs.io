@@ -32,7 +32,7 @@ data:hello world
 
 ## Payload
 
-You can send any serializable payload as the message data. For example, you can send a JSON:
+You can send any serializable payload as the message data. For example, you can send JSON:
 
 ```ts {2-7}
 client.send({
@@ -62,7 +62,7 @@ data:hello world
 
 ```
 
-> Note: event ID must be a string.
+> Note: the event ID must be a string.
 
 ## TypeScript
 

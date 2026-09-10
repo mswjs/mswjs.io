@@ -6,7 +6,7 @@ displayTitle: Mocking WebSocket
 description: Intercept and mock WebSocket events.
 ---
 
-Mock Service Worker comes with a first-class support for mocking WebSocket APIs. You can intercept WebSocket connections and mock client and server events using the `ws` namespace from `msw`:
+Mock Service Worker comes with first-class support for mocking WebSocket APIs. You can intercept WebSocket connections and mock client and server events using the `ws` namespace from `msw`:
 
 ```ts
 import { ws } from 'msw'
@@ -70,7 +70,7 @@ You will be handling both client and server events from this connection listener
 
 ## Important defaults
 
-The library implements a set of default behaviors to guarantee good developer experience for different testing and development scenarios. You can opt out from all of these and fine-tune the interception to suit your needs.
+The library implements a set of default behaviors to guarantee good developer experience for different testing and development scenarios. You can opt out of all of these and fine-tune the interception to suit your needs.
 
 ### Client connections
 
@@ -80,7 +80,7 @@ The library implements a set of default behaviors to guarantee good developer ex
 
 **By default, no client events are forwarded to the original server** (since the connection isn't established). Once you establish the original server connection via `server.connect()`, **all client events will be forwarded to the server**.
 
-You can opt-out from client-to-server forwarding by calling `event.preventDefault()` on the events that should not reach the server.
+You can opt out of client-to-server forwarding by calling `event.preventDefault()` on the events that should not reach the server.
 
 <PageCard
   icon="CubeTransparentIcon"
@@ -91,7 +91,7 @@ You can opt-out from client-to-server forwarding by calling `event.preventDefaul
 
 ### Server-to-client forwarding
 
-**By default, once you establish the actual server connection, all incoming server events are forwarded to the client.** You can opt-out from this behavior by calling `event.preventDefault()` on the server events that should not reach the client.
+**By default, once you establish the actual server connection, all incoming server events are forwarded to the client.** You can opt out of this behavior by calling `event.preventDefault()` on the server events that should not reach the client.
 
 <PageCard
   icon="CubeTransparentIcon"

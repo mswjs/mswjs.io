@@ -26,7 +26,7 @@ First, check what version of the `msw` package you have installed:
 npm ls msw
 ```
 
-Then, check the latest publish version:
+Then, check the latest published version:
 
 ```sh
 npm view msw version
@@ -93,7 +93,7 @@ You should see this console message when the problematic request happens on the 
 
 If there's no message, MSW is able to intercept the request but _cannot match it against this handler_. This likely means your request handler's predicate doesn't match the actual request URL. **Verify that the predicate is correct**. Some of the common issues include:
 
-- Using an environment variable in the path, which is not set in tests/CI (e.g. `http.get(BASE_URL + '/path'))`. Inspect any dynamic segments of the request path and make sure they have expected values;
+- Using an environment variable in the path, which is not set in tests/CI (e.g. `http.get(BASE_URL + '/path')`). Inspect any dynamic segments of the request path and make sure they have expected values;
 - Typos in the request path. Carefully examine the request printed in the previous step of this runbook and find any typos/mistakes in it.
 
 If unsure, please read through the documentation on intercepting requests with MSW:
@@ -184,7 +184,7 @@ Here's an example of how to configure Jest to work with the global Fetch API in 
 
 ### Mock responses don't arrive at tests
 
-HTTP requests have asynchronous nature. When testing code that depends on the resolution of those requests, like a UI element that renders once the response is received, you need to account for that asynchronicity. This often means using the right tools of your testing framework to properly await UI elements.
+HTTP requests are asynchronous. When testing code that depends on the resolution of those requests, like a UI element that renders once the response is received, you need to account for that asynchronicity. This often means using the right tools of your testing framework to properly await UI elements.
 
 ::: code-group
 

@@ -4,7 +4,7 @@ title: Intercepting sources
 description: Intercepting and handling event sources.
 ---
 
-You can intercept any `EventSource` in your applicatio by defining a request handler for it using the `sse` namespace. For example, consider this event source:
+You can intercept any `EventSource` in your application by defining a request handler for it using the `sse` namespace. For example, consider this event source:
 
 ```ts
 new EventSource('https://api.example.com/events')

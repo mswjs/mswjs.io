@@ -9,7 +9,7 @@ const { frontmatter } = useData()
 
 <template>
   <aside
-    class="blog-post-back-link sticky top-16 z-[2] py-2 text-sm font-medium bg-neutral-900 border-b border-neutral-800"
+    class="blog-post-back-link sticky top-16 z-30 py-2 text-sm font-medium bg-neutral-900 border-b border-neutral-800"
   >
     <a
       href="/blog"

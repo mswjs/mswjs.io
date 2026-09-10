@@ -71,4 +71,4 @@ http.get('/user', ({ request }) => {
 
 ## Type safety
 
-Query parameter types are always a `string` for single parameters and `string[]` for multi-value ones. MSW provides no additional functionality to parse parameter values or cast them to narrower types. If you ever need such a functionality, we recommend implementing it yourself as a utility function you can reuse across your request handlers.
+Query parameter types are always a `string` for single parameters and `string[]` for multi-value ones. MSW provides no additional functionality to parse parameter values or cast them to narrower types. If you ever need such functionality, we recommend implementing it yourself as a utility function you can reuse across your request handlers.

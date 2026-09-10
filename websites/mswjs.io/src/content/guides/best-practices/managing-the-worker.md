@@ -25,11 +25,11 @@ You'd have to replace the `<PUBLIC_DIR>` part with the actual path to your appli
 
 **It is recommended you commit the `mockServiceWorker.js` worker script in Git**. This way, everyone working on the project can get MSW up and running without having to run any additional commands.
 
-Alternatively, you can treat the worker script as a generated artifact. If you chose to do so, make sure to automate the [worker script generation](#generating-the-worker-script) so the script is created for everyone starting with the project.
+Alternatively, you can treat the worker script as a generated artifact. If you choose to do so, make sure to automate the [worker script generation](#generating-the-worker-script) so the script is created for everyone starting with the project.
 
 ## Serving the worker script
 
-The entire point of `msw init` is to copy the worker script to your project's root directory so _it is available on runtime_. You must ensure that your application is serving the worker script correctly by opening the script's URL in the browser.
+The entire point of `msw init` is to copy the worker script to your project's root directory so _it is available at runtime_. You must ensure that your application is serving the worker script correctly by opening the script's URL in the browser.
 
 For example, if you are running your application at `http://localhost:3000`, navigating to `http://localhost:3000/mockServiceWorker.js` must return the `application/javascript` content of the worker script. If it doesn't, you should repeat the [generation step](#generating-the-worker-script) or go through the browser integration from the start:
 
@@ -44,7 +44,7 @@ For example, if you are running your application at `http://localhost:3000`, nav
 
 The client-side code of MSW can pick up any worker script within the same major version. It is still recommended to keep the worker script up-to-date with the installed version of MSW. That is why we recommend using the `--save` flag with the `msw init` command.
 
-When run with the `--save` flag, the `msw init` command will save the used public path in `package.json`. Later, whenever you upgrade or downgrade the `msw` dependency, it will automatically generate the worker script at the saved path to keep you in-sync.
+When run with the `--save` flag, the `msw init` command will save the used public path in `package.json`. Later, whenever you upgrade or downgrade the `msw` dependency, it will automatically generate the worker script at the saved path to keep you in sync.
 
 ::: code-group
 

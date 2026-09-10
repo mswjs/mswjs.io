@@ -13,7 +13,7 @@ When testing, it may be tempting to write assertions against the intercepted req
 - Check that the request was performed with the correct URL/parameters/body/etc;
 - Check that a specific request handler was called.
 
-**We highly discourage against such assertions** as they represent implementation detail testing and sway you into testing how your application is written instead of what it does. Treat this as the default recommendation when testing with MSW.
+**We strongly discourage such assertions** as they represent implementation detail testing and sway you into testing how your application is written instead of what it does. Treat this as the default recommendation when testing with MSW.
 
 ::: tip
   Instead of asserting that a particular request was made, test **how your
@@ -41,9 +41,9 @@ export const handlers = [
 
 > Not only is this the right way to assert the request's validity, error handling also brings your request handlers closer to the production behavior.
 
-If the tested code happens to miss the `email` key its `FormData` body, your application will receive an error response, making your UI-based assertions fail, indicating an issue.
+If the tested code happens to miss the `email` key in its `FormData` body, your application will receive an error response, making your UI-based assertions fail, indicating an issue.
 
-This stands true for a more targeted tests as well since you can specify additional request handler logic using [network overrides](/guides/best-practices/network-behavior-overrides) on a per-test basis.
+This stands true for more targeted tests as well since you can specify additional request handler logic using [network overrides](/guides/best-practices/network-behavior-overrides) on a per-test basis.
 
 ## Unhandled requests
 
@@ -58,7 +58,7 @@ server.listen({
 })
 ```
 
-This is particularly useful option to set in your test setup file.
+This is a particularly useful option to set in your test setup file.
 
 ## Exceptions
 

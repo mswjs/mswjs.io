@@ -49,7 +49,7 @@ export const handlers = [
 ]
 ```
 
-You can also provide a _list of clients_ as the first argument to the `broadcastExcept()` method to have a finer control over which clients get excluded from the broadcast:
+You can also provide a _list of clients_ as the first argument to the `broadcastExcept()` method to have finer control over which clients get excluded from the broadcast:
 
 ```ts {3-5} /chat.clients/
 chat.addEventListener('connection', () => {

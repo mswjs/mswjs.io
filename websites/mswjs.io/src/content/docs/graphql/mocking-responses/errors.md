@@ -4,7 +4,7 @@ title: Errors
 description: Mock GraphQL error responses.
 ---
 
-You can mock a GraphQL error response by including the `error` key in the response object. Make sure your mocked error responses abide by the [GraphQL specification](https://spec.graphql.org/October2021/#sec-Errors) so your client can process them as expected.
+You can mock a GraphQL error response by including the `errors` key in the response object. Make sure your mocked error responses abide by the [GraphQL specification](https://spec.graphql.org/October2021/#sec-Errors) so your client can process them as expected.
 
 ## Request errors
 
@@ -24,7 +24,7 @@ api.query<User>('GetUser', () => {
 
 ## Field errors
 
-When mocking [field errors](https://spec.graphql.org/October2021/#sec-Errors.Field-errors), make sure to include the `locations` and `path` property alongside the error `message` to form a correct field error response. You can combine field errors with partial responses, too.
+When mocking [field errors](https://spec.graphql.org/October2021/#sec-Errors.Field-errors), make sure to include the `locations` and `path` properties alongside the error `message` to form a correct field error response. You can combine field errors with partial responses, too.
 
 ```ts {4-8}
 api.query<User, { id: string }>('GetUser', ({ variables }) => {

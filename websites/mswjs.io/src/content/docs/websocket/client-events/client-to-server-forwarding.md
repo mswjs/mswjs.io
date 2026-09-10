@@ -31,7 +31,7 @@ api.addEventListener('connection', ({ client, server }) => {
 })
 ```
 
-For example, here we are preventing any `message` event from the client from ever reaching the original server. You can still able to observe the dispatched client messages in the listener but they will not be forwarded to the server anymore.
+For example, here we are preventing any `message` event from the client from ever reaching the original server. You can still observe the dispatched client messages in the listener but they will not be forwarded to the server anymore.
 
 Just like with regular events, you can prevent the default _conditionally_:
 

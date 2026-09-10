@@ -35,4 +35,4 @@ export const handlers = [
   description="Connection wrapper for mocking Socket.IO with MSW."
 />
 
-> Note that binding is not meant to cover all the public APIs of the respective third-party library. Unless the binding is shipped by that library, maintaining full compatibility is not feasible.
+> Note that a binding is not meant to cover all the public APIs of the respective third-party library. Unless the binding is shipped by that library, maintaining full compatibility is not feasible.

@@ -18,7 +18,7 @@ Vitest Browser Mode.
 
 - As the name suggests, your Browser Mode tests run _in the actual browser_. This means you will be using the [Browser integration](/guides/integrations/browser) of MSW (i.e. `setupWorker()`);
 - You cannot reuse the app-level integration (e.g. in your `main.tsx`) because you don't normally render your entire component tree during component testing. You can still rely on that integration for local development with MSW though;
-- Vitest actually ships with MSW built-in, however, as of the time writing this, you cannot directly access the `worker` instance created by Vitest. This may change in the future.
+- Vitest actually ships with MSW built-in, however, as of the time of writing this, you cannot directly access the `worker` instance created by Vitest. This may change in the future.
 
 ## Example
 

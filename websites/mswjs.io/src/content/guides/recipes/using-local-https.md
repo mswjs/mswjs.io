@@ -7,7 +7,7 @@ keywords:
   - self-signed
 ---
 
-Due to security considerations, Service Workers can only be registered over a secure connection (exception being the local development on `localhost`). In some project setups, you may require to run your local application over HTTPS and will shortly encounter the following error when starting MSW's worker:
+Due to security considerations, Service Workers can only be registered over a secure connection (exception being the local development on `localhost`). In some project setups, you may need to run your local application over HTTPS and will shortly encounter the following error when starting MSW's worker:
 
 ```txt
 SecurityError: Failed to register a ServiceWorker:
@@ -16,7 +16,7 @@ SecurityError: Failed to register a ServiceWorker:
 
 This error occurs because your browser will not trust your self-signed certificate. As a result of it, the browser will block the Service Worker registration attempt and MSW will not work.
 
-To use the library with a local HTTPS setup you must make your browser trust your self-signed certificate. This can be achieve in multiple ways described below.
+To use the library with a local HTTPS setup you must make your browser trust your self-signed certificate. This can be achieved in multiple ways described below.
 
 ## Trust certificate on system level
 
@@ -43,4 +43,4 @@ You can add your self-signed certificate to the system's trusted certificates. P
 
 ### Safari
 
-We are not aware of any settings to make Safari trust self-signed certificates. Consider enabling [System-wide trust](#trust-certificate-on-system-level) on MacOS instead.
+We are not aware of any settings to make Safari trust self-signed certificates. Consider enabling [System-wide trust](#trust-certificate-on-system-level) on macOS instead.

@@ -2,7 +2,7 @@
 title: Dynamic mock scenarios
 ---
 
-When developing or presenting your work, you may need to switch between different mock scenarios on runtime. Going to the source code in the middle of a demo isn't a good experience for your audience.
+When developing or presenting your work, you may need to switch between different mock scenarios at runtime. Going to the source code in the middle of a demo isn't a good experience for your audience.
 
 One of the ways to achieve this is to declare a set of scenarios (handler overrides) and conditionally apply them based on some runtime criteria, like query parameters.
 

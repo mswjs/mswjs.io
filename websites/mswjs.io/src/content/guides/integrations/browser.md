@@ -15,7 +15,7 @@ In the browser, MSW works by registering a Service Worker responsible for reques
 
 ::: info
   Although Service Workers are meant to be served via HTTPS, browsers allow
-  registering workers on HTTP while developing on `localhost`. If you need a
+  registering workers on HTTP while developing on `localhost`. If you need
   local HTTPS development, see [this recipe](/guides/recipes/using-local-https).
 :::
 

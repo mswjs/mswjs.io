@@ -36,7 +36,7 @@ export const handlers = [
 
 In the example above, both `GET /user` and `POST /cart/:cartId` requests will match the `http.all('*')` request handler, which will delay their eventual resolution by 1000ms.
 
-This option provides you with a consistent delay across all request handlers but makes it harder to opt-out from this behavior for specific handlers (you'd have to put those _before_ the all-matching `http.all('*')`).
+This option provides you with a consistent delay across all request handlers but makes it harder to opt out of this behavior for specific handlers (you'd have to put those _before_ the all-matching `http.all('*')`).
 
 ## Option 2: Higher-order response resolver
 
@@ -80,7 +80,7 @@ export const handlers = [
 
 :::
 
-In the example above, the `GET /user` and `POST /cart/:cartId` requests will be delayed by 1000ms because their response resolvers are wrapped in the `withDelay()` higher-order resolver. Note that the `GET /products` request _will no have any delay_, respectively.
+In the example above, the `GET /user` and `POST /cart/:cartId` requests will be delayed by 1000ms because their response resolvers are wrapped in the `withDelay()` higher-order resolver. Note that the `GET /products` request _will not have any delay_, respectively.
 
 This option gives you more control over which responses to delay while encapsulating the delay logic within the higher-order response resolver for consistency.
 

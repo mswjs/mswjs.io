@@ -8,12 +8,12 @@ Responding to an intercepted request with a mocked response is one of the most c
 
 ## Fetch API limitations
 
-When working with MSW, you will be using Fetch API [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) instances to describe mocked responses. Relying on a web standard allows for a familiar and flexible mocking experience, reusing of the existing network utilities, and transferable knowledge.
+When working with MSW, you will be using Fetch API [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) instances to describe mocked responses. Relying on a web standard allows for a familiar and flexible mocking experience, reuse of existing network utilities, and transferable knowledge.
 
 While you always write your mocks from the _server's perspective_, the Fetch API **isn't designed to declare server responses**. The API contains several restrictions that make sense on the client but less so in your mocks:
 
 - Some response headers, like `Set-Cookie`, are [forbidden](https://fetch.spec.whatwg.org/#forbidden-response-header-name);
-- Setting status codes outside of the `2xx`-`5xx` range are forbidden;
+- Setting status codes outside of the `2xx`-`5xx` range is forbidden;
 
 **None of these restrictions apply when mocking responses with MSW**. You can mock [cookies](/docs/http/mocking-responses/cookies), set otherwise non-configurable status codes, like `101 Switching Protocols`, and declare mocked responses as you would server responses. That is achieved by using the [`HttpResponse`](/api/http-response) superset class provided by the library. Please prefer using it when declaring mocked responses.
 
@@ -56,7 +56,7 @@ http.get<never, never, { id: string }>('/resource', ({ request }) => {
 
 ## Response declaration
 
-It is highly recommended you get yourself familiar with Fetch API [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) class. Mocking various response scenarios will come down to declaring them using that standard class. Below, you can find a few common examples. Make sure to explore the section to your left for more advanced use cases.
+It is highly recommended you get yourself familiar with the Fetch API [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) class. Mocking various response scenarios will come down to declaring them using that standard class. Below, you can find a few common examples. Make sure to explore the section to your left for more advanced use cases.
 
 ### Status code
 

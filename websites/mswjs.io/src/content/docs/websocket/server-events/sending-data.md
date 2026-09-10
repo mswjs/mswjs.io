@@ -13,7 +13,7 @@ api.addEventListener('connection', ({ server }) => {
 })
 ```
 
-> `server.send()` has the same call signature as supported data types as `client.send()`.
+> `server.send()` has the same call signature and supported data types as `client.send()`.
 
 This is handy for triggering a particular server behavior by emulating a client-sent event (including those the client hasn't sent).
 

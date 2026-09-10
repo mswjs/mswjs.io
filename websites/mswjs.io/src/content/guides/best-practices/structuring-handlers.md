@@ -67,7 +67,7 @@ Utilize network behavior overrides to split the behavior of the same resource be
 
 ## Dealing with large handlers
 
-Complex systems may have complex APIs. When mocking them, that complexity may result in a large number of request handlers present at the same time. Here's a couple of ways how you can to handle large network descriptions.
+Complex systems may have complex APIs. When mocking them, that complexity may result in a large number of request handlers present at the same time. Here are a couple of ways to handle large network descriptions.
 
 ### Group request handlers
 
@@ -126,7 +126,7 @@ server.use(...userHandlers)
 
 :::
 
-> To take the full advantage of domain-based request handlers, you may consider calling `setupServer()` without any base request handlers.
+> To take full advantage of domain-based request handlers, you may consider calling `setupServer()` without any base request handlers.
 
 ### Abstract repeated logic
 

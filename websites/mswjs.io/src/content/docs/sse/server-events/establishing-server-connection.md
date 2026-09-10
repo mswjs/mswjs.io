@@ -17,7 +17,7 @@ sse('/stream', ({ server }) => {
 })
 ```
 
-The result of calling `server.connect()` is an [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) instance that you can use to listen and handle the events received from the actual production server.
+The result of calling `server.connect()` is an [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) instance that you can use to listen to and handle the events received from the actual production server.
 
 ## Event forwarding
 
@@ -45,7 +45,7 @@ export const handlers = [
 ]
 ```
 
-You can opt-out from the default server-to-client event forwarding by calling `event.preventDefault()` on the received server event. For example, here's how you can prevent a server event with a particular payload and send another, mocked payload to the client instead:
+You can opt out of the default server-to-client event forwarding by calling `event.preventDefault()` on the received server event. For example, here's how you can prevent a server event with a particular payload and send another, mocked payload to the client instead:
 
 ```ts {5-8} /client/#g
 sse('/stream', ({ server, client }) => {

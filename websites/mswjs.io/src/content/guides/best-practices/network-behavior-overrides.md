@@ -54,11 +54,11 @@ server.use(
 )
 ```
 
-This distinction is important because you can add and exhause runtime request handlers while relying on the initial handlers as the fallback network description.
+This distinction is important because you can add and exhaust runtime request handlers while relying on the initial handlers as the fallback network description.
 
 ## Network override types
 
-The `.use()` API allow you to establish different types of network overrides depending on your needs.
+The `.use()` API allows you to establish different types of network overrides depending on your needs.
 
 ### Permanent override
 
@@ -158,7 +158,7 @@ it('displays a greeting message', () => {
 
 ### Resetting initial request handlers
 
-You can use the `.resetHandlers()` method to replace the initial request handlers and introduce entirely new network description if you provide a list of next initial handlers as the argument to the `.resetHandlers()` function call.
+You can use the `.resetHandlers()` method to replace the initial request handlers and introduce an entirely new network description if you provide a list of next initial handlers as the argument to the `.resetHandlers()` function call.
 
 ```js {8-10}
 const server = setupServer(

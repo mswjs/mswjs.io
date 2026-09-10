@@ -57,7 +57,7 @@ Do not include query parameters in your request predicate.
 
 Query parameters do not describe resource paths but rather additional data sent with the request. As such, they must not be present in the request predicate. Any query parameters accidentally included in the request predicate **will automatically be removed** and have no effect on the URL matching.
 
-You intercepted requests can still have query parameters, and you can access them in the response resolver. Learn more about how on this page:
+Your intercepted requests can still have query parameters, and you can access them in the response resolver. Learn more about how on this page:
 
 <PageCard
   icon="solid/ServerIcon"
@@ -89,7 +89,7 @@ You can provide a _regular expression_ as a request handler predicate. MSW will 
 http.get(/\/settings\/(profile|settings)/, () => {})
 ```
 
-It's generally recommended to use request paths/URLs predicates, but you can rely on regular expressions for the most complex matching scenarios.
+It's generally recommended to use request path/URL predicates, but you can rely on regular expressions for the most complex matching scenarios.
 
 ### Custom predicate function
 

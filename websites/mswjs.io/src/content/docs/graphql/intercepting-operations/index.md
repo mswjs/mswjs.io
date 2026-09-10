@@ -10,7 +10,7 @@ This page will walk you through the possible ways to intercept a GraphQL operati
 
 ## Endpoint-first mocking
 
-By default, the library **ignores the servers endpoint** when matching GraphQL operations. That is a conscious decision since it is rare that a single application would interact with multiple GraphQL APIs. It means that the same handler will match a `GetUser` operation even if one is sent to `/api/graphql` and the other to `https://api.example.com`.
+By default, the library **ignores the server’s endpoint** when matching GraphQL operations. That is a conscious decision since it is rare that a single application would interact with multiple GraphQL APIs. It means that the same handler will match a `GetUser` operation even if one is sent to `/api/graphql` and the other to `https://api.example.com`.
 
 This default is supported for backward-compatibility, but it is **strongly recommended** to use [`graphql.link()`](/api/graphql#graphqllinkurl) to scope GraphQL mocking to a particular server endpoint.
 
@@ -37,13 +37,13 @@ The library supports intercepting GraphQL queries and mutations (subscriptions s
     icon="GraphQLIcon"
     url="/docs/graphql/intercepting-operations/queries"
     title="Queries"
-    description="Learn about interceping GraphQL queries"
+    description="Learn about intercepting GraphQL queries"
   />
   <PageCard
     icon="GraphQLIcon"
     url="/docs/graphql/intercepting-operations/mutations"
     title="Mutations"
-    description="Learn about interceping GraphQL mutations"
+    description="Learn about intercepting GraphQL mutations"
   />
 </div>
 
@@ -53,7 +53,7 @@ You can also **intercept any GraphQL operation** regardless of its kind, which i
   icon="GraphQLIcon"
   url="/docs/graphql/intercepting-operations/operations"
   title="Operations"
-  description="Learn about interceping any GraphQL operation"
+  description="Learn about intercepting any GraphQL operation"
 />
 
 ## Predicate

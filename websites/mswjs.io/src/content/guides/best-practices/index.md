@@ -18,7 +18,7 @@ Our mission is to help you describe the network you want. With that in mind, we 
     icon="CommandLineIcon"
     url="/guides/best-practices/network-behavior-overrides"
     title="Network behavior overrides"
-    description="Override network behaviors on runtime."
+    description="Override network behaviors at runtime."
   />
   <PageCard
     icon="CommandLineIcon"
@@ -36,7 +36,7 @@ Our mission is to help you describe the network you want. With that in mind, we 
     icon="CommandLineIcon"
     url="/guides/best-practices/dynamic-mock-scenarios"
     title="Dynamic mock scenarios"
-    description="Apply different network scenarios on runtime."
+    description="Apply different network scenarios at runtime."
   />
   <PageCard
     icon="CommandLineIcon"

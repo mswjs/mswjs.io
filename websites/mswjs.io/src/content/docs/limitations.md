@@ -22,9 +22,9 @@ There is, however, a workaround you can employ by using the `XMLHttpRequestInter
 
 ### Firefox: `fetch` event for `XMLHttpRequest`
 
-Firefox does not notify the worker when an `XMLHttpRequest` happens on the page. This means that the worker and, as the result, this library, do not know when such requests occur. Even if you have a matching request handler for the request, it won't be matched and the mocked response won't be sent if it's an `XMLHttpRequest`.
+Firefox does not notify the worker when an `XMLHttpRequest` happens on the page. This means that the worker and, as a result, this library, do not know when such requests occur. Even if you have a matching request handler for the request, it won't be matched and the mocked response won't be sent if it's an `XMLHttpRequest`.
 
-Mock Service Worker positions itself as a development tool, which means we cannot guarantee 100% compatibility with all modern browsers. In the end, each browser may have its discrepancies in how the Service Worker API is implemented, for which we also cannot account for.
+Mock Service Worker positions itself as a development tool, which means we cannot guarantee 100% compatibility with all modern browsers. In the end, each browser may have its discrepancies in how the Service Worker API is implemented, which we also cannot account for.
 
 ## Node.js limitations
 
