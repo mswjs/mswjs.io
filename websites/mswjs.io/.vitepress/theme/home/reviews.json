@@ -1,0 +1,43 @@
+[
+  {
+    "author": "Alffrey Chemmannoor",
+    "quote": "I've spent numerous hours mocking and stubbing data for tests over the years wishing for a better approach. I was recently introduced to MSW and love how it <em>instantly improves the developer experience</em>."
+  },
+  {
+    "author": "Michael Haglund",
+    "position": "Engineering Manager",
+    "quote": "We've switched our tests over to use Mock Service Worker and we <em>haven't looked back ever since</em>."
+  },
+  {
+    "author": "Brady Pascoe",
+    "position": "Maintainer of React Bootstrap",
+    "quote": "<em>I don't think I can use anything other than MSW</em> after picking it up for a project at my previous workplace, to be honest."
+  },
+  {
+    "author": "Tobias Pickel",
+    "quote": "Mock Service Worker is <em>the best thing that ever happened to the JS community</em>. Sharing mocks between development, unit, and E2E tests has never been that easy."
+  },
+  {
+    "author": "Konna Buraun",
+    "quote": "Just a shoutout to MSW for being <em>an absolute dream to work with</em>. Simple to get running and it's allowed me to continue working while the backend was down. Much faster than writing a mock server."
+  },
+  {
+    "author": "Derek DeHart",
+    "quote": "I can't even imagine the mock I'd have to contrive to simulate a server sending a CSRF cookie, and <em>with MSW I don't have to</em>!"
+  },
+  {
+    "author": "Rafal Rudol",
+    "position": "Senior Frontend Developer",
+    "quote": "Mock Service Worker was <em>a life-saver</em> for me when we had a strict deadline and there was no backend."
+  },
+  {
+    "author": "Heitor Lessa",
+    "position": "AWS EMEA",
+    "quote": "It's quite <em>a genius use of Service Workers</em>—works for both REST and GraphQL API."
+  },
+  {
+    "author": "Matan Borenkraout",
+    "position": "Frontend Engineer",
+    "quote": "When it comes to mocking, <em>I always recommend Mock Service Worker</em>. It's amazing and as close as it gets to plug & play."
+  }
+]

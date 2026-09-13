@@ -41,13 +41,13 @@ This documentation has everything you need to mock RESTful, GraphQL, and WebSock
 If you prefer learning in a more interactive, build-along format, consider one of our official Egghead courses below. These courses require a paid subscription and help us keep the project alive.
 
 <div class="grid gap-10 md:grid-cols-2">
-  <EggheadCourseBanner
+  <PromoBanner
     title="REST and GraphQL"
     description="Learn how to mock RESTful and GraphQL APIs by building a movie streaming app."
     courseUrl="https://egghead.io/courses/mock-rest-and-graphql-apis-with-mock-service-worker-8d471ece"
     thumbnailUrl="/images/egghead-msw-rest-graphql.png"
   />
-  <EggheadCourseBanner
+  <PromoBanner
     title="WebSockets"
     description="Learn how to mock WebSocket APIs by building your own chat."
     courseUrl="https://egghead.io/courses/mocking-websocket-apis-with-mock-service-worker-9933b7f5"

@@ -7,7 +7,7 @@ import { setupTwoslashSourceLinks } from './twoslashSourceLinks'
 // Components available to Markdown content globally.
 import Action from '@mswjs/shared/theme/content/Action.vue'
 import PageCard from '@mswjs/shared/theme/content/PageCard.vue'
-import EggheadCourseBanner from './content/EggheadCourseBanner.vue'
+import PromoBanner from './content/PromoBanner.vue'
 import DiscordIcon from '@mswjs/shared/theme/components/icons/discord.vue'
 
 import '@mswjs/shared/theme/styles/style.css'
@@ -28,7 +28,7 @@ export default {
     app.use(TwoslashFloatingVue)
     app.component('Action', Action)
     app.component('PageCard', PageCard)
-    app.component('EggheadCourseBanner', EggheadCourseBanner)
+    app.component('PromoBanner', PromoBanner)
     app.component('DiscordIcon', DiscordIcon)
   },
 } satisfies Theme

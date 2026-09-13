@@ -34,7 +34,7 @@ Let's define a request handler for a `GET https://api.example.com/user` request:
 
 ::: code-group
 
-```ts [src/mocks/handlers.ts] {4-10} /http/1,2
+```ts [src/mocks/handlers.ts] {4-10}
 import { http, HttpResponse } from 'msw'
 
 export const handlers = [

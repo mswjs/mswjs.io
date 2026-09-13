@@ -18,6 +18,17 @@ const emit = defineEmits<{
 
 const { theme } = useData<DefaultTheme.Config>()
 const route = useRoute()
+// The homepage frames its sections with side rails; the header shares them.
+const framed = computed(() => {
+  return route.path === '/'
+})
+// Documentation pages get the same rails on the wider documentation
+// layout, so the header's left rail continues into the sidebar border.
+const documentationFramed = computed(() => {
+  return ['/docs', '/guides', '/api'].some((rootPath) => {
+    return route.path === rootPath || route.path.startsWith(`${rootPath}/`)
+  })
+})
 const router = useRouter()
 
 const navigationItems = computed(() => {
@@ -44,60 +55,76 @@ function navigateToBranding(): void {
 
 <template>
   <header
-    class="top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900 min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
+    class="site-header top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900 text-sm min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
     :class="stickyOnMobile ? 'sticky' : 'relative'"
   >
-    <div
-      class="mx-auto flex h-16 max-w-[var(--vp-layout-max-width)] items-center justify-between gap-6 px-6 md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]"
-    >
-      <div class="flex h-full shrink-0 items-center gap-8">
-        <a
-          href="/"
-          class="site-header-logo flex shrink-0 items-center rounded-lg"
-          aria-label="Mock Service Worker home"
-          @contextmenu.prevent="navigateToBranding"
-        >
-          <img src="/logo.svg" alt="" class="h-9 w-9" />
-        </a>
-
-        <nav
-          class="hidden h-full items-center gap-6 font-medium md:flex"
-          aria-label="Main navigation"
-        >
+    <div :class="{ 'msw-container home-frame': framed }">
+      <div
+        class="flex h-16 items-center justify-between gap-6 px-6"
+        :class="
+          framed
+            ? 'home-frame-rails border-x border-neutral-800 md:px-10'
+            : [
+                'mx-auto max-w-[var(--vp-layout-max-width)] md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]',
+                documentationFramed ? 'border-x border-neutral-800' : '',
+              ]
+        "
+      >
+        <div class="flex h-full shrink-0 items-center gap-8">
           <a
-            v-for="item in navigationItems"
-            :key="item.link"
-            :href="item.link"
-            :target="item.target"
-            :rel="item.rel"
-            class="flex h-full items-center hover:text-primary focus-visible:-outline-offset-2"
-            :class="isActive(item) ? 'text-primary' : 'text-white'"
-            :aria-current="isActive(item) ? 'page' : undefined"
+            href="/"
+            class="site-header-logo flex shrink-0 items-center rounded-lg"
+            aria-label="Mock Service Worker home"
+            @contextmenu.prevent="navigateToBranding"
           >
-            {{ item.text }}
+            <img src="/logo.svg" alt="" class="h-9 w-9" />
           </a>
-        </nav>
-      </div>
 
-      <div class="flex min-w-0 items-center gap-4">
-        <VPNavBarSearch class="!p-0" />
-        <VPSwitchAppearance />
-        <div class="hidden border-l border-neutral-800 pl-3 md:flex">
-          <VPSocialLinks :links="theme.socialLinks" />
+          <nav
+            class="hidden h-full items-center gap-6 font-medium md:flex"
+            aria-label="Main navigation"
+          >
+            <a
+              v-for="item in navigationItems"
+              :key="item.link"
+              :href="item.link"
+              :target="item.target"
+              :rel="item.rel"
+              class="flex h-full items-center hover:text-primary focus-visible:-outline-offset-2"
+              :class="isActive(item) ? 'text-primary' : 'text-white'"
+              :aria-current="isActive(item) ? 'page' : undefined"
+            >
+              {{ item.text }}
+            </a>
+          </nav>
         </div>
 
-        <button
-          type="button"
-          data-site-menu-trigger
-          class="flex h-10 w-10 shrink-0 items-center justify-center text-white md:hidden"
-          :aria-expanded="menuOpen"
-          aria-controls="site-mobile-menu"
-          :aria-label="menuOpen ? 'Close menu' : 'Open menu'"
-          @click="emit('toggleMenu')"
-        >
-          <XMarkIcon v-if="menuOpen" class="h-6 w-6" />
-          <Bars3Icon v-else class="h-6 w-6" />
-        </button>
+        <div class="flex h-full min-w-0 items-center">
+          <div
+            class="site-header-search relative z-10 hidden h-[calc(100%+1px)] self-start border border-transparent border-x-neutral-800 transition-colors hover:border-primary md:flex"
+          >
+            <VPNavBarSearch class="!p-0" />
+          </div>
+          <div
+            class="-mr-2 hidden h-full items-center gap-3 pl-5 md:flex"
+          >
+            <VPSwitchAppearance />
+            <VPSocialLinks :links="theme.socialLinks" />
+          </div>
+
+          <button
+            type="button"
+            data-site-menu-trigger
+            class="flex h-10 w-10 shrink-0 items-center justify-center text-white md:hidden"
+            :aria-expanded="menuOpen"
+            aria-controls="site-mobile-menu"
+            :aria-label="menuOpen ? 'Close menu' : 'Open menu'"
+            @click="emit('toggleMenu')"
+          >
+            <XMarkIcon v-if="menuOpen" class="h-6 w-6" />
+            <Bars3Icon v-else class="h-6 w-6" />
+          </button>
+        </div>
       </div>
     </div>
 

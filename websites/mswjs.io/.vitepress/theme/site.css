@@ -15,7 +15,8 @@
 }
 
 :root {
-  --vp-font-family-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --vp-font-family-mono:
+    'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
   --site-layout-top-height: 0px;
   --site-font-size: 1rem;
   --site-accent: 255 106 51;
@@ -47,7 +48,7 @@
   --vp-nav-bg-color: var(--vp-c-bg);
   --vp-sidebar-bg-color: var(--vp-c-bg);
   --vp-local-nav-bg-color: var(--vp-c-bg);
-  --vp-code-block-bg: #FFFFFF;
+  --vp-code-block-bg: #ffffff;
   --vp-code-bg: #f0f0f0;
   --vp-code-color: #404040;
   --vp-code-line-highlight-color: rgb(var(--site-accent) / 7%);
@@ -66,7 +67,7 @@
   --site-code-keyword: #d94008;
   --site-code-text: #521000;
   --site-code-string: #0876d9;
-  --site-code-comment: #A8877F;
+  --site-code-comment: #a8877f;
   --site-code-constant: #5a11cc;
   --site-code-function: #7612cc;
   --site-code-parameter: #c77700;
@@ -88,7 +89,7 @@
   --site-neutral-950: 10 10 10;
   --vp-c-bg-elv: #1f1f1f;
   --vp-c-brand-2: var(--primary);
-  --vp-code-block-bg: #0C0C0C;
+  --vp-code-block-bg: #0c0c0c;
   --vp-code-bg: #262626;
   --vp-code-color: #e5e5e5;
   --vp-code-line-highlight-color: rgb(38 38 38 / 60%);
@@ -101,14 +102,18 @@
   --vp-custom-block-info-border: #1e3a8a;
   --vp-custom-block-info-text: #60a5fa;
   --vp-custom-block-info-bg: rgb(30 58 138 / 10%);
-  --site-code-keyword: #FF7F4D;
-  --site-code-text: #E8E8E8;
-  --site-code-string: #0A95FF;
+  --site-code-keyword: #ff7f4d;
+  --site-code-text: #e8e8e8;
+  --site-code-string: #0a95ff;
   --site-code-comment: #888888;
   --site-code-constant: #79b8ff;
-  --site-code-function: #B084FF;
-  --site-code-parameter: #FFB366;
+  --site-code-function: #b084ff;
+  --site-code-parameter: #ffb366;
   color-scheme: dark;
+}
+
+::selection {
+  @apply bg-primary/50;
 }
 
 body {
@@ -145,7 +150,10 @@ pre[data-language] {
 }
 
 .hero-gradient {
-  background: radial-gradient(rgb(var(--site-foreground) / 2%) 50%, transparent 70%);
+  background: radial-gradient(
+    rgb(var(--site-foreground) / 2%) 50%,
+    transparent 70%
+  );
 }
 
 .DocSearch-Button {
@@ -327,14 +335,6 @@ code,
   color: #57534e;
 }
 
-.homepage-egghead-icon {
-  filter: drop-shadow(2px 3px 0 var(--primary));
-}
-
-:root.dark .homepage-egghead-icon {
-  filter: drop-shadow(2px 3px 0 var(--vp-c-bg));
-}
-
 :root.dark .promo-banner {
   background-color: rgb(115 115 115 / 20%);
   border-color: rgb(var(--site-neutral-700));
@@ -406,11 +406,16 @@ code,
   display: block;
 }
 
-.twoslash-floating .twoslash-popup-docs-tag-example .twoslash-popup-docs-tag-value {
+.twoslash-floating
+  .twoslash-popup-docs-tag-example
+  .twoslash-popup-docs-tag-value {
   display: block;
 }
 
-.twoslash-floating .twoslash-popup-docs-tag-example .twoslash-popup-docs-tag-value > pre {
+.twoslash-floating
+  .twoslash-popup-docs-tag-example
+  .twoslash-popup-docs-tag-value
+  > pre {
   margin: 6px 0 2px;
   padding: 8px 10px;
   border: 1px solid var(--twoslash-border-color);
@@ -421,4 +426,302 @@ code,
   line-height: var(--vp-code-line-height);
   white-space: pre;
   overflow-x: auto;
+}
+
+/*
+ * Homepage code snippets, rendered from Markdown slots so they get
+ * the same highlighting and inline type information as the docs.
+ */
+.home-code div[class*='language-'] {
+  margin: 0;
+}
+
+.home-code div[class*='language-'] pre {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.home-code-compact {
+  --vp-code-font-size: 13px;
+}
+
+/* The hero snippet sits in its own framed cell; no card chrome. */
+.home-code-flush div[class*='language-'] {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.home-code-flush div[class*='language-'] pre {
+  background-color: transparent !important;
+}
+
+
+/*
+ * Header search as a bordered cell (like the hero CTAs): full height,
+ * no rounded box, and the cell's own border turns orange on hover.
+ */
+.site-header-search .VPNavBarSearch,
+.site-header-search #local-search,
+.site-header-search .DocSearch {
+  display: flex;
+  height: 100%;
+}
+
+.site-header-search .DocSearch-Button,
+.site-header-search .DocSearch-Button:hover,
+.site-header-search .DocSearch-Button:focus {
+  height: 100%;
+  margin: 0;
+  padding: 0 1.25rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.site-header-search .DocSearch-Button:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Key caps form one rounded pill: the left cap rounds its left side,
+   the right cap its right side, sharing a single divider (the shared
+   theme draws each cap's border as an inset shadow, which doubled it). */
+.site-header-search .DocSearch-Button .DocSearch-Button-Key {
+  border-radius: 4px 0 0 4px;
+}
+
+.site-header-search .DocSearch-Button .DocSearch-Button-Key + .DocSearch-Button-Key {
+  margin-left: -1px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Feature snippets read as panels floating over the card. */
+.home-code-panel div[class*='language-'] {
+  box-shadow: 0 24px 48px -16px rgb(0 0 0 / 35%);
+}
+
+.home-code-panel div[class*='language-'] pre {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.home-code-panel div[class*='language-'] pre code {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* Line numbers follow the panel's taller top padding, and the whole
+   gutter + code sits a bit further from the panel edges. */
+.home-code-panel .line-numbers-wrapper {
+  padding-top: 24px;
+  left: 12px;
+}
+
+.home-code-panel div[class*='language-'].line-numbers-mode pre {
+  padding-left: 44px;
+}
+
+.home-code-panel div[class*='language-'].line-numbers-mode pre code {
+  padding-right: 44px;
+}
+
+/* On large screens the copy sits 62px in from the panel edge; extra
+   left padding pushes the line numbers and the code along so the code
+   starts on the copy's vertical line (62px - 32px gutter - 8px = 22px). */
+@media (min-width: 1536px) {
+  .home-code-bleed-r div[class*='language-'].line-numbers-mode pre {
+    padding-left: 54px;
+  }
+
+  .home-code-bleed-r .line-numbers-wrapper {
+    left: 22px;
+  }
+}
+
+/* A panel bleeding to the bottom stretches down to the card border,
+   growing from the copy above it and leaving white space beneath the code. */
+.home-code-bleed-b {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-code-bleed-b div[class*='language-'] {
+  flex: 1;
+}
+
+/* A panel bleeding to a card edge drops its own border and rounding
+   on that side, so the card border becomes the panel edge. */
+.home-code-bleed-r div[class*='language-'] {
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.home-code-bleed-l div[class*='language-'] {
+  border-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.home-code-bleed-b div[class*='language-'] {
+  border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Inline code in homepage copy looks like inline code in the docs. */
+.home-prose code {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 4px;
+  padding: 0 6px;
+  font-family: var(--vp-font-family-mono);
+  font-size: var(--vp-code-font-size);
+  color: var(--vp-code-color);
+  background-color: var(--vp-code-bg);
+  white-space: normal;
+  overflow-wrap: break-word;
+  transition:
+    color 0.25s,
+    background-color 0.5s;
+}
+
+/*
+ * Interception schematic. A single "--progress" value (0–100, set on the
+ * figure every frame by the component) drives everything below through
+ * pure functions of that value, so nothing can drift out of sync:
+ *
+ *   0–56   the request travels from the client to the interception point,
+ *          painting the track behind it and lighting each step it reaches
+ *   56–66  the request fades on arrival
+ *   80–92  the trail and the lit steps fade back
+ *   92–100 pause before the next cycle
+ *
+ * The track runs horizontally from "md" up and vertically below.
+ */
+.interception-diagram {
+  --progress: 0;
+  /* Share of the travel completed. */
+  --reach: clamp(0, var(--progress) / 56, 1);
+  /* Visibility of the trail and the lit steps. */
+  --linger: clamp(0, (92 - var(--progress)) / 12, 1);
+}
+
+.interception-step::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--primary);
+  border-radius: inherit;
+  pointer-events: none;
+  /* Lit once the request has reached this step ("--arrival"). The last
+     step's arrival is exactly 1, the same as the completed travel, so a
+     small tolerance keeps it from never lighting. */
+  opacity: min(
+    clamp(0, (var(--reach) - var(--arrival) + 0.001) * 1000, 1),
+    var(--linger)
+  );
+}
+
+.interception-request {
+  position: absolute;
+  /* Below the step boxes: the request passes behind them, not over their labels. */
+  z-index: 6;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 9999px;
+  background-color: var(--primary);
+  box-shadow: 0 0 0 4px rgb(var(--site-accent) / 25%);
+  translate: calc(var(--travel-x) * var(--reach))
+    calc(var(--travel-y) * var(--reach));
+  opacity: min(
+    clamp(0, var(--progress) / 6, 1),
+    clamp(0, (66 - var(--progress)) / 10, 1)
+  );
+}
+
+.interception-trail {
+  position: absolute;
+  z-index: 5;
+  height: 2px;
+  margin-top: -1px;
+  background-color: var(--primary);
+  transform: scaleX(var(--reach));
+  transform-origin: left center;
+  opacity: var(--linger);
+}
+
+.interception-diagram-vertical .interception-trail {
+  width: 2px;
+  height: auto;
+  margin: 0 0 0 -1px;
+  transform: scaleY(var(--reach));
+  transform-origin: center top;
+}
+
+/*
+ * Marquee (companies, reviews). The track holds every item once plus
+ * copies of the first few; one cycle translates by exactly one full set
+ * of items, so the copies sit where the originals reappear and the loop
+ * has no seam. Every marquee moves at the same speed (px per second),
+ * so the cycle length follows from the item width and count.
+ * Hovering pauses it.
+ */
+.marquee {
+  --marquee-speed: 52.8;
+}
+
+.marquee-item {
+  width: calc(var(--marquee-item) * 1px);
+}
+
+.marquee-track {
+  width: max-content;
+  animation: marquee-scroll linear infinite;
+  animation-duration: calc(
+    var(--marquee-count) * var(--marquee-item) / var(--marquee-speed) * 1s
+  );
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(
+      calc(-1px * var(--marquee-count) * var(--marquee-item))
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  /* A static row shows each item once: no need for the looping copies. */
+  .marquee-track [aria-hidden='true'] {
+    display: none;
+  }
+}
+
+/*
+ * Homepage frames span the full viewport below "lg" so the sections
+ * breathe on small screens; the rails return with the container on "lg".
+ */
+@media (max-width: 1023.98px) {
+  .home-frame {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .home-frame-rails {
+    border-left: 0;
+    border-right: 0;
+  }
 }

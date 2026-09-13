@@ -33,7 +33,7 @@ Let's talk about the WebSocket support, why it took years to ship, and also dive
 
 > Before we do, check out my new course on mocking WebSocket APIs on Egghead! You will learn how to use the new `ws` API, intercept and mock WebSocket events, and also test your WebSocket apps in Vitest and Playwright. This is a great way to support the project financially, too! Thank you.
 
-<EggheadCourseBanner
+<PromoBanner
   title="New protocol, new course!"
   description="Learn how to mock WebSocket APIs with Mock Service Worker by building a chat application."
   courseUrl="https://egghead.io/courses/mocking-websocket-apis-with-mock-service-worker-9933b7f5"

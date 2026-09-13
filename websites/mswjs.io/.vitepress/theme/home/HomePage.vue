@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import Hero from '@mswjs/shared/theme/components/Hero.vue'
-import PromoBanner from '@mswjs/shared/theme/components/PromoBanner.vue'
+import type { Component } from 'vue'
+import HomeHero from './HomeHero.vue'
+import FeatureCard from './FeatureCard.vue'
+import FeatureLink from './FeatureLink.vue'
+import InterceptionDiagram from './InterceptionDiagram.vue'
 import Container from '@mswjs/shared/theme/components/Container.vue'
-import Grid from '@mswjs/shared/theme/components/Grid.vue'
 import PageHeaderWrapper from '@mswjs/shared/theme/components/PageHeaderWrapper.vue'
-import PageHeaderPrefix from '@mswjs/shared/theme/components/PageHeaderPrefix.vue'
 import PageHeaderSubtitle from '@mswjs/shared/theme/components/PageHeaderSubtitle.vue'
 import GettingStarted from '@mswjs/shared/theme/components/GettingStarted.vue'
-import Section from './Section.vue'
 import UppercaseLabel from './UppercaseLabel.vue'
 import ComponentExample from './ComponentExample.vue'
-import HomepageCodeExample from './HomepageCodeExample.vue'
 import MswIconBlock from './MswIconBlock.vue'
-import HeroQuote from './HeroQuote.vue'
-import Quote from './Quote.vue'
+import FeaturedQuote from './FeaturedQuote.vue'
+import ReviewTile from './ReviewTile.vue'
+import reviews from './reviews.json'
 import VitestRunner from './VitestRunner.vue'
 import CypressRunner from './CypressRunner.vue'
 import StorybookShowcase from './StorybookShowcase.vue'
 
-import EggheadIcon from '@mswjs/shared/theme/components/icons/egghead.vue'
+import PlayCircleIcon from '@mswjs/shared/theme/components/icons/play-circle.vue'
 import GitHubIcon from '@mswjs/shared/theme/components/icons/github.vue'
 import MicrosoftIcon from '@mswjs/shared/theme/components/icons/microsoft.vue'
 import GoogleIcon from '@mswjs/shared/theme/components/icons/google.vue'
@@ -39,160 +39,291 @@ import NextJsIcon from '@mswjs/shared/theme/components/icons/nextjs.vue'
 import RemixIcon from '@mswjs/shared/theme/components/icons/remix.vue'
 
 import mswLogo from '../../../src/images/msw.svg'
-import noAvatar from '../../../src/images/people/no-avatar.jpg'
 import kentCDoddsAvatar from '../../../src/images/people/kent-c-dodds.jpg'
 import coryHouseAvatar from '../../../src/images/people/cory-house.jpg'
-import michaelHaglundAvatar from '../../../src/images/people/michael-haglund.jpg'
-import bradyPascoeAvatar from '../../../src/images/people/brady-pascoe.jpg'
-import konnaBuraunAvatar from '../../../src/images/people/konna-buraun.jpg'
-import derekDeHartAvatar from '../../../src/images/people/derek-de-hart.jpg'
-import heitorLessaAvatar from '../../../src/images/people/heitor-lessa.jpg'
-import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout.jpg'
+
+/**
+ * Edit "reviews.json" to change the community reviews.
+ */
+interface CommunityReview {
+  author: string
+  position?: string
+  /**
+   * Trusted, hand-written markup: emphasis via "<em>".
+   */
+  quote: string
+}
+
+/**
+ * Copies of the first reviews appended to the row so it stays full while
+ * it scrolls; five 22rem tiles cover the widest homepage frame.
+ */
+const REPEATED_REVIEWS = 5
+
+const communityReviews: Array<CommunityReview> = reviews
+
+interface Company {
+  name: string
+  icon: Component
+  class: string
+}
+
+/**
+ * Copies of the first companies appended to the row so it stays full
+ * while it scrolls; seven 224px cells cover the widest homepage frame.
+ */
+const REPEATED_COMPANIES = 7
+
+const companies: Array<Company> = [
+  { name: 'Microsoft', icon: MicrosoftIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Google', icon: GoogleIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Amazon Web Services', icon: AwsIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Netflix', icon: NetflixIcon, class: 'h-3.5 md:h-5 max-w-full' },
+  { name: 'Spotify', icon: SpotifyIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Samsung', icon: SamsungIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Uber', icon: UberIcon, class: 'h-3 md:h-4 max-w-full' },
+  { name: 'GitHub', icon: GitHubIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Vercel', icon: VercelIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Cloudflare', icon: CloudflareIcon, class: 'h-7 md:h-11 max-w-full' },
+  { name: 'Shopify', icon: ShopifyIcon, class: 'h-8 md:h-12 max-w-full' },
+  { name: 'Nvidia', icon: NvidiaIcon, class: 'h-6 md:h-9 max-w-full' },
+]
 </script>
 
 <template>
-  <Hero
+  <HomeHero
     repo-url="https://github.com/mswjs/msw"
     getting-started-url="/docs/quick-start"
-    class="lg:-mt-20"
   >
     <template #headnote>
-      <PromoBanner
-        action-text="Watch now"
-        action-url="https://egghead.io/courses/mocking-websocket-apis-with-mock-service-worker-9933b7f5"
+      <span>Learn best testing practices from MSW creator</span>
+      <a
+        href="https://epicweb.dev/testing"
+        class="ml-auto inline-flex shrink-0 items-center gap-1 text-neutral-400 hover:text-white hover:underline"
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        <div class="flex items-center">
-          <EggheadIcon
-            class="homepage-egghead-icon absolute w-8"
-          />
-          <span class="pl-[44px]">
-            Learn mocking WebSockets in our new course!
-          </span>
-        </div>
-      </PromoBanner>
+        <PlayCircleIcon class="h-4 w-4" aria-hidden="true" />
+        Enroll now
+      </a>
     </template>
 
     <template #title>
-      <span class="text-primary">Industry standard</span>&#32;<span
-        class="whitespace-nowrap"
-        >API mocking</span
+      Industry standard&#32;<span class="whitespace-nowrap">API mocking</span
       >&#32;for JavaScript.
     </template>
     <template #subtitle>
-      <span class="text-white">Mock Service Worker</span> is an API mocking
-      library that allows you to write client-agnostic mocks and reuse them
-      across any frameworks, tools, and environments.
+      Mock Service Worker is an API mocking library that allows you to write
+      client-agnostic mocks and reuse them across any frameworks, tools, and
+      environments.
     </template>
+    <template #code>
+      <slot name="hero-code" />
+    </template>
+  </HomeHero>
 
-    <div class="py-16 text-center md:py-40">
-      <UppercaseLabel>Making tests better at</UppercaseLabel>
-      <Grid class="relative">
+  <!-- Companies -->
+  <Container class="home-frame">
+    <div class="home-frame-rails border-x border-t border-neutral-800">
+      <p
+        class="border-b border-neutral-800 px-6 py-6 text-center text-sm font-semibold uppercase tracking-widest text-neutral-400"
+      >
+        Trusted by teams at
+      </p>
+      <!-- One row of logos scrolling right to left, same mechanics as the
+           reviews below: every company once plus copies of the first few. -->
+      <div class="marquee overflow-hidden text-neutral-400 fill-neutral-400">
         <div
-          class="grid items-center max-w-full grid-cols-3 overflow-hidden col-span-full justify-items-center gap-x-6 gap-y-6 fill-white md:max-w-6xl md:grid-cols-6 md:gap-y-10 lg:col-span-8 lg:col-start-3"
+          class="marquee-track flex"
+          :style="{ '--marquee-count': companies.length, '--marquee-item': 224 }"
         >
-          <MicrosoftIcon class="h-9 max-w-full" aria-label="Microsoft" />
-          <GoogleIcon class="h-9 max-w-full" aria-label="Google" />
-          <AwsIcon class="h-9 max-w-full" aria-label="Amazon Web Services" />
-          <NetflixIcon class="h-5 max-w-full" aria-label="Netflix" />
-          <SpotifyIcon class="h-9 max-w-full" aria-label="Spotify" />
-          <SamsungIcon class="h-9 max-w-full" aria-label="Samsung" />
-          <UberIcon class="h-4 max-w-full" aria-label="Uber" />
-          <GitHubIcon class="h-9 max-w-full" aria-label="GitHub" />
-          <VercelIcon class="h-9 max-w-full" aria-label="Vercel" />
-          <CloudflareIcon class="h-9 max-w-full" aria-label="Cloudflare" />
-          <ShopifyIcon class="h-12 max-w-full" aria-label="Shopify" />
-          <NvidiaIcon class="h-9 max-w-full" aria-label="Nvidia" />
-        </div>
-        <div
-          class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-neutral-900 to-transparent md:hidden"
-        ></div>
-      </Grid>
-    </div>
-  </Hero>
-
-  <!-- Control the network -->
-  <section class="my-24 md:my-48">
-    <Container>
-      <PageHeaderWrapper class="mt-0">
-        <h2 class="mb-8 capitalize">Control the network</h2>
-        <PageHeaderSubtitle class="md:w-3/6">
-          Focus on describing how the network should behave instead of thinking
-          how to mock your request client.
-        </PageHeaderSubtitle>
-      </PageHeaderWrapper>
-      <Grid>
-        <div class="col-span-6 text-md">
-          <div class="relative md:pb-[105px]">
-            <HomepageCodeExample />
-            <div class="absolute bottom-0 right-0 hidden md:block md:w-[384px]">
-              <ComponentExample />
-            </div>
+          <div
+            v-for="company in companies"
+            :key="company.name"
+            class="marquee-item flex shrink-0 items-center justify-center border-r border-neutral-800 px-6 py-6"
+          >
+            <component
+              :is="company.icon"
+              :class="company.class"
+              :aria-label="company.name"
+            />
+          </div>
+          <div
+            v-for="company in companies.slice(0, REPEATED_COMPANIES)"
+            :key="`repeat-${company.name}`"
+            class="marquee-item flex shrink-0 items-center justify-center border-r border-neutral-800 px-6 py-6"
+            aria-hidden="true"
+          >
+            <component :is="company.icon" :class="company.class" />
           </div>
         </div>
-        <div class="col-span-6 text-lg">
-          <ul class="space-y-14">
-            <li>
-              <h3>Omit implementation details</h3>
-              <p class="text-neutral-400">
-                Intercept both
-                <a href="/docs/http" class="text-white hover:underline">
-                  REST
-                </a>
-                and
-                <a href="/docs/graphql" class="text-white hover:underline">
-                  GraphQL API
-                </a>
-                requests regardless of how they were made. Use request clients
-                that suit your product, not your API mocking tool of choice.
-              </p>
-            </li>
-            <li>
-              <h3>Use the platform</h3>
-              <p class="text-neutral-400">
-                Handle requests and responses using the standard Fetch API.
-                Respect the web standards and invest your time into learning the
-                platform, not the tools.
-              </p>
-            </li>
-            <li>
-              <h3>Reuse like never before</h3>
-              <p class="text-neutral-400">
-                No configurations, adapters, or plugins. Reuse the same mocks
-                across environments and tools, be it an integration test with
-                Vitest, an automated browser test with Playwright, a demo
-                showcase in Storybook, or a React Native app.
-                <strong>Or all of them at once</strong>.
-              </p>
-            </li>
-          </ul>
+      </div>
+    </div>
+  </Container>
+
+  <!-- Features -->
+  <section>
+    <Container class="home-frame">
+      <div class="home-frame-rails border border-b-0 border-neutral-800">
+        <header
+          class="border-b border-neutral-800 px-6 py-16 text-center md:py-24"
+        >
+          <h2 class="mb-0 capitalize max-w-lg mx-auto">
+            API mocking that feels like an extension of JavaScript.
+          </h2>
+        </header>
+        <div class="grid md:grid-cols-2">
+          <FeatureCard
+            plain
+            title="Standard-first API mocking"
+            code-placement="bottom-right"
+            class="border-b border-neutral-800 md:border-r"
+          >
+            <template #description>
+              MSW doesn't reinvent the wheel. How do you handle the network in
+              JavaScript? With the Fetch API! And that's precisely how you write
+              your mocks.
+            </template>
+            <template #links>
+              <FeatureLink href="/docs/philosophy">Our philosophy</FeatureLink>
+            </template>
+            <slot name="feature-standards" />
+          </FeatureCard>
+          <FeatureCard
+            plain
+            title="Describe the network once"
+            code-placement="bottom-right"
+            class="border-b border-neutral-800"
+          >
+            <template #description>
+              The era of patching <code>window.fetch</code> is over. MSW
+              pioneered transparent network interception where you describe your
+              mocks once and they work everywhere.
+            </template>
+            <template #links>
+              <FeatureLink href="/guides/">Integration guides</FeatureLink>
+            </template>
+            <slot name="feature-agnostic" />
+          </FeatureCard>
+          <FeatureCard
+            plain
+            title="Unmatched feature set"
+            code-placement="right-bottom"
+            class="md:col-span-2 2xl:px-[calc(var(--card-padding)+62px)]"
+          >
+            <template #description>
+              Mock REST, GraphQL, Server-Sent Events, and WebSocket APIs with a
+              single network contract, simultaneously.
+            </template>
+            <template #links>
+              <FeatureLink href="/docs/comparison"
+                >Compare with other tools</FeatureLink
+              >
+            </template>
+            <slot name="feature-protocols" />
+          </FeatureCard>
         </div>
-      </Grid>
+      </div>
     </Container>
   </section>
 
-  <!-- Quote: Kent -->
-  <Section>
-    <Container>
-      <HeroQuote
-        author="Kent C. Dodds"
-        position="Software Engineer and Educator"
-        :avatar-url="kentCDoddsAvatar"
-      >
-        I found MSW and was thrilled that not only could I still see the mocked
-        responses in my DevTools, but that the mocks didn't have to be written
-        in a Service Worker and could instead live alongside the rest of my app.
-        This made it <em>silly easy to adopt</em>. The fact that I can use it
-        for testing as well makes MSW a <em>huge productivity booster</em>.
-      </HeroQuote>
+  <!-- Interception -->
+  <section>
+    <Container class="home-frame">
+      <div class="home-frame-rails border border-neutral-800">
+        <header class="px-6 py-24 text-center md:py-32">
+          <h2 class="mb-6 capitalize max-w-lg mx-auto">
+            API mocking that actually lets requests happen
+          </h2>
+          <PageHeaderSubtitle class="lg:w-3/6">
+            A decade worth of research to bring you the network interception
+            algorithm that combines the impossible: actually perform requests
+            while giving you full control over them.
+          </PageHeaderSubtitle>
+        </header>
+
+        <!-- Browser -->
+        <div class="p-8 md:p-12 lg:p-14">
+          <div class="xl:mx-auto xl:max-w-5xl">
+            <p
+              class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
+            >
+              Browser
+            </p>
+            <h3 class="text-xl font-bold text-white md:text-2xl">
+              Service Worker API
+            </h3>
+            <p
+              class="home-prose mt-4 max-w-lg text-lg leading-snug text-neutral-400"
+            >
+              In the browser, MSW leverages the standard Service Worker API to
+              seamlessly intercept production requests.
+            </p>
+            <InterceptionDiagram
+              class="mt-12 md:mt-20"
+              :steps="[
+                { label: 'fetch()', detail: 'Request client' },
+                { label: 'Service Worker', detail: 'Browser API' },
+                { label: 'Network', detail: 'Browser networking' },
+              ]"
+              :msw-reach="1"
+              :boundaries="[{ after: 0, label: 'Your app' }]"
+            />
+          </div>
+        </div>
+
+        <!-- Node.js -->
+        <div class="border-t border-neutral-800 p-8 md:p-12 lg:p-14">
+          <div class="xl:mx-auto xl:max-w-5xl">
+            <p
+              class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
+            >
+              Node.js
+            </p>
+            <h3 class="text-xl font-bold text-white md:text-2xl">
+              <a
+                href="https://github.com/mswjs/interceptors"
+                class="hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @mswjs/interceptors
+              </a>
+            </h3>
+            <p
+              class="home-prose mt-4 max-w-lg text-lg leading-snug text-neutral-400"
+            >
+              In Node.js, MSW intercepts raw socket connections at the lowest
+              possible level before they reach the actual network code written
+              in C.
+            </p>
+            <InterceptionDiagram
+              class="mt-12 lg:mt-20"
+              :steps="[
+                { label: 'fetch()', detail: 'Request client' },
+                { label: 'net.connect()', detail: 'Node.js core' },
+                { label: 'net.Socket', detail: 'Stream' },
+                { label: 'TCP/TLS wraps', detail: 'JS bindings for C' },
+                { label: 'Network', detail: 'Operating system' },
+              ]"
+              :msw-reach="3"
+              :boundaries="[
+                { after: 0, label: 'Your app' },
+                { after: 3, label: 'Node.js C code' },
+              ]"
+            />
+          </div>
+        </div>
+      </div>
     </Container>
-  </Section>
+  </section>
 
   <!-- Integrate anywhere -->
   <section class="my-24 overflow-hidden md:my-48">
     <Container>
       <PageHeaderWrapper class="mt-0">
         <h2 class="mb-8 capitalize">Integrate anywhere</h2>
-        <PageHeaderSubtitle class="md:w-3/6">
+        <PageHeaderSubtitle class="lg:w-3/6">
           A single source of truth for your network across the entire stack.
         </PageHeaderSubtitle>
       </PageHeaderWrapper>
@@ -209,7 +340,9 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           </div>
           <div class="mt-8 lg:text-right">
             <p class="text-xl font-bold">Local development</p>
-            <p class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg">
+            <p
+              class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg"
+            >
               Create, change, and debug fast by augmenting existing APIs—both
               third-party and local—or designing them as you go.
             </p>
@@ -236,7 +369,9 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           <CypressRunner />
           <div class="mt-8 lg:text-right">
             <p class="text-xl font-bold">End-to-end tests</p>
-            <p class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg">
+            <p
+              class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg"
+            >
               Take any HTTP call out of your test's equation and focus on the
               user experience, mocking local or external APIs.
             </p>
@@ -259,7 +394,9 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
           Works with any tool there is or
           <em class="not-italic text-primary">ever will be</em>
         </UppercaseLabel>
-        <div class="inline-grid items-center grid-cols-6 gap-10 text-neutral-500">
+        <div
+          class="inline-grid items-center grid-cols-6 gap-10 text-neutral-500"
+        >
           <ReactIcon class="w-10" />
           <VueIcon class="w-10" />
           <AngularIcon class="w-10" />
@@ -271,106 +408,83 @@ import matanBorenkraoutAvatar from '../../../src/images/people/matan-borenkraout
     </Container>
   </section>
 
-  <!-- Quote: Cory -->
-  <Section>
-    <Container>
-      <HeroQuote
-        author="Cory House"
-        position="Software Architect"
-        :avatar-url="coryHouseAvatar"
-      >
-        Mock Service Worker has become a
-        <em>fundamental part of my development and testing workflow</em>. With
-        MSW I don't have to worry about endpoints or databases being down or
-        slow. And I can forget about brittle tests due to changing data. I
-        configure mocks that are 100% reliable and predictable. The result?
-        <em>Faster development and rock-solid automated UI tests</em>.
-      </HeroQuote>
-    </Container>
-  </Section>
-
   <!-- Testimonials -->
-  <Container>
-    <section class="my-24 md:my-48">
-      <PageHeaderWrapper>
-        <PageHeaderPrefix>Community</PageHeaderPrefix>
-        <h2 class="mb-8 capitalize">Feedback</h2>
-        <PageHeaderSubtitle> What developers are saying. </PageHeaderSubtitle>
-      </PageHeaderWrapper>
-      <Grid class="items-start lg:grid-cols-2 xl:grid-cols-3">
-        <div class="space-y-10">
-          <Quote author="Alffrey Chemmannoor" :image-url="noAvatar">
-            I've spent numerous hours mocking and stubbing data for tests over
-            the years wishing for a better approach. I was recently introduced
-            to MSW and love how it
-            <em>instantly improves the developer experience</em>.
-          </Quote>
-          <Quote
-            author="Michael Haglund"
-            :image-url="michaelHaglundAvatar"
-            position="Engineering Manager"
+  <section>
+    <Container class="home-frame">
+      <div class="home-frame-rails border border-b-0 border-neutral-800">
+        <header
+          class="border-b border-neutral-800 px-6 py-16 text-center md:py-24"
+        >
+          <h2 class="mb-0 capitalize max-w-lg mx-auto">
+            Beloved by every developer who ships quality apps.
+          </h2>
+        </header>
+
+        <!-- Featured quotes -->
+        <div class="grid lg:grid-cols-2">
+          <FeaturedQuote
+            author="Kent C. Dodds"
+            position="Software Engineer and Educator"
+            :avatar-url="kentCDoddsAvatar"
+            class="border-b border-neutral-800 lg:border-r"
           >
-            We've switched our tests over to use Mock Service Worker and we
-            <em>haven't looked back ever since</em>.
-          </Quote>
-          <Quote
-            author="Brady Pascoe"
-            position="Maintainer of React Bootstrap"
-            :image-url="bradyPascoeAvatar"
+            I found MSW and was thrilled that not only could I still see the
+            mocked responses in my DevTools, but that the mocks didn't have to
+            be written in a Service Worker and could instead live alongside the
+            rest of my app. This made it <em>silly easy to adopt</em>. The fact
+            that I can use it for testing as well makes MSW a
+            <em>huge productivity booster</em>.
+          </FeaturedQuote>
+          <FeaturedQuote
+            author="Cory House"
+            position="Software Architect"
+            :avatar-url="coryHouseAvatar"
+            class="border-b border-neutral-800"
           >
-            <em>I don't think I can use anything other than MSW</em> after
-            picking it up for a project at my previous workplace, to be honest.
-          </Quote>
+            Mock Service Worker has become a
+            <em>fundamental part of my development and testing workflow</em>.
+            With MSW I don't have to worry about endpoints or databases being
+            down or slow. And I can forget about brittle tests due to changing
+            data. I configure mocks that are 100% reliable and predictable. The
+            result?
+            <em>Faster development and rock-solid automated UI tests</em>.
+          </FeaturedQuote>
         </div>
-        <div class="space-y-10">
-          <Quote author="Tobias Pickel" :image-url="noAvatar">
-            Mock Service Worker is
-            <em>the best thing that ever happened to the JS community</em>.
-            Sharing mocks between development, unit, and E2E tests has never
-            been that easy.
-          </Quote>
-          <Quote author="Konna Buraun" :image-url="konnaBuraunAvatar">
-            Just a shoutout to MSW for being
-            <em>an absolute dream to work with</em>. Simple to get running and
-            it's allowed me to continue working while the backend was down. Much
-            faster than writing a mock server.
-          </Quote>
-          <Quote author="Derek DeHart" :image-url="derekDeHartAvatar">
-            I can't even imagine the mock I'd have to contrive to simulate a
-            server sending a CSRF cookie, and
-            <em>with MSW I don't have to</em>!
-          </Quote>
+
+        <!-- Community reviews: one row scrolling right to left. The row
+             holds every review once, followed by copies of the first few,
+             enough to fill the viewport; a cycle moves exactly one full set,
+             so the copies land where the originals restart: no jump. -->
+        <div class="marquee overflow-hidden">
+          <div
+            class="marquee-track flex"
+            :style="{
+              '--marquee-count': communityReviews.length,
+              '--marquee-item': 352,
+            }"
+          >
+            <ReviewTile
+              v-for="review in communityReviews"
+              :key="review.author"
+              :author="review.author"
+              :position="review.position"
+            >
+              <span v-html="review.quote" />
+            </ReviewTile>
+            <ReviewTile
+              v-for="review in communityReviews.slice(0, REPEATED_REVIEWS)"
+              :key="`repeat-${review.author}`"
+              :author="review.author"
+              :position="review.position"
+              aria-hidden="true"
+            >
+              <span v-html="review.quote" />
+            </ReviewTile>
+          </div>
         </div>
-        <div class="space-y-10">
-          <Quote
-            author="Rafal Rudol"
-            :image-url="noAvatar"
-            position="Senior Frontend Developer"
-          >
-            Mock Service Worker was <em>a life-saver</em> for me when we had a
-            strict deadline and there was no backend.
-          </Quote>
-          <Quote
-            author="Heitor Lessa"
-            :image-url="heitorLessaAvatar"
-            position="AWS EMEA"
-          >
-            It's quite <em>a genius use of Service Workers</em>—works for both
-            REST and GraphQL API.
-          </Quote>
-          <Quote
-            author="Matan Borenkraout"
-            :image-url="matanBorenkraoutAvatar"
-            position="Frontend Engineer"
-          >
-            When it comes to mocking,
-            <em>I always recommend Mock Service Worker</em>. It's amazing and as
-            close as it gets to plug & play.
-          </Quote>
-        </div>
-      </Grid>
-    </section>
-  </Container>
+      </div>
+    </Container>
+  </section>
 
   <GettingStarted
     title="Ship Better Products Today"
