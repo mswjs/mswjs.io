@@ -270,7 +270,7 @@ await castMembers.create({
 })
 ```
 
-## Cypress - `cy.intercept()`
+## Cypress
 
 [Cypress](https://github.com/cypress-io/cypress) is an end-to-end testing framework that provides API mocking capabilities through its `cy.intercept()` API.
 
@@ -335,19 +335,15 @@ MSW models its interception API after server-side routing and handles requests a
 import { http, delay } from 'msw'
 
 http.post('/users', async ({ request }) => {
-  // Control the response resolver execution flow
-  // via Promises, like this "delay" Promise below.
+  const user = await request.json()
   await delay(100)
-
-  // Construct a response as you would normally.
-  // Pass the request body ReadableStream as the response body,
-  return Response.json(request.body, { status: 201 })
+  return Response.json(user, { status: 201 })
 })
 ```
 
-MSW gives you more advanced control over the requests through its `passthrough()` and `bypass()` APIs, which still yield semantic HTTP responses under the hood.
+MSW gives you more advanced control over the requests through its [`passthrough()`](/api/passthrough) and [`bypass()`](/api/bypass) APIs, which still yield semantic HTTP responses under the hood.
 
-## Playwright - `page.route()`
+## Playwright
 
 [Playwright](https://github.com/microsoft/playwright) is a browser testing tool that provides API mocking capabilities through its `page.route()` API.
 
