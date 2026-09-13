@@ -3,8 +3,10 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { test } from 'node:test'
-import { Application } from 'typedoc'
-import { resolvePublicEntryPoints } from '../../scripts/api-exports.mjs'
+import {
+  resolveLatestRelease,
+  resolvePublicEntryPoints,
+} from '../../scripts/msw-source.mjs'
 
 async function createRelease(context, files) {
   const directory = await mkdtemp(path.join(tmpdir(), 'msw-public-exports-'))
@@ -19,6 +21,41 @@ async function createRelease(context, files) {
   }
   return directory
 }
+
+await test('selects the published release tag instead of its target branch', async () => {
+  const release = await resolveLatestRelease(async (url) => {
+    assert.equal(url, 'https://api.github.com/repos/mswjs/msw/releases/latest')
+    return Response.json({
+      tag_name: 'v2.15.0',
+      target_commitish: 'main',
+      draft: false,
+      prerelease: false,
+    })
+  })
+  assert.equal(release.tag, 'v2.15.0')
+})
+
+await test('rejects unavailable release metadata instead of falling back to main', async () => {
+  await assert.rejects(
+    resolveLatestRelease(async () => {
+      return new Response(null, { status: 403 })
+    }),
+    /HTTP 403/,
+  )
+})
+
+await test('rejects prereleases', async () => {
+  await assert.rejects(
+    resolveLatestRelease(async () => {
+      return Response.json({
+        tag_name: 'v3.0.0-beta.1',
+        draft: false,
+        prerelease: true,
+      })
+    }),
+    /published stable/,
+  )
+})
 
 await test('resolves nested export conditions and deduplicates declaration and runtime targets', async (context) => {
   const directory = await createRelease(context, {
@@ -124,96 +161,5 @@ await test('fails when the release has no exports map', () => {
         '/unused',
       ),
     /no package.json exports map/,
-  )
-})
-
-await test('documents only symbols exported through the public barrel', async (context) => {
-  const directory = await createRelease(context, {
-    'src/index.ts': "export { publicApi } from './implementation'",
-    'src/implementation.ts':
-      'export function publicApi(): void {}\nexport function privateUtility(): void {}',
-    'src/hidden.ts': 'export class HiddenApi {}',
-  })
-  const entryPoints = resolvePublicEntryPoints(
-    { name: 'msw', exports: { '.': './lib/index.js' } },
-    directory,
-  )
-  const configuration = path.join(directory, 'tsconfig.json')
-  await writeFile(
-    configuration,
-    JSON.stringify({ files: entryPoints.map((entry) => entry.sourcePath) }),
-  )
-  const application = await Application.bootstrap({
-    name: 'MSW',
-    entryPoints: entryPoints.map((entry) => entry.sourcePath),
-    entryPointStrategy: 'resolve',
-    tsconfig: configuration,
-    skipErrorChecking: true,
-  })
-  const project = await application.convert()
-  assert.ok(project)
-  assert.deepEqual(
-    project.children.map((reflection) => reflection.name),
-    ['publicApi'],
-  )
-})
-
-await test('excludes symbol members while retaining the public class and ordinary computed properties', async (context) => {
-  const directory = await createRelease(context, {
-    'src/index.ts':
-      "export { ResponseImplementation as HttpResponse } from './response'",
-    'src/response.ts': `const bodyType: unique symbol = Symbol('bodyType')
-const propertyName = 'status'
-export class ResponseImplementation {
-  readonly [bodyType]: string
-  [propertyName] = 200
-  json(): string {
-    return '{}'
-  }
-  [Symbol.iterator](): Iterator<string> {
-    return [][Symbol.iterator]()
-  }
-}
-export function internalResponseHelper(): void {}
-`,
-  })
-  const entries = resolvePublicEntryPoints(
-    { name: 'msw', exports: { '.': './lib/index.js' } },
-    directory,
-  )
-  const configuration = path.join(directory, 'tsconfig.json')
-  await writeFile(
-    configuration,
-    JSON.stringify({
-      compilerOptions: { target: 'ES2022' },
-      files: entries.map((entry) => entry.sourcePath),
-    }),
-  )
-  const application = await Application.bootstrap({
-    entryPoints: entries.map((entry) => entry.sourcePath),
-    entryPointStrategy: 'resolve',
-    tsconfig: configuration,
-    skipErrorChecking: true,
-  })
-  const { excludeSymbolMembers } = await import('../../scripts/api-exports.mjs')
-  excludeSymbolMembers(application)
-  const project = await application.convert()
-  assert.ok(project)
-  assert.deepEqual(
-    project.children.map((reflection) => reflection.name),
-    ['HttpResponse'],
-  )
-  assert.deepEqual(
-    project.children[0].children.map((reflection) => reflection.name),
-    ['constructor', 'status', 'json'],
-  )
-  assert.equal(
-    Object.values(project.reflections).some((reflection) => {
-      return (
-        reflection.name.includes('bodyType') ||
-        reflection.name.includes('iterator')
-      )
-    }),
-    false,
   )
 })

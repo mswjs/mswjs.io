@@ -6,7 +6,9 @@ description: Sending mock data to the original WebSocket server.
 
 Once you establish the actual server connection by calling `server.connect()`, your event handler can start sending mock data to the original server via the `server.send()` method.
 
-```ts {3}
+```ts {5}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
   server.send('hello world')

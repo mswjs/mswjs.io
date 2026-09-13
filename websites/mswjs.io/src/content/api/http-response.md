@@ -21,34 +21,9 @@ However, the `HttpResponse` class enables certain features, like mocking respons
 The `HttpResponse` class has the identical constructor signature to the Fetch API [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) class. This includes the static response methods like `Response.json()` and `Response.error()` too.
 
 ```ts
-class HttpResponse {
-  constructor(
-    body:
-      | Blob
-      | ArrayBuffer
-      | TypedArray
-      | DateView
-      | FormData
-      | ReadableStream
-      | URLSearchParams
-      | string
-      | null
-      | undefined
-    options?: {
-      status?: number
-      statusText?: string
-      headers?: HeadersInit
-    }
-  )
-}
+const response = new HttpResponse('hello world')
+await response.text()
 ```
-
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/HttpResponse.ts"
-  title="HttpResponse.ts"
-  description="Source code for the `HttpResponse` class."
-/>
 
 ## Standard methods
 

@@ -15,23 +15,12 @@ The `http` namespace helps you create request handlers to intercept HTTP request
 ## Call signature
 
 ```ts
-http.get<PathParams, RequestBodyType, ResponseBodyType>(
-  predicate: string | RegExp,
-  resolver: ResponseResolver<
-    HttpRequestResolverExtras<Params>,
-    RequestBodyType,
-    ResponseBodyType
-  >,
-  options?: RequestHandlerOptions
-)
-```
+import { http, HttpResponse } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/http.ts"
-  title="http.ts"
-  description="Source code for the `http` namespace."
-/>
+http.get('/user/:id', ({ request, params }) => {
+  return HttpResponse.json({ id: params.id })
+})
+```
 
 ## Standard methods
 
@@ -41,8 +30,7 @@ The `http` namespace contains keys that represent [WHATWG Fetch API HTTP methods
 
 ```js
 http.get('/user/:id', ({ params }) => {
-  const { id } = params
-  console.log('Fetching user with ID "%s"', id)
+  console.log('Fetching user with ID "%s"', params.id)
 })
 ```
 

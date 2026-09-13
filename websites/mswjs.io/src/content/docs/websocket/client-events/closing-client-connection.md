@@ -5,6 +5,8 @@ title: Closing client connection
 You can close an intercepted WebSocket client connection by calling `client.close()` at any point in your event handler:
 
 ```ts /client.close/
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
 	client.close()
 })

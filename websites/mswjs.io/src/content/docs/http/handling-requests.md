@@ -4,7 +4,7 @@ title: Handling requests
 description: What you can do with the intercepted requests.
 ---
 
-Once you've [intercepted a request](/docs/http/intercepting-requests/), there are several things you can do with it:
+There are several ways to handle an [intercepted a request](/docs/http/intercepting-requests/):
 
 - Respond to it with a mocked response;
 - Let it pass through (i.e. perform it as-is);
@@ -36,7 +36,7 @@ http.get('/resource', () => {
 ```
 
 ::: warning
-  Note that passthrough requests are still _considered handled_. This means that
+  The requests you explicitly pass through are still _considered handled_. This means that
   once you return `passthrough()`, no other request handlers will
   affect this request, even if they match it otherwise.
 :::
@@ -44,7 +44,7 @@ http.get('/resource', () => {
 This is especially useful when you only want to mock a response in certain situations and perform the request as-is otherwise.
 
 ```ts {5,8}
-http.get('https://api.example.com/resource', async ({ request }) => {
+http.post('https://api.example.com/resource', async ({ request }) => {
   const data = await request.clone().json()
 
   if (data?.id === 'abc-123') {
@@ -59,7 +59,7 @@ http.get('https://api.example.com/resource', async ({ request }) => {
 
 ## Return nothing
 
-You can also return nothing from the response resolver, either explicitly or implicitly. If that happens, MSW will continue to look for other request handlers that might match this request. You can utilize this for network introspection or any other side effects that do not involve responding to the request.
+You can return nothing from the response resolver, either explicitly or implicitly. If that happens, MSW will continue to look for other request handlers that might match this request. You can utilize this for network introspection or any other side effects that do not involve responding to the request.
 
 ```ts {3}
 export const handlers = [

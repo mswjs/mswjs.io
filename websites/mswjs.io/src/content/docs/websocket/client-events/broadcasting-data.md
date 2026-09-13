@@ -39,7 +39,7 @@ import { ws } from 'msw'
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.addEventListener('connection', (client) => {
+  chat.addEventListener('connection', ({ client }) => {
     client.addEventListener('message', (event) => {
       // Whenever this client sends a message,
       // broadcast it to all other clients.
@@ -51,15 +51,21 @@ export const handlers = [
 
 You can also provide a _list of clients_ as the first argument to the `broadcastExcept()` method to have finer control over which clients get excluded from the broadcast:
 
-```ts {3-5} /chat.clients/
-chat.addEventListener('connection', () => {
-  chat.broadcastExcept(
-    chat.clients.filter((client) => {
-      return client
-    }),
-    'Hello to some of you!',
-  )
-})
+```ts {8-10} /chat.clients/
+import { ws } from 'msw'
+
+const chat = ws.link('wss://chat.example.com')
+
+export const handlers = [
+  chat.addEventListener('connection', () => {
+    chat.broadcastExcept(
+      chat.clients.filter((client) => {
+        return client
+      }),
+      'Hello to some of you!',
+    )
+  })
+]
 ```
 
 > The `clients` property of your WebSocket link contains an array of all intercepted clients.

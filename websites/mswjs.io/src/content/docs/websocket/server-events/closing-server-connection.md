@@ -5,7 +5,9 @@ title: Closing server connection
 
 You can close the original server connection by calling `server.close()` at any point in your event handler.
 
-```ts {7}
+```ts {9}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client, server }) => {
   server.connect()
 

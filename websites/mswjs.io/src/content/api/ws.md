@@ -17,15 +17,10 @@ The `ws` namespace helps you create event handlers to intercept WebSocket connec
 The `ws` namespace exposes a method called `link()`. The `link()` method creates a WebSocket link preconfigured to handle WebSocket connections matching the specified URL.
 
 ```ts
-ws.link(url: string | URL | RegExp)
-```
+import { ws } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/ws.ts"
-  title="ws.ts"
-  description="Source code for the `ws` namespace."
-/>
+const chat = ws.link('wss://chat.example.com')
+```
 
 ## Event handler
 
@@ -70,6 +65,8 @@ api.addEventListener('connection', ({ client }) => {
 You can also provide an array of WebSocket client connections as the argument to `clients`:
 
 ```js
+const api = ws.link('wss://api.example.com')
+
 const ignoredClients = Array.from(api.clients).filter((client) => {
   return client.url.includes('abc')
 })
@@ -134,7 +131,9 @@ Removes the listener for the given client event.
 
 Sends data to the WebSocket client. This is equivalent to the client receiving that data from the server.
 
-```js {2-4}
+```js {4-6}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.send('hello')
   client.send(new Blob(['hello']))
@@ -149,7 +148,9 @@ api.addEventListener('connection', ({ client }) => {
 
 Closes the active WebSocket client connection.
 
-```js {2}
+```js {4}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.close()
 })
@@ -157,7 +158,9 @@ api.addEventListener('connection', ({ client }) => {
 
 Unlike the `WebSocket.prototype.close()` method, the `client.close()` method accepts non-configurable close codes. This allows you to emulate client close scenarios based on server-side errors.
 
-```js {3}
+```js {5}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.addEventListener('message', (event) => {
     client.close(1003, 'Invalid data')
@@ -167,7 +170,9 @@ api.addEventListener('connection', ({ client }) => {
 
 You can also implement custom close code and reason:
 
-```js {2}
+```js {4}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.close(4000, 'Custom close reason')
 })
@@ -181,7 +186,9 @@ The `WebSocketServerConnection` object represents the actual WebSocket server co
 
 Establishes connection to the actual WebSocket server.
 
-```js {2}
+```js {4}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
 })
@@ -208,7 +215,9 @@ Removes the listener for the given server event.
 
 Sends data to the actual WebSocket server. This is equivalent to the client sending this data to the server.
 
-```js {6}
+```js {8}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
 
@@ -224,7 +233,9 @@ api.addEventListener('connection', ({ server }) => {
 
 Closes the underlying original WebSocket server connection. Provides a custom close `code` and `reason`.
 
-```js {3}
+```js {5}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
   server.close()
@@ -240,6 +251,8 @@ The `info` argument on the `connection` event listener contains additional WebSo
 | `protocols`   | `string \| string[] \| undefined` | The list of protocols used when establishing this WebSocket connection. |
 
 ```js
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ info }) => {
   if (info.protocols?.includes('chat')) {
     // Handle the chat protocol connection.

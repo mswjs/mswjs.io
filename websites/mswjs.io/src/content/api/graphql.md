@@ -13,23 +13,16 @@ The `graphql` namespace helps you create request handlers to intercept requests 
 ## Call signature
 
 ```ts
-graphql.query<Query, Variables>(
-  query: string | RegExp | DocumentNode | TypedDocumentNode,
-  resolver: ResponseResolver<
-    GraphQLResolverExtras<Variables>,
-    null,
-    GraphQLResponseBody<Query>
-  >,
-  options?: RequestHandlerOptions
-)
-```
+import { graphql, HttpResponse } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/graphql.ts"
-  title="graphql.ts"
-  description="Source code for the `graphql` namespace."
-/>
+graphql.query('GetUser', ({ query, variables }) => {
+  return HttpResponse.json({
+    data: {
+      user: { name: 'John' },
+    },
+  })
+})
+```
 
 ## Standard methods
 

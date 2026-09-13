@@ -15,15 +15,12 @@ The `sse` function is a subset of the [`http`](/api/http) namespace that helps y
 ## Call signature
 
 ```ts
-sse<EventMap, Params>(predicate: Path, resolver: ServerSentEventResolver<EventMap, Params>)
-```
+import { sse } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/sse.ts"
-  title="sse.ts"
-  description="Source code for the `sse` function."
-/>
+sse('/stream', ({ client }) => {
+  client.send({ data: 'hello' })
+})
+```
 
 ## Resolver argument
 

@@ -15,7 +15,7 @@ For example, you can call `await request.json()` to read the request's body as J
 
 ```ts {2} /await request.json()/
 http.post<{ id: string }, Post>('/posts/:id', async ({ request }) => {
-  const newPost = await request.clone().json() // Post
+  const newPost = await request.clone().json()
 })
 ```
 

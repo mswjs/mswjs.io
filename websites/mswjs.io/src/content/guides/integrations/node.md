@@ -10,7 +10,7 @@ keywords:
   - server
 ---
 
-In Node.js, MSW enables API mocking by patching native request-issuing modules, like `http` and `https`, which gives it the means to observe and affect the outgoing traffic for the current process.
+This guide will teach you how to integrate MSW into any Node.js process, like a test runner or a server.
 
 ## Setup
 

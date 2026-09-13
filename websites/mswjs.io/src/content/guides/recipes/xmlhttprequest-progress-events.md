@@ -18,7 +18,7 @@ import { handlers } from './handlers' // Import your request handlers
 
 const interceptor = new XMLHttpRequestInterceptor()
 
-interceptor.on('request', ({ request, controller }) => {
+interceptor.on('request', async ({ request, controller }) => {
   const response = await getResponse(handlers, request)
 
   if (response) {

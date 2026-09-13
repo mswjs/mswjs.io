@@ -3,3 +3,5 @@ packages:
 allowBuilds:
   esbuild: false
   sharp: false
+overrides:
+  "@shikijs/twoslash": 2.5.0

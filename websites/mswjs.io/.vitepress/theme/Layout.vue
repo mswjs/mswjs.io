@@ -30,14 +30,9 @@ const sidebarOpen = ref(false)
 const documentationRootPaths = ['/docs', '/guides', '/api']
 
 const isDocumentationPage = computed(() => {
-  const hasDocumentationRoot = documentationRootPaths.some(
-    (rootPath) => {
-      return (
-        route.path === rootPath ||
-        route.path.startsWith(`${rootPath}/`)
-      )
-    },
-  )
+  const hasDocumentationRoot = documentationRootPaths.some((rootPath) => {
+    return route.path === rootPath || route.path.startsWith(`${rootPath}/`)
+  })
 
   return hasDocumentationRoot && !page.value.isNotFound
 })
@@ -55,10 +50,7 @@ const isStandalonePage = computed(() => {
 })
 
 const hasDocumentationSidebar = computed(() => {
-  return (
-    isDocumentationPage.value &&
-    sidebarControl.hasSidebar.value
-  )
+  return isDocumentationPage.value && sidebarControl.hasSidebar.value
 })
 
 function closeOverlays(): void {
@@ -77,16 +69,12 @@ function handleEscape(event: KeyboardEvent): void {
 
   nextTick(() => {
     if (navigationWasOpen) {
-      document
-        .querySelector<HTMLElement>('[data-site-menu-trigger]')
-        ?.focus()
+      document.querySelector<HTMLElement>('[data-site-menu-trigger]')?.focus()
       return
     }
 
     if (sidebarWasOpen) {
-      document
-        .querySelector<HTMLElement>('[data-sidebar-trigger]')
-        ?.focus()
+      document.querySelector<HTMLElement>('[data-sidebar-trigger]')?.focus()
     }
   })
 }
@@ -103,8 +91,7 @@ watchEffect(() => {
     return
   }
 
-  const overlaysOpen =
-    navigationOpen.value || sidebarOpen.value
+  const overlaysOpen = navigationOpen.value || sidebarOpen.value
   document.body.style.overflow = overlaysOpen ? 'hidden' : ''
 })
 
@@ -159,16 +146,12 @@ useSidebarAutoScroll()
         class="w-full"
         :class="{
           'mx-auto max-w-[var(--vp-layout-max-width)]': !isStandalonePage,
-          'min-[960px]:pl-[var(--vp-sidebar-width)]':
-            hasDocumentationSidebar,
+          'min-[960px]:pl-[var(--vp-sidebar-width)]': hasDocumentationSidebar,
         }"
       >
         <NotFoundPage v-if="page.isNotFound" />
 
-        <main
-          v-else-if="isStandalonePage"
-          id="main-content"
-        >
+        <main v-else-if="isStandalonePage" id="main-content">
           <Content />
         </main>
 
@@ -202,9 +185,8 @@ useSidebarAutoScroll()
           <div class="sm:col-span-2">
             <FooterSection title="Library">
               <li><a href="/docs">Documentation</a></li>
-              <li><a href="/branding">Branding</a></li>
+              <li><a href="/guides">Guides</a></li>
               <li><a href="/blog">Blog</a></li>
-              <li><a href="/sponsor">Sponsor</a></li>
             </FooterSection>
           </div>
 
@@ -212,15 +194,10 @@ useSidebarAutoScroll()
             <FooterSection title="Resources">
               <li><a href="/docs/quick-start">Quick start</a></li>
               <li>
-                <a href="/guides/best-practices">
-                  Best practices
-                </a>
+                <a href="/guides/best-practices"> Best practices </a>
               </li>
               <li>
-                <a
-                  href="https://github.com/mswjs/examples"
-                  target="_blank"
-                >
+                <a href="https://github.com/mswjs/examples" target="_blank">
                   Examples
                 </a>
               </li>
@@ -230,26 +207,17 @@ useSidebarAutoScroll()
           <div class="sm:col-span-2">
             <FooterSection title="Community">
               <li>
-                <a
-                  href="https://github.com/mswjs/msw"
-                  target="_blank"
-                >
+                <a href="https://github.com/mswjs/msw" target="_blank">
                   GitHub
                 </a>
               </li>
               <li>
-                <a
-                  href="https://twitter.com/ApiMocking"
-                  target="_blank"
-                >
+                <a href="https://twitter.com/ApiMocking" target="_blank">
                   Twitter
                 </a>
               </li>
               <li>
-                <a
-                  href="https://kettanaito.com/discord"
-                  target="_blank"
-                >
+                <a href="https://kettanaito.com/discord" target="_blank">
                   Discord
                 </a>
               </li>

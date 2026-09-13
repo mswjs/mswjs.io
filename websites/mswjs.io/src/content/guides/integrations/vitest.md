@@ -10,9 +10,13 @@ keywords:
   - use
 ---
 
-For tests running in Node.js, follow the
-[Node.js integration](/guides/integrations/node). The setup below applies to
-Vitest Browser Mode.
+::: info
+If you're already using Vite, please see the [Vite integration](/guides/integrations/vite) as it automatically covers Vitest. The guide below is meant for applications that use Vitest without Vite.
+:::
+
+::: warning
+If you're using Vitest for unit testing in Node.js, please see the [Node.js integration](/guides/integrations/node) instead. Vitest's test runner is a Node.js process and it doesn't need anything special to integrate MSW. **The guide below is meant for Vitest Browser Mode only**.
+:::
 
 [Vitest Browser Mode](https://main.vitest.dev/guide/browser/) is a fantastic tool for testing your UI components in the actual browser. There are a few things to consider when integrating MSW with the Browser Mode:
 

@@ -5,14 +5,11 @@ title: defineNetwork
 ## Call signature
 
 ```ts
-interface NetworkOptions {
-  sources: Array<NetworkSource>
-  handlers?: Array<AnyHandler> | HandlersController
-  context?: NetworkFrameResolutionContext
-  onUnhandledFrame?: UnhandledFramHandle
-}
+import { defineNetwork, InterceptorSource } from 'msw/experimental'
 
-function defineNetwork(options: NetworkOptions): NetworkApi {}
+const network = defineNetwork({
+  sources: [new InterceptorSource()],
+})
 ```
 
 ## Basic usage

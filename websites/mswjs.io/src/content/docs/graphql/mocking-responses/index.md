@@ -45,7 +45,9 @@ export const handlers = [
 
 Some GraphQL clients, like Apollo, require the presence of special keys in the response object to handle the associated operations correctly. You would have to include those keys in your mocked responses as well. Consult your GraphQL client documentation for more information on how it handles responses and whether it provides any helper functions to simplify the mocks declaration for you.
 
-```ts {5}
+```ts {7}
+const api = graphql.link('https://api.example.com/graphql')
+
 api.query<User>('GetUser', () => {
   return HttpResponse.json({
     data: {

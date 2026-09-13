@@ -2,7 +2,7 @@
 import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vitepress'
 import type { DefaultTheme } from 'vitepress/theme'
-import { ChevronRightIcon, ExclamationTriangleIcon } from '@heroicons/vue/20/solid'
+import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps<{
   item: DefaultTheme.SidebarItem
@@ -10,12 +10,6 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
-const isGeneratedApi = computed(() => {
-  return props.item.link?.startsWith('/api/reference/') === true
-})
-const deprecated = computed(() => {
-  return 'deprecated' in props.item && props.item.deprecated === true
-})
 const collapsed = ref(Boolean(props.item.collapsed))
 const hasChildren = computed(() => {
   return Boolean(props.item.items?.length)
@@ -81,10 +75,8 @@ function toggle(): void {
         :href="item.link"
         :rel="item.rel"
         :target="item.target"
-        :title="isGeneratedApi ? item.text : undefined"
         class="min-w-0 flex-1 py-[7.25px] leading-tight transition-colors hover:text-primary"
         :class="{
-          'flex items-center': isGeneratedApi,
           'font-bold text-white': depth === 0,
           'font-medium text-neutral-400': depth > 0,
           'text-primary': active,
@@ -92,15 +84,7 @@ function toggle(): void {
         }"
         :data-sidebar-active="active || undefined"
       >
-        <span :class="{ 'min-w-0 truncate': isGeneratedApi }" v-html="item.text" />
-        <span
-          v-if="deprecated"
-          class="ml-2 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border border-red-500/30 bg-red-500/10 align-middle text-red-600 dark:text-red-400"
-          title="Deprecated API"
-        >
-          <ExclamationTriangleIcon class="h-3.5 w-3.5" aria-hidden="true" />
-          <span class="sr-only">Deprecated</span>
-        </span>
+        <span v-html="item.text" />
       </a>
 
       <button

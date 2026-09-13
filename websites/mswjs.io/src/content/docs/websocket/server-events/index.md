@@ -14,7 +14,9 @@ You can intercept the following WebSocket events from the original server:
 
 You can listen to those events by adding a respective event listener to the `server` object anywhere in your event handler:
 
-```ts {3} /server/1,3
+```ts {5} /server/1,3
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
   server.addEventListener('message', () => {})
@@ -31,7 +33,9 @@ api.addEventListener('connection', ({ server }) => {
 
 ### The `open` event
 
-```ts {3-5}
+```ts {5-7}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
   server.addEventListener('open', (event) => {
@@ -42,7 +46,9 @@ api.addEventListener('connection', ({ server }) => {
 
 ### The `message` event
 
-```ts {3-5}
+```ts {5-7}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
   server.addEventListener('message', (event) => {
@@ -53,7 +59,9 @@ api.addEventListener('connection', ({ server }) => {
 
 ### The `error` event
 
-```ts {3-5}
+```ts {5-7}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
   server.addEventListener('error', (event) => {
@@ -64,7 +72,9 @@ api.addEventListener('connection', ({ server }) => {
 
 ### The `close` event
 
-```ts {3-5}
+```ts {5-7}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
   server.addEventListener('close', (event) => {

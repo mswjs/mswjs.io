@@ -16,16 +16,12 @@ By default, MSW does not delay any mocked responses, so they arrive nearly insta
 ## Call signature
 
 ```ts
-function delay(duration?: number): Promise<void> {}
-function delay(mode?: 'real' | 'infinite'): Promise<void> {}
-```
+import { delay } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/delay.ts"
-  title="delay.ts"
-  description="Source code for the `delay` function."
-/>
+await delay()
+await delay(1000)
+await delay('infinite')
+```
 
 ## Implicit delay
 

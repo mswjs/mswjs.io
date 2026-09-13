@@ -1,5 +1,5 @@
 ---
-title: Keeping mocks in sync
+title: Preventing mock drift
 ---
 
 You write mocks to describe a server behavior fixed in time. But as time goes on, that behavior may change, potentially rendering your mocks obsolete.

@@ -14,6 +14,8 @@ keywords:
 You can send data to the intercepted WebSocket client by calling `client.send()` anywhere in the `connection` event listener:
 
 ```ts /client.send/
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.send('hello from server!')
 })
@@ -27,7 +29,9 @@ This will send the given data **to the particular `client`**, and it will receiv
 
 ### Sending text
 
-```ts {2}
+```ts {4}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.send('hello world')
 })
@@ -35,7 +39,9 @@ api.addEventListener('connection', ({ client }) => {
 
 ### Sending `Blob`
 
-```ts {2}
+```ts {4}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.send(new Blob(['hello world'], { type: 'text/plain' }))
 })
@@ -43,7 +49,9 @@ api.addEventListener('connection', ({ client }) => {
 
 ### Sending `ArrayBuffer`
 
-```ts {2}
+```ts {4}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.send(new TextEncoder().encode('hello world'))
 })

@@ -12,15 +12,12 @@ keywords:
 ## Call signature
 
 ```ts
-function passthrough(): Response {}
-```
+import { http, passthrough } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/passthrough.ts"
-  title="passthrough.ts"
-  description="Source code for the `passthrough` namespace."
-/>
+http.get('/resource', () => {
+  return passthrough()
+})
+```
 
 ## Usage
 

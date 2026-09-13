@@ -15,9 +15,12 @@ keywords:
 The `server.boundary()` function accepts a `callback` function and returns a new function with the same call signature as the given `callback` but bound.
 
 ```ts
-function boundary<Callback extends (...args: Array<unknown>) => unknown>(
-  callback: Callback
-): (...args: Parameters<Callback>) => ReturnType<Callback>
+const scoped = server.boundary(() => {
+  // Any changes to the network within this
+  // callback stay within the boundary.
+})
+
+scoped()
 ```
 
 ## Usage

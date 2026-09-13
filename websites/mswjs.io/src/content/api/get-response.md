@@ -9,18 +9,10 @@ The `getResponse` function is designed for programmatic resolution of requests. 
 ## Call signature
 
 ```ts
-function getResponse(
-  handlers: Array<RequestHandler>,
-  request: Request,
-): Promise<Response | undefined>
-```
+import { getResponse } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/getResponse.ts"
-  title="getResponse.ts"
-  description="Source code for the `getResponse` function."
-/>
+const response = await getResponse(handlers, request)
+```
 
 ## Usage
 

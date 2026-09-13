@@ -2,7 +2,6 @@ import { localSearchRanking } from './localSearchRanking'
 import { splitSearchSections } from '../../shared/searchSections'
 import { createExternalLinkChecker } from '../../shared/externalLinks'
 import * as path from 'node:path'
-import { existsSync, readFileSync } from 'node:fs'
 import type { DefaultTheme } from 'vitepress'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
@@ -13,6 +12,8 @@ import {
   wordHighlightMetaPlugin,
 } from '../../shared/codeHighlight'
 import { buildRssFeed } from './rss'
+import { mswTwoslashTransformer, twoslashLineNumbersPlugin } from './twoslash'
+import { resolveMswSourceForSite } from '../scripts/msw-source.mjs'
 import { prioritizeSearchResults } from './search'
 import cloudflareLight from './themes/cloudflare-light.json'
 import cloudflareDark from './themes/cloudflare-dark.json'
@@ -24,7 +25,7 @@ const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
 const GOOGLE_FONTS_STYLESHEET_URL =
   'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&display=swap&subset=latin'
 
-const handwrittenApiSidebar = buildDocsSidebar(
+const apiSidebar = buildDocsSidebar(
   path.resolve(
     path.dirname(fileURLToPath(import.meta.url)),
     '../src/content/api',
@@ -39,24 +40,6 @@ const handwrittenApiSidebar = buildDocsSidebar(
   'API',
 )
 
-const generatedSidebarPath = fileURLToPath(
-  new URL('../src/content/api/reference/typedoc-sidebar.json', import.meta.url),
-)
-const generatedApiSidebar: Array<DefaultTheme.SidebarItem> = existsSync(
-  generatedSidebarPath,
-)
-  ? JSON.parse(readFileSync(generatedSidebarPath, 'utf8'))
-  : []
-const apiSidebar =
-  generatedApiSidebar.length > 0
-    ? [
-        ...generatedApiSidebar,
-        ...handwrittenApiSidebar.filter((section) => {
-          return section.text === 'CLI'
-        }),
-      ]
-    : handwrittenApiSidebar
-
 function firstPage(items: Array<DefaultTheme.SidebarItem>): string | undefined {
   for (const item of items) {
     if (item.link) {
@@ -70,20 +53,6 @@ function firstPage(items: Array<DefaultTheme.SidebarItem>): string | undefined {
 }
 
 const apiEntryPath = firstPage(apiSidebar) ?? '/api/http'
-const apiReleasePath = fileURLToPath(
-  new URL('../src/content/api/reference/release.json', import.meta.url),
-)
-const apiRelease: unknown = existsSync(apiReleasePath)
-  ? JSON.parse(readFileSync(apiReleasePath, 'utf8'))
-  : undefined
-const apiReleaseTag =
-  generatedApiSidebar.length > 0 &&
-  typeof apiRelease === 'object' &&
-  apiRelease !== null &&
-  'tag' in apiRelease &&
-  typeof apiRelease.tag === 'string'
-    ? apiRelease.tag
-    : undefined
 
 function redirectApiIndex(
   request: IncomingMessage,
@@ -102,6 +71,11 @@ function redirectApiIndex(
 }
 
 const externalLinks = createExternalLinkChecker()
+// Code snippets are typed against the latest published MSW release.
+// The development server reuses an existing checkout when there is one.
+const mswSource = await resolveMswSourceForSite({
+  preferCache: process.env.NODE_ENV !== 'production',
+})
 
 export default defineConfig({
   title: SITE_TITLE,
@@ -109,7 +83,7 @@ export default defineConfig({
   description: SITE_DESCRIPTION,
   lang: 'en',
   srcDir: 'src/content',
-  srcExclude: ['docs/shared/**', 'api/reference.pending/**'],
+  srcExclude: ['docs/shared/**'],
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: false,
@@ -157,9 +131,13 @@ export default defineConfig({
       dark: { ...cloudflareDark, type: 'dark' },
     },
     lineNumbers: true,
-    codeTransformers: [wordHighlightTransformer()],
+    codeTransformers: [
+      wordHighlightTransformer(),
+      mswTwoslashTransformer(mswSource),
+    ],
     config(md) {
       wordHighlightMetaPlugin(md)
+      twoslashLineNumbersPlugin(md)
       externalLinks.markdown(md)
     },
   },
@@ -191,7 +169,6 @@ export default defineConfig({
   },
 
   themeConfig: {
-    apiReleaseTag,
     logo: '/logo.svg',
     siteTitle: false,
 

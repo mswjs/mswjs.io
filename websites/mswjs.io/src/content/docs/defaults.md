@@ -9,8 +9,7 @@ description: Important default behaviors of Mock Service Worker.
 MSW embraces a network-first approach, which means that it will not interfere with the network unless you explicitly say so in your handlers.
 
 ::: warning
-  Intercepting WebSockets, however, is _mock-first_ due to the limitations of
-  their specification.
+Intercepting WebSockets, however, is _mock-first_ due to the specifics of its implementation on the web (connection errors thrown in a microtask, which makes them invisible to the main thread).
 :::
 
 ## Handler fallthrough
@@ -48,9 +47,7 @@ export const handlers = [
 const server = setupServer(...handlers)
 server.listen()
 
-server.use(
-  http.get('/user', () => console.log('Override one')),
-)
+server.use(http.get('/user', () => console.log('Override one')))
 ```
 
 Given an outgoing `GET /user` request, this is what you will see in the console:
@@ -72,7 +69,7 @@ export const handlers = [
   // the "GET /user/messages" request will be handled
   // properly, despite it also matching a more permissive
   // "/user/*" handler below.
-  http.get('/user/messages', messagesResolver)
+  http.get('/user/messages', messagesResolver),
   http.get('/user/*', resolverOne),
 ]
 ```

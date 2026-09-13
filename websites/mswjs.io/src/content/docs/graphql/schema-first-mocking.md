@@ -8,12 +8,12 @@ keywords:
   - custom
 ---
 
-When [describing GraphQL APIs](/docs/graphql/), the responses returned from response resolvers will be sent to the client as-is, even if they include extra properties not present in the original query. While this lets you get started with a GraphQL API without having to define schemas and resolvers, such behavior is not what one would expect from an actual GraphQL server.
+When [describing GraphQL APIs](/docs/graphql/), your mock responses are always sent to the client as-is, even if they include extra properties not present in the original query or the underlying schema. While this lets you get started with a GraphQL API without defining schemas and resolvers, such behavior isn't the one exhibited by a real GraphQL server.
 
 You can resolve intercepted GraphQL operations against a mocked GraphQL schema using the [`graphql`](https://npmjs.com/package/graphql) package. In the example below, we will also use the [`graphql.operation()`](/api/graphql#graphqloperationresolver) request handler to resolve them against the schema.
 
 ```js {2,4-13,24-33}
-import { graphql } from 'msw'
+import { graphql, HttpResponse } from 'msw'
 import { graphql as executeGraphql, buildSchema } from 'graphql'
 
 const schema = buildSchema(`
@@ -29,14 +29,14 @@ const schema = buildSchema(`
 
 const data = {
   users: [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Kate' },
+    { id: 1, firstName: 'John' },
+    { id: 2, firstName: 'Kate' },
   ]
 }
 
 export const handlers = [
-  graphql.operation(({ query, variables }) => {
-    const { data, errors } = await executeGraphql({
+  graphql.operation(async ({ query, variables }) => {
+    const result = await executeGraphql({
       schema,
       source: query,
       variableValues: variables,
@@ -47,7 +47,7 @@ export const handlers = [
       }
     })
 
-    return HttpResponse.json({ errors, data })
+    return HttpResponse.json(result)
   })
 ]
 ```

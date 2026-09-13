@@ -14,13 +14,6 @@ defineEmits<{
 }>()
 
 const navigation = ref<HTMLElement>()
-const { theme } = useData<DefaultTheme.Config & { apiReleaseTag?: string }>()
-const route = useRoute()
-const releaseTag = computed(() => {
-  if (route.path === '/api' || route.path.startsWith('/api/')) {
-    return theme.value.apiReleaseTag
-  }
-})
 
 watch(
   () => props.open,
@@ -70,16 +63,5 @@ watch(
         :depth="0"
       />
     </nav>
-    <div
-      v-if="releaseTag"
-      class="shrink-0 border-t py-2 pl-8 pr-3 text-sm text-neutral-500 dark:text-neutral-400"
-    >
-      <a
-        :href="`https://github.com/mswjs/msw/releases/tag/${encodeURIComponent(releaseTag)}`"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="tabular-nums text-inherit hover:text-inherit hover:underline"
-      >{{ releaseTag }}</a>
-    </div>
   </aside>
 </template>

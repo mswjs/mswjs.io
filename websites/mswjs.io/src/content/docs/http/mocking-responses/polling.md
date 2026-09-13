@@ -18,7 +18,7 @@ http.get<{ city: string }, never, { degree: number }>(
 
     while (degree < 27) {
       degree++
-      yield HttpResponse({ degree })
+      yield HttpResponse.json({ degree })
     }
 
     degree++

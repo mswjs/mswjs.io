@@ -58,7 +58,9 @@ A link preconfigures the interceptor to match WebSocket connections that match t
 
 Add a `connection` event listener on the link to intercept an outgoing client connection:
 
-```ts {2-4} /'connection'/
+```ts {4-6} /'connection'/
+const chat = ws.link('wss://chat.example.com')
+
 export const handlers = [
   chat.addEventListener('connection', () => {
     console.log('WebSocket client connecting...')

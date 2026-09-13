@@ -24,6 +24,8 @@ You can achieve proper type and runtime safety in WebSockets by introducing pars
 ```js
 import { z } from 'zod'
 
+const chat = ws.link('wss://chat.example.com')
+
 // Define a Zod schema for the incoming events.
 // Here, our WebSocket communication supports two
 // events: "chat/join" and "chat/message".

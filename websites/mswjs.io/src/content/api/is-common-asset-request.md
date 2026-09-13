@@ -12,15 +12,11 @@ keywords:
 ## Call signature
 
 ```ts
-function isCommonAssetRequest(request: Request): boolean
-```
+import { isCommonAssetRequest } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/isCommonAssetRequest.ts"
-  title="delay.ts"
-  description="Source code for the `isCommonAssetRequest` function."
-/>
+isCommonAssetRequest(new Request('https://example.com/favicon.ico'))
+// true
+```
 
 ## Common assets
 

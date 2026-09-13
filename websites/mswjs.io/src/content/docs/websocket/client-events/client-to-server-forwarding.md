@@ -21,7 +21,9 @@ You can manage that event forwarding in multiple ways:
 
 You can prevent any event dispatched by your WebSocket client from being forwarded to the original server by calling `event.preventDefault()` in the event listener for that event.
 
-```ts {5}
+```ts {7}
+const api = ws.link('wss://example.com/ws')
+
 api.addEventListener('connection', ({ client, server }) => {
   server.connect()
 
@@ -35,7 +37,9 @@ For example, here we are preventing any `message` event from the client from eve
 
 Just like with regular events, you can prevent the default _conditionally_:
 
-```ts {6-8}
+```ts {8-10}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client, server }) => {
   server.connect()
 
@@ -57,7 +61,9 @@ Modifying a client event comes down to two steps:
 
 Let's expand on the previous example and send a modified client message event after it's been prevented:
 
-```ts {8} /server/1,3
+```ts {10} /server/1,3
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client, server }) => {
   server.connect()
 

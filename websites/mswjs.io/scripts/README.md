@@ -1,69 +1,39 @@
-# API reference generation
+# Inline type information in code snippets
+
+Every `ts`, `tsx`, `js`, and `jsx` code snippet is processed with
+[Twoslash](https://twoslash.netlify.app) (`.vitepress/twoslash.ts`). Hovering
+an identifier shows its type and JSDoc, and identifiers defined in MSW link to
+their definition on GitHub, pinned to the release tag (also via Cmd/Ctrl+click
+on the identifier).
 
 ```text
-pnpm --filter mswjs.io build
+scripts/msw-source.mjs
   → GitHub /repos/mswjs/msw/releases/latest
-  → shallow checkout of refs/tags/<tag_name>
-  → install the release's frozen lockfile (no lifecycle scripts)
-  → TypeDoc → src/content/api/reference
-  → VitePress build
+  → shallow checkout of refs/tags/<tag_name> in .vitepress/cache/msw-source/<tag>
+  → install the release's frozen lockfile (no lifecycle scripts, workspace mode off)
+  → "msw", "msw/browser", "msw/node", … map to the release's src/ entrypoints
 ```
 
-Every build resolves the latest published stable GitHub release again. It never
-uses `main`, the newest Git tag, or a cached release as a fallback. Publishing an
-MSW release does not itself trigger a website build; the next website deployment
-picks it up. `GITHUB_TOKEN` is optional and raises GitHub API rate limits in CI.
-
-Run `pnpm --filter mswjs.io api:generate` to refresh references locally, then start
-the usual dev server. Generated pages and release metadata are ignored by Git.
-Development without generated pages retains the handwritten API sidebar.
-Existing handwritten API URLs remain available so docs links keep working; the
-sidebar uses generated references once available. The CLI remains handwritten.
+Every build resolves the latest published stable release again; it never uses
+`main`, the newest Git tag, or a prerelease. `GITHUB_TOKEN` is optional and
+raises GitHub API rate limits in CI. The development server reuses the newest
+cached checkout to avoid network access on every start and resolves the latest
+release only when nothing is cached yet; delete `.vitepress/cache/msw-source` to
+pick up a newer release locally.
 
 Entrypoints come exclusively from the checked-out release's `package.json`
-`exports` map. All nested conditions are considered; null targets are excluded
-and declaration/ESM/CJS variants of the same module are deduplicated. MSW's
-`lib/` build paths map to their corresponding `src/` files. An unmappable target
-fails generation instead of falling back to scanning source directories.
-Standalone assets such as `mockServiceWorker.js` and `package.json` aren't API
-modules. Wildcard exports currently fail explicitly instead of broadening the
-documented surface.
+`exports` map. `lib/` build paths map to their corresponding `src/` files, so
+hovers and source links point at the actual source. Standalone assets such as
+`mockServiceWorker.js` and `package.json` aren't modules.
 
-TypeDoc uses `entryPointStrategy: resolve`: only symbols exported by those public
-modules get top-level reference entries. A utility explicitly re-exported from
-`msw` is therefore public, even if its implementation lives under `utils/`.
-Import-only helpers and unexported sibling files aren't entrypoints.
-Symbol-keyed members of exported APIs are omitted, including unique-symbol
-branding properties such as `[bodyType]`. The filter uses TypeScript's key type;
-ordinary string-keyed computed properties remain documented.
+Most snippets omit their imports on purpose. `.vitepress/twoslash.ts` declares
+the common identifiers (`http`, `HttpResponse`, `worker`, `server`, `client`, …)
+as ambient globals typed from the release so partial snippets still resolve;
+snippet-level imports shadow them. Identifiers that would only resolve to `any`
+(an uninstalled package, an untyped parameter) get no hover. Compiler
+diagnostics never fail the build and are hidden from readers. Run
+`pnpm twoslash:report` to list them and find snippets that no longer type-check
+against the latest release. Add `notwoslash` to a fence's meta to opt a snippet
+out. Results are cached per release in `.vitepress/cache/twoslash`.
 
-`@module` supplies section names, with directory-based defaults for releases
-without those tags. `@category` groups exports inside modules. Use these module
-names for the standard section order: `API`, `Browser`, `Node.js`, `Experimental`.
-Other public subpaths, including React Native, are included automatically.
-
-Source links use the checked-out commit, recorded with the release tag in
-`api/reference/release.json`, together with the resolved public entrypoints.
-Generated pages disable the website edit link and
-website Git timestamp. TypeDoc extracts types without rerunning the library's
-compiler diagnostics across the combined browser/Node documentation program.
-Checkout, dependency installation, conversion, or rendering errors stop the build.
-
-## Sidebar order and deprecated APIs
-
-Edit `scripts/api-order.json` to place important APIs first. Keys are section or
-category paths; values are ordered API/category names. Unlisted entries retain
-TypeDoc's order, so newly exported APIs still appear automatically.
-
-```json
-{
-  "API": ["http", "graphql", "ws", "HttpResponse"],
-  "Browser/Lifecycle": ["start", "stop"]
-}
-```
-
-Regenerate after editing. `@deprecated` is read from the release source and shown
-as an accessible danger badge beside the API's sidebar link. Each call signature
-has a compact list of parameters and its return type, using inline code and
-preserving descriptions, optional/rest markers, and defaults. Full declarations
-remain TypeScript code blocks. Inheritance links still resolve through TypeDoc.
+The API reference under `src/content/api` is written by hand.

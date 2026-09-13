@@ -6,7 +6,11 @@ description: Schedule cleanup after the request handler completion.
 ## Call signature
 
 ```ts
-function finalize(callback: () => Promise<void> | void): void
+http.get('/resource', ({ finalize }) => {
+  finalize(() => {
+    // Clean up once the request handler is done.
+  })
+})
 ```
 
 ::: warning

@@ -79,7 +79,7 @@ Another option would be to define a _higher-order response resolver_ that encaps
 ```ts [with-delay.ts] {5-7}
 import { delay, type HttpResponseResolver } from 'msw'
 
-export async function withDelay(resolver: HttpResponseResolver) {
+export function withDelay(resolver: HttpResponseResolver) {
   return async (...args) => {
     // Provide no arguments to the `delay` function
     // to apply a random realistic response time.

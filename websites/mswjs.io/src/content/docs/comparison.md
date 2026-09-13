@@ -17,10 +17,7 @@ keywords:
 Choosing the right tool for the job is crucial. We tried our best to provide a comprehensive and unbiased comparison between Mock Service Worker and other open-source API mocking libraries below.
 
 ::: warning
-  The purpose of this page is not to reason about what technology is better or
-  worse. All the libraries listed here have a place to be, and grading them is
-  not only subjective, but also disrespectful towards the people who really
-  should be using one over another.
+The purpose of this page is not to reason about the merits of individual technologies. All the libraries listed here have a place to be, and grading them is not only subjective, but also disrespectful towards the people who really should be using one over another.
 :::
 
 ## Comparison criteria
@@ -62,7 +59,7 @@ Any good comparison begins with a clearly defined set of criteria. Here are the 
 | Requires additional adapters to intercept specific request clients (e.g. `axios`) | Works with any request client without additional configuration. |
 
 ::: info
-Nock uses MSW as the interception algorithm in Node.js, which aligns the two libraries in many aspects, leaving the feature set and the public API as the primary factors to influence their difference.
+Nock uses MSW as the interception algorithm, which aligns the two libraries in many aspects, leaving the environment support and the public API as the primary differentiating factors.
 :::
 
 ### Definition
@@ -80,9 +77,8 @@ nock('https://api.example.com').get('/user').reply(200, { id: 1, name: 'John' })
 MSW models its interception API after server-side routing and handles requests and responses according to the Fetch API specification, using the same classes you would use normally in JavaScript:
 
 ```js
-http.get('https://api.example.com/user', async ({ request }) => {
-  const payload = await request.json()
-  return HttpResponse.json({ id: 1, name: 'John' })
+http.get('https://api.example.com/user', () => {
+  return Response.json({ id: 1, name: 'John' })
 })
 ```
 
@@ -112,10 +108,10 @@ http.get('https://api.example.com/user', async ({ request }) => {
 
 ### Integration
 
-| JSON Server                                                              | Mock Service Worker                                             |
-| ------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| JSON Server                                                             | Mock Service Worker                                             |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------- |
 | Requires changing the code to request resources from the mocked server. | Does not require any changes to the code.                       |
-| Works with any request client without additional configuration.          | Works with any request client without additional configuration. |
+| Works with any request client without additional configuration.         | Works with any request client without additional configuration. |
 
 ### Definition
 
@@ -140,7 +136,7 @@ MSW models its interception API after server-side routing and handles requests a
 
 ```js
 http.get('/posts', () => {
-  return HttpResponse.json([
+  return Response.json([
     { id: 1, title: 'json-server' },
     { id: 2, title: 'mock-service-worker' },
   ])
@@ -223,7 +219,7 @@ MSW models its interception API after server-side routing and handles requests a
 
 ```js
 http.get('/movies', () => {
-  return HttpResponse.json(['Interstellar', 'Inception', 'Dunkirk'])
+  return Response.json(['Interstellar', 'Inception', 'Dunkirk'])
 })
 ```
 
@@ -345,7 +341,7 @@ http.post('/users', async ({ request }) => {
 
   // Construct a response as you would normally.
   // Pass the request body ReadableStream as the response body,
-  return HttpResponse.json(request.body, { status: 201 })
+  return Response.json(request.body, { status: 201 })
 })
 ```
 
@@ -423,7 +419,7 @@ http.post('/fruits', async ({ request }) => {
   const json = await response.json()
   json.push({ name: 'Mock Service Worker' })
 
-  return HttpResponse.json(json, response)
+  return Response.json(json, response)
 })
 ```
 

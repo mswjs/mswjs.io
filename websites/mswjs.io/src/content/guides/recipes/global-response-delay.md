@@ -47,7 +47,7 @@ You can create a higher-order response resolver that encapsulates the delay logi
 ```ts [withDelay.ts] {5} /delay/
 import { delay, HttpResponseResolver } from 'msw'
 
-export async function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
+export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
   return async (...args) => {
     await delay(1000)
     return resolver(...args)

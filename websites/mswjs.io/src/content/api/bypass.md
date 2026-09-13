@@ -11,18 +11,13 @@ keywords:
 
 ## Call signature
 
-The same as the `globalThis.fetch()` function, the `bypass` function expects two arguments: `RequestInput` and `RequestInit`. It returns a _tuple_ of modified input and init arguments to then be provided on the regular `globalThis.fetch()` call.
+The same as the `globalThis.fetch()` function, the `bypass` function expects a request input and an optional request init. It returns a modified `Request` to then be provided to the regular `globalThis.fetch()` call.
 
 ```ts
-function bypass(input: RequestInput, init?: RequestInit): Request {}
-```
+import { bypass } from 'msw'
 
-<PageCard
-  icon="CodeBracketSquareIcon"
-  url="https://github.com/mswjs/msw/tree/main/src/core/bypass.ts"
-  title="bypass.ts"
-  description="Source code for the `bypass` namespace."
-/>
+const response = await fetch(bypass('/user'))
+```
 
 ## Usage
 

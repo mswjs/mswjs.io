@@ -20,7 +20,9 @@ You can intercept the following WebSocket client events:
 
 You can listen to these events by adding a respective event listener to the `client` object anywhere in your event handler:
 
-```ts {2} /client/
+```ts {4} /client/
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.addEventListener('close', () => {})
 })
@@ -33,6 +35,8 @@ api.addEventListener('connection', ({ client }) => {
 There is no `open` event on the `client` object. Instead, you should handle a client opening the connection in the `connection` event listener:
 
 ```ts /'connection'/
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   console.log('Client opening connection', client)
 })
@@ -47,6 +51,8 @@ If you don't establish the actual server connection in the `connection` listener
 You can intercept the data sent from your client by adding a `message` listener on the `client` object:
 
 ```ts /'message'/
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.addEventListener('message', (event) => {
     console.log('Intercepted message from the client', event)
@@ -76,6 +82,8 @@ ws.onopen = () => {
 You can intercept the `close` event dispatched when your client closes the connection by adding a `close` event listener on the `client` object:
 
 ```ts /'close'/
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ client }) => {
   client.addEventListener('close', (event) => {
     console.log('Client is closing the connection', client)

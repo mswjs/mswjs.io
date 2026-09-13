@@ -4,7 +4,9 @@ title: Erroring the connection
 
 You can error the intercepted WebSocket client connection by throwing an error **at the root scope** of your `connection` event listener.
 
-```ts {2}
+```ts {4}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', () => {
   throw new Error('Failed to connect')
 })

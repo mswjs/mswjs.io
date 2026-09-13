@@ -57,8 +57,8 @@ You can annotate the data type of your custom events by providing a type argumen
 
 ```ts /{ greeting: 'hello world' }/1
 sse<{ greeting: 'hello world' }>('/stream', ({ client }) => {
-  client.send({ greeting: 'hello world' }) // ✅
-  client.send({ greeting: 'goodbye cosmos' }) // ❌
+  client.send({ event: 'greeting', data: 'hello world' }) // ✅
+  client.send({ event: 'greeting', data: 'goodbye cosmos' }) // ❌
 })
 ```
 

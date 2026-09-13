@@ -40,7 +40,7 @@ export const handlers = [
   // will require the outgoing requests to "POST /comment"
   // to have the "authorization" header set before it returns
   // a mocked JSON response.
-  http.post('/comment', withAuth(({ request }) => {
+  http.post('/comment', withAuth(async ({ request }) => {
     const { author, text } = await request.json()
     return HttpResponse.json({ author, text }, { status: 201 })
   }))

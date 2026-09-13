@@ -16,7 +16,9 @@ You can manage that event forwarding in multiple ways:
 
 You can prevent any event received from the original server by calling `event.preventDefault()` in the respective event listener.
 
-```ts {5}
+```ts {7}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.connect()
 
@@ -32,7 +34,9 @@ For example, here we are preventing any `message` events from ever reaching the 
 
 Just like with regular events, you can prevent the default _conditionally_:
 
-```ts {4-6}
+```ts {6-8}
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server }) => {
   server.addEventListener('message', (event) => {
     // Skip forwarding only for particular server messages.
@@ -52,7 +56,9 @@ Modifying a server event comes down to two steps:
 
 Let's expand on the previous example and send a modified server event after it's been prevented:
 
-```ts {5} /client/
+```ts {7} /client/
+const api = ws.link('wss://api.example.com')
+
 api.addEventListener('connection', ({ server, client }) => {
   server.addEventListener('message', (event) => {
     if (event.data === 'hello world') {

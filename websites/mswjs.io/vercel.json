@@ -304,6 +304,11 @@
       "statusCode": 301
     },
     {
+      "source": "/guides/recipes/keeping-mocks-in-sync",
+      "destination": "/guides/recipes/preventing-mock-drift",
+      "statusCode": 301
+    },
+    {
       "source": "/docs/cli/:path*",
       "destination": "/api/cli/:path*",
       "statusCode": 301

@@ -35,8 +35,9 @@ Creating this request handler will send the "hello world" event to the `EventSou
 
 ::: code-group
 
-```ts [your-app.ts]
+```ts [app.js]
 const source = new EventSource('/stream')
+
 event.addEventListener('message', (event) => {
   console.log(event.data) // "hello world"
 })

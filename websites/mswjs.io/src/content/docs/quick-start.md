@@ -87,11 +87,19 @@ At this step, you find the appropriate place to enable API mocking in your Node.
 
 ```ts [vitest.setup.ts] /server/
 import { beforeAll, afterEach, afterAll } from 'vitest'
-import { server } from './mocks/node.js'
+import { server } from './src/mocks/node.js'
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
+```
+
+```ts [vitest.config.ts] {4}
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  setupFiles: ['./vitest.setup.ts']
+})
 ```
 
 :::

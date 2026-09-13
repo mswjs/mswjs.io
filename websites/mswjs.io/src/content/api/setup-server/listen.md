@@ -7,7 +7,8 @@ description: Enable the interception of requests in the current process.
 ## Call signature
 
 ```js
-function listen(options?: ListenOptions): void
+server.listen()
+server.listen({ onUnhandledRequest: 'error' })
 ```
 
 ## Usage

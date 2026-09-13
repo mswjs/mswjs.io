@@ -10,7 +10,9 @@ You can mock a GraphQL error response by including the `errors` key in the respo
 
 A response that only contains the `errors` key and no `data` usually indicates a [request error](https://spec.graphql.org/October2021/#sec-Errors.Request-errors).
 
-```ts {4-6}
+```ts {6-8}
+const api = graphql.link('https://api.example.com/graphql')
+
 api.query<User>('GetUser', () => {
   return HttpResponse.json({
     errors: [
@@ -26,7 +28,9 @@ api.query<User>('GetUser', () => {
 
 When mocking [field errors](https://spec.graphql.org/October2021/#sec-Errors.Field-errors), make sure to include the `locations` and `path` properties alongside the error `message` to form a correct field error response. You can combine field errors with partial responses, too.
 
-```ts {4-8}
+```ts {6-10}
+const api = graphql.link('https://api.example.com/graphql')
+
 api.query<User, { id: string }>('GetUser', ({ variables }) => {
   return HttpResponse.json({
     errors: [
