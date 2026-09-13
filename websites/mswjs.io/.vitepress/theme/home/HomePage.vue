@@ -5,18 +5,12 @@ import FeatureCard from './FeatureCard.vue'
 import FeatureLink from './FeatureLink.vue'
 import InterceptionDiagram from './InterceptionDiagram.vue'
 import Container from '@mswjs/shared/theme/components/Container.vue'
-import PageHeaderWrapper from '@mswjs/shared/theme/components/PageHeaderWrapper.vue'
 import PageHeaderSubtitle from '@mswjs/shared/theme/components/PageHeaderSubtitle.vue'
-import GettingStarted from '@mswjs/shared/theme/components/GettingStarted.vue'
-import UppercaseLabel from './UppercaseLabel.vue'
-import ComponentExample from './ComponentExample.vue'
-import MswIconBlock from './MswIconBlock.vue'
+import GetStarted from './GetStarted.vue'
 import FeaturedQuote from './FeaturedQuote.vue'
+import SourceOfTruth, { type SourceOfTruthScene } from './SourceOfTruth.vue'
 import ReviewTile from './ReviewTile.vue'
 import reviews from './reviews.json'
-import VitestRunner from './VitestRunner.vue'
-import CypressRunner from './CypressRunner.vue'
-import StorybookShowcase from './StorybookShowcase.vue'
 
 import PlayCircleIcon from '@mswjs/shared/theme/components/icons/play-circle.vue'
 import GitHubIcon from '@mswjs/shared/theme/components/icons/github.vue'
@@ -31,12 +25,6 @@ import VercelIcon from '@mswjs/shared/theme/components/icons/vercel.vue'
 import CloudflareIcon from '@mswjs/shared/theme/components/icons/cloudflare.vue'
 import ShopifyIcon from '@mswjs/shared/theme/components/icons/shopify.vue'
 import NvidiaIcon from '@mswjs/shared/theme/components/icons/nvidia.vue'
-import ReactIcon from '@mswjs/shared/theme/components/icons/react.vue'
-import VueIcon from '@mswjs/shared/theme/components/icons/vue.vue'
-import AngularIcon from '@mswjs/shared/theme/components/icons/angular.vue'
-import SvelteIcon from '@mswjs/shared/theme/components/icons/svelte.vue'
-import NextJsIcon from '@mswjs/shared/theme/components/icons/nextjs.vue'
-import RemixIcon from '@mswjs/shared/theme/components/icons/remix.vue'
 
 import mswLogo from '../../../src/images/msw.svg'
 import kentCDoddsAvatar from '../../../src/images/people/kent-c-dodds.jpg'
@@ -77,7 +65,11 @@ const REPEATED_COMPANIES = 7
 const companies: Array<Company> = [
   { name: 'Microsoft', icon: MicrosoftIcon, class: 'h-6 md:h-9 max-w-full' },
   { name: 'Google', icon: GoogleIcon, class: 'h-6 md:h-9 max-w-full' },
-  { name: 'Amazon Web Services', icon: AwsIcon, class: 'h-6 md:h-9 max-w-full' },
+  {
+    name: 'Amazon Web Services',
+    icon: AwsIcon,
+    class: 'h-6 md:h-9 max-w-full',
+  },
   { name: 'Netflix', icon: NetflixIcon, class: 'h-3.5 md:h-5 max-w-full' },
   { name: 'Spotify', icon: SpotifyIcon, class: 'h-6 md:h-9 max-w-full' },
   { name: 'Samsung', icon: SamsungIcon, class: 'h-6 md:h-9 max-w-full' },
@@ -87,6 +79,18 @@ const companies: Array<Company> = [
   { name: 'Cloudflare', icon: CloudflareIcon, class: 'h-7 md:h-11 max-w-full' },
   { name: 'Shopify', icon: ShopifyIcon, class: 'h-8 md:h-12 max-w-full' },
   { name: 'Nvidia', icon: NvidiaIcon, class: 'h-6 md:h-9 max-w-full' },
+]
+
+/**
+ * Scenes of the "source of truth" section: the heading's last word and
+ * the slot (a fence in "index.md") holding the matching setup snippet.
+ */
+const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
+  { word: 'component testing', slot: 'scene-testing' },
+  { word: 'end-to-end testing', slot: 'scene-e2e' },
+  { word: 'development', slot: 'scene-development' },
+  { word: 'debugging', slot: 'scene-debugging' },
+  { word: 'Storybook', slot: 'scene-storybook' },
 ]
 </script>
 
@@ -124,9 +128,9 @@ const companies: Array<Company> = [
 
   <!-- Companies -->
   <Container class="home-frame">
-    <div class="home-frame-rails border-x border-t border-neutral-800">
+    <div class="home-frame-rails -mb-px border border-neutral-800">
       <p
-        class="border-b border-neutral-800 px-6 py-6 text-center text-sm font-semibold uppercase tracking-widest text-neutral-400"
+        class="border-b border-neutral-800 h-14 px-4 flex items-center justify-center text-center text-sm font-semibold uppercase tracking-widest text-neutral-400"
       >
         Trusted by teams at
       </p>
@@ -135,7 +139,10 @@ const companies: Array<Company> = [
       <div class="marquee overflow-hidden text-neutral-400 fill-neutral-400">
         <div
           class="marquee-track flex"
-          :style="{ '--marquee-count': companies.length, '--marquee-item': 224 }"
+          :style="{
+            '--marquee-count': companies.length,
+            '--marquee-item': 224,
+          }"
         >
           <div
             v-for="company in companies"
@@ -164,7 +171,7 @@ const companies: Array<Company> = [
   <!-- Features -->
   <section>
     <Container class="home-frame">
-      <div class="home-frame-rails border border-b-0 border-neutral-800">
+      <div class="home-frame-rails -mb-px border border-neutral-800">
         <header
           class="border-b border-neutral-800 px-6 py-16 text-center md:py-24"
         >
@@ -230,7 +237,7 @@ const companies: Array<Company> = [
   <!-- Interception -->
   <section>
     <Container class="home-frame">
-      <div class="home-frame-rails border border-neutral-800">
+      <div class="home-frame-rails -mb-px border border-neutral-800">
         <header class="px-6 py-24 text-center md:py-32">
           <h2 class="mb-6 capitalize max-w-lg mx-auto">
             API mocking that actually lets requests happen
@@ -318,100 +325,28 @@ const companies: Array<Company> = [
     </Container>
   </section>
 
-  <!-- Integrate anywhere -->
-  <section class="my-24 overflow-hidden md:my-48">
-    <Container>
-      <PageHeaderWrapper class="mt-0">
-        <h2 class="mb-8 capitalize">Integrate anywhere</h2>
-        <PageHeaderSubtitle class="lg:w-3/6">
-          A single source of truth for your network across the entire stack.
-        </PageHeaderSubtitle>
-      </PageHeaderWrapper>
-      <div
-        class="relative isolate mx-auto grid max-w-xl gap-x-10 gap-y-32 md:max-w-none lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2"
-      >
-        <div
-          class="absolute inset-0 w-1 h-full m-auto integration-line -z-10 bg-neutral-800 lg:h-1/2"
-        ></div>
-        <!-- Local development -->
-        <div class="integration-usage lg:self-end">
-          <div class="lg:flex lg:justify-end">
-            <ComponentExample />
-          </div>
-          <div class="mt-8 lg:text-right">
-            <p class="text-xl font-bold">Local development</p>
-            <p
-              class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg"
-            >
-              Create, change, and debug fast by augmenting existing APIs—both
-              third-party and local—or designing them as you go.
-            </p>
-          </div>
-        </div>
-        <div
-          class="flex self-center px-10 -order-1 justify-self-center bg-neutral-900 lg:order-none lg:row-span-2"
-        >
-          <MswIconBlock />
-        </div>
-        <!-- Vitest -->
-        <div class="integration-usage lg:self-end">
-          <VitestRunner />
-          <div class="mt-8">
-            <p class="text-xl font-bold">Integration tests</p>
-            <p class="mt-2 text-lg leading-tight text-neutral-400 lg:max-w-lg">
-              Test happy paths and override network behavior on a per-test basis
-              to test even the most trickest of edge cases.
-            </p>
-          </div>
-        </div>
-        <!-- Cypress -->
-        <div class="integration-usage">
-          <CypressRunner />
-          <div class="mt-8 lg:text-right">
-            <p class="text-xl font-bold">End-to-end tests</p>
-            <p
-              class="mt-2 ml-auto text-lg leading-tight text-neutral-400 lg:max-w-lg"
-            >
-              Take any HTTP call out of your test's equation and focus on the
-              user experience, mocking local or external APIs.
-            </p>
-          </div>
-        </div>
-        <!-- Storybook -->
-        <div class="integration-usage bg-neutral-900">
-          <StorybookShowcase />
-          <div class="mt-8">
-            <p class="text-xl font-bold">Storybook showcase</p>
-            <p class="mt-2 text-lg leading-tight text-neutral-400 lg:max-w-lg">
-              Emulate the precise network state to share how your components
-              handle it with the entire team.
-            </p>
-          </div>
-        </div>
+  <!-- Source of truth -->
+  <section>
+    <Container class="home-frame">
+      <div class="home-frame-rails -mb-px overflow-hidden border border-neutral-800">
+        <SourceOfTruth :scenes="sourceOfTruthScenes">
+          <template #heading>API mocking as a standalone layer for</template>
+          <template
+            v-for="scene in sourceOfTruthScenes"
+            :key="scene.slot"
+            #[scene.slot]
+          >
+            <slot :name="scene.slot" />
+          </template>
+        </SourceOfTruth>
       </div>
-      <footer class="mt-32 text-center">
-        <UppercaseLabel>
-          Works with any tool there is or
-          <em class="not-italic text-primary">ever will be</em>
-        </UppercaseLabel>
-        <div
-          class="inline-grid items-center grid-cols-6 gap-10 text-neutral-500"
-        >
-          <ReactIcon class="w-10" />
-          <VueIcon class="w-10" />
-          <AngularIcon class="w-10" />
-          <SvelteIcon class="w-10" />
-          <NextJsIcon class="w-10" />
-          <RemixIcon class="w-8" />
-        </div>
-      </footer>
     </Container>
   </section>
 
   <!-- Testimonials -->
   <section>
     <Container class="home-frame">
-      <div class="home-frame-rails border border-b-0 border-neutral-800">
+      <div class="home-frame-rails -mb-px border border-neutral-800">
         <header
           class="border-b border-neutral-800 px-6 py-16 text-center md:py-24"
         >
@@ -486,7 +421,7 @@ const companies: Array<Company> = [
     </Container>
   </section>
 
-  <GettingStarted
+  <GetStarted
     title="Ship Better Products Today"
     :icon-url="mswLogo"
     icon-alt="Mock Service Worker logo"
@@ -497,5 +432,5 @@ const companies: Array<Company> = [
     integrate API mocking across your entire stack. Test, prototype, and debug
     without sacrificing your application's integrity. Give it a try, it's
     open-source and free!
-  </GettingStarted>
+  </GetStarted>
 </template>

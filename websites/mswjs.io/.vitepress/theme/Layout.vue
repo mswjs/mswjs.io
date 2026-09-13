@@ -180,7 +180,7 @@ useSidebarAutoScroll()
           hasDocumentationSidebar,
       }"
     >
-      <SiteFooter>
+      <SiteFooter framed>
         <template #sections>
           <div class="sm:col-span-2">
             <FooterSection title="Library">

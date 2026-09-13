@@ -34,12 +34,27 @@ const props = defineProps<{
  */
 const CYCLE_MS = 5000
 /**
+ * "--progress" at which MSW's request arrives at the interception point.
+ * Keep in sync with the "--reach" definition in "site.css".
+ */
+const ARRIVAL_PROGRESS = 56
+/**
+ * How long (in progress units) a request lingers before it has faded.
+ * Keep in sync with the request opacity in "site.css".
+ */
+const FADE_PROGRESS = 10
+/**
  * The exact arrival frame: the request sits at the interception point,
  * fully visible, with the trail complete and every passed step lit.
  * Reduced-motion users get this frame, frozen.
  */
-const RESTING_PROGRESS = 56
+const RESTING_PROGRESS = ARRIVAL_PROGRESS
 const PULSE_RADIUS = 7
+/**
+ * Distance between the request client's edge and the lane of the
+ * request that other tools fake.
+ */
+const OTHER_LANE_GAP = PULSE_RADIUS + 4
 /**
  * Below this width the steps stack vertically with a fixed gap.
  */
@@ -67,6 +82,24 @@ interface Layout {
    * Where each boundary delimiter sits, relative to the track.
    */
   boundaryPositions: Array<number>
+  /**
+   * The lane of the request that other tools fake: it runs alongside the
+   * request client, from its near edge to its far edge, and no further.
+   */
+  other: {
+    /**
+     * Cross-axis position of the lane, relative to the track.
+     */
+    lane: number
+    start: number
+    distance: number
+    /**
+     * "--progress" at which it reaches the client's far edge: it moves at
+     * the same speed as MSW's request, so it gets there sooner, and it is
+     * gone before MSW's request arrives.
+     */
+    arrival: number
+  }
 }
 
 const figureElement = ref<HTMLElement>()
@@ -102,6 +135,7 @@ function measure(): void {
 
   const axis: Axis = horizontalQuery?.matches ? 'x' : 'y'
   const trackRect = track.getBoundingClientRect()
+  const clientRect = client.getBoundingClientRect()
   const edges = stepElements.value.map((element) => {
     const rect = element.getBoundingClientRect()
     return axis === 'x'
@@ -110,6 +144,7 @@ function measure(): void {
   })
   const start = edges[0].far
   const distance = edges[props.mswReach].near - start - PULSE_RADIUS
+  const otherDistance = edges[0].far - edges[0].near - PULSE_RADIUS * 2
 
   layout.value = {
     axis,
@@ -128,6 +163,18 @@ function measure(): void {
       const after = edges[boundary.after + 1]
       return (before.far + after.near) / 2
     }),
+    other: {
+      lane:
+        (axis === 'x'
+          ? clientRect.top - trackRect.top
+          : clientRect.left - trackRect.left) - OTHER_LANE_GAP,
+      start: edges[0].near + PULSE_RADIUS,
+      distance: otherDistance,
+      arrival: Math.min(
+        (ARRIVAL_PROGRESS * otherDistance) / distance,
+        ARRIVAL_PROGRESS - FADE_PROGRESS,
+      ),
+    },
   }
 }
 
@@ -225,6 +272,30 @@ const pulseStyle = computed(() => {
   }
 })
 
+const otherPulseStyle = computed(() => {
+  if (!layout.value) {
+    return undefined
+  }
+
+  const { axis, other } = layout.value
+  const arrival = { '--arrival-progress': other.arrival.toFixed(2) }
+  return axis === 'x'
+    ? {
+        ...arrival,
+        left: `${other.start}px`,
+        top: `${other.lane}px`,
+        '--travel-x': `${other.distance}px`,
+        '--travel-y': '0px',
+      }
+    : {
+        ...arrival,
+        top: `${other.start}px`,
+        left: `${other.lane}px`,
+        '--travel-x': '0px',
+        '--travel-y': `${other.distance}px`,
+      }
+})
+
 const trailStyle = computed(() => {
   if (!layout.value) {
     return undefined
@@ -311,6 +382,11 @@ onBeforeUnmount(() => {
         </div>
         <span class="interception-trail" :style="trailStyle" aria-hidden="true" />
         <span class="interception-request" :style="pulseStyle" aria-hidden="true" />
+        <span
+          class="interception-request interception-request-other"
+          :style="otherPulseStyle"
+          aria-hidden="true"
+        />
       </template>
     </div>
     <figcaption

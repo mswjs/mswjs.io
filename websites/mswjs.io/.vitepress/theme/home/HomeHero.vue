@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <Container class="home-frame">
     <section
-      class="home-frame-rails grid border-x border-neutral-800 lg:grid-cols-2"
+      class="home-frame-rails -mb-px -mt-px grid border border-neutral-800 lg:grid-cols-2"
     >
       <div
         class="flex flex-col pb-12 md:pb-16 lg:border-r lg:border-neutral-800 lg:pb-20"
@@ -32,17 +32,17 @@ defineProps<{
           </p>
         </div>
         <footer
-          class="flex border-y border-neutral-800 pl-6 text-base font-semibold md:pl-10"
+          class="flex h-14 border-y border-neutral-800 pl-6 text-base font-semibold md:pl-10"
         >
           <a
             :href="gettingStartedUrl"
-            class="relative z-10 -my-px inline-flex items-center justify-center border border-primary px-8 py-4 font-bold text-primary transition-colors hover:bg-primary hover:text-white md:px-10"
+            class="relative z-10 -my-px inline-flex items-center justify-center border border-primary px-8 font-bold text-primary transition-colors hover:bg-primary hover:text-neutral-900 md:px-10"
           >
-            Get Started
+            Get started
           </a>
           <a
             :href="repoUrl"
-            class="inline-flex items-center border-r border-neutral-800 px-6 py-4 text-neutral-300 hover:text-white md:px-8"
+            class="inline-flex items-center border-r border-neutral-800 px-6 text-neutral-300 hover:text-white md:px-8"
             target="_blank"
             rel="noopener noreferrer"
           >

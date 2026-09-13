@@ -55,19 +55,21 @@ function navigateToBranding(): void {
 
 <template>
   <header
-    class="site-header top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900 text-sm min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
+    class="site-header top-0 z-50 w-full bg-neutral-900 text-sm min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
     :class="stickyOnMobile ? 'sticky' : 'relative'"
   >
-    <div :class="{ 'msw-container home-frame': framed }">
+    <!-- Documentation pages share the documentation layout box; every
+         other page keeps the header inside the content container, so its
+         borders never reach the window edge. -->
+    <div :class="{ 'msw-container home-frame': !documentationFramed }">
       <div
-        class="flex h-16 items-center justify-between gap-6 px-6"
+        class="flex h-16 items-center justify-between gap-6 border-b border-neutral-800 px-6"
         :class="
-          framed
-            ? 'home-frame-rails border-x border-neutral-800 md:px-10'
-            : [
-                'mx-auto max-w-[var(--vp-layout-max-width)] md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]',
-                documentationFramed ? 'border-x border-neutral-800' : '',
-              ]
+          documentationFramed
+            ? 'mx-auto max-w-[var(--vp-layout-max-width)] border-x md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]'
+            : framed
+              ? 'home-frame-rails border-x md:px-10'
+              : 'md:px-10'
         "
       >
         <div class="flex h-full shrink-0 items-center gap-8">
@@ -101,7 +103,7 @@ function navigateToBranding(): void {
 
         <div class="flex h-full min-w-0 items-center">
           <div
-            class="site-header-search relative z-10 hidden h-[calc(100%+1px)] self-start border border-transparent border-x-neutral-800 transition-colors hover:border-primary md:flex"
+            class="site-header-search relative z-10 hidden h-[calc(100%+1px)] self-start border border-transparent border-x-neutral-800 hover:border-primary md:flex"
           >
             <VPNavBarSearch class="!p-0" />
           </div>

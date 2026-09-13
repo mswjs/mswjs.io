@@ -478,6 +478,8 @@ code,
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+  /* The cell's border switches color instantly on hover. */
+  transition: none;
 }
 
 .site-header-search .DocSearch-Button:focus-visible {
@@ -633,12 +635,24 @@ code,
   border-radius: 9999px;
   background-color: var(--primary);
   box-shadow: 0 0 0 4px rgb(var(--site-accent) / 25%);
-  translate: calc(var(--travel-x) * var(--reach))
-    calc(var(--travel-y) * var(--reach));
+  /* When this request arrives; MSW's request at 56, the faked one sooner
+     (set by the component, since it covers a shorter distance at the same
+     speed). Each request travels until its own arrival, then fades over
+     the next 10 units. */
+  --arrival-progress: 56;
+  --request-reach: clamp(0, var(--progress) / var(--arrival-progress), 1);
+  translate: calc(var(--travel-x) * var(--request-reach))
+    calc(var(--travel-y) * var(--request-reach));
   opacity: min(
     clamp(0, var(--progress) / 6, 1),
-    clamp(0, (66 - var(--progress)) / 10, 1)
+    clamp(0, (var(--arrival-progress) + 10 - var(--progress)) / 10, 1)
   );
+}
+
+/* The request other tools fake: it never leaves the request client. */
+.interception-request-other {
+  background-color: rgb(var(--site-neutral-500));
+  box-shadow: 0 0 0 4px rgb(var(--site-neutral-500) / 25%);
 }
 
 .interception-trail {
@@ -723,5 +737,124 @@ code,
   .home-frame-rails {
     border-left: 0;
     border-right: 0;
+  }
+}
+
+/* "Source of truth" heading: the wrapper slides to the next word's width
+   while the last word leaves upwards and the next one arrives from below. */
+.scene-word-slot {
+  /* Only the width animates; the word itself is never clipped, so glyphs
+     that overhang their advance width (or dip below the line box) stay
+     intact in any font. The leaving word simply fades while it moves. */
+  transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scene-word-enter-active,
+.scene-word-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* The leaving word steps out of the flow so the entering word alone
+   defines the wrapper's width. */
+.scene-word-leave-active {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.scene-word-enter-from {
+  opacity: 0;
+  transform: translateY(0.4em);
+}
+
+.scene-word-leave-to {
+  opacity: 0;
+  transform: translateY(-0.4em);
+}
+
+/* "Source of truth" snippets stack like toasts: the new one lands on top
+   while the previous one shrinks and dims behind it and stays there;
+   older ones disappear. */
+.scene-panel {
+  transform-origin: top center;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.45s ease;
+}
+
+.scene-panel-active {
+  position: relative;
+  z-index: 20;
+  animation: scene-panel-enter 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scene-panel-behind,
+.scene-panel-hidden {
+  transform: scale(0.96) translateY(-12px);
+  pointer-events: none;
+}
+
+.scene-panel-behind {
+  z-index: 10;
+  opacity: 0.5;
+}
+
+.scene-panel-hidden {
+  opacity: 0;
+}
+
+@keyframes scene-panel-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* "Source of truth" scene controls: 3px bars inside generous hit areas;
+   the active bar grows, turns white, and fills with orange as the
+   scene's time elapses. */
+.scene-control-bar {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: rgb(var(--site-neutral-700));
+  transition:
+    width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.3s ease;
+}
+
+.scene-control:hover .scene-control-bar {
+  background-color: rgb(var(--site-neutral-600));
+}
+
+.scene-control-active .scene-control-bar,
+.scene-control-active:hover .scene-control-bar {
+  width: 40px;
+  background-color: rgb(var(--site-foreground));
+}
+
+.scene-control-progress {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background-color: var(--primary);
+  animation: scene-control-progress var(--scene-interval) linear forwards;
+}
+
+@keyframes scene-control-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
   }
 }

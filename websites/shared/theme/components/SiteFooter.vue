@@ -6,6 +6,11 @@ import SocialLinksList from './SocialLinksList.vue'
 
 defineProps<{
   compact?: boolean
+  /**
+   * Frame the footer like the page sections: side rails and the top border
+   * drawn on the content box instead of across the whole viewport.
+   */
+  framed?: boolean
 }>()
 
 const currentYear = new Date().getFullYear()
@@ -13,10 +18,19 @@ const currentYear = new Date().getFullYear()
 
 <template>
   <footer
-    class="footer py-20 text-sm font-medium text-neutral-400"
-    :class="{ 'border-t border-neutral-800': !compact }"
+    class="footer text-sm font-medium text-neutral-400"
+    :class="{ 'border-t border-neutral-800': !compact && !framed }"
   >
-    <Container :compact="compact">
+    <Container :compact="compact" :class="{ 'home-frame': framed }">
+      <!-- When framed, the rails and top border sit on the content box,
+           continuing the sections above; the content moves inside them. -->
+      <div
+        class="py-20"
+        :class="{
+          'home-frame-rails border-x border-t border-neutral-800 px-6 md:px-10':
+            framed,
+        }"
+      >
       <Grid v-if="compact">
         <div
           class="pb-12 border-t col-span-full xl:col-span-10 xl:col-start-4 border-neutral-800"
@@ -45,6 +59,7 @@ const currentYear = new Date().getFullYear()
 
         <slot name="sections" />
       </Grid>
+      </div>
     </Container>
   </footer>
 </template>
