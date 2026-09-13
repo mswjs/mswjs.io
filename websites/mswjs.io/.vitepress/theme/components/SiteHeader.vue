@@ -40,12 +40,11 @@ function navigateToBranding(): void {
   emit('closeMenu')
   router.go('/branding')
 }
-
 </script>
 
 <template>
   <header
-    class="top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900 text-sm min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
+    class="top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900 min-[960px]:fixed min-[960px]:top-[var(--site-layout-top-height)]"
     :class="stickyOnMobile ? 'sticky' : 'relative'"
   >
     <div

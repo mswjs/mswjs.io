@@ -52,7 +52,7 @@ watch(
       ref="navigation"
       data-docs-sidebar
       id="docs-sidebar-navigation"
-      class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-8 pb-24 pt-8 text-sm min-[960px]:pt-[60px] min-[1280px]:pt-3"
+      class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-8 pb-24 pt-16 text-sm min-[960px]:pt-[92px] min-[1280px]:pt-11"
       aria-label="Documentation navigation"
       tabindex="-1"
     >

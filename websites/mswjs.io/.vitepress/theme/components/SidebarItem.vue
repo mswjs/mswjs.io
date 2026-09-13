@@ -69,7 +69,7 @@ function toggle(): void {
       'pb-2.5': depth === 0 && collapsed,
     }"
   >
-    <div class="relative flex min-h-8 w-full items-start">
+    <div v-if="item.text" class="relative flex min-h-8 w-full items-start">
       <a
         v-if="item.link"
         :href="item.link"
