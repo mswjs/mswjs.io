@@ -44,13 +44,14 @@ You can create a higher-order response resolver that encapsulates the delay logi
 
 ::: code-group
 
-```ts [withDelay.ts] {5} /delay/
-import { delay, HttpResponseResolver } from 'msw'
+```ts [with-delay.ts] {4-8} /delay/2
+import { delay, type HttpResponseResolver } from 'msw'
 
 export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
-  return async (...args) => {
+  return async (info) => {
     await delay(1000)
-    return resolver(...args)
+
+    return resolver(info)
   }
 }
 ```
@@ -61,20 +62,26 @@ export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver 
 
 ::: code-group
 
-```ts [handlers.ts] /withDelay/1,3,4
+```ts [handlers.ts] {8,14} /withDelay/2,3
 import { http, HttpResponse } from 'msw'
-import { withDelay } from './withDelay'
+import { withDelay } from './with-delay'
 
 export const handlers = [
-  http.get('/user', withDelay(({ request }) => {
-    return HttpResponse.json({ id: 'abc-123' })
-  }),
-  http.post('/cart/:cartId', withDelay(({ request }) => {
-    return new HttpResponse(null, { status: 201 })
-  }),
+  http.get(
+    '/user',
+    withDelay(({ request }) => {
+      return HttpResponse.json({ id: 'abc-123' })
+    }),
+  ),
+  http.post(
+    '/cart/:cartId',
+    withDelay(() => {
+      return new HttpResponse(null, { status: 201 })
+    }),
+  ),
   http.get('/products', () => {
     return HttpResponse.json([1, 2, 3])
-  })
+  }),
 ]
 ```
 

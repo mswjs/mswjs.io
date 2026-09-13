@@ -102,10 +102,15 @@
   padding-left: 32px;
 }
 
+/* Keep the code close to the line numbers. */
+.vp-doc div[class*='language-'].line-numbers-mode pre code {
+  padding-left: 8px;
+}
+
 .vp-doc [class*='language-'].line-numbers-mode code .highlighted {
-  margin-left: -56px;
-  padding-left: 55px;
-  width: calc(100% + 80px);
+  margin-left: -40px;
+  padding-left: 39px;
+  width: calc(100% + 64px);
 }
 
 /* Inline code keeps the original bordered, compact look. */

@@ -51,21 +51,23 @@ export const handlers = [
 
 You can also provide a _list of clients_ as the first argument to the `broadcastExcept()` method to have finer control over which clients get excluded from the broadcast:
 
-```ts {8-10} /chat.clients/
+```ts {9-11} /chat.clients/
 import { ws } from 'msw'
 
 const chat = ws.link('wss://chat.example.com')
 
 export const handlers = [
-  chat.addEventListener('connection', () => {
-    chat.broadcastExcept(
-      chat.clients.filter((client) => {
-        return client
-      }),
-      'Hello to some of you!',
-    )
-  })
+  chat.addEventListener('connection', ({ client }) => {
+    client.addEventListener('message', (event) => {
+      // Exclude the clients that connected to a different room.
+      const otherRooms = Array.from(chat.clients).filter((otherClient) => {
+        return otherClient.url.searchParams.get('room') !== 'general'
+      })
+
+      chat.broadcastExcept(otherRooms, event.data)
+    })
+  }),
 ]
 ```
 
-> The `clients` property of your WebSocket link contains an array of all intercepted clients.
+> The `clients` property of your WebSocket link is a `Set` of all intercepted clients. Each client exposes the `url` it connected to.

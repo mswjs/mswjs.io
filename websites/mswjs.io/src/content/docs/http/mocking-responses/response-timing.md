@@ -76,15 +76,14 @@ Another option would be to define a _higher-order response resolver_ that encaps
 
 ::: code-group
 
-```ts [with-delay.ts] {5-7}
+```ts [with-delay.ts] {4-8} /delay/2
 import { delay, type HttpResponseResolver } from 'msw'
 
-export function withDelay(resolver: HttpResponseResolver) {
-  return async (...args) => {
-    // Provide no arguments to the `delay` function
-    // to apply a random realistic response time.
-    await delay()
-    return resolver(...args)
+export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
+  return async (info) => {
+    await delay(1000)
+
+    return resolver(info)
   }
 }
 ```
@@ -93,7 +92,8 @@ export function withDelay(resolver: HttpResponseResolver) {
 
 ::: code-group
 
-```ts [handlers.ts] {6,12} /withDelay/2,3
+```ts [handlers.ts] {8,14} /withDelay/2,3
+import { http, HttpResponse } from 'msw'
 import { withDelay } from './with-delay'
 
 export const handlers = [

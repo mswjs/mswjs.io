@@ -26,6 +26,11 @@ import { z } from 'zod'
 
 const chat = ws.link('wss://chat.example.com')
 
+const userSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+})
+
 // Define a Zod schema for the incoming events.
 // Here, our WebSocket communication supports two
 // events: "chat/join" and "chat/message".
@@ -45,7 +50,21 @@ const incomingSchema = z.union([
 
 chat.addEventListener('connection', ({ client, server }) => {
   client.addEventListener('message', (event) => {
-    const result = incomingSchema.safeParse(event.data)
+    // This application sends its events as JSON strings.
+    // Decode the wire data before validating it.
+    if (typeof event.data !== 'string') {
+      return
+    }
+
+    let payload
+
+    try {
+      payload = JSON.parse(event.data)
+    } catch {
+      return
+    }
+
+    const result = incomingSchema.safeParse(payload)
 
     // Ignore non-matching events.
     if (!result.success) {
