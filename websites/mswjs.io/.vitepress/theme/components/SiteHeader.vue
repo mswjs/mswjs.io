@@ -58,13 +58,15 @@ function navigateToBranding(): void {
     <!-- Documentation pages share the documentation layout box; every
          other page keeps the header inside the content container. The
          side rails are always drawn: below "lg" the container spans the
-         viewport, so they sit on its edges. -->
+         viewport, so they sit on its edges. The header is fixed, so its
+         full width is the viewport minus the scrollbar, and centering
+         the box lines it up with the content below. -->
     <div :class="{ 'msw-container home-frame': !documentationFramed }">
       <div
         class="flex h-16 items-center justify-between gap-6 border-x border-b border-neutral-800 px-6"
         :class="
           documentationFramed
-            ? 'mx-auto max-w-[var(--vp-layout-max-width)] md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]'
+            ? 'mx-auto max-w-[var(--vp-layout-max-width)] md:px-8 min-[960px]:pl-[calc(2rem+1px)]'
             : 'md:px-10'
         "
       >

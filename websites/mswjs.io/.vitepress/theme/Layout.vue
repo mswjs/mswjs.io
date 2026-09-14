@@ -133,7 +133,7 @@ useSidebarAutoScroll()
       @close-menu="navigationOpen = false"
     />
 
-    <div class="flex-1 min-[960px]:pt-16">
+    <div class="flex flex-1 flex-col min-[960px]:pt-16">
       <LocalNav
         v-if="!isStandalonePage && !isBlogPost && !page.isNotFound"
         :has-sidebar="hasDocumentationSidebar"
@@ -144,12 +144,15 @@ useSidebarAutoScroll()
       />
 
       <div
-        class="w-full"
+        class="w-full flex-1"
         :class="{
           'mx-auto max-w-[var(--vp-layout-max-width)]':
             !isStandalonePage && !isBlogPost,
           'msw-container home-frame': isBlogPost,
           'min-[960px]:pl-[var(--vp-sidebar-width)]': hasDocumentationSidebar,
+          // The sidebar draws the left rail; the content draws the right
+          // one, continuing the header's border.
+          'border-r border-neutral-800': isDocumentationPage,
         }"
       >
         <NotFoundPage v-if="page.isNotFound" />

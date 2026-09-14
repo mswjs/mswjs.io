@@ -10,7 +10,7 @@ import { ArrowLeftIcon } from '@heroicons/vue/24/solid'
     aria-label="Blog navigation"
   >
     <a
-      href="/blog"
+      href="/blog/"
       class="inline-flex items-center gap-2 text-neutral-400 hover:text-white"
     >
       <ArrowLeftIcon class="w-3" />

@@ -77,7 +77,7 @@ onBeforeUnmount(() => {
 <template>
   <div
     v-if="hasSidebar || outlineItems.length > 0"
-    class="sticky top-[var(--site-layout-top-height)] z-30 w-full border-b border-neutral-800 bg-neutral-900 min-[960px]:top-[calc(var(--site-layout-top-height)+4rem)] min-[960px]:pl-[var(--vp-sidebar-width)] min-[1280px]:hidden min-[1440px]:mx-auto min-[1440px]:max-w-[var(--vp-layout-max-width)]"
+    class="sticky top-[var(--site-layout-top-height)] z-30 w-full border-b border-r border-neutral-800 bg-neutral-900 min-[960px]:top-[calc(var(--site-layout-top-height)+4rem)] min-[960px]:pl-[var(--vp-sidebar-width)] min-[1280px]:hidden min-[1440px]:mx-auto min-[1440px]:max-w-[var(--vp-layout-max-width)]"
   >
     <div
       class="grid min-h-12 grid-cols-[1fr_auto] items-center px-6 md:px-8 min-[960px]:justify-items-end min-[960px]:pr-8"
