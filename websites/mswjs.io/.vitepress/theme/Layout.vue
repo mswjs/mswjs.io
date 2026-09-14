@@ -17,6 +17,7 @@ import SiteHeader from './components/SiteHeader.vue'
 import DocsSidebar from './components/DocsSidebar.vue'
 import LocalNav from './components/LocalNav.vue'
 import DocumentLayout from './components/DocumentLayout.vue'
+import BlogPostNav from './blog/BlogPostNav.vue'
 import NotFoundPage from './components/NotFoundPage.vue'
 import { useDocumentOutline } from './composables/useDocumentOutline'
 import { useSidebarAutoScroll } from '@mswjs/shared/theme/composables/useSidebarAutoScroll'
@@ -145,7 +146,9 @@ useSidebarAutoScroll()
       <div
         class="w-full"
         :class="{
-          'mx-auto max-w-[var(--vp-layout-max-width)]': !isStandalonePage,
+          'mx-auto max-w-[var(--vp-layout-max-width)]':
+            !isStandalonePage && !isBlogPost,
+          'msw-container home-frame': isBlogPost,
           'min-[960px]:pl-[var(--vp-sidebar-width)]': hasDocumentationSidebar,
         }"
       >
@@ -155,10 +158,24 @@ useSidebarAutoScroll()
           <Content />
         </main>
 
+        <!-- Blog posts continue the header's rails down to the footer. -->
+        <div
+          v-else-if="isBlogPost"
+          class="home-frame-rails border-x border-neutral-800"
+        >
+          <BlogPostNav />
+          <DocumentLayout
+            :documentation-page="false"
+            blog-post
+            :outline-items="documentOutline.items.value"
+            :active-outline-link="documentOutline.activeLink.value"
+          />
+        </div>
+
         <DocumentLayout
           v-else
           :documentation-page="isDocumentationPage"
-          :blog-post="isBlogPost"
+          :blog-post="false"
           :outline-items="documentOutline.items.value"
           :active-outline-link="documentOutline.activeLink.value"
         />

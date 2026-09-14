@@ -18,12 +18,9 @@ const emit = defineEmits<{
 
 const { theme } = useData<DefaultTheme.Config>()
 const route = useRoute()
-// The homepage frames its sections with side rails; the header shares them.
-const framed = computed(() => {
-  return route.path === '/'
-})
-// Documentation pages get the same rails on the wider documentation
-// layout, so the header's left rail continues into the sidebar border.
+// Documentation pages draw the header's rails on the wider documentation
+// layout, so the left rail continues into the sidebar border. Every other
+// page draws them on the content container, like the homepage sections.
 const documentationFramed = computed(() => {
   return ['/docs', '/guides', '/api'].some((rootPath) => {
     return route.path === rootPath || route.path.startsWith(`${rootPath}/`)
@@ -59,17 +56,16 @@ function navigateToBranding(): void {
     :class="stickyOnMobile ? 'sticky' : 'relative'"
   >
     <!-- Documentation pages share the documentation layout box; every
-         other page keeps the header inside the content container, so its
-         borders never reach the window edge. -->
+         other page keeps the header inside the content container. The
+         side rails are always drawn: below "lg" the container spans the
+         viewport, so they sit on its edges. -->
     <div :class="{ 'msw-container home-frame': !documentationFramed }">
       <div
-        class="flex h-16 items-center justify-between gap-6 border-b border-neutral-800 px-6"
+        class="flex h-16 items-center justify-between gap-6 border-x border-b border-neutral-800 px-6"
         :class="
           documentationFramed
-            ? 'mx-auto max-w-[var(--vp-layout-max-width)] border-x md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]'
-            : framed
-              ? 'home-frame-rails border-x md:px-10'
-              : 'md:px-10'
+            ? 'mx-auto max-w-[var(--vp-layout-max-width)] md:px-8 min-[960px]:ml-[max(0px,calc((100vw-var(--vp-layout-max-width))/2))] min-[960px]:pl-[calc(2rem+1px)]'
+            : 'md:px-10'
         "
       >
         <div class="flex h-full shrink-0 items-center gap-8">

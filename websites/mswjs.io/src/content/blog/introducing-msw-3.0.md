@@ -21,7 +21,7 @@ prev: false
 next: false
 ---
 
-It's hard to believe it's been almost three years since the announcement of [v2.0](http://localhost:5173/blog/introducing-msw-2.0). Adopting the Fetch API primitives for API mocking has helped us ship the unmatched developer experience, flatten the learning curve, and even uncover a few bugs in Node.js. All thanks to the fact that hundreds of thousands of developers simply started interfacing with the Fetch API more often.
+It's hard to believe it's been almost three years since the announcement of [v2.0](/blog/introducing-msw-2.0). Adopting the Fetch API primitives for API mocking has helped us ship the unmatched developer experience, flatten the learning curve, and even uncover a few bugs in Node.js. All thanks to the fact that hundreds of thousands of developers simply started interfacing with the Fetch API more often.
 
 Today marks a new chapter in the library's development, but in many aspects, it is really a continuation of the effort started years ago. While v3.0 minimizes the number of breaking changes, it is nonetheless a big step in how MSW works and what it can do, making it nothing short of remarkable.
 

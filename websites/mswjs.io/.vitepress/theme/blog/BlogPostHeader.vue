@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { ArrowLeftIcon } from '@heroicons/vue/24/solid'
 import FormattedDate from '@mswjs/shared/theme/components/FormattedDate.vue'
 import Avatar from '../components/Avatar.vue'
 
@@ -8,17 +7,6 @@ const { frontmatter } = useData()
 </script>
 
 <template>
-  <aside
-    class="blog-post-back-link sticky top-16 z-30 py-2 text-sm font-medium bg-neutral-900 border-b border-neutral-800"
-  >
-    <a
-      href="/blog"
-      class="inline-flex items-center gap-2 font-medium text-neutral-400 hover:text-white"
-    >
-      <ArrowLeftIcon class="w-3" />
-      Back to Blog
-    </a>
-  </aside>
   <header class="my-16 lg:my-32 lg:text-center">
     <div class="flex items-start md:flex-col md:items-center gap-8 sm:gap-10">
       <img
@@ -53,28 +41,6 @@ const { frontmatter } = useData()
 </template>
 
 <style scoped>
-.blog-post-back-link::before {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-color: var(--vp-local-nav-bg-color);
-  box-shadow: 0 0 0 100vmax var(--vp-local-nav-bg-color);
-  clip-path: inset(0 -100vmax);
-  content: '';
-}
-
-.blog-post-back-link::after {
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
-  height: 1px;
-  background-color: var(--vp-c-divider);
-  box-shadow: 0 0 0 100vmax var(--vp-c-divider);
-  clip-path: inset(0 -100vmax);
-  content: '';
-}
-
 .blog-post-title {
   font-size: 2.25rem;
   line-height: 2.5rem;
