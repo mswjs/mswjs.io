@@ -46,7 +46,7 @@ defineProps<{
           <img
             :src="iconUrl"
             :alt="iconAlt"
-            class="site-logo-ring flex select-none transition-transform duration-200 group-hover:scale-110"
+            class="site-logo-ring flex rotate-6 select-none transition-transform duration-200 group-hover:rotate-0"
           />
         </a>
       </div>
