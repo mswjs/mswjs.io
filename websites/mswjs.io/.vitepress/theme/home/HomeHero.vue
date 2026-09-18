@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Container from '@mswjs/shared/theme/components/Container.vue'
+import Container from '../components/Container.vue'
 
 defineProps<{
   repoUrl: string

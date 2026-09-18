@@ -4,7 +4,7 @@ import { afterEach, test } from 'node:test'
 import ts from 'typescript'
 import { createMarkdownRenderer, disposeMdItInstance } from 'vitepress'
 
-const source = await readFile(new URL('../../../shared/externalLinks.ts', import.meta.url), 'utf8')
+const source = await readFile(new URL('../externalLinks.ts', import.meta.url), 'utf8')
 const { outputText } = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
 })

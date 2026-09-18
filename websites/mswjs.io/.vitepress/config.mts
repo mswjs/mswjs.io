@@ -1,22 +1,22 @@
-import { localSearchRanking } from '../../shared/localSearchRanking'
-import { splitSearchSections } from '../../shared/searchSections'
-import { createExternalLinkChecker } from '../../shared/externalLinks'
+import { localSearchRanking } from './localSearchRanking'
+import { splitSearchSections } from './searchSections'
+import { createExternalLinkChecker } from './externalLinks'
 import * as path from 'node:path'
 import type { DefaultTheme } from 'vitepress'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
-import { buildDocsSidebar } from '../../shared/sidebar'
+import { buildDocsSidebar } from './sidebar'
 import {
   wordHighlightTransformer,
   wordHighlightMetaPlugin,
-} from '../../shared/codeHighlight'
+} from './codeHighlight'
 import { buildRssFeed } from './rss'
 import { mswTwoslashTransformer, twoslashLineNumbersPlugin } from './twoslash'
 import { resolveMswSourceForSite } from '../scripts/msw-source.mjs'
-import { prioritizeSearchResults } from '../../shared/search'
-import cloudflareLight from '../../shared/themes/cloudflare-light.json'
-import cloudflareDark from '../../shared/themes/cloudflare-dark.json'
+import { prioritizeSearchResults } from './search'
+import cloudflareLight from './themes/cloudflare-light.json'
+import cloudflareDark from './themes/cloudflare-dark.json'
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from './consts'
 
 const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID || ''
@@ -142,6 +142,15 @@ export default defineConfig({
     },
   },
 
+  vue: {
+    template: {
+      compilerOptions: {
+        // The customizable select API's element (see "LibrarySelect").
+        isCustomElement: (tag) => tag === 'selectedcontent',
+      },
+    },
+  },
+
   vite: {
     plugins: [
       localSearchRanking(),
@@ -162,9 +171,6 @@ export default defineConfig({
     },
     optimizeDeps: {
       include: ['react', 'react-dom/client'],
-    },
-    ssr: {
-      noExternal: ['@mswjs/shared'],
     },
   },
 
@@ -210,6 +216,30 @@ export default defineConfig({
         '/guides',
       ),
       '/api/': apiSidebar,
+      '/ecosystem/source/': buildDocsSidebar(
+        path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '../src/content/ecosystem/source',
+        ),
+        [
+          ['Integrations', 'integrations/**/*.md'],
+          ['API', 'api/**/*.md'],
+          ['Recipes', 'recipes/**/*.md'],
+        ],
+        '/ecosystem/source',
+      ),
+      '/ecosystem/data/': buildDocsSidebar(
+        path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '../src/content/ecosystem/data',
+        ),
+        [
+          ['Relations', 'relations/**/*.md'],
+          ['Extensions', 'extensions/**/*.md'],
+          ['API', 'api/**/*.md'],
+        ],
+        '/ecosystem/data',
+      ),
     },
 
     outline: {

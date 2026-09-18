@@ -3,6 +3,50 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "source.mswjs.io"
+        }
+      ],
+      "destination": "https://mswjs.io/ecosystem/source/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs",
+      "has": [
+        {
+          "type": "host",
+          "value": "source.mswjs.io"
+        }
+      ],
+      "destination": "https://mswjs.io/ecosystem/source/",
+      "statusCode": 301
+    },
+    {
+      "source": "/docs/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "source.mswjs.io"
+        }
+      ],
+      "destination": "https://mswjs.io/ecosystem/source/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "source.mswjs.io"
+        }
+      ],
+      "destination": "https://mswjs.io/ecosystem/source/",
+      "statusCode": 301
+    },
+    {
       "source": "/api",
       "destination": "/api/http",
       "statusCode": 302
@@ -22,7 +66,6 @@
       "destination": "https://github.com/mswjs/msw/blob/main/CONTRIBUTING.md",
       "statusCode": 301
     },
-
     {
       "source": "/docs/getting-started/install",
       "destination": "/docs/quick-start#1-installation",
@@ -63,7 +106,6 @@
       "destination": "/guides/integrations/node",
       "statusCode": 301
     },
-
     {
       "source": "/docs/basics/request-handler",
       "destination": "/docs/http/intercepting-requests",
@@ -84,7 +126,6 @@
       "destination": "/docs/http/intercepting-requests",
       "statusCode": 301
     },
-
     {
       "source": "/docs/api/setup-worker/print-handlers",
       "destination": "/api/setup-worker/list-handlers",
@@ -170,7 +211,6 @@
       "destination": "/api/life-cycle-events",
       "statusCode": 301
     },
-
     {
       "source": "/docs/recipes/mocking-error-responses",
       "destination": "/docs/basics/mocking-responses#mocking-error-responses",
@@ -201,7 +241,6 @@
       "destination": "/guides/best-practices/avoid-request-assertions",
       "statusCode": 301
     },
-
     {
       "source": "/basics/intercepting-requests",
       "destination": "/docs/http/intercepting-requests/",
@@ -242,7 +281,6 @@
       "destination": "/docs/quick-start",
       "statusCode": 301
     },
-
     {
       "source": "/docs/recipes/cookies",
       "destination": "/docs/http/mocking-responses/cookies",

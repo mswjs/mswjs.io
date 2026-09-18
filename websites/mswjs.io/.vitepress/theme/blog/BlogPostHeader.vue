@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import FormattedDate from '@mswjs/shared/theme/components/FormattedDate.vue'
+import FormattedDate from '../components/FormattedDate.vue'
 import Avatar from '../components/Avatar.vue'
 
 const { frontmatter } = useData()

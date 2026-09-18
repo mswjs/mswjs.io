@@ -20,13 +20,28 @@ importers:
       '@heroicons/vue':
         specifier: ^2.2.0
         version: 2.2.0(vue@3.5.40(typescript@5.4.5))
-      '@mswjs/shared':
-        specifier: workspace:*
-        version: link:../shared
+      '@tailwindcss/container-queries':
+        specifier: ^0.1.1
+        version: 0.1.1(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@22.20.3)(typescript@5.4.5)))
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
+      react:
+        specifier: '18'
+        version: 18.2.0
+      react-dom:
+        specifier: '18'
+        version: 18.2.0(react@18.2.0)
       vue:
         specifier: ^3.5.13
         version: 3.5.40(typescript@5.4.5)
     devDependencies:
+      '@msw/data':
+        specifier: ^1.1.8
+        version: 1.1.8
+      '@msw/source':
+        specifier: ^0.6.1
+        version: 0.6.1(msw@2.15.0(@types/node@22.20.3)(typescript@5.4.5))
       '@shikijs/twoslash':
         specifier: 2.5.0
         version: 2.5.0(typescript@5.4.5)
@@ -36,6 +51,12 @@ importers:
       '@types/hast':
         specifier: ^3.0.5
         version: 3.0.5
+      '@types/react':
+        specifier: '18'
+        version: 18.2.22
+      '@types/react-dom':
+        specifier: '18'
+        version: 18.2.7
       autoprefixer:
         specifier: ^10.4.20
         version: 10.5.4(postcss@8.5.22)
@@ -57,104 +78,9 @@ importers:
       vitepress:
         specifier: ^1.6.4
         version: 1.6.4(@algolia/client-search@5.56.0)(@types/node@22.20.3)(@types/react@18.2.22)(postcss@8.5.22)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.13.0)(typescript@5.4.5)
-
-  websites/shared:
-    dependencies:
-      '@heroicons/vue':
-        specifier: ^2.2.0
-        version: 2.2.0(vue@3.5.40(typescript@5.4.5))
-      '@tailwindcss/container-queries':
-        specifier: ^0.1.1
-        version: 0.1.1(tailwindcss@3.4.3(ts-node@10.9.1(@types/node@22.20.3)(typescript@5.4.5)))
-      '@types/react':
-        specifier: '18'
-        version: 18.2.22
-      '@types/react-dom':
-        specifier: '18'
-        version: 18.2.7
-      gray-matter:
-        specifier: ^4.0.3
-        version: 4.0.3
-      react:
-        specifier: '18'
-        version: 18.2.0
-      react-dom:
-        specifier: '18'
-        version: 18.2.0(react@18.2.0)
-      tailwindcss:
-        specifier: ^3.4.3
-        version: 3.4.3(ts-node@10.9.1(@types/node@22.20.3)(typescript@5.4.5))
-      vitepress:
-        specifier: ^1.6.4
-        version: 1.6.4(@algolia/client-search@5.56.0)(@types/node@22.20.3)(@types/react@18.2.22)(postcss@8.5.22)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.13.0)(typescript@5.4.5)
-      vue:
-        specifier: ^3.5.13
-        version: 3.5.40(typescript@5.4.5)
-    devDependencies:
-      '@shikijs/twoslash':
-        specifier: 2.5.0
-        version: 2.5.0(typescript@5.4.5)
-      '@shikijs/vitepress-twoslash':
-        specifier: 2.5.0
-        version: 2.5.0(typescript@5.4.5)
-      '@types/hast':
-        specifier: ^3.0.5
-        version: 3.0.5
-      twoslash:
-        specifier: 0.2.12
-        version: 0.2.12(typescript@5.4.5)
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
-
-  websites/source.mswjs.io:
-    dependencies:
-      '@heroicons/vue':
-        specifier: ^2.2.0
-        version: 2.2.0(vue@3.5.40(typescript@5.4.5))
-      '@mswjs/shared':
-        specifier: workspace:*
-        version: link:../shared
-      vue:
-        specifier: ^3.5.13
-        version: 3.5.40(typescript@5.4.5)
-    devDependencies:
-      '@msw/source':
-        specifier: ^0.6.1
-        version: 0.6.1(msw@2.15.0(@types/node@22.20.3)(typescript@5.4.5))
-      '@shikijs/twoslash':
-        specifier: 2.5.0
-        version: 2.5.0(typescript@5.4.5)
-      '@shikijs/vitepress-twoslash':
-        specifier: 2.5.0
-        version: 2.5.0(typescript@5.4.5)
-      '@types/hast':
-        specifier: ^3.0.5
-        version: 3.0.5
-      '@types/node':
-        specifier: ^22.0.0
-        version: 22.20.3
-      autoprefixer:
-        specifier: ^10.4.20
-        version: 10.5.4(postcss@8.5.22)
-      msw:
-        specifier: latest
-        version: 2.15.0(@types/node@22.20.3)(typescript@5.4.5)
-      postcss:
-        specifier: ^8.4.49
-        version: 8.5.22
-      tailwindcss:
-        specifier: ^3.4.3
-        version: 3.4.3(ts-node@10.9.1(@types/node@22.20.3)(typescript@5.4.5))
-      twoslash:
-        specifier: 0.2.12
-        version: 0.2.12(typescript@5.4.5)
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
-      vitepress:
-        specifier: ^1.6.4
-        version: 1.6.4(@algolia/client-search@5.56.0)(@types/node@22.20.3)(@types/react@18.2.22)(postcss@8.5.22)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.13.0)(typescript@5.4.5)
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
 
 packages:
 
@@ -500,6 +426,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
+  '@msw/data@1.1.8':
+    resolution: {integrity: sha512-+kSNeBPNvHkr/84aIK2ddeef8ng62T8xAG1zof5z8lMNgGt/jVwoDsPs9cYUU2WV4T2fn22NFi0NasmTzW2mnA==}
+
   '@msw/source@0.6.1':
     resolution: {integrity: sha512-eKX3x85/Ejo2HoOgfilfB4cMqdzie58F+7vMvuKH2N0m4Hs3GhfqjLSLlWXkNx09O7NIUSilygmrlEeWOPDNUA==}
     engines: {node: '>=20'}
@@ -705,6 +634,9 @@ packages:
 
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@stoplight/json@3.21.7':
     resolution: {integrity: sha512-xcJXgKFqv/uCEgtGlPxy3tPA+4I+ZI4vAuMJ885+ThkTHFVkC+0Fm58lA9NlsyjnkpxFh4YiQWpH+KefHdbA0A==}
@@ -1114,6 +1046,9 @@ packages:
     resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
     engines: {node: '>=0.12'}
 
+  es-toolkit@1.52.0:
+    resolution: {integrity: sha512-XTNEJQh1tY1ZJVcf6ayP/2n4ZPyaHlW2FWs7xvw5ddPuhUVjLD3olQVQS7kf58JbAB48iL0uL/jerTrjtV3lDA==}
+
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
     engines: {node: '>=12'}
@@ -1459,6 +1394,10 @@ packages:
 
   muggle-string@0.4.1:
     resolution: {integrity: sha512-VNTrAak/KhO2i8dqqnqnAHOa3cYBwXEZe9h+D5h/1ZqFSTEFHdM65lR7RoIqq3tBBYavsOXV84NoHXZ0AkPyqQ==}
+
+  mutative@1.3.0:
+    resolution: {integrity: sha512-8MJj6URmOZAV70dpFe1YnSppRTKC4DsMkXQiBDFayLcDI4ljGokHxmpqaBQuDWa4iAxWaJJ1PS8vAmbntjjKmQ==}
+    engines: {node: '>=14.0'}
 
   mute-stream@3.0.0:
     resolution: {integrity: sha512-dkEJPVvun4FryqBmZ5KhDo0K9iDXAwn08tMLDinNdRBNPcYEDiWYysLcc6k3mjTMlbP9KyylvRpd4wFtwrT9rw==}
@@ -1905,10 +1844,6 @@ packages:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
 
-  yaml@2.3.2:
-    resolution: {integrity: sha512-N/lyzTPaJasoDmfV7YTrYCI0G/3ivm/9wdG0aHuheKowWQwGTsK0Eoiw6utmzAnI6pkJa0DUVygvp3spqqEKXg==}
-    engines: {node: '>= 14'}
-
   yaml@2.9.1:
     resolution: {integrity: sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw==}
     engines: {node: '>= 14.6'}
@@ -1925,6 +1860,9 @@ packages:
   yn@3.1.1:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
+
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -2233,6 +2171,14 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
     optional: true
 
+  '@msw/data@1.1.8':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      es-toolkit: 1.52.0
+      mutative: 1.3.0
+      outvariant: 1.4.3
+      rettime: 0.11.11
+
   '@msw/source@0.6.1(msw@2.15.0(@types/node@22.20.3)(typescript@5.4.5))':
     dependencies:
       '@mswjs/interceptors': 0.40.0
@@ -2425,6 +2371,8 @@ snapshots:
 
   '@shikijs/vscode-textmate@10.0.2': {}
 
+  '@standard-schema/spec@1.1.0': {}
+
   '@stoplight/json@3.21.7':
     dependencies:
       '@stoplight/ordered-object-literal': 1.0.5
@@ -2493,6 +2441,7 @@ snapshots:
   '@types/node@22.20.3':
     dependencies:
       undici-types: 6.21.0
+    optional: true
 
   '@types/prop-types@15.7.7': {}
 
@@ -2836,6 +2785,8 @@ snapshots:
   emoji-regex@8.0.0: {}
 
   entities@7.0.1: {}
+
+  es-toolkit@1.52.0: {}
 
   esbuild@0.21.5:
     optionalDependencies:
@@ -3346,6 +3297,8 @@ snapshots:
 
   muggle-string@0.4.1: {}
 
+  mutative@1.3.0: {}
+
   mute-stream@3.0.0: {}
 
   mz@2.7.0:
@@ -3411,7 +3364,7 @@ snapshots:
   postcss-load-config@4.0.1(postcss@8.5.22)(ts-node@10.9.1(@types/node@22.20.3)(typescript@5.4.5)):
     dependencies:
       lilconfig: 2.1.0
-      yaml: 2.3.2
+      yaml: 2.9.1
     optionalDependencies:
       postcss: 8.5.22
       ts-node: 10.9.1(@types/node@22.20.3)(typescript@5.4.5)
@@ -3700,7 +3653,8 @@ snapshots:
 
   typescript@5.4.5: {}
 
-  undici-types@6.21.0: {}
+  undici-types@6.21.0:
+    optional: true
 
   unist-util-is@6.0.0:
     dependencies:
@@ -3833,8 +3787,6 @@ snapshots:
 
   y18n@5.0.8: {}
 
-  yaml@2.3.2: {}
-
   yaml@2.9.1: {}
 
   yargs-parser@21.1.1: {}
@@ -3851,5 +3803,7 @@ snapshots:
 
   yn@3.1.1:
     optional: true
+
+  zod@4.6.5: {}
 
   zwitch@2.0.4: {}

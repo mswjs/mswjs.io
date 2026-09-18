@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconBlock from '@mswjs/shared/theme/components/IconBlock.vue'
+import IconBlock from '../components/IconBlock.vue'
 import mswLogo from '../../../src/images/msw.svg'
 </script>
 

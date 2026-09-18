@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { ArrowUpRightIcon } from '@heroicons/vue/24/outline'
-import GitHubIcon from '@mswjs/shared/theme/components/icons/github.vue'
+import GitHubIcon from '../components/icons/github.vue'
 import Avatar from '../components/Avatar.vue'
 import stats from './sponsor-stats.json'
 

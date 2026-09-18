@@ -1,17 +1,29 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  presets: [require('@mswjs/shared/tailwind.config.cjs')],
-  content: [
-    './.vitepress/theme/**/*.{vue,ts,tsx}',
-    '../shared/theme/**/*.{vue,ts,tsx}',
-    './src/content/**/*.md',
-  ],
+  corePlugins: {
+    container: false,
+  },
+  content: ['./.vitepress/theme/**/*.{vue,ts,tsx}', './src/content/**/*.md'],
   theme: {
+    fontFamily: {
+      sans: ['Geist', 'system-ui', '-apple-system', ...defaultTheme.fontFamily.sans],
+      mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+    },
     extend: {
-      fontFamily: {
-        mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      transitionDuration: {
+        long: '5000ms',
+      },
+      keyframes: {
+        pingDelay: {
+          '0%': { transform: 'scale(1)', opacity: 1 },
+          '25%,100%': { transform: 'scale(2)', opacity: 0 },
+        },
+      },
+      animation: {
+        ping: 'pingDelay 4s linear infinite',
       },
       textColor: {
         white: 'rgb(var(--site-foreground) / <alpha-value>)',
@@ -33,7 +45,11 @@ module.exports = {
       },
     },
   },
+  variants: {
+    animation: ['motion-safe', 'motion-reduce'],
+  },
   plugins: [
+    require('@tailwindcss/container-queries'),
     plugin(({ addUtilities }) => {
       addUtilities({
         /**

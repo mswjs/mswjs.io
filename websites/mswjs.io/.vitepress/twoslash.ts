@@ -24,7 +24,7 @@ import {
   normalizeHoverTags,
   twoslashLineNumbersPlugin,
   unwrapExampleCode,
-} from '../../shared/twoslash.ts'
+} from './twoslashHelpers.ts'
 
 export {
   enhancePopupContent,
@@ -67,6 +67,11 @@ declare const handlers: Array<
   import('msw').RequestHandler | import('msw').WebSocketHandler
 >
 declare const client: import('msw').WebSocketHandlerConnection['client']
+declare const fromTraffic: typeof import('@msw/source/traffic').fromTraffic
+declare const fromOpenApi: typeof import('@msw/source/open-api').fromOpenApi
+declare const Collection: typeof import('@msw/data').Collection
+declare const Query: typeof import('@msw/data').Query
+declare const z: typeof import('zod').z
 `
 
 export interface SourceDefinition {

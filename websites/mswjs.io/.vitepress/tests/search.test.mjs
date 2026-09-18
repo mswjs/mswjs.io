@@ -9,7 +9,7 @@ import { createMarkdownRenderer, disposeMdItInstance } from 'vitepress'
 const require = createRequire(import.meta.url)
 const requireFromVitePress = createRequire(require.resolve('vitepress'))
 const MiniSearch = requireFromVitePress('minisearch')
-const source = await readFile(new URL('../../../shared/search.ts', import.meta.url), 'utf8')
+const source = await readFile(new URL('../search.ts', import.meta.url), 'utf8')
 const { outputText } = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
 })
@@ -56,8 +56,8 @@ await test('groups remote results by section while preserving relevance within e
 })
 
 await test('lists GraphQL overview pages before their headings and omits Next Steps', async () => {
-  const requireFromShared = createRequire(new URL('../../../shared/package.json', import.meta.url))
-  const splitterSource = await readFile(new URL('../../../shared/searchSections.ts', import.meta.url), 'utf8')
+  const requireFromShared = createRequire(new URL('../package.json', import.meta.url))
+  const splitterSource = await readFile(new URL('../searchSections.ts', import.meta.url), 'utf8')
   const splitter = ts.transpileModule(splitterSource, {
     compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
   }).outputText.replace("'gray-matter'", JSON.stringify(pathToFileURL(requireFromShared.resolve('gray-matter')).href))

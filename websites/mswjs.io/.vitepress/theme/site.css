@@ -1,7 +1,7 @@
 /*
  * Styles specific to mswjs.io. The shell (design tokens, documentation
  * content, header, twoslash popups) lives in
- * "@mswjs/shared/theme/styles/shell.css".
+ * "./styles/shell.css".
  */
 
 :root:not(.dark) .cypress-runner .text-green-600 {

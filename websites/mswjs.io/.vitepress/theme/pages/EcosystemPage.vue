@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import Container from '@mswjs/shared/theme/components/Container.vue'
-import Grid from '@mswjs/shared/theme/components/Grid.vue'
-import PageHeaderWrapper from '@mswjs/shared/theme/components/PageHeaderWrapper.vue'
-import PageHeaderSubtitle from '@mswjs/shared/theme/components/PageHeaderSubtitle.vue'
-import IconBlock from '@mswjs/shared/theme/components/IconBlock.vue'
-import sourceLogo from '../../../../source.mswjs.io/src/images/source.svg'
+import Container from '../components/Container.vue'
+import Grid from '../components/Grid.vue'
+import PageHeaderWrapper from '../components/PageHeaderWrapper.vue'
+import PageHeaderSubtitle from '../components/PageHeaderSubtitle.vue'
+import IconBlock from '../components/IconBlock.vue'
+import sourceLogo from '../../../src/images/source.svg'
+import dataLogo from '../../../src/images/data.svg'
 </script>
 
 <template>
@@ -23,10 +24,7 @@ import sourceLogo from '../../../../source.mswjs.io/src/images/source.svg'
 
     <Grid class="pb-24 gap-y-24">
       <article class="sm:col-span-6 flex items-start gap-8">
-        <IconBlock
-          image-url="https://raw.githubusercontent.com/mswjs/data/main/logo.svg"
-          alt="Data logo"
-        />
+        <IconBlock :image-url="dataLogo" alt="Data logo" />
         <div>
           <h2 class="mt-7">Data</h2>
           <p class="text-lg leading-tight text-neutral-400 text-pretty">
@@ -34,11 +32,8 @@ import sourceLogo from '../../../../source.mswjs.io/src/images/source.svg'
             applications.
           </p>
           <footer class="mt-10">
-            <a
-              href="https://github.com/mswjs/data"
-              target="_blank"
-              class="button button-primary"
-              >Visit repository</a
+            <a href="/ecosystem/data" class="inline-flex button button-primary"
+              >Read the docs</a
             >
           </footer>
         </div>
@@ -53,10 +48,8 @@ import sourceLogo from '../../../../source.mswjs.io/src/images/source.svg'
             OpenAPI specifications.
           </p>
           <footer class="mt-10">
-            <a
-              href="https://source.mswjs.io"
-              class="inline-flex button button-primary"
-              >Visit website</a
+            <a href="/ecosystem/source" class="inline-flex button button-primary"
+              >Read the docs</a
             >
           </footer>
         </div>

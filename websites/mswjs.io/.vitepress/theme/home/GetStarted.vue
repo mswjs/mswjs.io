@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Container from '@mswjs/shared/theme/components/Container.vue'
+import Container from '../components/Container.vue'
 
 defineProps<{
   iconUrl: string
@@ -46,7 +46,7 @@ defineProps<{
           <img
             :src="iconUrl"
             :alt="iconAlt"
-            class="site-logo-ring flex select-none rounded-[10px] transition-transform duration-200 group-hover:scale-110"
+            class="site-logo-ring flex select-none transition-transform duration-200 group-hover:scale-110"
           />
         </a>
       </div>

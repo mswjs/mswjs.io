@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Container from '@mswjs/shared/theme/components/Container.vue'
-import PageHeaderSubtitle from '@mswjs/shared/theme/components/PageHeaderSubtitle.vue'
-import FormattedDate from '@mswjs/shared/theme/components/FormattedDate.vue'
-import ArrowNarrowRightIcon from '@mswjs/shared/theme/components/icons/arrow-narrow-right.vue'
+import Container from '../components/Container.vue'
+import PageHeaderSubtitle from '../components/PageHeaderSubtitle.vue'
+import FormattedDate from '../components/FormattedDate.vue'
+import ArrowNarrowRightIcon from '../components/icons/arrow-narrow-right.vue'
 import { data as posts } from './posts.data'
 </script>
 

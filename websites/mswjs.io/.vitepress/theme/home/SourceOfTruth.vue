@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import PageHeaderSubtitle from '@mswjs/shared/theme/components/PageHeaderSubtitle.vue'
+import PageHeaderSubtitle from '../components/PageHeaderSubtitle.vue'
 import FeatureLink from './FeatureLink.vue'
 
 export interface SourceOfTruthScene {

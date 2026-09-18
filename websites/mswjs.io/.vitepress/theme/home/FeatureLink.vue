@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ArrowNarrowRightIcon from '@mswjs/shared/theme/components/icons/arrow-narrow-right.vue'
+import ArrowNarrowRightIcon from '../components/icons/arrow-narrow-right.vue'
 
 defineProps<{
   href: string

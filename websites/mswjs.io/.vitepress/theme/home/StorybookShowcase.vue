@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import StorybookBookmarkIcon from './StorybookBookmarkIcon.vue'
-import StorybookIcon from '@mswjs/shared/theme/components/icons/storybook.vue'
+import StorybookIcon from '../components/icons/storybook.vue'
 </script>
 
 <template>

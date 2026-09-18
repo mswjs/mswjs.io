@@ -5,7 +5,7 @@ import ts from 'typescript'
 import { createMarkdownRenderer } from 'vitepress'
 
 const source = await readFile(
-  new URL('../../../shared/codeHighlight.ts', import.meta.url),
+  new URL('../codeHighlight.ts', import.meta.url),
   'utf8',
 )
 const { outputText } = ts.transpileModule(source, {
@@ -49,7 +49,6 @@ await test('highlights the declared lines in every published code block', async 
   })
   const roots = [
     new URL('../../src/content/', import.meta.url),
-    new URL('../../../source.mswjs.io/src/content/', import.meta.url),
   ]
   const mismatches = []
   let blockCount = 0
