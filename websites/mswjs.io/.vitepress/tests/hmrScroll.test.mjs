@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { consumeHmrScroll } from '../theme/hmrScroll.mjs'
+import { consumeHmrScroll } from '../../../shared/theme/hmrScroll.mjs'
 
 function savedPosition(position) {
   const values = new Map([['msw:hmr-scroll', JSON.stringify(position)]])

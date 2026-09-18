@@ -9,7 +9,9 @@ The `fromOpenApi` function generates request handlers from the given OpenAPI doc
 ## Call signature
 
 ```ts
-function fromOpenApi(document: OpenAPI.Document): Promise<RequestHandler[]>
+import { fromOpenApi } from '@msw/source/open-api'
+
+await fromOpenApi(document)
 ```
 
 > Both OpenAPI 2.0 and 3.0 are supported.

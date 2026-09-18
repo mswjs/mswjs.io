@@ -4,7 +4,6 @@ import Container from '@mswjs/shared/theme/components/Container.vue'
 import PageHeaderWrapper from '@mswjs/shared/theme/components/PageHeaderWrapper.vue'
 import PageHeaderSubtitle from '@mswjs/shared/theme/components/PageHeaderSubtitle.vue'
 import GettingStarted from '@mswjs/shared/theme/components/GettingStarted.vue'
-import HomepageCodeExample from './HomepageCodeExample.vue'
 import sourceLogo from '../../../src/images/source.svg'
 </script>
 
@@ -57,8 +56,8 @@ import sourceLogo from '../../../src/images/source.svg'
           >
           and get the list of request handlers back.
         </PageHeaderSubtitle>
-        <div class="max-w-xl mx-auto">
-          <HomepageCodeExample />
+        <div class="home-code vp-doc mx-auto max-w-xl text-left">
+          <slot name="code" />
         </div>
       </PageHeaderWrapper>
 

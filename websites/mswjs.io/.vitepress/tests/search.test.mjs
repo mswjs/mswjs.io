@@ -9,7 +9,7 @@ import { createMarkdownRenderer, disposeMdItInstance } from 'vitepress'
 const require = createRequire(import.meta.url)
 const requireFromVitePress = createRequire(require.resolve('vitepress'))
 const MiniSearch = requireFromVitePress('minisearch')
-const source = await readFile(new URL('../search.ts', import.meta.url), 'utf8')
+const source = await readFile(new URL('../../../shared/search.ts', import.meta.url), 'utf8')
 const { outputText } = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
 })

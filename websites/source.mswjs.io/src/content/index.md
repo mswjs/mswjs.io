@@ -19,4 +19,15 @@ keywords:
 import HomePage from '../../.vitepress/theme/home/HomePage.vue'
 </script>
 
-<HomePage />
+<HomePage>
+<template v-slot:code>
+
+```js
+import { fromTraffic } from '@msw/source/traffic'
+import traffic from './recording.har'
+
+const handlers = fromTraffic(traffic)
+```
+
+</template>
+</HomePage>

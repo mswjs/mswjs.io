@@ -9,11 +9,13 @@ The `fromTraffic` function generates request handles from the given HAR document
 ## Call signature
 
 ```ts
-function fromTraffic(
-  archive: Har.Har,
-  mapFn?: (entry: Har.Entry) => Har.Entry | undefined
-): RequestHandler[]
+import { fromTraffic } from '@msw/source/traffic'
+
+fromTraffic(archive)
+fromTraffic(archive, mapFn)
 ```
+
+> The optional `mapFn` argument lets you modify or skip individual HAR entries before they become request handlers.
 
 ## Usage
 

@@ -8,9 +8,21 @@ description: Three steps to get started with Source.
 
 Add `@msw/source` as a dependency to your project:
 
-```sh
-npm i msw @msw/source --save-dev
+<div class="copyable-code">
+
+::: code-group
+
+```sh [npm]
+npm install msw @msw/source --save-dev
 ```
+
+```sh [pnpm]
+pnpm add msw @msw/source --save-dev
+```
+
+:::
+
+</div>
 
 > Source is meant to be used with [`msw`](https://mswjs.io/) so we will install it too.
 
@@ -19,6 +31,9 @@ npm i msw @msw/source --save-dev
 Next, decide about the source (or sources) to generate the request handlers from.
 
 In this tutorial, we will use a [network archive](<https://en.wikipedia.org/wiki/HAR_(file_format)>) (`api.har`) we recorded earlier. It looks like this:
+
+<div class="copyable-code">
+<CollapsibleCode :max-lines="20">
 
 ```json
 {
@@ -184,6 +199,9 @@ In this tutorial, we will use a [network archive](<https://en.wikipedia.org/wiki
   }
 }
 ```
+
+</CollapsibleCode>
+</div>
 
 > You can copy the contents of the HAR file above or [make your own traffic recording in the browser](/docs/recipes/recording-har).
 

@@ -34,7 +34,7 @@ You can use fallthrough to great effect to layer your network behaviors. See [Ne
 
 Derived from the fallthrough behavior, handlers are sensitive to the order in which they are defined. MSW executes them left-to-right, starting from handler overrides, if any, since those are prepended to the list of handlers.
 
-```ts {5-7,14}
+```ts {5-7,13}
 import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 

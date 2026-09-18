@@ -1,4 +1,4 @@
-import { localSearchRanking } from './localSearchRanking'
+import { localSearchRanking } from '../../shared/localSearchRanking'
 import { splitSearchSections } from '../../shared/searchSections'
 import { createExternalLinkChecker } from '../../shared/externalLinks'
 import * as path from 'node:path'
@@ -14,9 +14,9 @@ import {
 import { buildRssFeed } from './rss'
 import { mswTwoslashTransformer, twoslashLineNumbersPlugin } from './twoslash'
 import { resolveMswSourceForSite } from '../scripts/msw-source.mjs'
-import { prioritizeSearchResults } from './search'
-import cloudflareLight from './themes/cloudflare-light.json'
-import cloudflareDark from './themes/cloudflare-dark.json'
+import { prioritizeSearchResults } from '../../shared/search'
+import cloudflareLight from '../../shared/themes/cloudflare-light.json'
+import cloudflareDark from '../../shared/themes/cloudflare-dark.json'
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from './consts'
 
 const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID || ''
@@ -259,6 +259,11 @@ export default defineConfig({
   transformPageData(pageData) {
     if (pageData.relativePath === 'api/index.md') {
       pageData.frontmatter.redirect = apiEntryPath
+    }
+
+    // The API reference outlines its methods (h2) and options (h3) only.
+    if (pageData.relativePath.startsWith('api/')) {
+      pageData.frontmatter.outline ??= [2, 3]
     }
   },
 

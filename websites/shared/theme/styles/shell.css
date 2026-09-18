@@ -1,0 +1,519 @@
+/*
+ * The site shell shared by the MSW websites: design tokens (light and
+ * dark), documentation content, header search, and twoslash popups.
+ * Kept in sync with "mswjs.io/.vitepress/theme/site.css".
+ */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-500-italic.woff2') format('woff2');
+}
+
+:root {
+  --vp-font-family-mono:
+    'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --site-layout-top-height: 0px;
+  --site-font-size: 1rem;
+  --site-accent: 255 106 51;
+  --site-foreground: 23 23 23;
+  --site-neutral-50: 10 10 10;
+  --site-neutral-100: 23 23 23;
+  --site-neutral-200: 38 38 38;
+  --site-neutral-300: 64 64 64;
+  --site-neutral-400: 82 82 82;
+  --site-neutral-500: 115 115 115;
+  --site-neutral-600: 163 163 163;
+  --site-neutral-700: 212 212 212;
+  --site-neutral-800: 229 229 229;
+  --site-neutral-900: 250 250 250;
+  --site-neutral-950: 245 245 245;
+  --primary: rgb(var(--site-accent));
+
+  --vp-c-bg: rgb(var(--site-neutral-900));
+  --vp-c-bg-alt: rgb(var(--site-neutral-950));
+  --vp-c-bg-soft: rgb(var(--site-neutral-800));
+  --vp-c-bg-elv: #fff;
+  --vp-c-divider: rgb(var(--site-neutral-800));
+  --vp-c-gutter: var(--vp-c-divider);
+  --vp-c-border: rgb(var(--site-neutral-700));
+  --vp-c-text-1: rgb(var(--site-foreground));
+  --vp-c-text-2: rgb(var(--site-neutral-400));
+  --vp-c-text-3: rgb(var(--site-neutral-500));
+  --vp-c-brand-2: var(--primary);
+  --vp-nav-bg-color: var(--vp-c-bg);
+  --vp-sidebar-bg-color: var(--vp-c-bg);
+  --vp-local-nav-bg-color: var(--vp-c-bg);
+  --vp-code-block-bg: #ffffff;
+  --vp-code-bg: #f0f0f0;
+  --vp-code-color: #404040;
+  --vp-code-line-highlight-color: rgb(var(--site-accent) / 7%);
+  --vp-code-font-size: 14px;
+
+  --vp-custom-block-warning-border: #ede6d9;
+  --vp-custom-block-warning-text: #65553d;
+  --vp-custom-block-warning-bg: #faf7f0;
+  --vp-custom-block-tip-border: #dce9e0;
+  --vp-custom-block-tip-text: #466352;
+  --vp-custom-block-tip-bg: #f3f8f4;
+  --vp-custom-block-info-border: #dce5ed;
+  --vp-custom-block-info-text: #486078;
+  --vp-custom-block-info-bg: #f3f7fa;
+
+  --site-code-keyword: #d94008;
+  --site-code-text: #521000;
+  --site-code-string: #0876d9;
+  --site-code-comment: #a8877f;
+  --site-code-constant: #5a11cc;
+  --site-code-function: #7612cc;
+  --site-code-parameter: #c77700;
+  color-scheme: light;
+}
+
+:root.dark {
+  --site-foreground: 255 255 255;
+  --site-neutral-50: 250 250 250;
+  --site-neutral-100: 245 245 245;
+  --site-neutral-200: 229 229 229;
+  --site-neutral-300: 212 212 212;
+  --site-neutral-400: 163 163 163;
+  --site-neutral-500: 115 115 115;
+  --site-neutral-600: 82 82 82;
+  --site-neutral-700: 64 64 64;
+  --site-neutral-800: 38 38 38;
+  --site-neutral-900: 23 23 23;
+  --site-neutral-950: 10 10 10;
+  --vp-c-bg-elv: #1f1f1f;
+  --vp-c-brand-2: var(--primary);
+  --vp-code-block-bg: #0c0c0c;
+  --vp-code-bg: #262626;
+  --vp-code-color: #e5e5e5;
+  --vp-code-line-highlight-color: rgb(38 38 38 / 60%);
+  --vp-custom-block-warning-border: #854d0e;
+  --vp-custom-block-warning-text: #eab308;
+  --vp-custom-block-warning-bg: rgb(113 63 18 / 10%);
+  --vp-custom-block-tip-border: #166534;
+  --vp-custom-block-tip-text: #16a34a;
+  --vp-custom-block-tip-bg: rgb(20 83 45 / 10%);
+  --vp-custom-block-info-border: #1e3a8a;
+  --vp-custom-block-info-text: #60a5fa;
+  --vp-custom-block-info-bg: rgb(30 58 138 / 10%);
+  --site-code-keyword: #ff7f4d;
+  --site-code-text: #e8e8e8;
+  --site-code-string: #0a95ff;
+  --site-code-comment: #888888;
+  --site-code-constant: #79b8ff;
+  --site-code-function: #b084ff;
+  --site-code-parameter: #ffb366;
+  color-scheme: dark;
+}
+
+::selection {
+  @apply bg-primary/50;
+}
+
+body {
+  font-size: var(--site-font-size);
+}
+
+.vp-doc {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.vp-doc.docs-content h2 {
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.vp-doc :not(pre) > code {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.vp-doc div[class*='language-'],
+.vp-doc :not(pre) > code {
+  border-color: var(--vp-c-border);
+}
+
+.vp-doc a.page-card,
+.vp-doc .egghead-banner {
+  color: var(--vp-c-text-1);
+}
+
+pre[data-language] {
+  background-color: var(--vp-code-block-bg) !important;
+}
+
+.hero-gradient {
+  background: radial-gradient(
+    rgb(var(--site-foreground) / 2%) 50%,
+    transparent 70%
+  );
+}
+
+.DocSearch-Button {
+  color: var(--vp-c-text-2);
+  border-color: var(--vp-c-border);
+}
+
+.DocSearch-Button:hover,
+.DocSearch-Button:focus {
+  color: var(--vp-c-text-2);
+  background: transparent;
+  border-color: var(--vp-c-brand-1);
+}
+
+.DocSearch-Button .DocSearch-Button-Key {
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-bg-soft);
+  box-shadow: inset 0 0 0 1px var(--vp-c-border);
+}
+
+:root.dark .highlighted-word:not([data-chars-id]) {
+  @apply bg-amber-700/25;
+}
+
+:root.dark .highlighted-word[data-chars-id='g'] {
+  @apply bg-green-700/25;
+}
+
+:root.dark .highlighted-word[data-chars-id='v'] {
+  @apply bg-violet-700/25;
+}
+
+:root:not(.dark) .highlighted-word {
+  color: #78350f !important;
+  background: #fef3c7;
+  border-color: #d97706;
+}
+
+:root:not(.dark) .highlighted-word[data-chars-id='v'] {
+  color: #5b21b6 !important;
+  background: #ede9fe;
+  border-color: #8b5cf6;
+}
+
+:root:not(.dark) .highlighted-word[data-chars-id='g'] {
+  color: #166534 !important;
+  background: #dcfce7;
+  border-color: #16a34a;
+}
+
+:root:not(.dark) .highlighted-word[data-chars-id='b'] {
+  color: #1e40af !important;
+  background: #dbeafe;
+  border-color: #3b82f6;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+
+.vp-doc .copyable-code div[class*='language-'] > button.copy {
+  display: block;
+  top: 6px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background-size: 16px;
+  opacity: 1;
+}
+
+/* Keep confirmation within the compact button instead of expanding a label. */
+.vp-doc .copyable-code div[class*='language-'] > button.copy.copied {
+  border-radius: 4px;
+}
+
+.vp-doc .copyable-code div[class*='language-'] > button.copy.copied::before {
+  display: none;
+  content: none;
+}
+
+.vp-doc .copyable-code div[class*='language-'] pre {
+  padding-right: 52px;
+}
+
+:root:not(.dark) .vp-doc .custom-block {
+  border-radius: 10px;
+}
+
+/* Neutral inline tokens; callouts retain their semantic colors below. */
+:root:not(.dark) .vp-doc :not(pre) > code {
+  color: var(--vp-code-color);
+  background-color: var(--vp-code-bg);
+  border-color: var(--vp-c-border);
+}
+
+:root:not(.dark) .vp-doc .custom-block.info :not(pre) > code {
+  color: #355778;
+  background-color: rgb(59 130 246 / 9%);
+  border-color: rgb(59 130 246 / 35%);
+}
+
+:root:not(.dark) .vp-doc .custom-block.warning :not(pre) > code {
+  color: #715619;
+  background-color: rgb(202 138 4 / 10%);
+  border-color: rgb(202 138 4 / 35%);
+}
+
+:root:not(.dark) .vp-doc .custom-block.tip :not(pre) > code {
+  color: #2f6347;
+  background-color: rgb(22 163 74 / 8%);
+  border-color: rgb(22 163 74 / 35%);
+}
+
+:root:not(.dark) #local-outline-menu > a,
+:root:not(.dark) #local-outline-menu > div {
+  background-color: var(--vp-c-bg);
+}
+
+:root:not(.dark) .docs-sidebar-mask {
+  background-color: rgb(255 255 255 / 60%);
+}
+
+
+
+pre,
+code,
+kbd,
+samp {
+  font-family: var(--vp-font-family-mono);
+}
+
+code,
+.vp-doc [class*='language-'] code {
+  font-weight: 500;
+}
+
+.vp-doc table {
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+:root:not(.dark) .vp-doc th,
+:root:not(.dark) .vp-doc tr:nth-child(2n) {
+  background-color: #f3f3f3;
+}
+
+:root:not(.dark) .page-card {
+  background-color: #fff;
+}
+
+:root:not(.dark) .page-card:hover {
+  background-color: #f5f5f5;
+}
+
+:root.dark .site-header-logo,
+:root.dark .site-logo-ring {
+  box-shadow: 0 0 0 1px rgb(var(--site-neutral-700) / 70%);
+}
+
+
+/*
+ * Inline type information in code snippets (twoslash).
+ * Popups match the code block cards; hovered tokens get a subtle underline.
+ */
+:root {
+  --twoslash-popup-bg: var(--vp-code-block-bg);
+  --twoslash-popup-color: var(--vp-code-color);
+  --twoslash-border-color: var(--vp-c-border);
+  --twoslash-popup-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  --twoslash-docs-color: var(--vp-c-text-2);
+  --twoslash-docs-font: var(--vp-font-family-base);
+  --twoslash-code-font: var(--vp-font-family-mono);
+  --twoslash-underline-color: var(--vp-c-text-3);
+}
+
+:root.dark {
+  --twoslash-popup-shadow: 0 8px 24px rgb(0 0 0 / 50%);
+}
+
+/* The popup receives focus when shown; the site's focus ring is for keyboard navigation. */
+.twoslash-floating.v-popper__popper:focus-visible {
+  outline: none;
+}
+
+/* Inline-block hover wrappers stretch highlighted lines. */
+.vp-doc .twoslash .v-popper {
+  display: inline;
+}
+
+.vp-doc .twoslash-floating.v-popper__popper .v-popper__inner {
+  border-radius: 6px;
+}
+
+.twoslash-floating .twoslash-popup-source {
+  border-top: 1px solid var(--twoslash-border-color);
+  padding: 6px 8px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.75em;
+  line-height: 1.5;
+}
+
+.twoslash-floating .twoslash-popup-source a {
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+}
+
+.twoslash-floating .twoslash-popup-source a::after {
+  content: ' ↗';
+}
+
+.twoslash-floating .twoslash-popup-source a:hover {
+  color: var(--vp-c-brand-1);
+  text-decoration: underline;
+}
+
+/* Cmd/Ctrl+click follows the token to its definition. */
+.twoslash-source-modifier .twoslash .twoslash-hover[data-source] {
+  cursor: pointer;
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+/* JSDoc "@example" blocks are code, not prose. */
+.twoslash-floating .twoslash-popup-docs-tag-example {
+  display: block;
+}
+
+.twoslash-floating
+  .twoslash-popup-docs-tag-example
+  .twoslash-popup-docs-tag-value {
+  display: block;
+}
+
+.twoslash-floating
+  .twoslash-popup-docs-tag-example
+  .twoslash-popup-docs-tag-value
+  > pre {
+  margin: 6px 0 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--twoslash-border-color);
+  border-radius: 4px;
+  background-color: var(--vp-code-bg) !important;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.9em;
+  line-height: var(--vp-code-line-height);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/*
+ * Header search as a bordered cell (like the hero CTAs): full height,
+ * no rounded box, and the cell's own border turns orange on hover.
+ */
+.site-header-search .VPNavBarSearch,
+.site-header-search #local-search,
+.site-header-search .DocSearch {
+  display: flex;
+  height: 100%;
+}
+
+.site-header-search .DocSearch-Button,
+.site-header-search .DocSearch-Button:hover,
+.site-header-search .DocSearch-Button:focus {
+  height: 100%;
+  margin: 0;
+  padding: 0 1.25rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  /* The cell's border switches color instantly on hover. */
+  transition: none;
+}
+
+.site-header-search .DocSearch-Button:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Key caps form one rounded pill: the left cap rounds its left side,
+   the right cap its right side, sharing a single divider (the shared
+   theme draws each cap's border as an inset shadow, which doubled it). */
+.site-header-search .DocSearch-Button .DocSearch-Button-Key {
+  border-radius: 4px 0 0 4px;
+}
+
+.site-header-search .DocSearch-Button .DocSearch-Button-Key + .DocSearch-Button-Key {
+  margin-left: -1px;
+  border-radius: 0 4px 4px 0;
+}
+
+/*
+ * Homepage frames span the full viewport below "lg" so the sections
+ * breathe on small screens; the rails return with the container on "lg".
+ */
+@media (max-width: 1023.98px) {
+  .home-frame {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .home-frame-rails {
+    border-left: 0;
+    border-right: 0;
+  }
+}
+
+/*
+ * Collapsible code blocks ("CollapsibleCode"): the block is clipped to
+ * "--collapsible-code-lines" lines behind a fade, and the toggle bar
+ * continues the block's card below it.
+ */
+.collapsible-code {
+  margin: 16px 0;
+}
+
+.vp-doc .collapsible-code div[class*='language-'] {
+  position: relative;
+  margin: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.vp-doc .collapsible-code-collapsed div[class*='language-'] {
+  max-height: calc(
+    var(--collapsible-code-lines) * var(--vp-code-line-height) *
+      var(--vp-code-font-size) + 20px
+  );
+  overflow: hidden;
+}
+
+.vp-doc .collapsible-code-collapsed div[class*='language-']::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 4rem;
+  background: linear-gradient(to bottom, transparent, var(--vp-code-block-bg));
+  pointer-events: none;
+}
+
+.collapsible-code-toggle {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--vp-c-border);
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  background-color: var(--vp-code-block-bg);
+  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  transition: color 0.25s;
+}
+
+.collapsible-code-toggle:hover {
+  color: var(--vp-c-text-1);
+}

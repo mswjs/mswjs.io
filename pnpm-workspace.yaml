@@ -1,7 +1,8 @@
 packages:
   - websites/*
 allowBuilds:
-  esbuild: false
-  sharp: false
+  esbuild: true
+  msw: true
+  sharp: true
 overrides:
-  "@shikijs/twoslash": 2.5.0
+  '@shikijs/twoslash': 2.5.0

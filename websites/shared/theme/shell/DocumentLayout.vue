@@ -2,21 +2,27 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import type { DefaultTheme } from 'vitepress/theme'
-import DocsPageHeader from '@mswjs/shared/theme/docs/DocsPageHeader.vue'
-import DocsSidebarPartners from '@mswjs/shared/theme/docs/DocsSidebarPartners.vue'
-import Ads from '@mswjs/shared/theme/docs/Ads.vue'
-import ReactIsland from '@mswjs/shared/theme/components/ReactIsland.vue'
-import { FeedbackWidget } from '@mswjs/shared/theme/react/feedbackWidget'
-import BlogPostHeader from '../blog/BlogPostHeader.vue'
+import DocsPageHeader from '../docs/DocsPageHeader.vue'
+import DocsSidebarPartners from '../docs/DocsSidebarPartners.vue'
+import Ads from '../docs/Ads.vue'
+import ReactIsland from '../components/ReactIsland.vue'
+import { FeedbackWidget } from '../react/feedbackWidget'
 import type { DocumentOutlineItem } from '../composables/useDocumentOutline'
 import DocumentFooter from './DocumentFooter.vue'
 import DocumentOutline from './DocumentOutline.vue'
 
-const props = defineProps<{
+defineProps<{
   documentationPage: boolean
+  /**
+   * A blog post: the "header" slot renders above the content.
+   */
   blogPost: boolean
   outlineItems: Array<DocumentOutlineItem>
   activeOutlineLink: string | null
+  /**
+   * The publisher id of the documentation ads, when enabled.
+   */
+  adsPublisher: string
 }>()
 
 const { frontmatter, theme } = useData<DefaultTheme.Config>()
@@ -38,8 +44,7 @@ const feedbackPageTitle = computed(() => {
       :class="{
         'min-[1280px]:grid-cols-[minmax(0,1fr)_14rem] min-[1280px]:gap-16':
           documentationPage,
-        'max-w-[784px]':
-          !documentationPage,
+        'max-w-[784px]': !documentationPage,
       }"
     >
       <main
@@ -51,9 +56,9 @@ const feedbackPageTitle = computed(() => {
       >
         <template v-if="documentationPage">
           <DocsPageHeader />
-          <Ads v-if="theme.ads" publisher="mswjsio" />
+          <Ads v-if="theme.ads" :publisher="adsPublisher" />
         </template>
-        <BlogPostHeader v-if="blogPost" />
+        <slot v-if="blogPost" name="header" />
 
         <Content
           data-document-content

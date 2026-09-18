@@ -1,4 +1,5 @@
 import { createExternalLinkChecker } from '../../shared/externalLinks'
+import { createRequire } from 'node:module'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
@@ -7,6 +8,15 @@ import {
   wordHighlightTransformer,
   wordHighlightMetaPlugin,
 } from '../../shared/codeHighlight'
+import { localSearchRanking } from '../../shared/localSearchRanking'
+import { prioritizeSearchResults } from '../../shared/search'
+import { splitSearchSections } from '../../shared/searchSections'
+import {
+  siteTwoslashTransformer,
+  twoslashLineNumbersPlugin,
+} from '../../shared/twoslash'
+import cloudflareLight from '../../shared/themes/cloudflare-light.json'
+import cloudflareDark from '../../shared/themes/cloudflare-dark.json'
 
 const SITE_URL = 'https://source.mswjs.io'
 const SITE_TITLE = 'Source'
@@ -17,9 +27,39 @@ const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID || ''
 const ALGOLIA_SEARCH_API_KEY = process.env.PUBLIC_ALGOLIA_SEARCH_API_KEY || ''
 const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
 const GOOGLE_FONTS_STYLESHEET_URL =
-  'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&family=Geist+Mono:ital,wght@0,400..700;1,400..700&display=swap&subset=latin'
+  'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&display=swap&subset=latin'
 
 const externalLinks = createExternalLinkChecker()
+const siteDirectory = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+)
+const require = createRequire(import.meta.url)
+
+/**
+ * Code snippets are typed against the installed "@msw/source" and "msw"
+ * packages, which ship their type definitions.
+ */
+const typedPackages = ['@msw/source', 'msw'].map((name) => {
+  const manifest = require(`${name}/package.json`) as { version: string }
+  return `${name}@${manifest.version}`
+})
+
+/**
+ * Ambient declarations for documentation snippets that omit their imports.
+ * Snippet-level imports and declarations shadow these.
+ */
+const DOCS_GLOBALS = `
+declare const fromTraffic: typeof import('@msw/source/traffic').fromTraffic
+declare const fromOpenApi: typeof import('@msw/source/open-api').fromOpenApi
+declare const http: typeof import('msw').http
+declare const HttpResponse: typeof import('msw').HttpResponse
+declare const setupServer: typeof import('msw/node').setupServer
+declare const setupWorker: typeof import('msw/browser').setupWorker
+declare const server: import('msw/node').SetupServer
+declare const worker: import('msw/browser').SetupWorker
+declare const handlers: Array<import('msw').RequestHandler>
+`
 
 export default defineConfig({
   title: SITE_TITLE,
@@ -30,7 +70,7 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: false,
-  appearance: 'force-dark',
+  appearance: true,
   sitemap: {
     hostname: SITE_URL,
   },
@@ -66,17 +106,28 @@ export default defineConfig({
   ],
 
   markdown: {
-    theme: 'github-dark',
+    theme: {
+      light: { ...cloudflareLight, type: 'light' },
+      dark: { ...cloudflareDark, type: 'dark' },
+    },
     lineNumbers: true,
-    codeTransformers: [wordHighlightTransformer()],
+    codeTransformers: [
+      wordHighlightTransformer(),
+      siteTwoslashTransformer({
+        siteDirectory,
+        globals: DOCS_GLOBALS,
+        cacheKey: typedPackages.join(','),
+      }),
+    ],
     config(md) {
       wordHighlightMetaPlugin(md)
+      twoslashLineNumbersPlugin(md)
       externalLinks.markdown(md)
     },
   },
 
   vite: {
-    plugins: [externalLinks.plugin],
+    plugins: [localSearchRanking(), externalLinks.plugin],
     esbuild: {
       jsx: 'automatic',
       jsxImportSource: 'react',
@@ -96,7 +147,11 @@ export default defineConfig({
     nav: [
       { text: 'Docs', link: '/docs/', activeMatch: '^/docs' },
       { text: 'Blog', link: 'https://mswjs.io/blog', target: '_blank' },
-      { component: 'SponsorLink' },
+    ],
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/mswjs/source' },
+      { icon: 'twitter', link: 'https://twitter.com/ApiMocking' },
     ],
 
     sidebar: {
@@ -117,6 +172,7 @@ export default defineConfig({
       level: 'deep',
       label: 'Contents',
     },
+    sidebarMenuLabel: 'Docs',
 
     search: ALGOLIA_APP_ID
       ? {
@@ -125,10 +181,17 @@ export default defineConfig({
             appId: ALGOLIA_APP_ID,
             apiKey: ALGOLIA_SEARCH_API_KEY,
             indexName: ALGOLIA_INDEX_NAME,
+            searchParameters: { hitsPerPage: 100 },
+            transformItems: prioritizeSearchResults,
           },
         }
       : {
           provider: 'local',
+          options: {
+            miniSearch: {
+              _splitIntoSections: splitSearchSections,
+            },
+          },
         },
 
     editLink: {

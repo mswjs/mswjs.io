@@ -6,9 +6,22 @@ import { VPNavBarSearch, VPSocialLinks } from 'vitepress/theme-without-fonts'
 import VPSwitchAppearance from 'vitepress/dist/client/theme-default/components/VPSwitchAppearance.vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 
-defineProps<{
+const props = defineProps<{
   menuOpen: boolean
   stickyOnMobile: boolean
+  /**
+   * Root paths of the documentation pages, which draw the header's rails
+   * on the wider documentation layout.
+   */
+  documentationRoots: Array<string>
+  /**
+   * Accessible label of the logo link.
+   */
+  homeLabel: string
+  /**
+   * Where a right click on the logo leads (the branding page), if anywhere.
+   */
+  brandingUrl?: string
 }>()
 
 const emit = defineEmits<{
@@ -18,15 +31,20 @@ const emit = defineEmits<{
 
 const { theme } = useData<DefaultTheme.Config>()
 const route = useRoute()
+const router = useRouter()
+
 // Documentation pages draw the header's rails on the wider documentation
 // layout, so the left rail continues into the sidebar border. Every other
 // page draws them on the content container, like the homepage sections.
 const documentationFramed = computed(() => {
-  return ['/docs', '/guides', '/api'].some((rootPath) => {
+  return props.documentationRoots.some((rootPath) => {
     return route.path === rootPath || route.path.startsWith(`${rootPath}/`)
   })
 })
-const router = useRouter()
+
+const logoSource = computed(() => {
+  return typeof theme.value.logo === 'string' ? theme.value.logo : '/logo.svg'
+})
 
 const navigationItems = computed(() => {
   return (theme.value.nav ?? []).filter(
@@ -44,9 +62,14 @@ function isActive(item: DefaultTheme.NavItemWithLink): boolean {
   return route.path === item.link
 }
 
-function navigateToBranding(): void {
+function navigateToBranding(event: MouseEvent): void {
+  if (!props.brandingUrl) {
+    return
+  }
+
+  event.preventDefault()
   emit('closeMenu')
-  router.go('/branding')
+  router.go(props.brandingUrl)
 }
 </script>
 
@@ -74,10 +97,10 @@ function navigateToBranding(): void {
           <a
             href="/"
             class="site-header-logo flex shrink-0 items-center rounded-lg"
-            aria-label="Mock Service Worker home"
-            @contextmenu.prevent="navigateToBranding"
+            :aria-label="homeLabel"
+            @contextmenu="navigateToBranding"
           >
-            <img src="/logo.svg" alt="" class="h-9 w-9" />
+            <img :src="logoSource" alt="" class="h-9 w-9" />
           </a>
 
           <nav
@@ -105,9 +128,7 @@ function navigateToBranding(): void {
           >
             <VPNavBarSearch class="!p-0" />
           </div>
-          <div
-            class="-mr-2 hidden h-full items-center gap-3 pl-5 md:flex"
-          >
+          <div class="-mr-2 hidden h-full items-center gap-3 pl-5 md:flex">
             <VPSwitchAppearance />
             <VPSocialLinks :links="theme.socialLinks" />
           </div>
