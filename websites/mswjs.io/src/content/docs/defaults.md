@@ -17,7 +17,7 @@ Intercepting WebSockets, however, is _mock-first_ due to the specifics of its im
 Every intercepted request "falls through" the list of your handlers, looking for the first matching handler to return an [instruction](/docs/http/handling-requests) on how to handle the request (mock response, response-patch, passthrough, do nothing). A single request may match _multiple handlers_ at the same time but only _one handler_ can be responsible for handling it.
 
 ```ts {5}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.get('/user', () => console.log('One')),
@@ -35,7 +35,7 @@ You can use fallthrough to great effect to layer your network behaviors. See [Ne
 Derived from the fallthrough behavior, handlers are sensitive to the order in which they are defined. MSW executes them left-to-right, starting from handler overrides, if any, since those are prepended to the list of handlers.
 
 ```ts {5-7,14}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 export const handlers = [

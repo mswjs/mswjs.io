@@ -84,7 +84,7 @@ test('renders the dashboard', () => {
 You can [override request handlers](/guides/best-practices/network-behavior-overrides) by accessing the `worker` object of your test's context and calling `.use()`, providing it with the request handlers that should take priority:
 
 ```ts {2,10-14} /worker/1,3
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { test } from './test-extend'
 import { Dashboard } from './components/dashboard.js'
 

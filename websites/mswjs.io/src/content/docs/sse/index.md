@@ -16,7 +16,7 @@ keywords:
 Mock Service Worker ships with a first-class API for intercepting and mocking [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) (SSE) via the `sse` namespace provided by the library:
 
 ```ts
-import { sse } from 'msw'
+import { sse } from 'msw/sse'
 ```
 
 <PageCard
@@ -35,7 +35,7 @@ The `EventSource` API isn't currently supported in Node.js, limiting the SSE int
 The stream of server events is still a regular HTTP connection, which means you can intercept and mock with the `http` namespace as you would any other HTTP request:
 
 ```ts {5-10} /stream/2,3
-import { http } from 'msw'
+import { http } from 'msw/http'
 
 export const handlers = [
   http.get('/stream', ({ request }) => {
@@ -65,7 +65,7 @@ Handling SSE via the `http` namespace, however, has a number of disadvantages:
 In comparison, the `sse` namespace provides you a type-safe, high-level experience of working with SSE:
 
 ```ts {5,8} /sse/
-import { sse } from 'msw'
+import { sse } from 'msw/sse'
 
 export const handlers = [
   sse<{ message: string }>('/stream', ({ client }) => {

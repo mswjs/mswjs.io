@@ -12,7 +12,7 @@ keywords:
 You can send data to multiple WebSocket clients by calling the `.broadcast()` method on the WebSocket link matching those client connections:
 
 ```ts {7} /.broadcast/
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 
 const chat = ws.link('wss://chat.example.com')
 
@@ -34,7 +34,7 @@ This will send the same data to all intercepted WebSocket clients.
 You can exclude a specific client from the broadcast by using the `broadcastExcept()` method of the WebSocket link and providing it with the `client` instance to exclude:
 
 ```ts {10} /.broadcastExcept/
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 
 const chat = ws.link('wss://chat.example.com')
 
@@ -52,7 +52,7 @@ export const handlers = [
 You can also provide a _list of clients_ as the first argument to the `broadcastExcept()` method to have finer control over which clients get excluded from the broadcast:
 
 ```ts {9-11} /chat.clients/
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 
 const chat = ws.link('wss://chat.example.com')
 

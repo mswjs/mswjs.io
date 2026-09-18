@@ -60,7 +60,9 @@ The response to a batched query is an array of regular GraphQL responses in the 
 You can mock batched GraphQL queries in Apollo by introducing a custom `batchedGraphQLQuery` higher-order request handler that intercepts such batched queries, unwraps them into individual requests, and resolves those against any given list of request handlers using the [`getResponse`](/api/get-response) function from `msw`. Operations that no request handler mocks are performed against the original server as-is.
 
 ```js
-import { http, HttpResponse, getResponse, bypass } from 'msw'
+import { http, HttpResponse } from 'msw/http'
+import { bypass } from 'msw/utils'
+import { getResponse } from 'msw'
 
 export function batchedGraphQLQuery(url, handlers) {
   return http.post(url, async ({ request }) => {
@@ -102,14 +104,17 @@ export function batchedGraphQLQuery(url, handlers) {
 
 Then, use the `batchedGraphQLQuery` function in your request handlers:
 
-```ts {2,27} /batchedGraphQLQuery/1,3
-import { graphql, HttpResponse } from 'msw'
+```ts {3,30} /batchedGraphQLQuery/1,3
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
 import { batchedGraphQLQuery } from './batchedGraphQLQuery'
+
+const api = graphql.link('/graphql')
 
 const graphqlHandlers = [
   // The variables of each batched operation are
   // available to its request handler as usual.
-  graphql.query('GetUser', ({ variables }) => {
+  api.query('GetUser', ({ variables }) => {
     return HttpResponse.json({
       data: {
         user: { id: variables.id, name: 'John' },
@@ -118,7 +123,7 @@ const graphqlHandlers = [
   }),
   // Mocked errors end up in the respective entry
   // of the batched response.
-  graphql.query('GetProduct', ({ variables }) => {
+  api.query('GetProduct', ({ variables }) => {
     return HttpResponse.json({
       errors: [{ message: `Product "${variables.id}" not found` }],
     })
@@ -159,7 +164,8 @@ import {
   graphql as executeGraphQL,
   defaultFieldResolver,
 } from 'graphql'
-import { http, HttpResponse, bypass } from 'msw'
+import { http, HttpResponse } from 'msw/http'
+import { bypass } from 'msw/utils'
 
 // Describe the GraphQL schema.
 // You can also use an existing schema!

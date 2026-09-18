@@ -28,7 +28,7 @@ const worker = setupWorker()
 However, if you provide request handlers as the spread argument to the `setupWorker()` function, those handlers will be considered _initial_ and will always persist on the worker instance even when resetting the handlers (learn how to opt-out from this [here](/api/setup-worker/reset-handlers)).
 
 ```js
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupWorker } from 'msw/browser'
 
 const worker = setupWorker(

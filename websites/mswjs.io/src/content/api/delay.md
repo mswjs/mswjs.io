@@ -16,7 +16,7 @@ By default, MSW does not delay any mocked responses, so they arrive nearly insta
 ## Call signature
 
 ```ts
-import { delay } from 'msw'
+import { delay } from 'msw/utils'
 
 await delay()
 await delay(1000)
@@ -27,8 +27,9 @@ await delay('infinite')
 
 When invoked without any arguments, the `delay` function applies a _realistic server response time_. It's a random number equal to the average response time you encounter when communicating with an actual HTTP server (~100-400ms).
 
-```js /delay/ {6}
-import { http, delay, HttpResponse } from 'msw'
+```js /delay/ {7}
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils'
 
 export const handlers = [
   http.put('/books/:bookId', async () => {
@@ -46,8 +47,9 @@ export const handlers = [
 
 You can provide an exact delay duration in milliseconds:
 
-```js /delay/ {6}
-import { http, delay, HttpResponse } from 'msw'
+```js /delay/ {7}
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils'
 
 export const handlers = [
   http.get('/user', async () => {
@@ -61,8 +63,9 @@ export const handlers = [
 
 Controlling precise delay timing is handy when mocking response streams:
 
-```js /delay/ {8,11}
-import { http, delay, HttpResponse } from 'msw'
+```js /delay/ {9,12}
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils'
 
 export const handlers = [
   http.get('/video', () => {
@@ -97,8 +100,9 @@ The `delay` function also accepts a string that's an enum representing a delay m
 
 Delay modes are useful to test certain server response scenarios. For example, by using the "infinite" mode, you can test how your application handles response timeouts:
 
-```js /delay/ {6}
-import { http, delay } from 'msw'
+```js /delay/ {7}
+import { http } from 'msw/http'
+import { delay } from 'msw/utils'
 
 export const handlers = [
   http.get('/book/:bookId', async () => {

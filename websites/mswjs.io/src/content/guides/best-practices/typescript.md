@@ -33,7 +33,7 @@ http.get<Params, RequestBodyType, ResponseBodyType, Path>(path, resolver)
 | `Path`             | `string` | Request path. Narrows the `path` argument on the request handler.                                        |
 
 ```ts
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 type AddCommentParams = {
   postId: string
@@ -73,10 +73,10 @@ http.post<
 
 ### GraphQL handlers
 
-All request handlers in the [`graphql`](/api/graphql) namespace support two generic arguments:
+All request handlers created from a [GraphQL link](/api/graphql#graphql-link-url) support two generic arguments:
 
 ```ts
-graphql.query<Query, Variables>(query, resolver)
+api.query<Query, Variables>(operationName, resolver)
 ```
 
 | Argument name | Type     | Description                                                                             |
@@ -85,7 +85,10 @@ graphql.query<Query, Variables>(query, resolver)
 | `Variables`   | `object` | GraphQL operation variables. Narrows the `variables` response resolver argument type.   |
 
 ```ts
-import { graphql, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
 
 type AddCommentQuery = {
   commentUrl: string
@@ -95,7 +98,7 @@ type AddCommentVariables = {
   postId: string
 }
 
-graphql.mutation<AddCommentQuery, AddCommentVariables>(
+api.mutation<AddCommentQuery, AddCommentVariables>(
   'AddComment',
   ({ variables }) => {
     // GraphQL variables are narrowed to the provided
@@ -123,7 +126,7 @@ Annotating custom request handlers will depend on the call signature of your hig
 First, let's see how you can abstract away a `resolver` function while locking its types within the higher-order handler, using the `HttpResponseResolver` type:
 
 ```ts
-import { http, HttpResponseResolver, HttpResponse } from 'msw'
+import { http, HttpResponseResolver, HttpResponse } from 'msw/http'
 
 type SdkRequest = {
   transactionId: string
@@ -158,10 +161,13 @@ export const handlers = [
 
 > Learn more about the [Higher-order response resolvers](#higher-order-response-resolvers) below.
 
-The library also exposes the `HttpRequestHandler` and `GraphQLRequestHandler` types to annotate custom functions that are meant to have the call signature identical to that of `http.*` and `graphql.*` request handlers:
+The library also exposes the `HttpRequestHandler` and `GraphQLRequestHandler` types to annotate custom functions that are meant to have the call signature identical to that of `http.*` request handlers and GraphQL link handlers (`api.query()`, `api.mutation()`):
 
 ```ts
-import { http, graphql, HttpRequestHandler, GraphQLRequestHandler } from 'msw'
+import { http, HttpRequestHandler } from 'msw/http'
+import { graphql, GraphQLRequestHandler } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
 
 const myHttpHandler: HttpRequestHandler<Params, RequestBody, ResponseBody> = (
   path,
@@ -176,7 +182,7 @@ const myGraphQLHandler: GraphQLRequestHandler<Query, Variables> = (
   resolver,
   options
 ) => {
-  return graphql.query(operationName, resolver, options)
+  return api.query(operationName, resolver, options)
 }
 ```
 
@@ -185,14 +191,9 @@ const myGraphQLHandler: GraphQLRequestHandler<Query, Variables> = (
 Use the `HttpResponseResolver` and `GraphQLResponseResolver` types to annotate custom response resolvers.
 
 ```ts
-import {
-  PathParams,
-  DefaultBodyType,
-  HttpResponseResolver,
-  delay,
-  http,
-  HttpResponse,
-} from 'msw'
+import { HttpResponseResolver, http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils'
+import { PathParams, DefaultBodyType } from 'msw'
 
 function withDelay<
   // Recreate the generic signature of the HTTP resolver

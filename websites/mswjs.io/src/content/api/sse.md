@@ -15,7 +15,7 @@ The `sse` function is a subset of the [`http`](/api/http) namespace that helps y
 ## Call signature
 
 ```ts
-import { sse } from 'msw'
+import { sse } from 'msw/sse'
 
 sse('/stream', ({ client }) => {
   client.send({ data: 'hello' })

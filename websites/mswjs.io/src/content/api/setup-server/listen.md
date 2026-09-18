@@ -8,7 +8,7 @@ description: Enable the interception of requests in the current process.
 
 ```js
 server.listen()
-server.listen({ onUnhandledRequest: 'error' })
+server.listen({ onUnhandledFrame: 'error' })
 ```
 
 ## Usage
@@ -30,52 +30,66 @@ beforeAll(() => {
 
 ## Options
 
-### `onUnhandledRequest`
+### `onUnhandledFrame`
 
 - _Predefined strategy_ or _Custom strategy_ (default: `"warn"`).
 
-Specifies how to react to requests that are not handled by any request handlers.
+Specifies how to react to network frames (i.e. requests or WebSocket connections) that are not handled by any handlers.
 
 #### Predefined strategies
 
-| Strategy name        | Description                                            |
-| -------------------- | ------------------------------------------------------ |
-| `"warn"` (_Default_) | Print a warning but perform the request as-is.         |
-| `"error"`            | Print an error and halt request execution.             |
-| `"bypass"`           | Does not print anything and perform the request as-is. |
+| Strategy name        | Description                                          |
+| -------------------- | ---------------------------------------------------- |
+| `"warn"` (_Default_) | Print a warning but perform the frame as-is.         |
+| `"error"`            | Print an error and halt the frame execution.         |
+| `"bypass"`           | Does not print anything and perform the frame as-is. |
 
 ```js
 server.listen({
-  onUnhandledRequest: 'error',
+  onUnhandledFrame: 'error',
 })
 ```
 
 #### Custom strategy
 
+Provide a function to decide how to react to unhandled frames on a case-by-case basis. The function receives an object with the following properties:
+
+| Property   | Type                                   | Description                                                                                          |
+| ---------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `frame`    | `NetworkFrame`                         | The unhandled network frame. Use `frame.protocol` (`"http"` or `"ws"`) to distinguish between them. |
+| `defaults` | `{ warn(): void, error(): void }`      | The predefined strategies to reuse in your custom callback.                                          |
+
+For HTTP frames, the intercepted request is available under `frame.data.request`. For WebSocket frames, the intercepted connection is available under `frame.data.connection`.
+
 ```js
 server.listen({
-  onUnhandledRequest(request) {
-    console.log('Unhandled %s %s', request.method, request.url)
+  onUnhandledFrame({ frame }) {
+    if (frame.protocol === 'http') {
+      const { request } = frame.data
+      console.log('Unhandled %s %s', request.method, request.url)
+    }
   },
 })
 ```
 
-The pre-defined strategies are available as the second argument of the custom callback so you could reuse them. Here's an example of how you can utilize that to bypass static assets but still warn on other unhandled requests:
+The predefined strategies are available under the `defaults` property of the callback argument so you could reuse them. Here's an example of how you can utilize that to bypass static assets but still warn on other unhandled frames:
 
 ```js
 server.listen({
-  onUnhandledRequest(request, print) {
-    const url = new URL(request.url)
+  onUnhandledFrame({ frame, defaults }) {
+    if (frame.protocol === 'http') {
+      const url = new URL(frame.data.request.url)
 
-    // Ignore requests to fetch static assets.
-    if (url.pathname.includes('/assets/')) {
-      return
+      // Ignore requests to fetch static assets.
+      if (url.pathname.includes('/assets/')) {
+        return
+      }
     }
 
-    // Otherwise, print a warning for any unhandled request.
-    print.warning()
+    // Otherwise, print a warning for any unhandled frame.
+    defaults.warn()
   },
 })
 ```
 
-> By default, MSW will ignore common static asset requests so they won't be considered unhandled. If you provide a custom callback to the `onUnhandledRequest` function, _you will opt out from that behavior_. You can tap into it at any time by manually calling the [`isCommonAssetRequest()`](/api/is-common-asset-request) function.
+> By default, MSW will ignore common static asset requests so they won't be considered unhandled. If you provide a custom callback to the `onUnhandledFrame` option, _you will opt out from that behavior_. You can tap into it at any time by manually calling the [`isCommonAssetRequest()`](/api/is-common-asset-request) function.

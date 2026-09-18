@@ -4,10 +4,12 @@ title: Queries
 description: Intercepting GraphQL queries.
 ---
 
-You can intercept a GraphQL query by defining a `graphql.query()` handler for it and matching it by the _operation name_:
+You can intercept a GraphQL query by calling `.query()` on a [GraphQL link](/api/graphql#graphql-link-url) and matching the query by its _operation name_:
 
-```ts /graphql.query/ /'ListUsers'/#g
-graphql.query('ListUsers', () => {
+```ts /api.query/ /'ListUsers'/#g
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query('ListUsers', () => {
   return HttpResponse.json({
     data: {
       users: [
@@ -35,7 +37,9 @@ query ListUsers {
 You can access the query definition sent by the client via the `query` property of the response resolver's argument:
 
 ```ts /query/2
-graphql.query('ListUsers', ({ query }) => {
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query('ListUsers', ({ query }) => {
   console.log(query) // "query ListUsers { users { id name } }"
 })
 ```

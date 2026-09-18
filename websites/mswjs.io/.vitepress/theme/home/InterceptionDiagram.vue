@@ -187,7 +187,7 @@ function tick(now: number): void {
     cycleStart = now
   }
 
-  setProgress(((now - cycleStart) % CYCLE_MS / CYCLE_MS) * 100)
+  setProgress((((now - cycleStart) % CYCLE_MS) / CYCLE_MS) * 100)
   frame = requestAnimationFrame(tick)
 }
 
@@ -380,8 +380,16 @@ onBeforeUnmount(() => {
             {{ boundary.label }}
           </span>
         </div>
-        <span class="interception-trail" :style="trailStyle" aria-hidden="true" />
-        <span class="interception-request" :style="pulseStyle" aria-hidden="true" />
+        <span
+          class="interception-trail"
+          :style="trailStyle"
+          aria-hidden="true"
+        />
+        <span
+          class="interception-request"
+          :style="pulseStyle"
+          aria-hidden="true"
+        />
         <span
           class="interception-request interception-request-other"
           :style="otherPulseStyle"
@@ -397,8 +405,11 @@ onBeforeUnmount(() => {
         Request with MSW
       </span>
       <span class="inline-flex items-center gap-2">
-        <span class="h-2.5 w-2.5 rounded-full bg-neutral-500" aria-hidden="true" />
-        Request with other tools
+        <span
+          class="h-2.5 w-2.5 rounded-full bg-neutral-500"
+          aria-hidden="true"
+        />
+        Request witouth MSW
       </span>
     </figcaption>
   </figure>

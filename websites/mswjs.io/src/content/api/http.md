@@ -15,7 +15,7 @@ The `http` namespace helps you create request handlers to intercept HTTP request
 ## Call signature
 
 ```ts
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 http.get('/user/:id', ({ request, params }) => {
   return HttpResponse.json({ id: params.id })
@@ -115,7 +115,7 @@ The `http` namespace also contains special keys that provide you with additional
 Creates a request handler that intercepts any request to a given endpoint _regardless of its method_.
 
 ```js
-import { http } from 'msw'
+import { http } from 'msw/http'
 
 export const handlers = [
   // This handler will capture ALL requests to the
@@ -136,8 +136,8 @@ The response resolver function for every `http.*` method has the following keys 
 | ----------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | `request`   | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                        |
 | `requestId` | `string`                                                              | Unique ID of the intercepted request.                            |
-| `params`    | `object`                                                              | Request's [path parameters](/docs/http/#reading-path-parameters). |
-| `cookies`   | `object`                                                              | Request's [cookies](/docs/http/#reading-request-cookies).         |
+| `params`    | `object`                                                              | Request's [path parameters](/docs/http/intercepting-requests/path-parameters). |
+| `cookies`   | `object`                                                              | Request's [cookies](/docs/http/intercepting-requests/cookies).         |
 
 You access these arguments on the response resolver argument object.
 

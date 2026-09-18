@@ -46,7 +46,7 @@ export default {
 Use the `msw` story parameter to declare request handlers.
 
 ```ts [user-profile.stories.ts]
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const UserProfile = {
   parameters: {

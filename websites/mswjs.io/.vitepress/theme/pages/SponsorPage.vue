@@ -3,10 +3,6 @@ import { computed, ref } from 'vue'
 import { ArrowUpRightIcon } from '@heroicons/vue/24/outline'
 import GitHubIcon from '@mswjs/shared/theme/components/icons/github.vue'
 import Avatar from '../components/Avatar.vue'
-import MicrosoftIcon from '@mswjs/shared/theme/components/icons/microsoft.vue'
-import GoogleIcon from '@mswjs/shared/theme/components/icons/google.vue'
-import VercelIcon from '@mswjs/shared/theme/components/icons/vercel.vue'
-import CloudflareIcon from '@mswjs/shared/theme/components/icons/cloudflare.vue'
 import stats from './sponsor-stats.json'
 
 const sponsorUrl = 'https://github.com/sponsors/mswjs'
@@ -32,18 +28,39 @@ const graphPoints = stats.monthlyDownloads.map((entry, index) => ({
   downloads: entry.downloads,
 }))
 const graphLine = graphPoints.map((point) => `${point.x},${point.y}`).join(' ')
-const firstMonth = stats.monthlyDownloads[0]
-const lastMonth = stats.monthlyDownloads[stats.monthlyDownloads.length - 1]
-const downloadGrowth = Math.round(
-  (lastMonth.downloads / firstMonth.downloads - 1) * 100,
+const asOfDate = new Date(`${stats.asOf}T00:00:00Z`).toLocaleDateString('en', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
+const compact = new Intl.NumberFormat('en', {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+})
+const downloadsByPackage = Object.fromEntries(
+  stats.comparisons.packages.map((entry) => [entry.name, entry.downloads]),
 )
+const starsByRepository = Object.fromEntries(
+  stats.comparisons.repositories.map((entry) => [entry.name, entry.stars]),
+)
+const mswMonthlyDownloads = downloadsByPackage['msw']
+const starComparisons = [
+  { name: 'Svelte', repository: 'sveltejs/svelte', pkg: 'svelte' },
+  { name: 'Cypress', repository: 'cypress-io/cypress', pkg: 'cypress' },
+  { name: 'Vue', repository: 'vuejs/core', pkg: 'vue' },
+].map((project) => ({
+  name: project.name,
+  starsRatio: (
+    starsByRepository[project.repository] / stats.githubStars
+  ).toFixed(1),
+  stars: compact.format(starsByRepository[project.repository]),
+  downloadsRatio: (
+    downloadsByPackage[project.pkg] / mswMonthlyDownloads
+  ).toFixed(2),
+  downloads: compact.format(downloadsByPackage[project.pkg]),
+}))
 const graphDescription = `Monthly npm downloads, March–August 2026: ${graphPoints.map((point) => `${point.label}: ${point.downloads.toLocaleString('en')}`).join('; ')}.`
-const companies = [
-  { name: 'Google', icon: GoogleIcon },
-  { name: 'Microsoft', icon: MicrosoftIcon },
-  { name: 'Vercel', icon: VercelIcon },
-  { name: 'Cloudflare', icon: CloudflareIcon },
-]
 const ecosystem = [
   {
     name: 'Nock',
@@ -67,43 +84,54 @@ const ecosystem = [
 </script>
 
 <template>
-  <div class="sponsor-page">
-    <header class="sponsor-intro" aria-labelledby="sponsor-title">
-      <h1 id="sponsor-title" class="text-balance">
+  <div
+    class="grid grid-cols-[20px_minmax(0,1fr)_20px] text-base leading-7 sm:grid-cols-[minmax(24px,1fr)_minmax(0,1080px)_minmax(24px,1fr)] [&_a:focus-visible]:outline [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-[5px] [&_a:focus-visible]:outline-primary"
+  >
+    <header
+      class="col-start-2 min-w-0 max-w-[720px] pb-14 pt-12 sm:py-20"
+      aria-labelledby="sponsor-title"
+    >
+      <h1
+        id="sponsor-title"
+        class="mb-6 mt-5 text-[clamp(2.4rem,4.5vw,3.5rem)] leading-[1.12] tracking-[-0.045em] text-balance"
+      >
         An open letter from MSW creator
       </h1>
-      <p>
+      <p class="text-lg text-white">
         Over the past decade, Mock Service Worker has evolved from a prototype I
         built over the weekend to the foundational testing infrastructure
         powering the entire web. Sadly, it remains severely underfunded and a
         few sponsor cancelations away from becoming abandonware.
       </p>
-      <p>
-        Most of you don't even know that. When you see a successful open-source
-        project, you probably imagine a team of people behind it toiling day and
-        night to make it better. It seldom crosses your mind it's a single guy
+      <p class="mt-4 text-lg text-white">
+        Most of you probably don't know that. When you see a successful
+        open-source project, you imagine a team of people toiling day and night
+        to make it better. It seldom crosses your mind it might be a single guy
         who barely makes the ends meet.
       </p>
-      <p>
+      <p class="mt-4 text-lg text-white">
         The scariest part about this: <strong>I don't know what to do</strong>.
       </p>
-      <p>
+      <p class="mt-4 text-lg text-white">
         I tried so many things over the years. I reached out to companies,
         struck deals, and turned down opportunities that would likely set me up
-        for like but sacrified the quality and integrity of the project in the
+        for life but sacrified the quality and integrity of the project in the
         process. Sorry little of that bore any fruits. Although I've been
         <em>immensely</em> lucky to win grants, get sponsored, and secure
         partnerships with a number of incredible companies, that's barely enough
-        to fund my work on the project, let alone establish something like a
+        to fund my work on the project, let alone establish something akin to a
         team.
       </p>
-      <p>As it stands now, I don't see MSW having a future.</p>
-      <p>I want that to change.</p>
-      <p>
+      <p class="mt-4 text-lg text-white">
+        As it stands now, I don't see MSW having a future.
+      </p>
+      <p class="mt-4 text-lg text-white">I want that to change.</p>
+      <p class="mt-4 text-lg text-white">
         I created this page as a reminder of how absurdly influential MSW is
         while remaining a sad epitome of the "random maintainer from Nebraska"
         meme, in hopes that that contrast inspires you (or, better, your
-        company), to support the project. Thank you for reading this.
+        company), to support the project. Please read this, it won't take much
+        of your time. Thank you.
       </p>
       <footer
         class="mt-12 flex pb-4 text-left sm:mt-16"
@@ -126,34 +154,55 @@ const ecosystem = [
       </footer>
     </header>
 
-    <section class="sponsor-section" aria-label="MSW project statistics">
-      <h1>Stats for nerds</h1>
-      <dl class="impact-stats tabular-nums">
-        <div>
-          <dt>Total npm downloads</dt>
-          <dd :title="stats.totalDownloads.toLocaleString('en')">
+    <section
+      class="col-start-2 min-w-0 border-t border-neutral-800 py-14 sm:py-20"
+      aria-label="MSW project statistics"
+    >
+      <h1
+        class="mb-6 mt-5 text-[clamp(2.4rem,4.5vw,3.5rem)] leading-[1.12] tracking-[-0.045em]"
+      >
+        Stats for nerds
+      </h1>
+      <p class="-mt-3 mb-8 text-sm text-neutral-400">As of {{ asOfDate }}</p>
+      <dl
+        class="grid grid-cols-1 gap-7 tabular-nums sm:grid-cols-3 sm:gap-5 md:gap-9"
+      >
+        <div class="flex flex-col items-start">
+          <dt class="mb-3 text-lg font-semibold leading-[1.4] text-white">
+            Total npm downloads
+          </dt>
+          <dd
+            class="order-first mb-0.5 whitespace-nowrap text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.05em] sm:text-[2.6rem] md:text-[clamp(2.6rem,5vw,4rem)]"
+            :title="stats.totalDownloads.toLocaleString('en')"
+          >
             {{ totalDownloads }}
           </dd>
-          <figure class="download-chart">
+          <figure class="mt-5 w-full max-w-[240px] sm:max-w-none">
             <svg
-              class="download-graph"
+              class="block w-full overflow-visible"
               viewBox="0 0 280 100"
               role="img"
               :aria-label="graphDescription"
             >
-              <path d="M8 88H272 M8 50H272 M8 12H272" class="graph-grid" />
+              <path
+                d="M8 88H272 M8 50H272 M8 12H272"
+                class="fill-none stroke-neutral-800 stroke-1"
+              />
               <polygon
                 :points="`8,88 ${graphLine} 272,88`"
-                class="graph-area"
+                class="fill-primary/[0.08]"
               />
-              <polyline :points="graphLine" class="graph-line" />
+              <polyline
+                :points="graphLine"
+                class="fill-none stroke-primary stroke-2 [stroke-linecap:round] [stroke-linejoin:round]"
+              />
               <circle
                 v-for="point in graphPoints"
                 :key="point.label"
                 :cx="point.x"
                 :cy="point.y"
                 r="3"
-                class="graph-point"
+                class="fill-primary"
               >
                 <title>
                   {{ point.label }}:
@@ -161,104 +210,121 @@ const ecosystem = [
                 </title>
               </circle>
             </svg>
-            <figcaption class="graph-summary">
-              {{ downloadGrowth }}% growth in the past six months
-            </figcaption>
           </figure>
-        </div>
-        <div>
-          <dt>GitHub stars</dt>
-          <dd>{{ githubStars }}</dd>
-          <p>
-            Thank you to everyone who’s starred the project and helped others
-            discover it.
+          <p class="mt-5 text-sm text-neutral-400">
+            That's more than Svelte, Angular, SolidJS, and Astro
+            <strong>combined</strong>, every month.
           </p>
-          <a
-            class="text-link"
-            href="https://github.com/mswjs/msw"
-            target="_blank"
-            rel="noopener noreferrer"
-            >View on GitHub <ArrowUpRightIcon aria-hidden="true"
-          /></a>
         </div>
-        <div>
-          <dt>Repositories depend on MSW</dt>
-          <dd>200,000+</dd>
-          <p>On GitHub alone.</p>
+        <div
+          class="flex flex-col items-start border-t border-neutral-800 pt-7 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0 md:pl-9"
+        >
+          <dt class="mb-3 text-lg font-semibold leading-[1.4] text-white">
+            GitHub stars
+          </dt>
+          <dd
+            class="order-first mb-0.5 whitespace-nowrap text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.05em] sm:text-[2.6rem] md:text-[clamp(2.6rem,5vw,4rem)]"
+          >
+            {{ githubStars }}
+          </dd>
+          <p class="text-sm text-neutral-400">
+            That's an absurd number of developers who liked MSW and went to
+            introduce it to their team.
+          </p>
+        </div>
+        <div
+          class="flex flex-col items-start border-t border-neutral-800 pt-7 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0 md:pl-9"
+        >
+          <dt class="mb-3 text-lg font-semibold leading-[1.4] text-white">
+            Repositories depend on MSW
+          </dt>
+          <dd
+            class="order-first mb-0.5 whitespace-nowrap text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.05em] sm:text-[2.6rem] md:text-[clamp(2.6rem,5vw,4rem)]"
+          >
+            200,000+
+          </dd>
+          <p class="text-sm text-neutral-400">
+            And that's only counting public repositories on GitHub. It's faster
+            to point out who from the Fortune 500 companies doesn't use MSW than
+            listing everyone who does.
+          </p>
         </div>
       </dl>
-      <p class="stats-note tabular-nums">
-        npm &amp; GitHub · September 8, 2026. Downloads through September 7.
-      </p>
-    </section>
-
-    <section class="sponsor-companies" aria-label="Companies using MSW">
-      <div class="companies-inner">
-        <p class="companies-heading">In good company.</p>
-        <p class="companies-description">
-          Part of the everyday work at teams like these.
-        </p>
-        <div class="company-logos">
-          <component
-            v-for="company in companies"
-            :key="company.name"
-            :is="company.icon"
-            role="img"
-            :aria-label="company.name"
-          />
-        </div>
-        <p class="open-source-note">
-          From a side project to a global team.<br /><strong
-            >Free and open-source for everyone.</strong
-          >
-        </p>
-      </div>
+      <div class="mt-10 max-w-[720px] tabular-nums"></div>
     </section>
 
     <section
-      class="sponsor-section sponsor-history"
+      class="col-start-2 min-w-0 border-t border-neutral-800 py-14 sm:py-20"
       aria-labelledby="history-title"
     >
-      <h2 id="history-title">Revolutionizing API mocking since 2018</h2>
-      <div class="reading-width">
-        <p>
-          Before MSW, API mocks were often brittle and tied to a specific
-          request client. A test would replace <code>fetch</code> or spy on
-          Axios, then imitate just enough of its response to pass. Change your
-          client, and the mock breaks—even when the API hasn’t changed at all.
+      <h2
+        id="history-title"
+        class="mb-6 mt-0 text-[clamp(1.6rem,3vw,2rem)] leading-[1.25] tracking-[-0.03em]"
+      >
+        Changing the game since 2018
+      </h2>
+      <div class="max-w-[720px] space-y-4">
+        <p class="">
+          Do you know when was the last day API mocking was tedious? It's
+          November 17th, 2018. Because the very next day, the first version of
+          MSW got released. And it nothing short of changed the game.
         </p>
         <p>
-          MSW moved mocks into their own layer. Describe what the API returns,
-          let your application make its requests, and reuse those handlers
-          wherever you need them. Client-agnostic, reusable mocks. The way it’s
-          supposed to be.
+          Before that time, mocking was in a bad place. You spied on the request
+          client, praying its APIs stay the same between updates. You repeated
+          the same mocks over and over between your component and end-to-end
+          tests. Mock-first development? That'd be one more dependency and an
+          extra day of work on your end.
+        </p>
+        <p>
+          Every test runner and every tool saw API mocking as its feature.
+          Divided, different in both the syntax and capabilities. MSW recognized
+          it as its own layer.
         </p>
       </div>
-      <div class="code-comparison" :style="comparisonStyle">
-        <div class="comparison-labels">
-          <button type="button" @click="comparisonPosition = 100">
-            Before · jest.spyOn
+      <div class="my-8 max-w-[760px]" :style="comparisonStyle">
+        <div class="mb-3 flex justify-between gap-4">
+          <button
+            type="button"
+            class="text-sm font-semibold hover:text-primary"
+            @click="comparisonPosition = 100"
+          >
+            Before (jest.spyOn)
           </button>
-          <button type="button" @click="comparisonPosition = 0">
-            After · MSW
+          <button
+            type="button"
+            class="text-sm font-semibold hover:text-primary"
+            @click="comparisonPosition = 0"
+          >
+            After (MSW)
           </button>
         </div>
-        <div class="comparison-stage">
-          <div class="comparison-code comparison-after vp-doc">
+        <div
+          class="relative grid overflow-hidden rounded-lg border border-neutral-700 bg-[var(--vp-code-block-bg)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-[3px] focus-within:outline-primary"
+        >
+          <div
+            class="vp-doc relative z-0 min-w-0 bg-[var(--vp-code-block-bg)] [grid-area:1/1] [&_.language-js]:!m-0 [&_.language-js]:!h-full [&_.language-js]:!rounded-none [&_.language-js]:!border-0 [&_pre]:!whitespace-pre-wrap [&_pre]:![overflow-wrap:anywhere] [&_pre_code]:!whitespace-pre-wrap [&_pre_code]:![overflow-wrap:anywhere]"
+          >
             <slot name="after" />
           </div>
           <div
-            class="comparison-code comparison-before vp-doc"
+            class="vp-doc relative z-[1] min-w-0 bg-[var(--vp-code-block-bg)] [clip-path:inset(0_calc(100%_-_var(--comparison-position))_0_0)] [grid-area:1/1] [&_.language-js]:!m-0 [&_.language-js]:!h-full [&_.language-js]:!rounded-none [&_.language-js]:!border-0 [&_pre]:!whitespace-pre-wrap [&_pre]:![overflow-wrap:anywhere] [&_pre_code]:!whitespace-pre-wrap [&_pre_code]:![overflow-wrap:anywhere]"
             :aria-hidden="comparisonPosition === 0"
           >
             <slot name="before" />
           </div>
-          <div class="comparison-divider" aria-hidden="true">
-            <span>↔</span>
+          <div
+            class="pointer-events-none absolute inset-y-0 left-[var(--comparison-position)] z-[3] w-0.5 -translate-x-1/2 bg-primary"
+            aria-hidden="true"
+          >
+            <span
+              class="absolute left-1/2 top-1/2 grid h-11 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg border border-primary bg-[var(--vp-c-bg-elv)] text-white"
+              >↔</span
+            >
           </div>
           <input
             v-model.number="comparisonPosition"
-            class="comparison-slider"
+            class="absolute inset-0 z-[2] m-0 h-full w-full cursor-ew-resize opacity-0 [touch-action:pan-y]"
             type="range"
             min="0"
             max="100"
@@ -266,176 +332,211 @@ const ecosystem = [
             :aria-valuetext="`${comparisonPosition}% before, ${100 - comparisonPosition}% after`"
           />
         </div>
-        <p class="comparison-hint">
+        <p class="mt-3 text-[0.8125rem] text-neutral-400">
           Drag to compare, or choose Before / After. Both return the same user
           from <code>/api/user</code>.
         </p>
       </div>
-      <div class="reading-width history-conclusion">
+      <div class="max-w-[720px] space-y-4">
         <p>
-          <strong>The response stays the same. The coupling disappears.</strong>
-          The MSW handler doesn’t need to know whether your application uses
-          Fetch, Axios, or something else. It intercepts the request without
-          replacing the code that makes it.
+          Unified network definition, as revolutionary as it was, was just the
+          beginning. In years that followed, MSW has brought web standards to
+          your mocks so they become more powerful than ever and you have no
+          proprietary APIs to learn. It iterated on the interception algorithm
+          to keep the difference between the test and production as small as
+          possible. It brought you the means to mock anything: from HTTP streams
+          to GraphQL subscriptions.
         </p>
         <p>
-          Write it once. Use it in your tests, local development, and Storybook.
-          That separation changed API mocking from something you work around
-          into something you can rely on.
+          But, most importantly,
+          <strong>it showed you that mocking can be beautiful</strong>.
         </p>
       </div>
     </section>
 
-    <section class="sponsor-section" aria-labelledby="innovation-title">
-      <div class="reading-width">
-        <h2 id="innovation-title">
-          Nearly a decade of research, openly conducted and shared.
+    <section
+      class="col-start-2 min-w-0 border-t border-neutral-800 py-14 sm:py-20"
+      aria-labelledby="innovation-title"
+    >
+      <div class="max-w-[720px]">
+        <h2
+          id="innovation-title"
+          class="mb-6 mt-0 text-[clamp(1.6rem,3vw,2rem)] leading-[1.25] tracking-[-0.03em]"
+        >
+          A decade of research for everyone's benefit.
         </h2>
-        <p>
-          Since 2018, we’ve researched how to intercept requests without cutting
-          corners in the network stack. We publish that research so anyone can
-          build their own MSW. That’s the spirit of open source: sharing the
-          knowledge, not just the finished tool.
-        </p>
-        <p>
-          We share that work through
+        <p class="mt-4">
           <a
-            class="research-link"
+            class="text-primary underline underline-offset-[3px] [&_code]:text-[inherit]"
             href="https://github.com/mswjs/interceptors"
             target="_blank"
             rel="noopener noreferrer"
             ><code>@mswjs/interceptors</code></a
-          >. It’s the low-level interception library behind MSW and other tools,
-          including Nock. A better algorithm here makes mocking better for
-          everyone using it.
+          >, which is the library powering the network interception in Node.js,
+          remains my most challenging project to date. That difficulty is,
+          mostly, self-inflicted because I want to achieve the impossible: let
+          the requests happen while simultaneously giving you control over their
+          resolution.
         </p>
-        <p>
-          This work has earned grants from
+        <p class="mt-4">
+          That's not a contradictory statement, and I've spent the last decade
+          proving that.
+        </p>
+        <p class="mt-4">
+          My work on the interception algorithms has been recognized by grants
+          from
           <a
-            class="research-link"
+            class="text-primary underline underline-offset-[3px]"
             href="https://github.com/microsoft/foss-fund"
             target="_blank"
             rel="noopener noreferrer"
-            >Microsoft’s FOSS Fund</a
+            >Microsoft</a
           >
           and
           <a
-            class="research-link"
+            class="text-primary underline underline-offset-[3px]"
             href="https://engineering.atspotify.com/2024/11/congratulations-to-the-recipients-of-the-2024-spotify-foss-fund"
             target="_blank"
             rel="noopener noreferrer"
-            >Spotify’s FOSS Fund</a
-          >. We’re grateful for that support, and for the time it gives us to
-          keep researching the hard problems.
+            >Spotify</a
+          >, as well as other API mocking libraries, like Nock, that have
+          adopted those same algorithms so everyone has the best in class
+          interception even if they don't use MSW directly.
         </p>
       </div>
     </section>
 
     <section
-      class="sponsor-section dependency-layout"
+      class="col-start-2 grid min-w-0 grid-cols-1 items-center gap-9 border-t border-neutral-800 py-14 sm:py-20 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
       aria-labelledby="ecosystem-title"
     >
-      <figure class="dependency-manifest">
-        <div class="manifest-code vp-doc"><slot name="dependencies" /></div>
+      <figure class="mx-auto w-[min(400px,100%)] min-w-0 md:mx-0 md:w-auto">
+        <div
+          class="vp-doc [--manifest-focus:calc(16px_+_6.5_*_var(--manifest-line-height))] [--manifest-line-height:2.25rem] [mask-image:linear-gradient(to_bottom,transparent_calc(var(--manifest-focus)_-_2.5_*_var(--manifest-line-height)),#000_calc(var(--manifest-focus)_-_0.5_*_var(--manifest-line-height)),#000_calc(var(--manifest-focus)_+_0.5_*_var(--manifest-line-height)),transparent_calc(var(--manifest-focus)_+_2.5_*_var(--manifest-line-height)))] [&_.lang]:hidden [&_.language-json]:!m-0 [&_.language-json]:!border-0 [&_.language-json]:!bg-transparent [&_.language-json]:[--vp-code-font-size:1.125rem] [&_.line-numbers-wrapper]:hidden [&_code_.highlighted]:!-mx-5 [&_code_.highlighted]:!w-[calc(100%_+_40px)] [&_code_.highlighted]:!border-l [&_code_.highlighted]:!border-primary [&_code_.highlighted]:!bg-[var(--vp-code-line-highlight-color)] [&_code_.highlighted]:!pl-[19px] [&_code_.highlighted]:!pr-5 [&_pre]:!bg-transparent [&_pre]:!px-0 [&_pre]:!py-4 [&_pre_code]:!px-5 [&_pre_code]:!leading-[2]"
+        >
+          <slot name="dependencies" />
+        </div>
       </figure>
-      <div class="dependency-content">
-        <div class="reading-width">
-          <h2 id="ecosystem-title">A dependency of your dependencies.</h2>
-          <p>
-            You might be benefiting from MSW without knowing it. It’s used to
-            build and test libraries throughout the JavaScript
-            ecosystem—including tools you probably have open right now.
+      <div class="min-w-0">
+        <div class="max-w-[720px]">
+          <h2
+            id="ecosystem-title"
+            class="mb-6 mt-0 text-[clamp(1.6rem,3vw,2rem)] leading-[1.25] tracking-[-0.03em]"
+          >
+            A dependency of your dependencies.
+          </h2>
+          <p class="text-neutral-400">
+            Speaking of not using MSW directly... You're likely benefitting from
+            it, too, even if this the first time you hear about its existence.
+            MSW widely adopted by countless open-source projects, both for
+            internal testing and as as part of their public APIs.
           </p>
         </div>
-        <div class="ecosystem-list">
-          <article v-for="tool in ecosystem" :key="tool.name">
-            <h3>
-              <a :href="tool.url" target="_blank" rel="noopener noreferrer"
+        <div class="my-7">
+          <article
+            v-for="tool in ecosystem"
+            :key="tool.name"
+            class="grid grid-cols-1 gap-3 border-b border-neutral-800 py-6 sm:grid-cols-[100px_minmax(0,1fr)] sm:gap-6"
+          >
+            <h3 class="m-0 text-lg leading-6">
+              <a
+                :href="tool.url"
+                class="inline-flex items-center gap-2 hover:text-primary [&_svg]:h-4 [&_svg]:w-4"
+                target="_blank"
+                rel="noopener noreferrer"
                 >{{ tool.name }} <ArrowUpRightIcon aria-hidden="true"
               /></a>
             </h3>
-            <p>{{ tool.description }}</p>
+            <p class="max-w-[650px] text-neutral-400">{{ tool.description }}</p>
           </article>
         </div>
-        <p class="reading-width">
-          MSW brings these tools onto shared ground. Instead of each project
-          solving network interception alone, we can improve it together. Your
-          support reaches everyone building on that work.
+      </div>
+    </section>
+
+    <section
+      class="col-start-2 min-w-0 border-t border-neutral-800 pb-8 pt-14 sm:pt-20"
+      aria-labelledby="independence-title"
+    >
+      <div class="max-w-[720px]">
+        <h2
+          id="independence-title"
+          class="mb-6 mt-0 text-[clamp(2rem,3.4vw,2.8rem)] leading-[1.15] tracking-[-0.04em]"
+        >
+          Hugely independent.
+        </h2>
+        <p class="mb-4">
+          I've been offered funding to turn MSW into a startup. I've been
+          offered life-changing money to have the project associated with
+          certain companies. I've been given job opportunities that were,
+          essentially, acquihires.
+        </p>
+        <p class="mb-4">
+          This isn't bragging. Neither is this a cautionary tale of all the
+          chances I've squandered.
+        </p>
+        <p>
+          I just don't like talking about these things. One doesn't need to
+          scream about his principles to have them. Mine are reflected in my
+          work, which remains independent so I can always make decisions that
+          are in the best interest of the developers relying on it.
         </p>
       </div>
     </section>
 
     <section
-      class="sponsor-section sponsor-independence"
-      aria-labelledby="independence-title"
-    >
-      <div class="independence-layout">
-        <div>
-          <p class="section-label">Independent by choice</p>
-          <h2 id="independence-title">
-            Big impact.<br /><span>Still a personal project.</span>
-          </h2>
-          <p>
-            MSW has reached a scale—and a standard of quality—that most startups
-            never reach. It’s proof of what a focused open-source project can
-            do.
-          </p>
-          <p>
-            Sponsorship helps us stay accountable to the people using MSW, with
-            the freedom to do the work properly.
-          </p>
-        </div>
-      </div>
-      <div class="independence-principles" aria-label="Our commitments">
-        <span>Independent</span><span>Openly governed</span
-        ><span>MIT-licensed</span>
-      </div>
-    </section>
-
-    <section
-      class="sponsor-section sponsor-closing"
+      class="col-start-2 min-w-0 border-t border-neutral-800 pb-24 pt-14 sm:pt-20"
       aria-labelledby="closing-title"
     >
-      <div class="closing-layout">
+      <div
+        class="grid grid-cols-1 items-start gap-9 md:grid-cols-[1.1fr_1fr] md:gap-[72px]"
+      >
         <div>
-          <p class="section-label">What comes next</p>
-          <h2 id="closing-title">
-            You won't believe it,<br />but we can do <em>better.</em>
+          <p class="text-sm font-medium text-primary">What comes next</p>
+          <h2
+            id="closing-title"
+            class="mb-6 mt-0 text-[clamp(2rem,3.4vw,2.8rem)] leading-[1.15] tracking-[-0.04em]"
+          >
+            You won't believe it,<br />but we can do
+            <em class="not-italic text-primary">better.</em>
           </h2>
-          <p>
+          <p class="text-neutral-400">
             If you’ve ever finished a test with MSW and thought “that was
             easier,” we’d appreciate your support. And if your team relies on it
             every day, consider asking whether your company can sponsor.
           </p>
         </div>
-        <div class="time-for-work">
-          <p class="time-heading">
-            Your support gives us <strong>time.</strong>
+        <div>
+          <p class="text-base leading-[1.3] text-white">
+            Your support gives us
+            <strong
+              class="mt-2 block text-[4rem] font-medium tracking-[-0.065em]"
+              >time.</strong
+            >
           </p>
-          <ol>
-            <li>
-              <span>01</span>
+          <ol class="mt-6 list-none">
+            <li class="flex gap-5 border-t border-neutral-800 py-[18px]">
+              <span class="pt-1 font-mono text-xs text-primary">01</span>
               <div>
-                <strong>To go deeper.</strong>
-                <p>
+                <strong class="font-semibold">To go deeper.</strong>
+                <p class="mt-1 text-sm leading-relaxed text-neutral-400">
                   Research the network behavior that other tools work around.
                 </p>
               </div>
             </li>
-            <li>
-              <span>02</span>
+            <li class="flex gap-5 border-t border-neutral-800 py-[18px]">
+              <span class="pt-1 font-mono text-xs text-primary">02</span>
               <div>
-                <strong>To get it right.</strong>
-                <p>
+                <strong class="font-semibold">To get it right.</strong>
+                <p class="mt-1 text-sm leading-relaxed text-neutral-400">
                   Work through the difficult bugs and make MSW more reliable.
                 </p>
               </div>
             </li>
-            <li>
-              <span>03</span>
+            <li class="flex gap-5 border-t border-neutral-800 py-[18px]">
+              <span class="pt-1 font-mono text-xs text-primary">03</span>
               <div>
-                <strong>To share what we learn.</strong>
-                <p>
+                <strong class="font-semibold">To share what we learn.</strong>
+                <p class="mt-1 text-sm leading-relaxed text-neutral-400">
                   Write docs and examples that make the next person’s work
                   easier.
                 </p>
@@ -444,10 +545,14 @@ const ecosystem = [
           </ol>
         </div>
       </div>
-      <div class="closing-invitation">
+      <div
+        class="mt-10 grid grid-cols-1 items-center gap-6 rounded-xl border border-neutral-800 bg-[var(--vp-c-bg-elv)] p-7 md:grid-cols-[minmax(0,52ch)_auto] md:justify-between md:gap-16 md:p-10"
+      >
         <div>
-          <h3>Become a sponsor</h3>
-          <p class="sponsor-note">
+          <h3 class="m-0 text-2xl font-semibold leading-[1.25] text-white">
+            Become a sponsor
+          </h3>
+          <p class="mt-3 text-base leading-[1.65] text-neutral-400 text-pretty">
             Support the present and the future of API mocking on the web by
             becoming our GitHub sponsor. Every contribution counts. Thank you!
           </p>
@@ -456,7 +561,7 @@ const ecosystem = [
           :href="sponsorUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="sponsor-button"
+          class="inline-flex items-center justify-center gap-3 justify-self-start whitespace-nowrap rounded-lg border border-primary bg-[var(--vp-c-bg-elv)] px-[18px] py-3 font-semibold leading-6 text-white hover:bg-primary/[0.08] md:justify-self-end [&_svg]:h-5 [&_svg]:w-5 [&_svg]:text-primary"
           ><GitHubIcon aria-hidden="true" /> Sponsor on GitHub
           <ArrowUpRightIcon aria-hidden="true"
         /></a>
@@ -464,625 +569,3 @@ const ecosystem = [
     </section>
   </div>
 </template>
-
-<style scoped>
-.sponsor-page {
-  display: grid;
-  grid-template-columns: minmax(24px, 1fr) minmax(0, 1080px) minmax(24px, 1fr);
-  font-size: 1rem;
-  line-height: 1.75;
-}
-.sponsor-page > * {
-  grid-column: 2;
-  min-width: 0;
-}
-.sponsor-intro {
-  max-width: 720px;
-  padding-block: 80px;
-}
-.section-label {
-  font-size: 0.875rem;
-  color: var(--primary);
-  font-weight: 500;
-}
-.sponsor-page h1 {
-  margin: 20px 0 24px;
-  font-size: clamp(2.4rem, 4.5vw, 3.5rem);
-  line-height: 1.12;
-  letter-spacing: -0.045em;
-}
-.sponsor-page p {
-  color: var(--vp-c-text-2);
-}
-.sponsor-page p + p {
-  margin-top: 16px;
-}
-.sponsor-page .sponsor-intro p {
-  font-size: 1.125rem;
-  color: var(--vp-c-text-1);
-}
-.sponsor-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 24px;
-  padding: 12px 18px;
-  border: 1px solid var(--primary);
-  border-radius: 8px;
-  background: var(--vp-c-bg-elv);
-  color: var(--vp-c-text-1);
-  font-weight: 600;
-  line-height: 1.5;
-}
-.sponsor-button:hover {
-  background: rgb(var(--site-accent) / 8%);
-}
-.sponsor-button svg {
-  width: 20px;
-  height: 20px;
-  color: var(--primary);
-}
-.sponsor-page a:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 5px;
-}
-.sponsor-page .sponsor-note {
-  margin-top: 12px;
-  font-size: 0.8125rem;
-}
-.sponsor-section {
-  padding-block: 80px;
-  border-top: 1px solid var(--vp-c-divider);
-}
-.sponsor-page h2 {
-  margin: 0 0 24px;
-  font-size: clamp(1.6rem, 3vw, 2rem);
-  line-height: 1.25;
-  letter-spacing: -0.03em;
-}
-.impact-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 36px;
-  margin-top: 0;
-}
-.impact-stats > div {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.impact-stats > div + div {
-  padding-left: 36px;
-  border-left: 1px solid var(--vp-c-divider);
-}
-.impact-stats dt {
-  margin-bottom: 12px;
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--vp-c-text-1);
-}
-.impact-stats dd {
-  order: -1;
-  margin-bottom: 2px;
-  font-size: clamp(2.6rem, 5vw, 4rem);
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: -0.05em;
-  white-space: nowrap;
-}
-.impact-stats dd span {
-  font-size: 1.5rem;
-  letter-spacing: -0.025em;
-}
-.impact-stats p {
-  font-size: 0.875rem;
-}
-.impact-stats .billion-note {
-  color: var(--primary);
-  font-size: 1rem;
-}
-.impact-stats a:hover,
-.ecosystem-list a:hover {
-  color: var(--primary);
-}
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  font-size: 1rem;
-  font-weight: 600;
-}
-.text-link svg,
-.ecosystem-list svg {
-  width: 16px;
-  height: 16px;
-}
-.maturity-note {
-  display: block;
-  margin-top: 16px;
-  font-size: 0.8125rem;
-}
-.download-chart {
-  width: 100%;
-  margin-top: 20px;
-}
-.download-graph {
-  display: block;
-  width: 100%;
-  overflow: visible;
-}
-.graph-grid {
-  fill: none;
-  stroke: var(--vp-c-divider);
-  stroke-width: 1;
-}
-.graph-area {
-  fill: rgb(var(--site-accent) / 8%);
-}
-.graph-line {
-  fill: none;
-  stroke: var(--primary);
-  stroke-width: 2;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-.graph-point {
-  fill: var(--primary);
-}
-.impact-stats .graph-summary {
-  margin-top: 10px;
-  font-size: 0.8125rem;
-  color: var(--vp-c-text-1);
-}
-.stats-note {
-  margin-top: 24px;
-  font-size: 0.6875rem;
-}
-.sponsor-page > .sponsor-companies {
-  grid-column: 1 / -1;
-  padding-block: 80px;
-  border-block: 1px solid var(--vp-c-divider);
-  background: var(--vp-c-bg-elv);
-}
-.companies-inner {
-  text-align: center;
-  width: min(1080px, 100% - 48px);
-  margin-inline: auto;
-}
-.sponsor-companies + .sponsor-section {
-  border-top: 0;
-}
-.company-logos {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  align-items: center;
-  gap: 48px;
-  max-width: 920px;
-  margin: 36px auto;
-  color: var(--vp-c-text-2);
-}
-.company-logos svg {
-  width: 100%;
-  height: auto;
-  fill: currentColor;
-}
-.sponsor-page .companies-heading {
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  color: var(--vp-c-text-1);
-}
-.sponsor-page .companies-description {
-  margin-top: 6px;
-  font-size: 0.9375rem;
-}
-.open-source-note {
-  font-size: 0.875rem;
-  line-height: 1.75;
-}
-.open-source-note strong {
-  font-weight: 500;
-  color: var(--vp-c-text-1);
-}
-.sponsor-independence .section-label {
-  margin-bottom: 12px;
-  color: var(--primary);
-}
-.reading-width {
-  max-width: 720px;
-}
-.code-comparison {
-  margin-block: 32px;
-  max-width: 760px;
-}
-.comparison-labels {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-.comparison-labels button {
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-.comparison-labels button:hover {
-  color: var(--primary);
-}
-.comparison-stage {
-  position: relative;
-  display: grid;
-  border: 1px solid var(--vp-c-border);
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--vp-code-block-bg);
-}
-.comparison-code {
-  position: relative;
-  z-index: 0;
-  grid-area: 1 / 1;
-  min-width: 0;
-  background: var(--vp-code-block-bg);
-}
-.comparison-before {
-  z-index: 1;
-  clip-path: inset(0 calc(100% - var(--comparison-position)) 0 0);
-}
-.comparison-code :deep(div[class*='language-']) {
-  height: 100%;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-}
-.comparison-code :deep(pre),
-.comparison-code :deep(pre code) {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-.comparison-divider {
-  position: absolute;
-  z-index: 3;
-  inset-block: 0;
-  left: var(--comparison-position);
-  width: 2px;
-  background: var(--primary);
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-.comparison-divider span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 44px;
-  border: 1px solid var(--primary);
-  border-radius: 8px;
-  background: var(--vp-c-bg-elv);
-  color: var(--vp-c-text-1);
-}
-.comparison-slider {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: ew-resize;
-  touch-action: pan-y;
-}
-.comparison-stage:focus-within {
-  outline: 2px solid var(--primary);
-  outline-offset: 3px;
-}
-.comparison-hint {
-  margin-top: 12px;
-  font-size: 0.8125rem;
-}
-.research-link {
-  color: var(--primary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.research-link code {
-  color: inherit;
-}
-.history-conclusion strong {
-  color: var(--vp-c-text-1);
-}
-.ecosystem-list {
-  margin-block: 28px;
-}
-.ecosystem-list article {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 24px;
-  padding-block: 24px;
-  border-bottom: 1px solid var(--vp-c-divider);
-}
-.sponsor-page .ecosystem-list h3 {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.5;
-}
-.ecosystem-list a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.ecosystem-list p {
-  max-width: 650px;
-}
-.dependency-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  align-items: center;
-  gap: 48px;
-}
-.dependency-manifest {
-  min-width: 0;
-}
-.manifest-code {
-  --manifest-line-height: 2.25rem;
-  --manifest-focus: calc(16px + 6.5 * var(--manifest-line-height));
-  mask-image: linear-gradient(
-    to bottom,
-    transparent calc(var(--manifest-focus) - 2.5 * var(--manifest-line-height)),
-    #000 calc(var(--manifest-focus) - 0.5 * var(--manifest-line-height)),
-    #000 calc(var(--manifest-focus) + 0.5 * var(--manifest-line-height)),
-    transparent calc(var(--manifest-focus) + 2.5 * var(--manifest-line-height))
-  );
-}
-.manifest-code :deep(div[class*='language-']) {
-  margin: 0;
-  border: 0;
-  background: transparent;
-  --vp-code-font-size: 1.125rem;
-}
-.manifest-code :deep(pre) {
-  padding: 16px 0;
-  background: transparent !important;
-}
-.manifest-code :deep(pre code) {
-  padding-inline: 20px;
-  line-height: 2;
-}
-.manifest-code :deep(code .highlighted) {
-  margin-inline: -20px;
-  padding-inline: 19px 20px;
-  width: calc(100% + 40px);
-  background: var(--vp-code-line-highlight-color);
-  border-left: 1px solid var(--primary);
-}
-.manifest-code :deep(.line-numbers-wrapper),
-.manifest-code :deep(.lang) {
-  display: none;
-}
-.dependency-content {
-  min-width: 0;
-}
-.dependency-content .ecosystem-list article {
-  grid-template-columns: 100px minmax(0, 1fr);
-}
-.sponsor-closing {
-  padding-bottom: 96px;
-}
-.independence-layout,
-.independence-layout {
-  max-width: 720px;
-}
-.closing-layout {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  align-items: center;
-  gap: 72px;
-}
-.sponsor-page .independence-layout h2,
-.sponsor-page .closing-layout h2 {
-  font-size: clamp(2rem, 3.4vw, 2.8rem);
-  line-height: 1.15;
-  letter-spacing: -0.04em;
-}
-.independence-layout h2 span {
-  color: var(--vp-c-text-2);
-}
-.sponsor-section.sponsor-independence {
-  padding-bottom: 32px;
-}
-.independence-principles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 40px;
-  padding-block: 20px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg-elv);
-  font-size: 1rem;
-  font-weight: 500;
-}
-.independence-principles span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding-inline: 16px;
-}
-.independence-principles span + span {
-  border-left: 1px solid var(--vp-c-divider);
-}
-.independence-principles span::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--primary);
-}
-.closing-layout {
-  align-items: start;
-}
-.closing-layout em {
-  font-style: normal;
-  color: var(--primary);
-}
-.sponsor-page .time-heading {
-  color: var(--vp-c-text-1);
-  font-size: 1rem;
-  line-height: 1.3;
-}
-.time-heading strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 4rem;
-  font-weight: 500;
-  letter-spacing: -0.065em;
-}
-.time-for-work ol {
-  margin-top: 24px;
-  list-style: none;
-}
-.time-for-work li {
-  display: flex;
-  gap: 20px;
-  padding-block: 18px;
-  border-top: 1px solid var(--vp-c-divider);
-}
-.time-for-work li > span {
-  padding-top: 4px;
-  font-family: var(--vp-font-family-mono);
-  color: var(--primary);
-  font-size: 0.75rem;
-}
-.time-for-work li strong {
-  font-weight: 600;
-}
-.time-for-work li p {
-  margin-top: 4px;
-  font-size: 0.875rem;
-  line-height: 1.6;
-}
-.closing-invitation {
-  display: grid;
-  grid-template-columns: minmax(0, 52ch) auto;
-  justify-content: space-between;
-  align-items: center;
-  gap: 64px;
-  margin-top: 40px;
-  padding: 40px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  background: var(--vp-c-bg-elv);
-}
-.sponsor-page .closing-invitation h3 {
-  margin: 0;
-  line-height: 1.25;
-  color: var(--vp-c-text-1);
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-.closing-invitation .sponsor-button {
-  margin-top: 0;
-  justify-self: end;
-  white-space: nowrap;
-}
-.sponsor-page .closing-invitation .sponsor-note {
-  margin-top: 12px;
-  font-size: 1rem;
-  line-height: 1.65;
-  text-wrap: pretty;
-}
-@media (max-width: 800px) {
-  .dependency-layout {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-  .dependency-manifest {
-    width: min(400px, 100%);
-    margin-inline: auto;
-  }
-  .independence-layout,
-  .closing-layout {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-
-  .closing-invitation {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 28px;
-  }
-  .closing-invitation .sponsor-button {
-    justify-self: start;
-  }
-  .impact-stats {
-    gap: 20px;
-  }
-  .impact-stats > div + div {
-    padding-left: 20px;
-  }
-  .impact-stats dd {
-    font-size: 2.6rem;
-  }
-}
-@media (max-width: 600px) {
-  .independence-principles {
-    grid-template-columns: 1fr;
-    padding: 0 20px;
-  }
-  .independence-principles span {
-    justify-content: flex-start;
-    padding: 14px 0;
-  }
-  .independence-principles span + span {
-    border-left: 0;
-    border-top: 1px solid var(--vp-c-divider);
-  }
-  .sponsor-page {
-    grid-template-columns: 20px minmax(0, 1fr) 20px;
-  }
-  .sponsor-intro {
-    padding-block: 48px 56px;
-  }
-  .sponsor-section {
-    padding-block: 56px;
-  }
-  .impact-stats {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  .impact-stats > div + div {
-    padding: 28px 0 0;
-    border-left: 0;
-    border-top: 1px solid var(--vp-c-divider);
-  }
-  .impact-stats dt {
-    min-height: 0;
-    margin-bottom: 12px;
-  }
-  .impact-stats dd {
-    font-size: 3.5rem;
-  }
-  .download-chart {
-    max-width: 240px;
-  }
-  .sponsor-page > .sponsor-companies {
-    padding-block: 56px;
-  }
-  .company-logos {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    max-width: 400px;
-    margin-block: 28px;
-  }
-  .ecosystem-list article,
-  .dependency-content .ecosystem-list article {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-}
-</style>

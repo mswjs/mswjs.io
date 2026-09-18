@@ -6,16 +6,22 @@ keywords:
   - graphql
   - handler
   - namespace
+  - link
 ---
 
 The `graphql` namespace helps you create request handlers to intercept requests to a GraphQL API.
 
 ## Call signature
 
-```ts
-import { graphql, HttpResponse } from 'msw'
+GraphQL mocking is _link-first_: you start by creating a link to the GraphQL endpoint you wish to mock with `graphql.link()`, and then define handlers for the operations against that endpoint on the returned link.
 
-graphql.query('GetUser', ({ query, variables }) => {
+```ts /graphql.link/ {4}
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query('GetUser', ({ query, variables }) => {
   return HttpResponse.json({
     data: {
       user: { name: 'John' },
@@ -24,21 +30,54 @@ graphql.query('GetUser', ({ query, variables }) => {
 })
 ```
 
-## Standard methods
+## `graphql.link(url)`
 
-The `graphql` namespace contains keys that represent GraphQL operation types (e.g. "query", "mutation").
+The `.link()` method creates a _GraphQL link_ that intercepts GraphQL operations scoped to the provided endpoint. The `url` argument accepts the same [request predicates](/docs/http/intercepting-requests/) as the `http` handlers, including absolute and relative URLs, path parameters, wildcards, and regular expressions.
+
+```js {4,5,8,18}
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
+
+const github = graphql.link('https://api.github.com/graphql')
+const stripe = graphql.link('https://api.stripe.com/graphql')
+
+export const handlers = [
+  github.query('GetPayment', () => {
+    return HttpResponse.json({
+      data: {
+        payment: {
+          id: 'e16fded7-64eb-4b69-b4bd-5345507a5a92',
+          issuer: { login: 'octocat' },
+        },
+      },
+    })
+  }),
+  stripe.query('GetPayment', () => {
+    return HttpResponse.json({
+      errors: [{ message: 'Cannot process payment' }],
+    })
+  }),
+]
+```
+
+> Although the name of the `GetPayment` query is the same, it will be handled differently depending on the requested endpoint.
+
+The link contains keys that represent GraphQL operation types (e.g. "query", "mutation") as well as a special `.operation()` method to intercept any GraphQL operation.
 
 ::: warning
 GraphQL subscriptions are currently not supported.
 :::
 
-### `graphql.query(queryName, resolver)`
+### `.query(queryName, resolver)`
 
 ```js /GetUser/ {4}
-import { graphql, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
 
 export const handlers = [
-  graphql.query('GetUser', ({ query, variables }) => {
+  api.query('GetUser', ({ query, variables }) => {
     const { userId } = variables
 
     return HttpResponse.json({
@@ -65,10 +104,13 @@ query GetUser($userId: String!) {
 The `queryName` argument can also be a [`TypedDocumentNode`](https://the-guild.dev/blog/typed-document-node) instance. This means you can pass the generated document types based on your GraphQL operations directly to MSW when using tools like [GraphQL Code Generator](https://the-guild.dev/graphql/codegen).
 
 ```js /GetUserDocument/
-import { graphql, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
 import { GetUserDocument } from './generated/types'
 
-graphql.query(GetUserDocument, ({ query, variables }) => {
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query(GetUserDocument, ({ query, variables }) => {
   return HttpResponse.json({
     data: {
       user: {
@@ -82,13 +124,16 @@ graphql.query(GetUserDocument, ({ query, variables }) => {
 
 > MSW will infer the query and variable types from the given document node.
 
-### `graphql.mutation(mutationName, resolver)`
+### `.mutation(mutationName, resolver)`
 
 ```js /CreateUser/ {4}
-import { graphql, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
 
 export const handlers = [
-  graphql.mutation('CreateUser', ({ query, variables }) => {
+  api.mutation('CreateUser', ({ query, variables }) => {
     const { input } = variables
 
     return HttpResponse.json({
@@ -115,10 +160,13 @@ mutation CreateUser($userInput: CreateUserInput!) {
 The `mutationName` argument can also be a [`TypedDocumentNode`](https://the-guild.dev/blog/typed-document-node) instance. This means you can pass the generated document types based on your GraphQL operations directly to MSW when using tools like [GraphQL Code Generator](https://the-guild.dev/graphql/codegen).
 
 ```js /CreateUserDocument/
-import { graphql, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
 import { CreateUserDocument } from './generated/types'
 
-graphql.mutation(CreateUserDocument, ({ variables }) => {
+const api = graphql.link('https://api.example.com/graphql')
+
+api.mutation(CreateUserDocument, ({ variables }) => {
   return HttpResponse.json({
     data: {
       user: {
@@ -129,53 +177,21 @@ graphql.mutation(CreateUserDocument, ({ variables }) => {
 })
 ```
 
-## Custom methods
+### `.operation(resolver)`
 
-The `graphql` namespace also contains special keys that provide you with additional functionality but do not correspond to any GraphQL operation types.
-
-### `graphql.link(url)`
-
-The `.link()` method returns a subset of the `graphql` namespace to intercept GraphQL operations scoped to the provided endpoint. You can use this method to disambiguate between GraphQL operations.
-
-```js {3,4,7,17}
-import { graphql, HttpResponse } from 'msw'
-
-const github = graphql.link('https://api.github.com/graphql')
-const stripe = graphql.link('https://api.stripe.com/graphql')
-
-export const handlers = [
-  github.query('GetPayment', () => {
-    return HttpResponse.json({
-      data: {
-        payment: {
-          id: 'e16fded7-64eb-4b69-b4bd-5345507a5a92',
-          issuer: { login: 'octocat' },
-        },
-      },
-    })
-  }),
-  stripe.query('GetPayment', () => {
-    return HttpResponse.json({
-      errors: [{ message: 'Cannot process payment' }],
-    })
-  }),
-]
-```
-
-> Although the name of the `GetPayment` query is the same, it will be handled differently depending on the requested endpoint.
-
-### `graphql.operation(resolver)`
-
-The `.operation()` method intercepts all GraphQL operations regardless of their type and name. It's designed to cover the following scenarios:
+The `.operation()` method intercepts all GraphQL operations against the linked endpoint regardless of their type and name. It's designed to cover the following scenarios:
 
 - Handling of anonymous GraphQL operations;
 - Resolving any outgoing GraphQL operations against a [mock GraphQL schema](/docs/graphql/schema-first-mocking).
 
 ```js {4}
-import { graphql, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
 
 export const handlers = [
-  graphql.operation(({ query, variables }) => {
+  api.operation(({ query, variables }) => {
     // Intercept all GraphQL operations and respond
     // to them with the error response.
     return HttpResponse.json({
@@ -187,7 +203,7 @@ export const handlers = [
 
 ## Resolver argument
 
-The response resolver function for every `graphql.*` method has the following keys in its argument object:
+The response resolver function for every link method has the following keys in its argument object:
 
 | Name            | Type                                                                  | Description                                              |
 | --------------- | --------------------------------------------------------------------- | -------------------------------------------------------- |
@@ -195,17 +211,17 @@ The response resolver function for every `graphql.*` method has the following ke
 | `variables`     | `object`                                                              | Variables of this GraphQL query.                         |
 | `operationName` | `string`                                                              | Operation name (e.g. `GetUser`).                         |
 | `request`       | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                |
-| `cookies`       | `object`                                                              | Request's [cookies](/docs/http/#reading-request-cookies). |
+| `cookies`       | `object`                                                              | Request's [cookies](/docs/http/intercepting-requests/cookies). |
 
 You access these arguments on the response resolver argument object.
 
 ```js
-graphql.query('GetUser', ({ query, variables, operationName, request }) => {})
+api.query('GetUser', ({ query, variables, operationName, request }) => {})
 ```
 
 ## Handler options
 
-All methods of the `http` namespace accept an optional third argument representing request handler options. See below for the list of supported properties on that options object.
+All link methods accept an optional third argument representing request handler options. See below for the list of supported properties on that options object.
 
 ### `once`
 
@@ -213,8 +229,8 @@ All methods of the `http` namespace accept an optional third argument representi
 
 If set to `true`, marks this request handler as used after the first successful match. Used request handlers have no effect on the outgoing traffic and will be ignored during request interception.
 
-```js {9}
-graphql.query(
+```js {11}
+api.query(
   'GetUser',
   () => {
     return HttpResponse.json({

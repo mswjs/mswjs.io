@@ -255,7 +255,7 @@ export class SearchParamsHandler extends RequestHandler {
 ::: code-group
 
 ```js [handlers.js] /searchParams/1
-import { HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
 import { SearchParamsHandler } from './SearchParamsHandler'
 
 export const handlers = [

@@ -12,7 +12,7 @@ To provide a more familiar experience when mocking third-party WebSocket clients
 For example, here's how to handle Socket.IO communication using MSW and a designated SocketIO binding:
 
 ```js /toSocketIo/ {2,8}
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 import { toSocketIo } from '@mswjs/socket.io-binding'
 
 const chat = ws.link('wss://chat.example.com')

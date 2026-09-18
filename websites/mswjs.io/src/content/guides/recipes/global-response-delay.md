@@ -18,8 +18,9 @@ The request handlers you define are executed in order, which means that a single
 
 You can take advantage of that execution order and introduce a passthrough request handler that matches all outgoing requests and adds a delay in its response resolver without returning a mocked response.
 
-```js {4-6} /http.all/
-import { http, delay, HttpResponse } from 'msw'
+```js {5-7} /http.all/
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils'
 
 export const handlers = [
   http.all('*', async () => {
@@ -44,8 +45,9 @@ You can create a higher-order response resolver that encapsulates the delay logi
 
 ::: code-group
 
-```ts [with-delay.ts] {4-8} /delay/2
-import { delay, type HttpResponseResolver } from 'msw'
+```ts [with-delay.ts] {5-9} /delay/2
+import { type HttpResponseResolver } from 'msw/http'
+import { delay } from 'msw/utils'
 
 export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
   return async (info) => {
@@ -63,7 +65,7 @@ export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver 
 ::: code-group
 
 ```ts [handlers.ts] {8,14} /withDelay/2,3
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { withDelay } from './with-delay'
 
 export const handlers = [

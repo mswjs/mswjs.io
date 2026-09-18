@@ -18,7 +18,7 @@ We recommend utilizing a single `handlers.js` module to describe the successful 
 ::: code-group
 
 ```js [mocks/handlers.js]
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.get('/user', () => {
@@ -30,7 +30,7 @@ export const handlers = [
 :::
 
 ```js {5,21-25}
-import { http } from 'msw'
+import { http } from 'msw/http'
 import { server } from '../mocks/node'
 
 afterEach(() => {
@@ -86,7 +86,7 @@ mocks/
 ::: code-group
 
 ```js [mocks/handlers/user.js]
-import { http } from 'msw'
+import { http } from 'msw/http'
 
 // These request handlers focus on the endpoints
 // that concern the user.
@@ -133,7 +133,7 @@ server.use(...userHandlers)
 As the first step, we recommend abstracting the repetitive logic into utility functions that you can then reuse across different request handlers.
 
 ```js /utilOne/ /utilTwo/ {6,9}
-import { http } from 'msw'
+import { http } from 'msw/http'
 import { utilOne, utilTwo } from './utils'
 
 export const handlers = [
@@ -149,7 +149,7 @@ export const handlers = [
 For more complex scenarios, you can introduce [higher-order response resolvers](/guides/recipes/higher-order-resolver) that encapsulate multiple parts of request handling logic at once.
 
 ```js /withAuth/1,3,4 {5-6}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { withAuth } from './withAuth'
 
 export const handlers = [

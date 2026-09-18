@@ -108,6 +108,42 @@ server.events.on('response:mocked', ({ request, requestId, response }) => {
 
 The `response:bypass` event is emitted whenever an original (bypassed) response is sent. Similar to the `response:mocked` event, you can access the `response` and `request` references in the listener.
 
+## WebSocket events
+
+WebSocket events are emitted for the intercepted WebSocket connections. Learn more about intercepting WebSocket connections with the [`ws`](/api/ws) namespace.
+
+### `websocket:connection`
+
+The `websocket:connection` event is emitted whenever a WebSocket connection is intercepted, before any event handlers are resolved against it. You can access the connection `url` and `protocols` in the listener to this event.
+
+| Property    | Type                                    | Description                                                        |
+| ----------- | --------------------------------------- | ------------------------------------------------------------------ |
+| `url`       | `URL`                                   | The URL of the intercepted WebSocket connection.                   |
+| `protocols` | `string \| Array<string> \| undefined` | The list of protocols used when establishing this connection.      |
+
+```js
+server.events.on('websocket:connection', ({ url, protocols }) => {
+  console.log('WebSocket connection:', url.href, protocols)
+})
+```
+
+### `websocket:error`
+
+The `websocket:error` event is emitted whenever an intercepted WebSocket connection errors. This includes the initial connection errors (e.g. an unhandled connection with the `"error"` strategy of [`onUnhandledFrame`](/api/setup-server/listen#onunhandledframe), or a failed connection to the original server) as well as errors that happen after the connection has been established (e.g. an exception thrown in the connection listener). This event is not emitted when the connection is closed cleanly.
+
+| Property    | Type                                    | Description                                                                      |
+| ----------- | --------------------------------------- | -------------------------------------------------------------------------------- |
+| `url`       | `URL`                                   | The URL of the errored WebSocket connection.                                     |
+| `protocols` | `string \| Array<string> \| undefined` | The list of protocols used when establishing this connection.                    |
+| `error`     | `unknown`                               | The error that caused the connection to error, if any (e.g. the thrown exception). |
+
+```js
+server.events.on('websocket:error', ({ url, protocols, error }) => {
+  console.log('WebSocket connection to %s errored!', url.href)
+  console.error(error)
+})
+```
+
 ## Other events
 
 ### `unhandledException`
@@ -120,6 +156,8 @@ server.events.on('unhandledException', ({ request, requestId, error }) => {
   console.error(error)
 })
 ```
+
+> For WebSocket connections, this event is emitted whenever the connection listener throws. In that case, the listener receives the connection `url`, `protocols`, and the thrown `error` instead.
 
 ## Removing listeners
 

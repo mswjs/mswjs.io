@@ -47,14 +47,14 @@ This stands true for more targeted tests as well since you can specify additiona
 
 ## Unhandled requests
 
-To make sure your tested code doesn't perform any unknown HTTP requests, use the `onUnhandledRequest` option of the `worker.start()`/`server.listen()`:
+To make sure your tested code doesn't perform any unknown HTTP requests, use the `onUnhandledFrame` option of the `worker.start()`/`server.listen()`:
 
 ```js {5}
 server.listen({
   // This tells MSW to throw an error whenever it
   // encounters a request that doesn't have a
   // matching request handler.
-  onUnhandledRequest: 'error',
+  onUnhandledFrame: 'error',
 })
 ```
 

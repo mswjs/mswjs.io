@@ -27,7 +27,7 @@ MSW provides a designated [Source](https://source.mswjs.io) package to help you 
 ::: code-group
 
 ```js [mocks/browser.js]
-import { setupWorker } from 'msw'
+import { setupWorker } from 'msw/browser'
 import { fromTraffic } from '@msw/source/traffic'
 import * as har from './snapshort.har'
 

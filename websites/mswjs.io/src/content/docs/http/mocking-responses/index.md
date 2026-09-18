@@ -24,7 +24,7 @@ While you always write your mocks from the _server's perspective_, the Fetch API
 You can respond to an intercepted request with a mocked response by constructing the Fetch API `Response` instance you want and returning it from the response resolver.
 
 ```ts {5} /HttpResponse.text/
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.get<never, never, string>('/resource', () => {

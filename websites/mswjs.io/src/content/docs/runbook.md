@@ -16,7 +16,7 @@ Check the version of Node.js your project is using:
 node -v
 ```
 
-If it's lower than Node.js v18, [upgrade to the latest Node.js version](https://nodejs.org/). **We do not look into issues happening on unsupported versions of Node.js.**
+If it's lower than Node.js v22, [upgrade to the latest Node.js version](https://nodejs.org/). **We do not look into issues happening on unsupported versions of Node.js.**
 
 ### Check MSW version
 
@@ -76,7 +76,7 @@ Go to the request handler you've created for the problematic request and add a c
 ::: code-group
 
 ```js [src/mocks/handlers.js] {5}
-import { http } from 'msw'
+import { http } from 'msw/http'
 
 export const handlers = [
   http.get('/some/request', ({ request }) => {
@@ -112,7 +112,7 @@ If the request handler is invoked but the request still doesn't get the mocked r
 ::: code-group
 
 ```js [src/mocks/handlers.js] {7}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.get('/some/request', ({ request }) => {

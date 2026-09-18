@@ -11,7 +11,7 @@ Mock Service Worker does not provide any configuration to apply a base URL to mu
 For example, here's how you can create a `github()` helper for building URLs against the GitHub API:
 
 ```ts /github/1,3
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 function github(path) {
   return new URL(path, 'https://github.com').href

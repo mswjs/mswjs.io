@@ -14,3 +14,9 @@
 Counts measure package downloads, not unique developers or installations.
 Company logos reuse the homepage's existing adoption list; they do not imply
 that these companies sponsor MSW.
+- Comparisons: `comparisons.packages` holds the last-month npm downloads
+  (`https://api.npmjs.org/downloads/point/last-month/<package>`, the 30-day
+  window recorded in `comparisons.period`) for MSW and the packages the copy
+  compares it to; `comparisons.repositories` holds `stargazers_count` from
+  `https://api.github.com/repos/<owner>/<name>` for the same date. Refresh
+  them together with the rest of the snapshot so every number shares `asOf`.

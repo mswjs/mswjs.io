@@ -30,7 +30,7 @@ jest.spyOn(window, 'fetch').mockResolvedValue({
 
 ```js
 // Your mocks describe what the API returns.
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.get('/api/user', () => {

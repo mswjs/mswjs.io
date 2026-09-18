@@ -161,7 +161,7 @@ onBeforeUnmount(() => {
          section from "lg" up; above the heading, rotated a quarter turn,
          below that (the bars stand upright and fill top to bottom; the
          column is reversed so the first scene still comes first). -->
-    <div class="flex h-14 items-center justify-center pt-8 lg:contents">
+    <div class="mt-24 flex h-14 items-center justify-center md:mt-32 lg:contents">
       <div
         class="flex flex-col items-end max-lg:flex-col-reverse max-lg:items-start max-lg:rotate-90 lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2"
         role="tablist"
@@ -189,7 +189,7 @@ onBeforeUnmount(() => {
         </button>
       </div>
     </div>
-    <header class="px-6 py-16 text-center md:py-24">
+    <header class="px-6 pt-8 pb-16 text-center md:pb-24 lg:pt-32">
       <h2 class="relative mx-auto mb-0 max-w-xl capitalize">
         <slot name="heading" />&#32;<span
           class="scene-word-slot relative inline-block whitespace-nowrap align-bottom text-primary"

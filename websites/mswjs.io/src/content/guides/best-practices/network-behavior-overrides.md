@@ -22,7 +22,7 @@ With the `.use()`, you can _prepend_ any list of request handlers to the initial
 The list of request handlers provided to the `setupWorker()`/`setupServer()` function calls is called _initial request handlers_.
 
 ```js {5-8}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer(
@@ -36,7 +36,7 @@ const server = setupServer(
 Any request handlers added past this point are referred to as _runtime request handlers_. This is the kind of request handlers you are adding with the `.use()` function:
 
 ```js {12-15}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer(
@@ -65,7 +65,7 @@ The `.use()` API allows you to establish different types of network overrides de
 By default, calling `.use()` will create a _permanent_ override.
 
 ```js /.use/ {10-14}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer(
@@ -114,7 +114,7 @@ You can remove any request handlers added via `.use()` at any point in time by c
 This is particularly useful to clean up any runtime request handlers introduced in individual tests so they don't affect unrelated tests.
 
 ```js {15-17}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer(

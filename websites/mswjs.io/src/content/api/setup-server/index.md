@@ -26,7 +26,7 @@ Reusing the same handlers between the browser and Node.js may have certain limit
 Using `setupServer` is similar to `setupWorker`. It comes down to providing it with the list of request handlers, and starting the request interception.
 
 ```js {2,5,15}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 // Provide the server-side API with the request handlers.
@@ -45,7 +45,8 @@ server.listen()
 
 ::: warning
   Pay attention that `setupServer` is imported from `msw/node`, while the
-  request handlers are imported from `msw` as usual.
+  request handlers are imported from the respective namespace modules
+  (e.g. `msw/http`) as usual.
 :::
 
 One of the most common usages of Mock Service Worker in Node.js is during integration tests. Integrate API mocking as a part of your testing setup to make sure you start and clean up the request interception logic appropriately.

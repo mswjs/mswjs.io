@@ -16,8 +16,9 @@ const response = await getResponse(handlers, request)
 
 ## Usage
 
-```js /getResponse/ {10}
-import { http, HttpResponse, getResponse } from 'msw'
+```js /getResponse/ {11}
+import { http, HttpResponse } from 'msw/http'
+import { getResponse } from 'msw'
 
 const handlers = [
   http.get('http://localhost/user', () => {

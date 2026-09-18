@@ -90,7 +90,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
   { word: 'end-to-end testing', slot: 'scene-e2e' },
   { word: 'development', slot: 'scene-development' },
   { word: 'debugging', slot: 'scene-debugging' },
-  { word: 'Storybook', slot: 'scene-storybook' },
+  { word: 'perfect demos', slot: 'scene-storybook' },
 ]
 </script>
 
@@ -113,8 +113,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
     </template>
 
     <template #title>
-      Industry standard&#32;<span class="whitespace-nowrap">API mocking</span
-      >&#32;for JavaScript.
+      The industry standard for API mocking in JavaScript.
     </template>
     <template #subtitle>
       Mock Service Worker is an API mocking library that allows you to write
@@ -172,11 +171,11 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
   <section>
     <Container class="home-frame">
       <div class="home-frame-rails -mb-px border border-neutral-800">
-        <header
-          class="border-b border-neutral-800 px-6 py-16 text-center md:py-24"
-        >
-          <h2 class="mb-0 capitalize max-w-lg mx-auto">
-            API mocking that feels like an extension of JavaScript.
+        <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
+          <h2 class="mb-0 capitalize max-w-lg md:max-w-2xl mx-auto">
+            API mocking that feels
+            <span class="whitespace-nowrap">like an extension</span> of
+            JavaScript.
           </h2>
         </header>
         <div class="grid md:grid-cols-2">
@@ -184,7 +183,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
             plain
             title="Standard-first API mocking"
             code-placement="bottom-right"
-            class="border-b border-neutral-800 md:border-r"
+            class="border-b border-neutral-800 md:border-r md:border-fade-t"
           >
             <template #description>
               MSW doesn't reinvent the wheel. How do you handle the network in
@@ -237,8 +236,10 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
   <!-- Interception -->
   <section>
     <Container class="home-frame">
-      <div class="home-frame-rails -mb-px border border-neutral-800">
-        <header class="px-6 py-24 text-center md:py-32">
+      <div
+        class="home-frame-rails -mb-px border border-neutral-800 py-24 md:py-32"
+      >
+        <header class="px-6 pb-16 text-center md:pb-24">
           <h2 class="mb-6 capitalize max-w-lg mx-auto">
             API mocking that actually lets requests happen
           </h2>
@@ -250,7 +251,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
         </header>
 
         <!-- Browser -->
-        <div class="p-8 md:p-12 lg:p-14">
+        <div class="mx-8 mb-8 md:mx-12 md:mb-12 lg:mx-16 lg:mb-16">
           <div class="xl:mx-auto xl:max-w-5xl">
             <p
               class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
@@ -279,8 +280,10 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
           </div>
         </div>
 
+        <hr />
+
         <!-- Node.js -->
-        <div class="border-t border-neutral-800 p-8 md:p-12 lg:p-14">
+        <div class="m-8 mb-0 md:m-12 md:mb-0 lg:m-16 lg:mb-0">
           <div class="xl:mx-auto xl:max-w-5xl">
             <p
               class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
@@ -328,7 +331,9 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
   <!-- Source of truth -->
   <section>
     <Container class="home-frame">
-      <div class="home-frame-rails -mb-px overflow-hidden border border-neutral-800">
+      <div
+        class="home-frame-rails -mb-px overflow-hidden border border-neutral-800"
+      >
         <SourceOfTruth :scenes="sourceOfTruthScenes">
           <template #heading>API mocking as a standalone layer for</template>
           <template
@@ -347,11 +352,9 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
   <section>
     <Container class="home-frame">
       <div class="home-frame-rails -mb-px border border-neutral-800">
-        <header
-          class="border-b border-neutral-800 px-6 py-16 text-center md:py-24"
-        >
+        <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
           <h2 class="mb-0 capitalize max-w-lg mx-auto">
-            Beloved by every developer who ships quality apps.
+            API mocking beloved by all who ships quality apps.
           </h2>
         </header>
 
@@ -361,7 +364,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
             author="Kent C. Dodds"
             position="Software Engineer and Educator"
             :avatar-url="kentCDoddsAvatar"
-            class="border-b border-neutral-800 lg:border-r"
+            class="border-b border-neutral-800 lg:border-r lg:border-fade-t"
           >
             I found MSW and was thrilled that not only could I still see the
             mocked responses in my DevTools, but that the mocks didn't have to

@@ -13,19 +13,7 @@ defineProps<{
 <template>
   <Container class="home-frame">
     <div class="home-frame-rails -mb-px border border-neutral-800">
-      <!-- Equal breathing room above the logo band and below the CTA row. -->
-      <div class="h-14 bg-neutral-800/30" aria-hidden="true" />
-
-      <!-- The logo's top and bottom borders stretch across the section. -->
-      <div class="flex justify-center border-y border-neutral-800">
-        <div
-          class="w-24 flex-shrink-0 border-x-2 border-neutral-800 bg-neutral-900 p-5"
-        >
-          <img :src="iconUrl" :alt="iconAlt" class="flex select-none" />
-        </div>
-      </div>
-
-      <div class="hero-gradient px-6 py-12 text-center md:py-16">
+      <div class="px-6 pt-24 pb-12 text-center md:pt-32 md:pb-16">
         <div class="mx-auto max-w-2xl">
           <h2 class="mb-8 capitalize">{{ title }}</h2>
           <p
@@ -46,7 +34,25 @@ defineProps<{
         </a>
       </div>
 
-      <div class="h-12 md:h-16" aria-hidden="true" />
+      <div class="h-24 md:h-32" aria-hidden="true" />
+
+      <!-- The logo's top and bottom borders stretch across the section. -->
+      <div class="flex justify-center border-y border-neutral-800">
+        <a
+          href="/sponsor"
+          class="group w-24 flex-shrink-0 border-x-2 border-neutral-800 bg-neutral-900 p-5"
+          aria-label="Sponsor Mock Service Worker"
+        >
+          <img
+            :src="iconUrl"
+            :alt="iconAlt"
+            class="site-logo-ring flex select-none rounded-[10px] transition-transform duration-200 group-hover:scale-110"
+          />
+        </a>
+      </div>
+
+      <!-- Separator between this section and the footer. -->
+      <div class="h-14 bg-neutral-800/30" aria-hidden="true" />
     </div>
   </Container>
 </template>

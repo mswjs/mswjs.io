@@ -6,10 +6,10 @@ displayTitle: Mocking GraphQL
 description: Intercept and mock GraphQL operations.
 ---
 
-Mock Service Worker comes with first-class support for mocking [GraphQL](https://graphql.org/) APIs. You can develop, test, showcase, and debug your GraphQL applications using the `graphql` namespace exported by `msw`.
+Mock Service Worker comes with first-class support for mocking [GraphQL](https://graphql.org/) APIs. You can develop, test, showcase, and debug your GraphQL applications using the `graphql` namespace exported by `msw/graphql`.
 
 ```ts
-import { graphql } from 'msw'
+import { graphql } from 'msw/graphql'
 ```
 
 <PageCard

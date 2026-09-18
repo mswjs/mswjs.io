@@ -98,38 +98,53 @@ worker.start({
 })
 ```
 
-### `onUnhandledRequest`
+### `onUnhandledFrame`
 
 - _String_, default: `"warn"`
 - _Function_
 
-Decide how to react to unhandled requests (i.e. those that do not have a matching request handler).
-
-#### Predefined strategies
-
-| Handling mode    | Description                                                                    |
-| ---------------- | ------------------------------------------------------------------------------ |
-| `warn` (Default) | Prints a warning message to the browser's console, performs the request as-is. |
-| `error`          | Throws an error, aborts the request.                                           |
-| `bypass`         | Prints nothing, performs the request as-is.                                    |
-
-#### Custom strategy
+Decide how to react to unhandled network frames (i.e. requests or WebSocket connections that do not have a matching handler).
 
 ```js
 worker.start({
-  onUnhandledRequest(request, print) {
+  onUnhandledFrame: 'error',
+})
+```
+
+#### Predefined strategies
+
+| Handling mode    | Description                                                                  |
+| ---------------- | ---------------------------------------------------------------------------- |
+| `warn` (Default) | Prints a warning message to the browser's console, performs the frame as-is. |
+| `error`          | Prints an error, aborts the frame.                                           |
+| `bypass`         | Prints nothing, performs the frame as-is.                                    |
+
+#### Custom strategy
+
+Provide a function to decide how to react to unhandled frames on a case-by-case basis. The function receives an object with the following properties:
+
+| Property   | Type                                   | Description                                                                                          |
+| ---------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `frame`    | `NetworkFrame`                         | The unhandled network frame. Use `frame.protocol` (`"http"` or `"ws"`) to distinguish between them. |
+| `defaults` | `{ warn(): void, error(): void }`      | The predefined strategies to reuse in your custom callback.                                          |
+
+For HTTP frames, the intercepted request is available under `frame.data.request`. For WebSocket frames, the intercepted connection is available under `frame.data.connection`.
+
+```js
+worker.start({
+  onUnhandledFrame({ frame, defaults }) {
     // Ignore any requests containing "cdn.com" in their URL.
-    if (request.url.includes('cdn.com')) {
+    if (frame.protocol === 'http' && frame.data.request.url.includes('cdn.com')) {
       return
     }
 
-    // Otherwise, print an unhandled request warning.
-    print.warning()
+    // Otherwise, print an unhandled frame warning.
+    defaults.warn()
   },
 })
 ```
 
-> By default, MSW will ignore common static asset requests so they won't be considered unhandled. If you provide a custom callback to the `onUnhandledRequest` function, _you will opt out from that behavior_. You can tap into it at any time by manually calling the [`isCommonAssetRequest()`](/api/is-common-asset-request) function.
+> By default, MSW will ignore common static asset requests so they won't be considered unhandled. If you provide a custom callback to the `onUnhandledFrame` option, _you will opt out from that behavior_. You can tap into it at any time by manually calling the [`isCommonAssetRequest()`](/api/is-common-asset-request) function.
 
 ### `waitUntilReady`
 

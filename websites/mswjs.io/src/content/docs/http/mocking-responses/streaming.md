@@ -34,8 +34,9 @@ http.get('/stream', () => {
 
 You can use any kind of Web Stream supported by the Fetch API as a mocked response body, like a [`TransformStream`](https://developer.mozilla.org/en-US/docs/Web/API/TransformStream), for example. Here's a compound scenario of fetching the original response stream and injecting latency between its chunks using `TransformStream`:
 
-```ts {9-15} /latencyStream/
-import { http, HttpResponse, delay } from 'msw'
+```ts {10-16} /latencyStream/
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils'
 
 http.get('/video/:id', async ({ params }) => {
   const videoResponse = await fetch(

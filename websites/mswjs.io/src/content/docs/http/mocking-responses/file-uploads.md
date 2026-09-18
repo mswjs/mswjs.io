@@ -12,7 +12,7 @@ keywords:
 File uploads on the web are usually done by submitting a `POST` request with a `FormData` body containing the files. You can intercept that request and read its body as `FormData` using the [`formData()`](https://developer.mozilla.org/en-US/docs/Web/API/Request/formData) method on the intercepted Fetch API [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) instance.
 
 ```js {5-6,19}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.post('/upload', async ({ request }) => {

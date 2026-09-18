@@ -6,10 +6,10 @@ displayTitle: Mocking WebSocket
 description: Intercept and mock WebSocket events.
 ---
 
-Mock Service Worker comes with first-class support for mocking WebSocket APIs. You can intercept WebSocket connections and mock client and server events using the `ws` namespace from `msw`:
+Mock Service Worker comes with first-class support for mocking WebSocket APIs. You can intercept WebSocket connections and mock client and server events using the `ws` namespace from `msw/ws`:
 
 ```ts
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 ```
 
 <PageCard
@@ -47,7 +47,7 @@ client ⇄ MSW ⇄ server
 Start by importing the `ws` namespace and creating a new _link_:
 
 ```ts {3} /ws/1,2
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 
 const chat = ws.link('wss://chat.example.com')
 ```

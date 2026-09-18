@@ -12,7 +12,8 @@ keywords:
 ## Call signature
 
 ```ts
-import { http, passthrough } from 'msw'
+import { http } from 'msw/http'
+import { passthrough } from 'msw/utils'
 
 http.get('/resource', () => {
   return passthrough()
@@ -21,8 +22,9 @@ http.get('/resource', () => {
 
 ## Usage
 
-```js /passthrough/ {6}
-import { http, passthrough, HttpResponse } from 'msw'
+```js /passthrough/ {7}
+import { http, HttpResponse } from 'msw/http'
+import { passthrough } from 'msw/utils'
 
 export const handlers = [
   http.get('/resource', ({ request }) => {

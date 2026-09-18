@@ -13,7 +13,7 @@ keywords:
 You can mock the reconnection time instruction from the server by sending the [`retry`](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#retry) message to the client. The value of the `retry` key will control the reconnection time if the underlying connection is lost.
 
 ```ts {5}
-import { sse } from 'msw'
+import { sse } from 'msw/sse'
 
 export const handlers = [
   sse('/stream', ({ client }) => {

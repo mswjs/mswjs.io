@@ -12,8 +12,9 @@ keywords:
 
 You can control the server response time when handling intercepted requests using the [`delay()`](/api/delay) function from MSW. Under the hood, the `delay()` function returns a promise that resolves after a certain amount of time.
 
-```ts {4} /delay/
-import { http, HttpResponse, delay } from 'msw'
+```ts {5} /delay/
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils'
 
 http.get('/resource', async () => {
   await delay(500)
@@ -76,8 +77,9 @@ Another option would be to define a _higher-order response resolver_ that encaps
 
 ::: code-group
 
-```ts [with-delay.ts] {4-8} /delay/2
-import { delay, type HttpResponseResolver } from 'msw'
+```ts [with-delay.ts] {5-9} /delay/2
+import { type HttpResponseResolver } from 'msw/http'
+import { delay } from 'msw/utils'
 
 export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
   return async (info) => {
@@ -93,7 +95,7 @@ export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver 
 ::: code-group
 
 ```ts [handlers.ts] {8,14} /withDelay/2,3
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { withDelay } from './with-delay'
 
 export const handlers = [

@@ -9,7 +9,7 @@ For example, this is how you can describe protected routes:
 ::: code-group
 
 ```js [mocks/middleware.js]
-import { HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
 
 // A higher-order response resolver that validates
 // the request authorization header before proceeding
@@ -32,7 +32,7 @@ export function withAuth(resolver) {
 ::: code-group
 
 ```js [mocks/handlers.js] {2,9} /withAuth/1,3
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { withAuth } from './middleware'
 
 export const handlers = [

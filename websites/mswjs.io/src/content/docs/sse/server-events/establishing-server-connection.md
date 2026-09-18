@@ -23,8 +23,9 @@ The result of calling `server.connect()` is an [`EventSource`](https://developer
 
 By default, all server events are forwarded to the client. That means that calling `server.connect()` turns your request handler into a _transparent proxy_. You can use that to inspect the incoming server traffic and react to it, e.g. by emitting WebSocket events.
 
-```ts {11-17}
-import { sse, ws } from 'msw'
+```ts {12-18}
+import { ws } from 'msw/ws'
+import { sse } from 'msw/sse'
 
 const chat = ws.link('https://api.example.com/chat')
 

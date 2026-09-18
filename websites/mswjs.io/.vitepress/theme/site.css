@@ -316,7 +316,8 @@ code,
   background-color: #f5f5f5;
 }
 
-:root.dark .site-header-logo {
+:root.dark .site-header-logo,
+:root.dark .site-logo-ring {
   box-shadow: 0 0 0 1px rgb(var(--site-neutral-700) / 70%);
 }
 

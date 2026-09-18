@@ -9,7 +9,7 @@ description: Intercept and mock HTTP requests.
 Mock Service Worker supports the interception and mocking of HTTP requests via the `http` namespace provided by the library:
 
 ```ts
-import { http } from 'msw'
+import { http } from 'msw/http'
 ```
 
 <PageCard

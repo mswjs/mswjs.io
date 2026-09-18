@@ -8,14 +8,12 @@ On the web, GraphQL APIs are often implemented over HTTP. This means that, techn
 
 This page will walk you through the possible ways to intercept a GraphQL operation with MSW.
 
-## Endpoint-first mocking
+## Link-first mocking
 
-By default, the library **ignores the server’s endpoint** when matching GraphQL operations. That is a conscious decision since it is rare that a single application would interact with multiple GraphQL APIs. It means that the same handler will match a `GetUser` operation even if one is sent to `/api/graphql` and the other to `https://api.example.com`.
+GraphQL mocking in MSW is _link-first_. You start by creating a [GraphQL link](/api/graphql#graphql-link-url) to the endpoint you wish to mock via `graphql.link()`, and then define handlers for the operations against that endpoint on the returned link:
 
-This default is supported for backward-compatibility, but it is **strongly recommended** to use [`graphql.link()`](/api/graphql#graphqllinkurl) to scope GraphQL mocking to a particular server endpoint.
-
-```ts {7,8} /graphql.link/
-import { graphql } from 'msw'
+```ts {4,5,8,9} /graphql.link/
+import { graphql } from 'msw/graphql'
 
 const github = graphql.link('https://api.github.com/graphql')
 const stripe = graphql.link('https://api.stripe.com/graphql')
@@ -26,7 +24,7 @@ export const handlers = [
 ]
 ```
 
-By defining GraphQL links, you tell MSW to take the server endpoint into account when performing operation matching.
+By defining GraphQL links, you tell MSW to take the server endpoint into account when performing operation matching. The same `GetUser` operation will be handled differently depending on whether it's sent to `https://api.github.com/graphql` or `https://api.stripe.com/graphql`. The `url` argument of the link accepts the same predicates as the `http` handlers, so you can use relative URLs (e.g. `graphql.link('/api/graphql')`), wildcards, and regular expressions.
 
 ## Operation kind
 
@@ -66,7 +64,7 @@ It is **not required but strongly recommended** to use **named GraphQL operation
 # The following GraphQL query can be handled
 # with a handler that looks like this:
 #
-# graphql.query('GetUser', resolver)
+# api.query('GetUser', resolver)
 query GetUser {
   user {
     id
@@ -81,7 +79,9 @@ query GetUser {
 You can provide a _string_ as a request handler predicate that represents the name of the GraphQL operation you wish to intercept.
 
 ```ts /'GetUser'/
-graphql.query('GetUser', () => {})
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query('GetUser', () => {})
 ```
 
 > This handler will match the following GraphQL query:
@@ -92,14 +92,16 @@ graphql.query('GetUser', () => {})
 > }
 > ```
 
-The same is true for mutations, just don't forget to use `graphql.mutation()` instead.
+The same is true for mutations, just don't forget to use `api.mutation()` instead.
 
 ### Regular expression
 
 You can provide a _regular expression_ as a request handler predicate. MSW will test the outgoing operation names against that expression to determine if they match.
 
 ```ts
-graphql.mutation(/user/i, () => {})
+const api = graphql.link('https://api.example.com/graphql')
+
+api.mutation(/user/i, () => {})
 ```
 
 > This handler will match both `CreateUser` and `UpdateUser` mutations.
@@ -109,7 +111,9 @@ graphql.mutation(/user/i, () => {})
 For more nuanced use cases, you can provide a function as the predicate. That function must return a `boolean` indicating whether the intercepted GraphQL query should match your request handler.
 
 ```ts
-graphql.query(
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query(
   ({ operationType, operationName, query, variables, request, cookies }) => {
     // Match all GraphQL queries whose name includes "user".
     return operationName.toLowerCase().includes('user')
@@ -122,7 +126,7 @@ graphql.query(
 
 ## Response resolver
 
-The following properties are available on the response resolver object argument for `graphql.*` handlers:
+The following properties are available on the response resolver object argument for GraphQL link handlers:
 
 | Property        | Type                     | Description                                                                                  |
 | --------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
@@ -133,7 +137,9 @@ The following properties are available on the response resolver object argument 
 | [`finalize`](/api/finalize)  | `Function` | A function to schedule cleanup after the request handler completion. |
 
 ```ts /cookies/#g /query/ /variables/#v /operationName/
-graphql.mutation(
+const api = graphql.link('https://api.example.com/graphql')
+
+api.mutation(
   'UpdateUser',
   ({ cookies, query, variables, operationName }) => {},
 )

@@ -9,7 +9,7 @@ One of the ways to achieve this is to declare a set of scenarios (handler overri
 ::: code-group
 
 ```js [mocks/scenarios.js]
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const scenarios = {
   success: [

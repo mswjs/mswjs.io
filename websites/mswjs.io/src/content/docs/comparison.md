@@ -332,7 +332,8 @@ cy.intercept('POST', '/users', (req) => {
 MSW models its interception API after server-side routing and handles requests and responses according to the Fetch API specification, using the same classes you would use normally in JavaScript:
 
 ```js
-import { http, delay } from 'msw'
+import { http } from 'msw/http'
+import { delay } from 'msw/utils'
 
 http.post('/users', async ({ request }) => {
   const user = await request.json()
@@ -408,7 +409,7 @@ page.route('/fruits', async (route) => {
 #### Mock Service Worker
 
 ```js
-import { bypass } from 'msw'
+import { bypass } from 'msw/utils'
 
 http.post('/fruits', async ({ request }) => {
   const response = await fetch(bypass(request))

@@ -28,7 +28,7 @@ If you return a `Response` instance from the response resolver, that response wi
 You can perform the intercepted request as-is and return its original response (i.e. passthrough a request) by returning the result of the `passthrough()` function call.
 
 ```ts /passthrough/1 {4}
-import { passthrough } from 'msw'
+import { passthrough } from 'msw/utils'
 
 http.get('/resource', () => {
   return passthrough()

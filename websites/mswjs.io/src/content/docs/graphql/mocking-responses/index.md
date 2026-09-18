@@ -15,8 +15,9 @@ When handling operations, GraphQL clients expect a JSON response of a predefined
 
 Use the `HttpResponse.json()` shorthand to respond to an intercepted GraphQL operation.
 
-```ts {12-19} /HttpResponse/1 /HttpResponse.json/
-import { graphql, HttpResponse } from 'msw'
+```ts {13-20} /HttpResponse/1 /HttpResponse.json/
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
 
 const api = graphql.link('https://api.example.com/graphql')
 

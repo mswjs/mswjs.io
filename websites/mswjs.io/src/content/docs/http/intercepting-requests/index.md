@@ -115,8 +115,9 @@ The custom predicate function may also return an extended matching result, which
 
 The extended matching result is particularly handy if you want to preserve the path parameter parsing behavior of the default URL-based matchers. When using a custom predicate function, you must parse the path parameters from the intercepted request URL yourself, using the `matchRequestUrl()` function exported by `msw`.
 
-```ts {8-11} /matchRequestUrl/
-import { http, matchRequestUrl, HttpResponse } from 'msw'
+```ts {9-12} /matchRequestUrl/
+import { http, HttpResponse } from 'msw/http'
+import { matchRequestUrl } from 'msw'
 
 http.get(
   ({ request }) => {

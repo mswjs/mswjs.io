@@ -6,7 +6,7 @@ title: Type safety
 Bringing type safety to the WebSocket communication is essential when using TypeScript, and that includes your handlers too! That being said, MSW intentionally doesn't support any type arguments to annotate the outgoing/incoming events:
 
 ```ts
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 
 ws.link<Arg1, Arg2>(url)
 //     ^^^^^^^^^^^^ Type error!

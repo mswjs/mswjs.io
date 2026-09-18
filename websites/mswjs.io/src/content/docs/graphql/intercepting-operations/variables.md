@@ -6,7 +6,9 @@ description: Reading the GraphQL operation variables.
 You can read the variables passed with the intercepted GraphQL operation by accessing the `variables` property of the response resolver's argument:
 
 ```ts /variables/1
-graphql.query('ListUsers', ({ variables }) => {
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query('ListUsers', ({ variables }) => {
   console.log(variables) // { limit: 10 }
 })
 ```

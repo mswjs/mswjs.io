@@ -17,7 +17,7 @@ The `ws` namespace helps you create event handlers to intercept WebSocket connec
 The `ws` namespace exposes a method called `link()`. The `link()` method creates a WebSocket link preconfigured to handle WebSocket connections matching the specified URL.
 
 ```ts
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 
 const chat = ws.link('wss://chat.example.com')
 ```
@@ -86,7 +86,7 @@ api.broadcastExcept(ignoredClients, 'hello')
 The connection listener is called on every outgoing WebSocket client connection.
 
 ```js {7-9}
-import { ws } from 'msw'
+import { ws } from 'msw/ws'
 import { setupWorker } from 'msw/browser'
 
 const api = ws.link('wss://chat.example.com')

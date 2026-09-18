@@ -26,7 +26,7 @@ pnpm add msw --save-dev
 
 ## 2. Request handlers
 
-Import the `http` namespace from the `msw` package and create your first _request handler_. Those are functions responsible for intercepting requests and handling their responses.
+Import the `http` namespace from `msw/http` and create your first _request handler_. Those are functions responsible for intercepting requests and handling their responses.
 
 Let's define a request handler for a `GET https://api.example.com/user` request:
 
@@ -35,7 +35,7 @@ Let's define a request handler for a `GET https://api.example.com/user` request:
 ::: code-group
 
 ```ts [src/mocks/handlers.ts] {4-10}
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.get('https://api.example.com/user', () => {

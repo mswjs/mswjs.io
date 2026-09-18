@@ -12,7 +12,7 @@ keywords:
 You can send a mock message event to the client by calling `client.send()` and providing it with the message data:
 
 ```ts {5}
-import { sse } from 'msw'
+import { sse } from 'msw/sse'
 
 export const handlers = [
   sse('/stream', ({ client }) => {

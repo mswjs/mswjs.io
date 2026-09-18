@@ -21,7 +21,7 @@ import HomePage from '../../.vitepress/theme/home/HomePage.vue'
 <template v-slot:hero-code>
 
 ```ts:no-line-numbers
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupWorker } from 'msw/browser'
 
 // Describe the network once.
@@ -68,7 +68,7 @@ export const handlers = [
   }),
 ]
 
-// One mock for every request client.
+// One mock that works everywhere.
 fetch('/user')
 axios.get('/user')
 useSWR('/user')

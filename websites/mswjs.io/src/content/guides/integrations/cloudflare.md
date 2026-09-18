@@ -44,7 +44,7 @@ afterAll(() => {
 Use `network.use()` to add request handlers for an individual test.
 
 ```ts
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 network.use(
   http.get('https://api.example.com/user', () => {

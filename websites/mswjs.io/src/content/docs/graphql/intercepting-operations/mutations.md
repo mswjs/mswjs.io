@@ -4,10 +4,12 @@ title: Mutations
 description: Intercepting GraphQL mutations.
 ---
 
-You can intercept a GraphQL mutation by defining a `graphql.mutation()` handler for it and matching it by the _operation name_:
+You can intercept a GraphQL mutation by calling `.mutation()` on a [GraphQL link](/api/graphql#graphql-link-url) and matching the mutation by its _operation name_:
 
-```ts /graphql.mutation/ /'CreateUser'/#g
-graphql.mutation('CreateUser', ({ variables }) => {
+```ts /api.mutation/ /'CreateUser'/#g
+const api = graphql.link('https://api.example.com/graphql')
+
+api.mutation('CreateUser', ({ variables }) => {
   return HttpResponse.json({
     data: {
       createUser: {

@@ -7,7 +7,7 @@ description: Prepend request handlers to the current worker instance.
 ## Call signature
 
 ```js {6}
-import { http } from 'msw'
+import { http } from 'msw/http'
 import { worker } from './mocks/browser'
 
 // Prepend a list of new handlers to this worker instance.

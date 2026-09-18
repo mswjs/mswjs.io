@@ -13,8 +13,8 @@ defineProps<{
 <template>
   <a
     :href="href"
-    class="group inline-flex items-center gap-1 font-semibold text-neutral-300 transition-colors hover:text-primary"
-    :class="large ? 'text-base' : 'text-sm'"
+    class="group inline-flex items-center gap-1.5 bg-neutral-800/50 font-semibold text-neutral-300 transition-colors hover:bg-neutral-700/50 hover:text-white"
+    :class="large ? 'px-5 py-2.5 text-base' : 'px-4 py-2 text-sm'"
   >
     <slot />
     <ArrowNarrowRightIcon

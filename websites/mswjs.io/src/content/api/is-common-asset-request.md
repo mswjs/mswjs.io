@@ -12,7 +12,7 @@ keywords:
 ## Call signature
 
 ```ts
-import { isCommonAssetRequest } from 'msw'
+import { isCommonAssetRequest } from 'msw/utils'
 
 isCommonAssetRequest(new Request('https://example.com/favicon.ico'))
 // true
@@ -32,31 +32,38 @@ The following conditions are included in determining whether a request is a comm
 
 The `isCommonAssetRequest` function is meant to be used internally by MSW to automatically ignore common static asset requests from being considered unhandled. You don't have to check that manually anymore.
 
-### Custom `onUnhandledRequest` callback
+### Custom `onUnhandledFrame` callback
 
-One use case where you may want to use this function is when providing a custom function to the `onUnhandledRequest` option of your `server`/`worker`. Doing so will opt out from the default static assets exclusion and you would have to call `isCommonAssetRequest` manually if you want to rely on it again.
+One use case where you may want to use this function is when providing a custom function to the `onUnhandledFrame` option of your `server`/`worker`. Doing so will opt out from the default static assets exclusion and you would have to call `isCommonAssetRequest` manually if you want to rely on it again.
 
 ```ts
-import { isCommonAssetRequest } from 'msw'
-const { setupWorker } from 'msw/browser'
+import { isCommonAssetRequest } from 'msw/utils'
+import { setupWorker } from 'msw/browser'
 
 const worker = setupWorker()
 
 worker.start({
-	onUnhandledRequest(request, print) {
-		// List a custom request predicate.
-		if (myCustomLogic(request)) {
-			return
-		}
+  onUnhandledFrame({ frame, defaults }) {
+    // Only HTTP frames represent requests.
+    if (frame.protocol !== 'http') {
+      return defaults.warn()
+    }
 
-		// Ignore common static asset requests
-		// (i.e. tap into the default behavior).
-		if (isCommonAssetRequest(request)) {
-			return
-		}
+    const { request } = frame.data
 
-		// Otherwise, print a warning.
-		print.warning()
-	}
+    // List a custom request predicate.
+    if (myCustomLogic(request)) {
+      return
+    }
+
+    // Ignore common static asset requests
+    // (i.e. tap into the default behavior).
+    if (isCommonAssetRequest(request)) {
+      return
+    }
+
+    // Otherwise, print a warning.
+    defaults.warn()
+  },
 })
 ```

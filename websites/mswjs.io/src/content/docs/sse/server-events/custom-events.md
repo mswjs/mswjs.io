@@ -12,7 +12,7 @@ keywords:
 You can specify the custom event type by providing the `event` key on the client message:
 
 ```ts {6}
-import { sse } from 'msw'
+import { sse } from 'msw/sse'
 
 export const handlers = [
   sse('/stream', ({ client }) => {

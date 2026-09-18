@@ -34,7 +34,7 @@ scoped()
 The `server.boundary()` API is designed to provide the network behavior isolation. Any modifications to the request interception made within a boundary will only affect that boundary and nothing else.
 
 ```js {10-20} /server.boundary/
-import { HttpResponse } from 'msw'
+import { HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer()
@@ -84,9 +84,9 @@ router.get(
 
 This API can be used standalone for various purposes, like a scoped network introspection, debugging, and development. In the example below, the `server.boundary()` is used to introspect all the network requests that are happening as a part of the `POST /resource` route handling in Express.
 
-```ts {11,19}
+```ts {11,21}
 import express from 'express'
-import { http } from 'msw'
+import { http } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer()
@@ -102,7 +102,9 @@ app.post('/resource', (req, res) => {
       })
     )
 
-    handleRequest(req, res)
+    // Handle the route as usual. Any requests made
+    // while handling it are printed by the handler above.
+    res.end()
   })()
 })
 ```
@@ -114,7 +116,7 @@ The `server.boundary()` API is primarily designed to support concurrent test run
 Introducing a server boundary in each test solves this problem and prevents request handler overrides from ever affecting irrelevant tests. Take a look at how `server.boundary()` is used in practice in this concurrent test suite in Vitest:
 
 ```js {20,27,32,43,48,59} /server.boundary/
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer(

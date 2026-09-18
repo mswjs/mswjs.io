@@ -7,9 +7,15 @@ keywords:
   - plugin
   - browser
   - development
+  - ssr
+  - virtual module
 ---
 
-The `msw/vite` plugin serves the Service Worker script directly from your installed MSW package. You don't need to copy `mockServiceWorker.js` into your public directory or keep that copy up to date.
+The `msw/vite` plugin integrates Mock Service Worker into your Vite application. The plugin:
+
+- **Serves the worker script** directly from the installed `msw` package during development. You don't need to copy `mockServiceWorker.js` into your public directory or keep that copy up to date;
+- **Provides a preconfigured network** via the `virtual:msw` module that works both in the browser and in your server-side (SSR) code;
+- **Excludes mocking from production** builds and never serves or writes the worker script in production.
 
 ## Add the plugin
 
@@ -23,7 +29,7 @@ Add the `msw()` plugin to your existing Vite configuration alongside any framewo
 
 ::: code-group
 
-```ts [vite.config.ts]
+```ts [vite.config.ts] {2,5}
 import { defineConfig } from 'vite'
 import { msw } from 'msw/vite'
 
@@ -34,7 +40,7 @@ export default defineConfig({
 
 :::
 
-The plugin serves the worker at `/mockServiceWorker.js`. It handles serving the script; you still define your request handlers and start mocking in your application.
+During development, the plugin serves the worker script at `/mockServiceWorker.js` (respecting your [`base`](https://vitejs.dev/config/shared-options.html#base) option). You still define the request handlers and enable mocking in your application.
 
 ## Define request handlers
 
@@ -43,7 +49,7 @@ Describe the requests you want to mock:
 ::: code-group
 
 ```ts [src/mocks/handlers.ts]
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw/http'
 
 export const handlers = [
   http.get('/api/user', () => {
@@ -58,42 +64,30 @@ export const handlers = [
 
 :::
 
-Create the browser worker using those handlers:
+## Enable mocking
+
+Import the `network` from the `virtual:msw` module, configure it with your request handlers, and enable it. Do this before importing the module that renders your application or makes its initial requests, and guard the mocking setup with Vite's `import.meta.env.DEV` flag to keep it out of production builds:
 
 ::: code-group
 
-```ts [src/mocks/browser.ts]
-import { setupWorker } from 'msw/browser'
-import { handlers } from './handlers'
+```ts [src/main.ts] {1-7}
+if (import.meta.env.DEV) {
+  const { network } = await import('virtual:msw')
+  const { handlers } = await import('./mocks/handlers')
 
-export const worker = setupWorker(...handlers)
-```
-
-:::
-
-## Start mocking
-
-Start the worker before importing the module that renders your application or makes its initial requests. Use Vite's `import.meta.env.DEV` flag to enable mocking only in development:
-
-::: code-group
-
-```ts [src/main.ts]
-async function bootstrap() {
-  if (import.meta.env.DEV) {
-    const { worker } = await import('./mocks/browser')
-    await worker.start()
-  }
-
-  // Your application's rendering and initialization code lives here.
-  await import('./app')
+  network.configure({ handlers })
+  await network.enable()
 }
 
-bootstrap()
+// Your application's rendering and initialization code lives here.
+await import('./app')
 ```
 
 :::
 
-Here, `src/app.ts` is your application's existing entry module, moved out of `src/main.ts`. Point your `index.html` script at `src/main.ts` so the worker starts first.
+Here, `src/app.ts` is your application's existing entry module, moved out of `src/main.ts`. Point your `index.html` script at `src/main.ts` so the network is enabled first.
+
+The `network` exposed by `virtual:msw` is a preconfigured [network instance](#network). In the browser, `network.enable()` registers the worker script served by the plugin and starts the request interception. In your server-side code, the same call enables the request interception in the current Node.js process. You don't need to import `setupWorker` or `setupServer` yourself.
 
 Run your Vite development server and open the browser console. You should see:
 
@@ -104,45 +98,101 @@ Run your Vite development server and open the browser console. You should see:
 Requests to `/api/user` now receive the response defined in your handlers.
 
 ::: tip
-Already using MSW in your Vite application? Add the plugin, then remove the generated `public/mockServiceWorker.js` file. Keep your existing handlers, `setupWorker()`, and `worker.start()` calls.
+Already using MSW in your Vite application? Add the plugin, remove the generated `public/mockServiceWorker.js` file, and replace your `setupWorker()`/`worker.start()` calls with the `virtual:msw` network above. You can also keep your existing setup as-is by using the [`worker-only`](#mode) mode of the plugin.
 :::
 
-## Custom worker URL
+## TypeScript
 
-Use `workerUrl` to change where the plugin serves the worker. Pass the same URL to `worker.start()`:
+The `msw/vite/client` declaration file provides the types for the `virtual:msw` module. If your TypeScript project does not include the Vite configuration file (i.e. the module importing `msw/vite`), add a reference to those types to any included declaration file, like `src/vite-env.d.ts`:
 
 ::: code-group
 
-```ts [vite.config.ts]
+```ts [src/vite-env.d.ts] {2}
+/// <reference types="vite/client" />
+/// <reference types="msw/vite/client" />
+```
+
+:::
+
+## Server-side rendering
+
+The `virtual:msw` module is _environment-neutral_. Import it in your server entry module (e.g. the one run by Vite's module runner or your SSR server) to intercept the requests your server makes while rendering, using the same handlers as in the browser:
+
+::: code-group
+
+```ts [src/entry-server.ts] {1-7}
+if (import.meta.env.DEV) {
+  const { network } = await import('virtual:msw')
+  const { handlers } = await import('./mocks/handlers')
+
+  network.configure({ handlers })
+  await network.enable()
+}
+
+export async function render(url: string) {
+  // Any requests made while rendering are intercepted.
+}
+```
+
+:::
+
+On the server, the plugin resolves the network to the Node.js defaults (the same as `setupServer()`), so the request interception happens in the Node.js process running your server code.
+
+## Production
+
+The plugin does nothing in production: the `virtual:msw` module resolves to an `undefined` network and the worker script is neither served nor written to your build output. If you still want mocking in production (e.g. for a deployed demo), generate and serve the worker script yourself using the [Browser integration](/guides/integrations/browser) and enable mocking explicitly for that environment.
+
+## Options
+
+### `mode`
+
+- `"auto" | "worker-only"`, default: `"auto"`
+
+Controls the level of integration the plugin provides:
+
+- `"auto"` (default) serves the worker script and provides the `virtual:msw` module with a preconfigured network;
+- `"worker-only"` only serves the worker script. The `virtual:msw` module is disabled and you set up the worker yourself using [`setupWorker`](/api/setup-worker/) from `msw/browser`.
+
+Use the `"worker-only"` mode to keep the plugin's worker serving while retaining full control over the worker instance (e.g. to reuse an existing `setupWorker()` setup or to customize the `worker.start()` options):
+
+::: code-group
+
+```ts [vite.config.ts] {5}
 import { defineConfig } from 'vite'
 import { msw } from 'msw/vite'
 
 export default defineConfig({
-  plugins: [msw({ workerUrl: '/mocks/worker.js' })],
+  plugins: [msw({ mode: 'worker-only' })],
 })
+```
+
+```ts [src/mocks/browser.ts]
+import { setupWorker } from 'msw/browser'
+import { handlers } from './handlers'
+
+export const worker = setupWorker(...handlers)
+```
+
+```ts [src/main.ts] {1-4}
+if (import.meta.env.DEV) {
+  const { worker } = await import('./mocks/browser')
+  await worker.start()
+}
+
+await import('./app')
 ```
 
 :::
 
-::: code-group
-
-```ts [src/main.ts]
-await worker.start({
-  serviceWorker: {
-    url: '/mocks/worker.js',
-    options: {
-      scope: '/',
-    },
-  },
-})
-```
-
+::: info
+If your application uses a custom `base`, pass the worker script location to `worker.start()` via the [`serviceWorker.url`](/api/setup-worker/start#url) option (e.g. `${import.meta.env.BASE_URL}mockServiceWorker.js`). In the `"auto"` mode, the plugin configures the worker script location for you.
 :::
 
-Place this `worker.start()` call inside the development branch of `bootstrap()` above. The plugin permits the worker to use the root scope, so it can control your application even when the script is served from a nested path.
+## Related materials
 
-## Production
-
-The plugin is disabled when `NODE_ENV` is `production` and does not copy a worker script into your build output. The development check above also keeps your application's mocking setup out of the production path.
-
-If you need to serve mocks in a deployed demo, generate and deploy the worker script using the [Browser integration](/guides/integrations/browser), and enable mocking explicitly for that environment.
+<PageCard
+  icon="CubeTransparentIcon"
+  url="/api/vite"
+  title="vite"
+  description="API reference for the msw/vite plugin."
+/>

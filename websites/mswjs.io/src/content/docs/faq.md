@@ -50,7 +50,7 @@ Yes, you can use MSW while developing and testing your React Native application.
 
 This error means that the version of Node.js you're using doesn't support the global Fetch API.
 
-Resolve this by upgrading to Node.js version 18 or higher. MSW does not support Node.js versions below version 18.
+Resolve this by upgrading to Node.js version 22 or higher. MSW does not support Node.js versions below version 22.
 
 ## `Request`/`Response`/`TextEncoder` is not defined (Jest)
 

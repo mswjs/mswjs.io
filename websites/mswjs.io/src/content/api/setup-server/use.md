@@ -7,7 +7,7 @@ description: Prepend request handlers to the current server instance.
 ## Call signature
 
 ```js
-import { http } from 'msw'
+import { http } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer()

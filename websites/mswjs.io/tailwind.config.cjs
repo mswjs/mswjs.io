@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [require('@mswjs/shared/tailwind.config.cjs')],
@@ -31,4 +33,19 @@ module.exports = {
       },
     },
   },
+  plugins: [
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        /**
+         * Fade the top of an element's borders into the background so a
+         * divider doesn't poke into the whitespace above it. Fade length
+         * is controlled by "--border-fade" (defaults to the heading gap).
+         */
+        '.border-fade-t': {
+          'border-image':
+            'linear-gradient(to bottom, transparent, rgb(var(--site-neutral-800)) var(--border-fade, 6rem)) 1',
+        },
+      })
+    }),
+  ],
 }

@@ -1,8 +1,8 @@
 {
-  "asOf": "2026-09-08",
-  "downloadsThrough": "2026-09-07",
-  "totalDownloads": 1176724857,
-  "githubStars": 18195,
+  "asOf": "2026-09-16",
+  "downloadsThrough": "2026-09-16",
+  "totalDownloads": 1199996238,
+  "githubStars": 18209,
   "createdAt": "2018-11-13",
   "annualDownloads": [
     {
@@ -39,12 +39,13 @@
     },
     {
       "year": 2026,
-      "downloads": 522248067
+      "downloads": 545519448
     }
   ],
   "sources": {
     "downloads": "https://api.npmjs.org/downloads/point/",
-    "github": "https://api.github.com/repos/mswjs/msw"
+    "github": "https://api.github.com/repos/mswjs/msw",
+    "comparisons": "https://api.npmjs.org/downloads/point/last-month/<package> and https://api.github.com/repos/<owner>/<name>"
   },
   "monthlyDownloads": [
     {
@@ -71,5 +72,59 @@
       "month": "2026-08",
       "downloads": 80231881
     }
-  ]
+  ],
+  "comparisons": {
+    "period": {
+      "start": "2026-08-18",
+      "end": "2026-09-16"
+    },
+    "packages": [
+      {
+        "name": "msw",
+        "downloads": 79991248
+      },
+      {
+        "name": "vue",
+        "downloads": 59444471
+      },
+      {
+        "name": "svelte",
+        "downloads": 20786696
+      },
+      {
+        "name": "@angular/core",
+        "downloads": 22622510
+      },
+      {
+        "name": "solid-js",
+        "downloads": 15645201
+      },
+      {
+        "name": "astro",
+        "downloads": 19422862
+      },
+      {
+        "name": "cypress",
+        "downloads": 27717542
+      }
+    ],
+    "repositories": [
+      {
+        "name": "mswjs/msw",
+        "stars": 18209
+      },
+      {
+        "name": "sveltejs/svelte",
+        "stars": 88131
+      },
+      {
+        "name": "cypress-io/cypress",
+        "stars": 51018
+      },
+      {
+        "name": "vuejs/core",
+        "stars": 54409
+      }
+    ]
+  }
 }

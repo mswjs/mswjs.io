@@ -6,15 +6,15 @@ description: Stop the request interception for the current client.
 
 ## Call signature
 
-The `worker.stop()` function does not accept any arguments and doesn't return anything.
+The `worker.stop()` function does not accept any arguments and returns a promise that resolves once the request interception has been disabled for the current client.
 
 ```js
-worker.stop()
+await worker.stop() // Promise<void>
 ```
 
 Although it's a logical opposite to `worker.start()`, the `worker.stop()` method does not unregister the worker. Instead, it instructs the worker to disable API mocking for the current client (page). This way you can have multiple open clients with the different state of the request interception.
 
-This method is designed to be called on runtime to control the request interception flow. You do so by exposing the `worker` reference globally and calling `window.worker.stop()` in any time in the browser.
+This method is designed to be called on runtime to control the request interception flow. You do so by exposing the `worker` reference globally and calling `await window.worker.stop()` at any time in the browser.
 
 ::: code-group
 

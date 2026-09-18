@@ -59,15 +59,17 @@ controller.use(
 Returns a list of handlers by the given `kind`.
 
 ```ts
+const api = graphql.link('https://api.example.com/graphql')
+
 const httpOne = http.get('/one', resolver)
 const httpTwo = http.post('/two', resolver)
-const graphqlOne = graphql.query('GetUser', resolver)
+const graphqlOne = api.query('GetUser', resolver)
 const wsOne = ws.link('*').addEventListener('connection', listener)
 
 controller.use([
   httpOne,
   httpTwo,
-  graphql,
+  graphqlOne,
   wsOne,
 ])
 
@@ -75,4 +77,4 @@ controller.getHandlersByKind('request')
 // [httpOne, httpTwo, graphqlOne]
 ```
 
-> Note that both `http` and `graphql` namespaces produce handlers of the `request` kind.
+> Note that both `http` handlers and GraphQL link handlers are of the `request` kind.

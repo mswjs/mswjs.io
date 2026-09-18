@@ -9,8 +9,9 @@ keywords:
 
 You can proxy the intercepted request by constructing a proxy Fetch API `Request` instance and performing it using the [`bypass()`](/api/bypass) function to prevent it from matching the same request handler again. This can turn your MSW setup into a proxy server that affects both local and external traffic.
 
-```ts /bypass/ {7-8,10-16,18-19}
-import { http, bypass } from 'msw'
+```ts /bypass/ {8-9,11-17,19-20}
+import { http } from 'msw/http'
+import { bypass } from 'msw/utils'
 
 export const handlers = [
   http.get('/resource', async ({ request }) => {
