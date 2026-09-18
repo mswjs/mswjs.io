@@ -270,7 +270,7 @@ export default defineConfig({
 
     editLink: {
       pattern({ filePath }) {
-        return `https://github.com/mswjs/mswjs.io/edit/main/websites/mswjs.io/src/content/${filePath}`
+        return `https://github.com/mswjs/mswjs.io/edit/main/src/content/${filePath}`
       },
       text: 'Edit this page on GitHub',
     },

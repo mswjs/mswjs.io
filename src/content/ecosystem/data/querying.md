@@ -151,20 +151,3 @@ users.findMany((q) =>
 ## Reusable queries
 
 You can construct a type-safe `Query` instance to abstract common queries or query builders. See the [`Query`](/ecosystem/data/api/query) API reference.
-
-## Next steps
-
-<div class="page-card-grid grid gap-5 md:grid-cols-2">
-  <PageCard
-    icon="Bars3BottomLeftIcon"
-    url="/ecosystem/data/pagination"
-    title="Pagination"
-    description="Limit and offset the results of bulk operations."
-  />
-  <PageCard
-    icon="ArrowsUpDownIcon"
-    url="/ecosystem/data/sorting"
-    title="Sorting"
-    description="Order the results of bulk operations."
-  />
-</div>

@@ -1,5 +1,3 @@
-packages:
-  - websites/*
 allowBuilds:
   esbuild: true
   msw: true
