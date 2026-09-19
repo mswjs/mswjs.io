@@ -97,9 +97,9 @@ function navigateToBranding(event: MouseEvent): void {
          viewport, so they sit on its edges. The header is fixed, so its
          full width is the viewport minus the scrollbar, and centering
          the box lines it up with the content below. -->
-    <div :class="{ 'msw-container home-frame': !documentationFramed }">
+    <div :class="{ 'msw-container site-frame': !documentationFramed }">
       <div
-        class="flex h-16 items-center justify-between gap-6 border-x border-b border-neutral-800 px-6"
+        class="flex h-16 items-center justify-between gap-6 site-frame-rails border-x border-b border-neutral-800 px-6"
         :class="
           documentationFramed
             ? 'mx-auto max-w-[var(--vp-layout-max-width)] md:px-8 min-[960px]:pl-[calc(2rem+1px)]'

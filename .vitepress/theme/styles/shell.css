@@ -458,16 +458,17 @@ code,
 }
 
 /*
- * Homepage frames span the full viewport below "lg" so the sections
- * breathe on small screens; the rails return with the container on "lg".
+ * The site frame (header box and the page box below it) spans the full
+ * viewport below "lg" so the sections breathe on small screens; the
+ * side rails return with the container on "lg".
  */
 @media (max-width: 1023.98px) {
-  .home-frame {
+  .site-frame {
     max-width: none;
     padding-inline: 0;
   }
 
-  .home-frame-rails {
+  .site-frame-rails {
     border-left: 0;
     border-right: 0;
   }

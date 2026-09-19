@@ -4,7 +4,6 @@ import HomeHero from './HomeHero.vue'
 import FeatureCard from './FeatureCard.vue'
 import FeatureLink from './FeatureLink.vue'
 import InterceptionDiagram from './InterceptionDiagram.vue'
-import Container from '../components/Container.vue'
 import PageHeaderSubtitle from '../components/PageHeaderSubtitle.vue'
 import GetStarted from './GetStarted.vue'
 import FeaturedQuote from './FeaturedQuote.vue'
@@ -134,8 +133,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
   </HomeHero>
 
   <!-- Companies -->
-  <Container class="home-frame">
-    <div class="home-frame-rails -mb-px border border-neutral-800">
+  <div class="-mb-px border-y border-neutral-800">
       <p
         class="border-b border-neutral-800 h-14 px-4 flex items-center justify-center text-center text-sm font-semibold uppercase tracking-widest text-neutral-400"
       >
@@ -172,264 +170,251 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
           </div>
         </div>
       </div>
-    </div>
-  </Container>
+  </div>
 
   <!-- Features -->
   <section>
-    <Container class="home-frame">
-      <div class="home-frame-rails -mb-px border border-neutral-800">
-        <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
-          <h2 class="mb-0 capitalize max-w-lg md:max-w-2xl mx-auto">
-            API mocking that feels
-            <span class="whitespace-nowrap">like an extension</span> of
-            JavaScript.
-          </h2>
-        </header>
-        <div class="grid md:grid-cols-2">
-          <FeatureCard
-            plain
-            title="Standard-first API mocking"
-            code-placement="bottom-right"
-            class="border-b border-neutral-800 md:border-r md:border-fade-t"
-          >
-            <template #description>
-              MSW doesn't reinvent the wheel. How do you handle the network in
-              JavaScript? With the Fetch API! And that's precisely how you write
-              your mocks.
-            </template>
-            <template #links>
-              <FeatureLink href="/docs/philosophy">Our philosophy</FeatureLink>
-            </template>
-            <slot name="feature-standards" />
-          </FeatureCard>
-          <FeatureCard
-            plain
-            title="Describe the network once"
-            code-placement="bottom-right"
-            class="border-b border-neutral-800"
-          >
-            <template #description>
-              The era of patching <code>window.fetch</code> is over. MSW
-              pioneered transparent network interception where you describe your
-              mocks once and they work everywhere.
-            </template>
-            <template #links>
-              <FeatureLink href="/guides/">Integration guides</FeatureLink>
-            </template>
-            <slot name="feature-agnostic" />
-          </FeatureCard>
-          <FeatureCard
-            plain
-            title="Unmatched feature set"
-            code-placement="right-bottom"
-            class="md:col-span-2 2xl:px-[calc(var(--card-padding-x)+62px)]"
-          >
-            <template #description>
-              Mock REST, GraphQL, Server-Sent Events, and WebSocket APIs with a
-              single network contract, simultaneously.
-            </template>
-            <template #links>
-              <FeatureLink href="/docs/comparison"
-                >Compare with other tools</FeatureLink
-              >
-            </template>
-            <slot name="feature-protocols" />
-          </FeatureCard>
-        </div>
+    <div class="-mb-px border-y border-neutral-800">
+      <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
+        <h2 class="mb-0 capitalize max-w-lg md:max-w-2xl mx-auto">
+          API mocking that feels
+          <span class="whitespace-nowrap">like an extension</span> of
+          JavaScript.
+        </h2>
+      </header>
+      <div class="grid md:grid-cols-2">
+        <FeatureCard
+          plain
+          title="Standard-first API mocking"
+          code-placement="bottom-right"
+          class="border-b border-neutral-800 md:border-r md:border-fade-t"
+        >
+          <template #description>
+            MSW doesn't reinvent the wheel. How do you handle the network in
+            JavaScript? With the Fetch API! And that's precisely how you write
+            your mocks.
+          </template>
+          <template #links>
+            <FeatureLink href="/docs/philosophy">Our philosophy</FeatureLink>
+          </template>
+          <slot name="feature-standards" />
+        </FeatureCard>
+        <FeatureCard
+          plain
+          title="Describe the network once"
+          code-placement="bottom-right"
+          class="border-b border-neutral-800"
+        >
+          <template #description>
+            The era of patching <code>window.fetch</code> is over. MSW
+            pioneered transparent network interception where you describe your
+            mocks once and they work everywhere.
+          </template>
+          <template #links>
+            <FeatureLink href="/guides/">Integration guides</FeatureLink>
+          </template>
+          <slot name="feature-agnostic" />
+        </FeatureCard>
+        <FeatureCard
+          plain
+          title="Unmatched feature set"
+          code-placement="right-bottom"
+          class="md:col-span-2 2xl:px-[calc(var(--card-padding-x)+62px)]"
+        >
+          <template #description>
+            Mock REST, GraphQL, Server-Sent Events, and WebSocket APIs with a
+            single network contract, simultaneously.
+          </template>
+          <template #links>
+            <FeatureLink href="/docs/comparison"
+              >Compare with other tools</FeatureLink
+            >
+          </template>
+          <slot name="feature-protocols" />
+        </FeatureCard>
       </div>
-    </Container>
+    </div>
   </section>
 
   <!-- Interception -->
   <section>
-    <Container class="home-frame">
-      <div
-        class="home-frame-rails -mb-px border border-neutral-800 py-24 md:py-32"
-      >
-        <header class="px-6 pb-16 text-center md:pb-24">
-          <h2 class="mb-6 capitalize max-w-lg mx-auto">
-            API mocking that actually lets requests happen
-          </h2>
-          <PageHeaderSubtitle class="lg:w-3/6">
-            A decade worth of research to bring you the network interception
-            algorithm that combines the impossible: actually perform requests
-            while giving you full control over them.
-          </PageHeaderSubtitle>
-        </header>
+    <div class="-mb-px border-y border-neutral-800 py-24 md:py-32">
+      <header class="px-6 pb-16 text-center md:pb-24">
+        <h2 class="mb-6 capitalize max-w-lg mx-auto">
+          API mocking that actually lets requests happen
+        </h2>
+        <PageHeaderSubtitle class="lg:w-3/6">
+          A decade worth of research to bring you the network interception
+          algorithm that combines the impossible: actually perform requests
+          while giving you full control over them.
+        </PageHeaderSubtitle>
+      </header>
 
-        <!-- Browser -->
-        <div class="mx-8 mb-8 md:mx-12 md:mb-12 lg:mx-16 lg:mb-16">
-          <div class="xl:mx-auto xl:max-w-5xl">
-            <p
-              class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
-            >
-              Browser
-            </p>
-            <h3 class="text-xl font-bold text-white md:text-2xl">
-              Service Worker API
-            </h3>
-            <p
-              class="home-prose mt-4 max-w-lg text-lg leading-snug text-neutral-400"
-            >
-              In the browser, MSW leverages the standard Service Worker API to
-              seamlessly intercept production requests.
-            </p>
-            <InterceptionDiagram
-              class="mt-12 md:mt-20"
-              :steps="[
-                { label: 'fetch()', detail: 'Request client' },
-                { label: 'Service Worker', detail: 'Browser API' },
-                { label: 'Network', detail: 'Browser networking' },
-              ]"
-              :msw-reach="1"
-              :boundaries="[{ after: 0, label: 'Your app' }]"
-            />
-          </div>
-        </div>
-
-        <hr />
-
-        <!-- Node.js -->
-        <div class="m-8 mb-0 md:m-12 md:mb-0 lg:m-16 lg:mb-0">
-          <div class="xl:mx-auto xl:max-w-5xl">
-            <p
-              class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
-            >
-              Node.js
-            </p>
-            <h3 class="text-xl font-bold text-white md:text-2xl">
-              <a
-                href="https://github.com/mswjs/interceptors"
-                class="hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                @mswjs/interceptors
-              </a>
-            </h3>
-            <p
-              class="home-prose mt-4 max-w-lg text-lg leading-snug text-neutral-400"
-            >
-              In Node.js, MSW intercepts raw socket connections at the lowest
-              possible level before they reach the actual network code written
-              in C.
-            </p>
-            <InterceptionDiagram
-              class="mt-12 lg:mt-20"
-              :steps="[
-                { label: 'fetch()', detail: 'Request client' },
-                { label: 'net.connect()', detail: 'Node.js core' },
-                { label: 'net.Socket', detail: 'Stream' },
-                { label: 'TCP/TLS wraps', detail: 'JS bindings for C' },
-                { label: 'Network', detail: 'Operating system' },
-              ]"
-              :msw-reach="3"
-              :boundaries="[
-                { after: 0, label: 'Your app' },
-                { after: 3, label: 'Node.js C code' },
-              ]"
-            />
-          </div>
+      <!-- Browser -->
+      <div class="mx-8 mb-8 md:mx-12 md:mb-12 lg:mx-16 lg:mb-16">
+        <div class="xl:mx-auto xl:max-w-5xl">
+          <p
+            class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
+          >
+            Browser
+          </p>
+          <h3 class="text-xl font-bold text-white md:text-2xl">
+            Service Worker API
+          </h3>
+          <p
+            class="home-prose mt-4 max-w-lg text-lg leading-snug text-neutral-400"
+          >
+            In the browser, MSW leverages the standard Service Worker API to
+            seamlessly intercept production requests.
+          </p>
+          <InterceptionDiagram
+            class="mt-12 md:mt-20"
+            :steps="[
+              { label: 'fetch()', detail: 'Request client' },
+              { label: 'Service Worker', detail: 'Browser API' },
+              { label: 'Network', detail: 'Browser networking' },
+            ]"
+            :msw-reach="1"
+            :boundaries="[{ after: 0, label: 'Your app' }]"
+          />
         </div>
       </div>
-    </Container>
+
+      <hr />
+
+      <!-- Node.js -->
+      <div class="m-8 mb-0 md:m-12 md:mb-0 lg:m-16 lg:mb-0">
+        <div class="xl:mx-auto xl:max-w-5xl">
+          <p
+            class="mb-1.5 inline-block rounded-md bg-neutral-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-neutral-400"
+          >
+            Node.js
+          </p>
+          <h3 class="text-xl font-bold text-white md:text-2xl">
+            <a
+              href="https://github.com/mswjs/interceptors"
+              class="hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @mswjs/interceptors
+            </a>
+          </h3>
+          <p
+            class="home-prose mt-4 max-w-lg text-lg leading-snug text-neutral-400"
+          >
+            In Node.js, MSW intercepts raw socket connections at the lowest
+            possible level before they reach the actual network code written
+            in C.
+          </p>
+          <InterceptionDiagram
+            class="mt-12 lg:mt-20"
+            :steps="[
+              { label: 'fetch()', detail: 'Request client' },
+              { label: 'net.connect()', detail: 'Node.js core' },
+              { label: 'net.Socket', detail: 'Stream' },
+              { label: 'TCP/TLS wraps', detail: 'JS bindings for C' },
+              { label: 'Network', detail: 'Operating system' },
+            ]"
+            :msw-reach="3"
+            :boundaries="[
+              { after: 0, label: 'Your app' },
+              { after: 3, label: 'Node.js C code' },
+            ]"
+          />
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Source of truth -->
   <section>
-    <Container class="home-frame">
-      <div
-        class="home-frame-rails -mb-px overflow-hidden border border-neutral-800"
-      >
-        <SourceOfTruth :scenes="sourceOfTruthScenes">
-          <template #heading>API mocking as a standalone layer for</template>
-          <template
-            v-for="scene in sourceOfTruthScenes"
-            :key="scene.slot"
-            #[scene.slot]
-          >
-            <slot :name="scene.slot" />
-          </template>
-        </SourceOfTruth>
-      </div>
-    </Container>
+    <div class="-mb-px overflow-hidden border-y border-neutral-800">
+      <SourceOfTruth :scenes="sourceOfTruthScenes">
+        <template #heading>API mocking as a standalone layer for</template>
+        <template
+          v-for="scene in sourceOfTruthScenes"
+          :key="scene.slot"
+          #[scene.slot]
+        >
+          <slot :name="scene.slot" />
+        </template>
+      </SourceOfTruth>
+    </div>
   </section>
 
   <!-- Testimonials -->
   <section>
-    <Container class="home-frame">
-      <div class="home-frame-rails -mb-px border border-neutral-800">
-        <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
-          <h2 class="mb-0 capitalize max-w-lg mx-auto">
-            API mocking beloved by all who ships quality apps.
-          </h2>
-        </header>
+    <div class="-mb-px border-y border-neutral-800">
+      <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
+        <h2 class="mb-0 capitalize max-w-lg mx-auto">
+          API mocking beloved by all who ships quality apps.
+        </h2>
+      </header>
 
-        <!-- Featured quotes -->
-        <div class="grid lg:grid-cols-2">
-          <FeaturedQuote
-            author="Kent C. Dodds"
-            position="Software Engineer and Educator"
-            :avatar-url="kentCDoddsAvatar"
-            class="border-b border-neutral-800 lg:border-r lg:border-fade-t"
-          >
-            I found MSW and was thrilled that not only could I still see the
-            mocked responses in my DevTools, but that the mocks didn't have to
-            be written in a Service Worker and could instead live alongside the
-            rest of my app. This made it <em>silly easy to adopt</em>. The fact
-            that I can use it for testing as well makes MSW a
-            <em>huge productivity booster</em>.
-          </FeaturedQuote>
-          <FeaturedQuote
-            author="Cory House"
-            position="Software Architect"
-            :avatar-url="coryHouseAvatar"
-            class="border-b border-neutral-800"
-          >
-            Mock Service Worker has become a
-            <em>fundamental part of my development and testing workflow</em>.
-            With MSW I don't have to worry about endpoints or databases being
-            down or slow. And I can forget about brittle tests due to changing
-            data. I configure mocks that are 100% reliable and predictable. The
-            result?
-            <em>Faster development and rock-solid automated UI tests</em>.
-          </FeaturedQuote>
-        </div>
+      <!-- Featured quotes -->
+      <div class="grid lg:grid-cols-2">
+        <FeaturedQuote
+          author="Kent C. Dodds"
+          position="Software Engineer and Educator"
+          :avatar-url="kentCDoddsAvatar"
+          class="border-b border-neutral-800 lg:border-r lg:border-fade-t"
+        >
+          I found MSW and was thrilled that not only could I still see the
+          mocked responses in my DevTools, but that the mocks didn't have to
+          be written in a Service Worker and could instead live alongside the
+          rest of my app. This made it <em>silly easy to adopt</em>. The fact
+          that I can use it for testing as well makes MSW a
+          <em>huge productivity booster</em>.
+        </FeaturedQuote>
+        <FeaturedQuote
+          author="Cory House"
+          position="Software Architect"
+          :avatar-url="coryHouseAvatar"
+          class="border-b border-neutral-800"
+        >
+          Mock Service Worker has become a
+          <em>fundamental part of my development and testing workflow</em>.
+          With MSW I don't have to worry about endpoints or databases being
+          down or slow. And I can forget about brittle tests due to changing
+          data. I configure mocks that are 100% reliable and predictable. The
+          result?
+          <em>Faster development and rock-solid automated UI tests</em>.
+        </FeaturedQuote>
+      </div>
 
-        <!-- Community reviews: one row scrolling right to left. The row
-             holds every review once, followed by copies of the first few,
-             enough to fill the viewport; a cycle moves exactly one full set,
-             so the copies land where the originals restart: no jump. -->
-        <div class="marquee overflow-hidden">
-          <div
-            class="marquee-track flex"
-            :style="{
-              '--marquee-count': communityReviews.length,
-              '--marquee-item': 352,
-            }"
+      <!-- Community reviews: one row scrolling right to left. The row
+           holds every review once, followed by copies of the first few,
+           enough to fill the viewport; a cycle moves exactly one full set,
+           so the copies land where the originals restart: no jump. -->
+      <div class="marquee overflow-hidden">
+        <div
+          class="marquee-track flex"
+          :style="{
+            '--marquee-count': communityReviews.length,
+            '--marquee-item': 352,
+          }"
+        >
+          <ReviewTile
+            v-for="review in communityReviews"
+            :key="review.author"
+            :author="review.author"
+            :position="review.position"
           >
-            <ReviewTile
-              v-for="review in communityReviews"
-              :key="review.author"
-              :author="review.author"
-              :position="review.position"
-            >
-              <span v-html="review.quote" />
-            </ReviewTile>
-            <ReviewTile
-              v-for="review in communityReviews.slice(0, REPEATED_REVIEWS)"
-              :key="`repeat-${review.author}`"
-              :author="review.author"
-              :position="review.position"
-              aria-hidden="true"
-            >
-              <span v-html="review.quote" />
-            </ReviewTile>
-          </div>
+            <span v-html="review.quote" />
+          </ReviewTile>
+          <ReviewTile
+            v-for="review in communityReviews.slice(0, REPEATED_REVIEWS)"
+            :key="`repeat-${review.author}`"
+            :author="review.author"
+            :position="review.position"
+            aria-hidden="true"
+          >
+            <span v-html="review.quote" />
+          </ReviewTile>
         </div>
       </div>
-    </Container>
+    </div>
   </section>
 
   <GetStarted

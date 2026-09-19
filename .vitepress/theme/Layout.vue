@@ -141,59 +141,119 @@ useSidebarAutoScroll()
       @close-menu="navigationOpen = false"
     />
 
-    <div class="flex flex-1 flex-col min-[960px]:pt-16">
-      <LocalNav
-        v-if="!isStandalonePage && !isBlogPost && !page.isNotFound"
-        :has-sidebar="hasDocumentationSidebar"
-        :sidebar-open="sidebarOpen"
-        :outline-items="documentOutline.items.value"
-        :active-outline-link="documentOutline.activeLink.value"
-        @open-sidebar="sidebarOpen = true"
-      />
-
+    <!-- The site frame: one box, sized like the header's, that draws the
+         side rails for everything below the header down to the footer. It
+         starts under the fixed header, so the rails stay unbroken even in
+         the gap the page leaves when it overscrolls. Documentation pages
+         use the documentation layout box, every other page the content
+         container; the sections inside draw only their top/bottom borders. -->
+    <div
+      class="flex flex-1 flex-col"
+      :class="
+        isDocumentationPage
+          ? 'mx-auto w-full max-w-[var(--vp-layout-max-width)]'
+          : 'msw-container site-frame'
+      "
+    >
       <div
-        class="w-full flex-1"
-        :class="{
-          'mx-auto max-w-[var(--vp-layout-max-width)]':
-            !isStandalonePage && !isBlogPost,
-          'msw-container home-frame': isBlogPost,
-          'min-[960px]:pl-[var(--vp-sidebar-width)]': hasDocumentationSidebar,
-          // The sidebar draws the left rail; the content draws the right
-          // one, continuing the header's border.
-          'border-r border-neutral-800': isDocumentationPage,
-        }"
+        class="site-frame-rails flex flex-1 flex-col border-x border-neutral-800 min-[960px]:pt-16"
       >
-        <NotFoundPage v-if="page.isNotFound" />
-
-        <main v-else-if="isStandalonePage" id="main-content">
-          <Content />
-        </main>
-
-        <!-- Blog posts continue the header's rails down to the footer. -->
-        <div
-          v-else-if="isBlogPost"
-          class="home-frame-rails border-x border-neutral-800"
-        >
-          <BlogPostNav />
-          <DocumentLayout
-            :documentation-page="false"
-            blog-post
-            :outline-items="documentOutline.items.value"
-            :active-outline-link="documentOutline.activeLink.value"
-          >
-            <template #header>
-              <BlogPostHeader />
-            </template>
-          </DocumentLayout>
-        </div>
-
-        <DocumentLayout
-          v-else
-          :documentation-page="isDocumentationPage"
-          :blog-post="false"
+        <LocalNav
+          v-if="!isStandalonePage && !isBlogPost && !page.isNotFound"
+          :has-sidebar="hasDocumentationSidebar"
+          :sidebar-open="sidebarOpen"
           :outline-items="documentOutline.items.value"
           :active-outline-link="documentOutline.activeLink.value"
+          @open-sidebar="sidebarOpen = true"
         />
+
+        <div
+          class="w-full flex-1"
+          :class="{
+            'min-[960px]:pl-[var(--vp-sidebar-width)]': hasDocumentationSidebar,
+          }"
+        >
+          <NotFoundPage v-if="page.isNotFound" />
+
+          <main v-else-if="isStandalonePage" id="main-content">
+            <Content />
+          </main>
+
+          <template v-else-if="isBlogPost">
+            <BlogPostNav />
+            <DocumentLayout
+              :documentation-page="false"
+              blog-post
+              :outline-items="documentOutline.items.value"
+              :active-outline-link="documentOutline.activeLink.value"
+            >
+              <template #header>
+                <BlogPostHeader />
+              </template>
+            </DocumentLayout>
+          </template>
+
+          <DocumentLayout
+            v-else
+            :documentation-page="isDocumentationPage"
+            :blog-post="false"
+            :outline-items="documentOutline.items.value"
+            :active-outline-link="documentOutline.activeLink.value"
+          />
+        </div>
+
+        <div
+          class="w-full"
+          :class="{
+            'min-[960px]:pl-[var(--vp-sidebar-width)]': hasDocumentationSidebar,
+          }"
+        >
+          <SiteFooter>
+            <template #sections>
+              <div class="sm:col-span-2">
+                <FooterSection title="Library">
+                  <li><a href="/docs">Documentation</a></li>
+                  <li><a href="/guides">Guides</a></li>
+                  <li><a href="/blog">Blog</a></li>
+                </FooterSection>
+              </div>
+
+              <div class="sm:col-span-2">
+                <FooterSection title="Resources">
+                  <li><a href="/docs/quick-start">Quick start</a></li>
+                  <li>
+                    <a href="/guides/best-practices"> Best practices </a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/mswjs/examples" target="_blank">
+                      Examples
+                    </a>
+                  </li>
+                </FooterSection>
+              </div>
+
+              <div class="sm:col-span-2">
+                <FooterSection title="Community">
+                  <li>
+                    <a href="https://github.com/mswjs/msw" target="_blank">
+                      GitHub
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://twitter.com/ApiMocking" target="_blank">
+                      Twitter
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://kettanaito.com/discord" target="_blank">
+                      Discord
+                    </a>
+                  </li>
+                </FooterSection>
+              </div>
+            </template>
+          </SiteFooter>
+        </div>
       </div>
     </div>
 
@@ -203,59 +263,5 @@ useSidebarAutoScroll()
       :open="sidebarOpen"
       @close="sidebarOpen = false"
     />
-
-    <div
-      class="w-full"
-      :class="{
-        'mx-auto max-w-[var(--vp-layout-max-width)] min-[960px]:pl-[var(--vp-sidebar-width)]':
-          hasDocumentationSidebar,
-      }"
-    >
-      <SiteFooter framed>
-        <template #sections>
-          <div class="sm:col-span-2">
-            <FooterSection title="Library">
-              <li><a href="/docs">Documentation</a></li>
-              <li><a href="/guides">Guides</a></li>
-              <li><a href="/blog">Blog</a></li>
-            </FooterSection>
-          </div>
-
-          <div class="sm:col-span-2">
-            <FooterSection title="Resources">
-              <li><a href="/docs/quick-start">Quick start</a></li>
-              <li>
-                <a href="/guides/best-practices"> Best practices </a>
-              </li>
-              <li>
-                <a href="https://github.com/mswjs/examples" target="_blank">
-                  Examples
-                </a>
-              </li>
-            </FooterSection>
-          </div>
-
-          <div class="sm:col-span-2">
-            <FooterSection title="Community">
-              <li>
-                <a href="https://github.com/mswjs/msw" target="_blank">
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a href="https://twitter.com/ApiMocking" target="_blank">
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a href="https://kettanaito.com/discord" target="_blank">
-                  Discord
-                </a>
-              </li>
-            </FooterSection>
-          </div>
-        </template>
-      </SiteFooter>
-    </div>
   </div>
 </template>

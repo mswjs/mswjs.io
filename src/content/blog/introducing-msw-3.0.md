@@ -149,7 +149,7 @@ But building Interceptors wasn't exactly easy. Intercepting requests by still pe
 
 The history of our approach to this problem is the history of moving the interception layer down the network code. Here's a brief:
 
-```ts
+```ts notwoslash
 // 1. We began with patching "node:http".
 // This is what your average API mocking library does in Node.js.
 http.get = function mockGet() {}
@@ -176,7 +176,7 @@ You won't believe me, but this is my trying to make it short. This technological
 - Each interceptor pipes the data packets sent via the socket through a respective parser, like `llhttp`;
 - If the parser confirms an expected network message (e.g. an HTTP request), the interceptor kicks in.
 
-```ts
+```ts notwoslash
 class HttpRequestInterceptor {
   setup() {
     const socketInterceptor = new SocketInterceptor()
