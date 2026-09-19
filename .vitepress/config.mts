@@ -156,7 +156,8 @@ export default defineConfig({
     plugins: [
       // "*.svg?component" imports inline the file as a Vue component so
       // the icons under "theme/components/icons" stay plain SVG files.
-      svgLoader({ svgo: false }),
+      // Plain "*.svg" imports stay URLs (for "<img>" sources).
+      svgLoader({ svgo: false, defaultImport: 'url' }),
       localSearchRanking(),
       externalLinks.plugin,
       {
