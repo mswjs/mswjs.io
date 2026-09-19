@@ -6,6 +6,7 @@ import { VPNavBarSearch, VPSocialLinks } from 'vitepress/theme-without-fonts'
 import VPSwitchAppearance from 'vitepress/dist/client/theme-default/components/VPSwitchAppearance.vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { DOCUMENTATION_ROOTS, getLibraryFromPath } from '../libraries'
+import { useClickSound } from '../composables/useClickSound'
 
 defineProps<{
   menuOpen: boolean
@@ -18,6 +19,13 @@ const emit = defineEmits<{
 }>()
 
 const { theme } = useData<DefaultTheme.Config>()
+// Tune the switch click here: "pitch"/"pitchEnd" set the tone (Hz),
+// "tickFrequency" the sharpness of the tick, "volume" the loudness.
+const { playClickSound } = useClickSound({
+  pitch: 900,
+  pitchEnd: 420,
+  tickFrequency: 2400,
+})
 const route = useRoute()
 const router = useRouter()
 
@@ -134,7 +142,7 @@ function navigateToBranding(event: MouseEvent): void {
             <VPNavBarSearch class="!p-0" />
           </div>
           <div class="-mr-2 hidden h-full items-center gap-3 pl-5 md:flex">
-            <VPSwitchAppearance />
+            <VPSwitchAppearance @click="playClickSound" />
             <VPSocialLinks :links="theme.socialLinks" />
           </div>
 
