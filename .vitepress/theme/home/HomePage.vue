@@ -223,7 +223,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
             plain
             title="Unmatched feature set"
             code-placement="right-bottom"
-            class="md:col-span-2 2xl:px-[calc(var(--card-padding)+62px)]"
+            class="md:col-span-2 2xl:px-[calc(var(--card-padding-x)+62px)]"
           >
             <template #description>
               Mock REST, GraphQL, Server-Sent Events, and WebSocket APIs with a
