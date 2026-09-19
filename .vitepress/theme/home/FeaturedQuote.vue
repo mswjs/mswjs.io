@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Avatar from '../components/Avatar.vue'
-import QuotesIcon from '../components/icons/quotes.vue'
+import QuotesIcon from '../components/icons/quotes.svg?component'
 
 defineProps<{
   author: string

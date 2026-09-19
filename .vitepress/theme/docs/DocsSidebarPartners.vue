@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CodeRabbitIcon from '../components/icons/coderabbit.vue'
-import ChromaticIcon from '../components/icons/chromatic.vue'
-import WorkleapIcon from '../components/icons/workleap.vue'
+import CodeRabbitIcon from '../components/icons/coderabbit.svg?component'
+import ChromaticIcon from '../components/icons/chromatic.svg?component'
+import WorkleapIcon from '../components/icons/workleap.svg?component'
 </script>
 
 <template>

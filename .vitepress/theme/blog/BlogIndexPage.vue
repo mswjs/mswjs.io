@@ -2,7 +2,7 @@
 import Container from '../components/Container.vue'
 import PageHeaderSubtitle from '../components/PageHeaderSubtitle.vue'
 import FormattedDate from '../components/FormattedDate.vue'
-import ArrowNarrowRightIcon from '../components/icons/arrow-narrow-right.vue'
+import ArrowNarrowRightIcon from '../components/icons/arrow-narrow-right.svg?component'
 import { data as posts } from './posts.data'
 </script>
 

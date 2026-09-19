@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NewspaperIcon } from '@heroicons/vue/24/solid'
-import GitHubIcon from '../components/icons/github.vue'
-import DiscordIcon from '../components/icons/discord.vue'
+import GitHubIcon from '../components/icons/github.svg?component'
+import DiscordIcon from '../components/icons/discord.svg?component'
 
 defineProps<{
   gitHubUrl: string

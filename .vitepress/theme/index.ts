@@ -9,7 +9,7 @@ import Action from './content/Action.vue'
 import PageCard from './content/PageCard.vue'
 import CollapsibleCode from './content/CollapsibleCode.vue'
 import PromoBanner from './content/PromoBanner.vue'
-import DiscordIcon from './components/icons/discord.vue'
+import DiscordIcon from './components/icons/discord.svg?component'
 
 import './styles/style.css'
 import './styles/vitepress-content.css'

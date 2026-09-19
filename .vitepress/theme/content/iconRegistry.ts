@@ -33,9 +33,9 @@ import {
   NewspaperIcon as NewspaperIconSolid,
   ServerIcon as ServerIconSolid,
 } from '@heroicons/vue/24/solid'
-import GraphQLIcon from '../components/icons/graphql.vue'
-import NodejsIcon from '../components/icons/nodejs.vue'
-import DiscordIcon from '../components/icons/discord.vue'
+import GraphQLIcon from '../components/icons/graphql.svg?component'
+import NodejsIcon from '../components/icons/nodejs.svg?component'
+import DiscordIcon from '../components/icons/discord.svg?component'
 
 /**
  * Icons that Markdown content can reference by name

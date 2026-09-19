@@ -6,6 +6,7 @@ import type { DefaultTheme } from 'vitepress'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
+import svgLoader from 'vite-svg-loader'
 import { buildDocsSidebar } from './sidebar'
 import {
   wordHighlightTransformer,
@@ -153,6 +154,9 @@ export default defineConfig({
 
   vite: {
     plugins: [
+      // "*.svg?component" imports inline the file as a Vue component so
+      // the icons under "theme/components/icons" stay plain SVG files.
+      svgLoader({ svgo: false }),
       localSearchRanking(),
       externalLinks.plugin,
       {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import GitHubIcon from './icons/github.vue'
-import TwitterIcon from './icons/twitter.vue'
-import YouTubeIcon from './icons/youtube.vue'
-import DiscordIcon from './icons/discord.vue'
-import OpenCollectiveIcon from './icons/opencollective.vue'
+import GitHubIcon from './icons/github.svg?component'
+import TwitterIcon from './icons/twitter.svg?component'
+import YouTubeIcon from './icons/youtube.svg?component'
+import DiscordIcon from './icons/discord.svg?component'
+import OpenCollectiveIcon from './icons/opencollective.svg?component'
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import StorybookBookmarkIcon from './StorybookBookmarkIcon.vue'
-import StorybookIcon from '../components/icons/storybook.vue'
+import StorybookIcon from '../components/icons/storybook.svg?component'
 </script>
 
 <template>
