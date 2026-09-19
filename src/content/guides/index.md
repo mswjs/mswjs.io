@@ -1,7 +1,7 @@
 ---
 order: 1
 title: Guides
-description: Integrate Mock Service Worker and apply it effectively in your projects.
+description: Integrate Mock Service Worker with various frameworks and tools.
 ---
 
 Use these guides to integrate MSW with your environment, structure maintainable

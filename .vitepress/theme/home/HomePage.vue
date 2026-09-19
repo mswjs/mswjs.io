@@ -25,6 +25,10 @@ import VercelIcon from '../components/icons/vercel.vue'
 import CloudflareIcon from '../components/icons/cloudflare.vue'
 import ShopifyIcon from '../components/icons/shopify.vue'
 import NvidiaIcon from '../components/icons/nvidia.vue'
+import IbmIcon from '../components/icons/ibm.vue'
+import AmdIcon from '../components/icons/amd.vue'
+import MercedesIcon from '../components/icons/mercedes.vue'
+import BasecampIcon from '../components/icons/basecamp.vue'
 
 import mswLogo from '../../../src/images/msw.svg'
 import kentCDoddsAvatar from '../../../src/images/people/kent-c-dodds.jpg'
@@ -79,6 +83,10 @@ const companies: Array<Company> = [
   { name: 'Cloudflare', icon: CloudflareIcon, class: 'h-7 md:h-11 max-w-full' },
   { name: 'Shopify', icon: ShopifyIcon, class: 'h-8 md:h-12 max-w-full' },
   { name: 'Nvidia', icon: NvidiaIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'IBM', icon: IbmIcon, class: 'h-5 md:h-7 max-w-full' },
+  { name: 'AMD', icon: AmdIcon, class: 'h-4 md:h-5 max-w-full' },
+  { name: 'Mercedes-Benz', icon: MercedesIcon, class: 'h-6 md:h-9 max-w-full' },
+  { name: 'Basecamp', icon: BasecampIcon, class: 'h-5 md:h-7 max-w-full' },
 ]
 
 /**
