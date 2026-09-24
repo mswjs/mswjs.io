@@ -1,6 +1,6 @@
 ---
 title: finalize
-description: Schedule cleanup after the request handler completion.
+description: Schedule cleanup after the handler completion.
 ---
 
 ## Call signature
@@ -8,7 +8,7 @@ description: Schedule cleanup after the request handler completion.
 ```ts
 http.get('/resource', ({ finalize }) => {
   finalize(() => {
-    // Clean up once the request handler is done.
+    // Clean up once this handler is done.
   })
 })
 ```

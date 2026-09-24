@@ -1,7 +1,7 @@
 ---
 order: 3
 title: use()
-description: Prepend request handlers to the current worker instance.
+description: Prepend handlers to the current worker instance.
 ---
 
 ## Call signature
@@ -16,13 +16,13 @@ worker.use(http.get('/resource'), http.post('/resource'))
 ```
 
 ::: info
-  Similar to `worker.start()`, you can spread a list of request handlers as
+  Similar to `worker.start()`, you can spread a list of handlers as
   arguments to the `worker.use()` method. No need to call it multiple times!
 :::
 
-The prepended request handlers persist on the worker as long as the current runtime exists (thus, they are often referred to as "runtime request handlers").
+The prepended handlers persist on the worker as long as the current runtime exists (thus, they are often referred to as "runtime handlers").
 
 ## Related materials
 
-- Runtime request handlers (part of a new `docs/basics/request-handler#runtime-request-handlers` section)
+- Runtime handlers (part of a new `docs/basics/request-handler#runtime-request-handlers` section)
 - [Network behavior overrides](/guides/best-practices/network-behavior-overrides)

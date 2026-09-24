@@ -43,7 +43,7 @@ export const test = testBase.extend({
       // Expose the worker object on the test's context.
       await use(worker)
 
-      // Remove any request handlers added in individual test cases.
+      // Remove any handlers added in individual test cases.
       // This prevents them from affecting unrelated tests.
       worker.resetHandlers()
     },
@@ -63,25 +63,25 @@ export const test = testBase.extend({
 
 We recommend skipping `worker.stop()` at the end of the fixture because there's no practical reason for it. `worker.stop()` only controls whether the current client should be visible by the registered worker. It does not unregister the worker as that is a costly operation that is entirely redundant when testing in the browser (page context provides the network isolation).
 
-### Initial request handlers
+### Initial handlers
 
-Any `test()` now runs against the initial, happy-path request handlers (like those in `handlers.ts`) without explicitly referencing MSW. Leverage this for cleaner test suites and predictable baseline behavior.
+Any `test()` now runs against the initial, happy-path handlers (like those in `handlers.ts`) without explicitly referencing MSW. Leverage this for cleaner test suites and predictable baseline behavior.
 
 ```ts {1}
 import { test } from './test-extend'
 import { Dashboard } from './components/dashboard.js'
 
 test('renders the dashboard', () => {
-  // Uses only the happy-path request handlers.
+  // Uses only the happy-path handlers.
   render(<Dashboard />)
 
   // Your actions and assertions...
 })
 ```
 
-### Overriding request handlers
+### Overriding handlers
 
-You can [override request handlers](/guides/best-practices/network-behavior-overrides) by accessing the `worker` object of your test's context and calling `.use()`, providing it with the request handlers that should take priority:
+You can [override handlers](/guides/best-practices/network-behavior-overrides) by accessing the `worker` object of your test's context and calling `.use()`, providing it with the handlers that should take priority:
 
 ```ts {2,10-14} /worker/1,3
 import { http, HttpResponse } from 'msw/http'

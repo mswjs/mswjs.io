@@ -44,7 +44,7 @@ We will import this file later, when [Enabling mocking](#enable-mocking).
 
 ## Setup
 
-Import the `setupServer` function from `msw/native` and call it, providing your request handlers as the argument.
+Import the `setupServer` function from `msw/native` and call it, providing your handlers as the argument.
 
 ::: code-group
 

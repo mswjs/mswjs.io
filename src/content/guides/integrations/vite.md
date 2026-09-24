@@ -40,9 +40,9 @@ export default defineConfig({
 
 :::
 
-During development, the plugin serves the worker script at `/mockServiceWorker.js` (respecting your [`base`](https://vitejs.dev/config/shared-options.html#base) option). You still define the request handlers and enable mocking in your application.
+During development, the plugin serves the worker script at `/mockServiceWorker.js` (respecting your [`base`](https://vitejs.dev/config/shared-options.html#base) option). You still define the handlers and enable mocking in your application.
 
-## Define request handlers
+## Define handlers
 
 Describe the requests you want to mock:
 
@@ -66,7 +66,7 @@ export const handlers = [
 
 ## Enable mocking
 
-Import the `network` from the `virtual:msw` module, configure it with your request handlers, and enable it. Do this before importing the module that renders your application or makes its initial requests, and guard the mocking setup with Vite's `import.meta.env.DEV` flag to keep it out of production builds:
+Import the `network` from the `virtual:msw` module, configure it with your handlers, and enable it. Do this before importing the module that renders your application or makes its initial requests, and guard the mocking setup with Vite's `import.meta.env.DEV` flag to keep it out of production builds:
 
 ::: code-group
 

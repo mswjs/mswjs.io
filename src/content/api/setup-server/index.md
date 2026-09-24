@@ -15,7 +15,7 @@ Despite the word "server" in the name, it _does not_ establish any servers, oper
 
 ## Node.js specifics
 
-The `setupServer` function acts as a bridge to apply the same request handlers in Node.js, where Service Workers cannot run. Instead, it augments the standard request modules like `http` in order to react to outgoing requests and respond to them from your mock definitions.
+The `setupServer` function acts as a bridge to apply the same handlers in Node.js, where Service Workers cannot run. Instead, it augments the standard request modules like `http` in order to react to outgoing requests and respond to them from your mock definitions.
 
 ### Precautions
 
@@ -23,13 +23,13 @@ Reusing the same handlers between the browser and Node.js may have certain limit
 
 ## Usage
 
-Using `setupServer` is similar to `setupWorker`. It comes down to providing it with the list of request handlers, and starting the request interception.
+Using `setupServer` is similar to `setupWorker`. It comes down to providing it with the list of handlers, and starting the request interception.
 
 ```js {2,5,15}
 import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
-// Provide the server-side API with the request handlers.
+// Provide the server-side API with the handlers.
 const server = setupServer(
   http.get('/user', () => {
     return HttpResponse.json({
@@ -45,7 +45,7 @@ server.listen()
 
 ::: warning
   Pay attention that `setupServer` is imported from `msw/node`, while the
-  request handlers are imported from the respective namespace modules
+  handlers are imported from the respective namespace modules
   (e.g. `msw/http`) as usual.
 :::
 

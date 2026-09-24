@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 4
 title: sse
 description: Intercept Server-Sent Events.
 keywords:

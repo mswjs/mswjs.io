@@ -134,7 +134,7 @@ The following properties are available on the response resolver object argument 
 | `query`         | `string`                 | Raw GraphQL [query string](/docs/graphql/intercepting-operations/queries#reading-raw-query). |
 | `variables`     | `Record<string, any>`    | Parsed [variables](/docs/graphql/intercepting-operations/variables) of this operation.       |
 | `operationName` | `string`                 | Operation name (e.g. `'GetUser'`).                                                           |
-| [`finalize`](/api/finalize)  | `Function` | A function to schedule cleanup after the request handler completion. |
+| [`finalize`](/api/finalize)  | `Function` | A function to schedule cleanup after the handler completion. |
 
 ```ts /cookies/#g /query/ /variables/#v /operationName/
 const api = graphql.link('https://api.example.com/graphql')

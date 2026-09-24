@@ -1,7 +1,7 @@
 ---
 order: 7
 title: listHandlers()
-description: Return the list of current request handlers.
+description: Return the list of current handlers.
 ---
 
 ## Call signature

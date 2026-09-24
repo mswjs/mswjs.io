@@ -12,7 +12,7 @@ Our mission is to help you describe the network you want. With that in mind, we 
     icon="CommandLineIcon"
     url="/guides/best-practices/structuring-handlers"
     title="Structuring handlers"
-    description="Manage a large number of request handlers."
+    description="Manage a large number of handlers."
   />
   <PageCard
     icon="CommandLineIcon"

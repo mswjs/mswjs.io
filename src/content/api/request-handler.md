@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 10
 title: RequestHandler
 description: The base class for request handler implementation.
 ---
@@ -105,6 +105,62 @@ Extends the response resolver argument object. Whichever object is returned from
 | `parsedResult` | `object`  | The object returned from the `parse()` method. |
 | `context`      | `object`  | Request resolution context.                    |
 
+Here's an example of using the `extendResolverArgs()` method to extract `URLSearchParams` from the intercepted request's URL and expose them as additional data on the response resolver argument.
+
+::: code-group
+
+```js [SearchParamsHandler.js] /parsedResult.searchParams/ {22-26}
+import { RequestHandler } from 'msw'
+
+export class SearchParamsHandler extends RequestHandler {
+  constructor(expectedParams, resolver) {
+    super({
+      info: { header: JSON.stringify(expectedParams) },
+      resolver,
+    })
+  }
+
+  parse({ request }) {
+    const searchParams = new URL(request.url).searchParams
+
+    return {
+      searchParams,
+    }
+  }
+
+  predicate({ request, parsedResult }) {
+    /* Search params predicate here */
+  }
+
+  extendResolverArgs({ request, parsedResult }) {
+    return {
+      searchParams: parsedResult.searchParams,
+    }
+  }
+}
+```
+
+:::
+
+::: code-group
+
+```js [handlers.js] /searchParams/1
+import { HttpResponse } from 'msw/http'
+import { SearchParamsHandler } from './SearchParamsHandler'
+
+export const handlers = [
+  new SearchParamsHandler({ id: 'abc-123' }, ({ request, searchParams }) => {
+    // The custom request handler exposes the reference to
+    // the "URLSearchParams" instance of the intercepted request
+    // so we can operate with it directly in the resolver.
+    const id = searchParams.get('id')
+    return HttpResponse.json({ id })
+  }),
+]
+```
+
+:::
+
 ### `predicate(args)`
 
 Decides whether the intercepted request should be handled by this request handler. The `predicate()` method is expected to return a boolean.
@@ -124,6 +180,26 @@ Prints a browser console message whenever this request handler has handled the i
 | `request`      | `Request`  | Intercepted request instance.                            |
 | `response`     | `Response` | Response instance returned from the `resolver` function. |
 | `parsedResult` | `object`   | The object returned from the `parse()` method.           |
+
+### `run(args)`
+
+Executes this request handler against the intercepted request. This is the [resolution](#phase-3-resolution) step: it runs the `parse()` and `predicate()` methods, and if the handler matches, executes the `resolver` function with the arguments returned from the `extendResolverArgs()` method.
+
+| Argument name       | Type      | Description                              |
+| ------------------- | --------- | ---------------------------------------- |
+| `request`           | `Request` | Intercepted request instance.            |
+| `requestId`         | `string`  | Unique ID of the intercepted request.    |
+| `resolutionContext` | `object`  | _Optional_. Request resolution context.  |
+
+Returns `null` if the handler doesn't match the request (or is a used one-time handler). Otherwise, returns an execution result object with the following properties:
+
+| Property name  | Type             | Description                                                                     |
+| -------------- | ---------------- | ------------------------------------------------------------------------------- |
+| `handler`      | `RequestHandler` | This request handler.                                                           |
+| `request`      | `Request`        | A clone of the intercepted request (safe to read the body for logging).         |
+| `requestId`    | `string`         | Unique ID of the intercepted request.                                           |
+| `parsedResult` | `object`         | The object returned from the `parse()` method.                                  |
+| `response`     | `Response`       | The response returned from the `resolver` function, if any.                     |
 
 ## Request phases
 
@@ -211,15 +287,22 @@ export class SearchParamsHandler extends RequestHandler {
 
 :::
 
-### Phrase 3: Resolution
+### Phase 3: Resolution
 
-If the request handler returned `true` in the predicate phase, the resolution phase begins. The parent `RequestHandler` class handles the request resolution by executing the provided `resolver` function with the `request` instance and whichever additional information returned from the `extendResolverArgs()` method. The response returned from the resolver function is propagated to MSW and it applies it to the request.
+If the request handler returned `true` in the predicate phase, the resolution phase begins. The resolution is implemented in the `run()` method of the request handler, which does the following:
 
-Here's an example of using the `extendResolverArgs()` method to extract `URLSearchParams` from the intercepted request's URL and expose them as additional data on the response resolver argument.
+1. Runs the `parse()` and `predicate()` methods described above (returns `null` if the handler doesn't match);
+1. Marks the handler as used (relevant for `{ once: true }` handlers);
+1. Executes the `resolver` function with the intercepted `request`, `requestId`, `finalize`, and whichever additional arguments returned from the `extendResolverArgs()` method;
+1. Returns the execution result containing the mocked `response`, if any.
+
+MSW then applies the returned response to the intercepted request and calls the `log()` method of the handler.
+
+You can customize the resolution by overriding the `run()` method in your custom handler. Make sure to call `super.run()` to reuse the default resolution logic. For example, let's iterate on the custom `SearchParamsHandler` to mark all of its mocked responses with a custom header.
 
 ::: code-group
 
-```js [SearchParamsHandler.js] /parsedResult.searchParams/ {14-16,25}
+```js [SearchParamsHandler.js] {20-31}
 import { RequestHandler } from 'msw'
 
 export class SearchParamsHandler extends RequestHandler {
@@ -228,45 +311,30 @@ export class SearchParamsHandler extends RequestHandler {
       info: { header: JSON.stringify(expectedParams) },
       resolver,
     })
+    this.expectedParams = expectedParams
   }
 
   parse({ request }) {
-    const searchParams = new URL(request.url).searchParams
-
-    return {
-      searchParams,
-    }
+    /* Search params parsing here */
   }
 
   predicate({ request, parsedResult }) {
     /* Search params predicate here */
   }
 
-  extendResolverArgs({ request, parsedResult }) {
-    return {
-      searchParams: parsedResult.searchParams,
+  async run(args) {
+    // Resolve the request as usual. This returns "null"
+    // if the handler doesn't match the request.
+    const result = await super.run(args)
+
+    if (result?.response) {
+      // Mark the mocked response as coming from this handler.
+      result.response.headers.set('x-search-params-handler', 'true')
     }
+
+    return result
   }
 }
-```
-
-:::
-
-::: code-group
-
-```js [handlers.js] /searchParams/1
-import { HttpResponse } from 'msw/http'
-import { SearchParamsHandler } from './SearchParamsHandler'
-
-export const handlers = [
-  new SearchParamsHandler({ id: 'abc-123' }, ({ request, searchParams }) => {
-    // The custom request handler exposes the reference to
-    // the "URLSearchParams" instance of the intercepted request
-    // so we can operate with it directly in the resolver.
-    const id = searchParams.get('id')
-    return HttpResponse.json({ id })
-  }),
-]
 ```
 
 :::

@@ -1,5 +1,5 @@
 ---
-order: 10
+order: 12
 title: Life-cycle events
 keywords:
   - events

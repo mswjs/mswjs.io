@@ -26,7 +26,7 @@ Yes. Mock Service Worker supports **all request libraries**, both existing and t
 
 ## Can I use it in Node.js?
 
-Yes. Although there's no Service Worker in Node.js, MSW provides you with a designated API to reuse the same request handlers in Node.js. Follow the integration below to learn how to use MSW in Node.js:
+Yes. Although there's no Service Worker in Node.js, MSW provides you with a designated API to reuse the same handlers in Node.js. Follow the integration below to learn how to use MSW in Node.js:
 
 <PageCard
   icon="CommandLineIcon"

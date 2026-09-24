@@ -1,7 +1,7 @@
 ---
 order: 2
 title: Structuring handlers
-description: Best practices for structuring your request handlers.
+description: Best practices for structuring your handlers.
 keywords:
   - structure
   - file
@@ -67,11 +67,11 @@ Utilize network behavior overrides to split the behavior of the same resource be
 
 ## Dealing with large handlers
 
-Complex systems may have complex APIs. When mocking them, that complexity may result in a large number of request handlers present at the same time. Here are a couple of ways to handle large network descriptions.
+Complex systems may have complex APIs. When mocking them, that complexity may result in a large number of handlers present at the same time. Here are a couple of ways to handle large network descriptions.
 
-### Group request handlers
+### Group handlers
 
-Similar to how all server-side behaviors for the same resource don't have to live in a single request handler, all network descriptions for different areas of your product don't have to be written in a single `handlers` array.
+Similar to how all server-side behaviors for the same resource don't have to live in a single handler, all network descriptions for different areas of your product don't have to be written in a single `handlers` array.
 
 Instead, consider splitting them on the file system level, grouping them by domain, and composing the list of handlers later.
 
@@ -88,7 +88,7 @@ mocks/
 ```js [mocks/handlers/user.js]
 import { http } from 'msw/http'
 
-// These request handlers focus on the endpoints
+// These handlers focus on the endpoints
 // that concern the user.
 export const handlers = [
   http.get('/user', getUserResolver),
@@ -105,7 +105,7 @@ export const handlers = [
 import { handlers as userHandlers } from './user'
 import { handlers as checkoutHandlers } from './checkout'
 
-// The root-level request handlers combine
+// The root-level handlers combine
 // all the domain-based handlers into a single
 // network description array.
 export const handlers = [...userHandlers, ...checkoutHandlers]
@@ -113,7 +113,7 @@ export const handlers = [...userHandlers, ...checkoutHandlers]
 
 :::
 
-Grouping the request handlers can also be beneficial in large test suites as you can apply only a subset of handlers during a particular test.
+Grouping the handlers can also be beneficial in large test suites as you can apply only a subset of handlers during a particular test.
 
 ::: code-group
 
@@ -126,11 +126,11 @@ server.use(...userHandlers)
 
 :::
 
-> To take full advantage of domain-based request handlers, you may consider calling `setupServer()` without any base request handlers.
+> To take full advantage of domain-based handlers, you may consider calling `setupServer()` without any base handlers.
 
 ### Abstract repeated logic
 
-As the first step, we recommend abstracting the repetitive logic into utility functions that you can then reuse across different request handlers.
+As the first step, we recommend abstracting the repetitive logic into utility functions that you can then reuse across different handlers.
 
 ```js /utilOne/ /utilTwo/ {6,9}
 import { http } from 'msw/http'

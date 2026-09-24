@@ -57,11 +57,11 @@ function app() {
 }
 ```
 
-In the example above, the first `fetch()` call will be handled by whichever request handlers initially provided to the `setupServer()` call, which in this case is none. The same `fetch()` call within the boundary, however, will receive a network error (`HttpResponse.error()`) because the respective request handler override was added _within_ the boundary.
+In the example above, the first `fetch()` call will be handled by whichever handlers initially provided to the `setupServer()` call, which in this case is none. The same `fetch()` call within the boundary, however, will receive a network error (`HttpResponse.error()`) because the respective handler override was added _within_ the boundary.
 
-> Since the boundary provides scope isolation, you don't need to reset the request handlers. You do need to reset them, however, if you wish to reset the network behavior within that server boundary.
+> Since the boundary provides scope isolation, you don't need to reset the handlers. You do need to reset them, however, if you wish to reset the network behavior within that server boundary.
 
-The `server.boundary()` API utilizes `AsyncLocalStorage`, which means that all the network in the current scope _and child scopes_ of the boundary will be affected by request handler overrides.
+The `server.boundary()` API utilizes `AsyncLocalStorage`, which means that all the network in the current scope _and child scopes_ of the boundary will be affected by handler overrides.
 
 The server boundary accepts whichever arguments passed to the callback function and returns whatever that function returns. With that in mind, you can use it even in situations when the callback is expected to return something.
 
@@ -111,9 +111,9 @@ app.post('/resource', (req, res) => {
 
 ### Concurrent test runs
 
-The `server.boundary()` API is primarily designed to support concurrent test runs in modern test frameworks. Since the total list of request handlers is kept in-memory in the `setupServer()` scope, this introduces a _global state problem_. If multiple concurrent tests call `server.use()`, those request handler override will end up affecting irrelevant tests that run in parallel.
+The `server.boundary()` API is primarily designed to support concurrent test runs in modern test frameworks. Since the total list of handlers is kept in-memory in the `setupServer()` scope, this introduces a _global state problem_. If multiple concurrent tests call `server.use()`, those handler override will end up affecting irrelevant tests that run in parallel.
 
-Introducing a server boundary in each test solves this problem and prevents request handler overrides from ever affecting irrelevant tests. Take a look at how `server.boundary()` is used in practice in this concurrent test suite in Vitest:
+Introducing a server boundary in each test solves this problem and prevents handler overrides from ever affecting irrelevant tests. Take a look at how `server.boundary()` is used in practice in this concurrent test suite in Vitest:
 
 ```js {20,27,32,43,48,59} /server.boundary/
 import { http, HttpResponse } from 'msw/http'
@@ -136,9 +136,9 @@ afterAll(() => {
 it.concurrent(
   'fetches the user',
   server.boundary(async () => {
-    // This test doesn't introduce any request handlers override.
+    // This test doesn't introduce any handlers override.
     // The network within this test will be resolved against the
-    // initial request handlers provided to "setupServer()" call.
+    // initial handlers provided to "setupServer()" call.
     const response = await fetch('https://example.com/user')
     const user = await response.json()
     expect(user).toEqual({ name: 'John' })
@@ -190,7 +190,7 @@ Although each test case relies on a particular network state, using the `server.
 
 ### Nested boundaries
 
-Whenever a server boundary is created, it treats whichever existing request handlers from the higher scope as the initial request handlers.
+Whenever a server boundary is created, it treats whichever existing handlers from the higher scope as the initial handlers.
 
 ```js /server.boundary/
 const server = setupServer(
@@ -201,15 +201,15 @@ const server = setupServer(
 
 server.boundary(async () => {
   // The user request will return a 200 JSON response
-  // as described in the initial request handlers
+  // as described in the initial handlers
   // provided to the "setupServer" call above.
   await fetch('https://example.com/user')
 })()
 ```
 
-Any request handler overrides within the boundary are prepended to the initial list of request handlers, similar to how they are in the regular `.use()` usage.
+Any handler overrides within the boundary are prepended to the initial list of handlers, similar to how they are in the regular `.use()` usage.
 
-When a server boundary is nested within another server boundary, whichever request handler state the upper boundary has is treated as the initial state for the nested boundary.
+When a server boundary is nested within another server boundary, whichever handler state the upper boundary has is treated as the initial state for the nested boundary.
 
 ```js /server.boundary/
 const server = setupServer(
@@ -218,7 +218,7 @@ const server = setupServer(
   })
 )
 
-// This server boundary has the following request handlers:
+// This server boundary has the following handlers:
 // - (initial) GET /user -> 200 OK
 // - (override) POST /login -> 500 Internal Server Error
 server.boundary(() => {
@@ -228,7 +228,7 @@ server.boundary(() => {
     })
   )
 
-  // This server boundary has the following request handlers:
+  // This server boundary has the following handlers:
   // - (initial) GET /user -> 200 OK
   // - (initial) POST /login -> 500 Internal Server Error
   // - (override) DELETE /post -> 404 Not Found
@@ -239,9 +239,9 @@ server.boundary(() => {
       })
     )
 
-    // Resetting the request handlers will remove any
-    // request handler overrides added in *this* boundary.
-    // The resulting request handlers will be:
+    // Resetting the handlers will remove any
+    // handler overrides added in *this* boundary.
+    // The resulting handlers will be:
     // - (initial) GET /user -> 200 OK
     // - (initial) POST /login -> 500 Internal Server Error
     server.resetHandlers()

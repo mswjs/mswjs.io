@@ -43,7 +43,7 @@ export default {
 
 ## Provide handlers
 
-Use the `msw` story parameter to declare request handlers.
+Use the `msw` story parameter to declare handlers.
 
 ```ts [user-profile.stories.ts]
 import { http, HttpResponse } from 'msw/http'

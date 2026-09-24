@@ -41,7 +41,7 @@ afterAll(() => {
 })
 ```
 
-Use `network.use()` to add request handlers for an individual test.
+Use `network.use()` to add handlers for an individual test.
 
 ```ts
 import { http, HttpResponse } from 'msw/http'

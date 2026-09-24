@@ -14,7 +14,7 @@ This guide will teach you how to integrate MSW into any Node.js process, like a 
 
 ## Setup
 
-Import the `setupServer` function from `msw/node` and call it, providing your request handlers as the argument.
+Import the `setupServer` function from `msw/node` and call it, providing your handlers as the argument.
 
 ::: code-group
 
@@ -58,7 +58,7 @@ One of the most common uses of MSW in Node.js is with test runners like Jest or 
 **There are three key steps to integrating MSW with any test runner:**
 
 1. Enable mocking _before_ all tests run (`server.listen()`);
-1. Reset any request handlers _between_ tests (`server.resetHandlers()`);
+1. Reset any handlers _between_ tests (`server.resetHandlers()`);
 1. Restore native request-issuing modules _after_ all tests run (`server.close()`).
 
 ::: info

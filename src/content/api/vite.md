@@ -1,5 +1,5 @@
 ---
-order: 11
+order: 13
 title: vite
 description: Vite plugin for Mock Service Worker.
 keywords:
@@ -13,19 +13,41 @@ The `msw/vite` module exports a Vite plugin that serves the worker script during
 
 > Learn how to set up the plugin in the [Vite integration](/guides/integrations/vite) guide.
 
-## `msw(options)`
+## Call signature
 
-Creates the MSW Vite plugin.
+Add the `msw()` plugin to the `plugins` list of your Vite configuration:
 
-```ts
+```js
+import { defineConfig } from 'vite'
 import { msw } from 'msw/vite'
 
-msw({ mode: 'auto' })
+export default defineConfig({
+  plugins: [msw()],
+})
 ```
 
-| Option | Type                      | Default  | Description                                                                                           |
-| ------ | ------------------------- | -------- | ----------------------------------------------------------------------------------------------------- |
-| `mode` | `"auto" \| "worker-only"` | `"auto"` | Use the automatic integration via `virtual:msw` or only serve the worker script for manual setup.     |
+## Options
+
+### `mode`
+
+- _String_, default: `"auto"`
+
+Decide how the plugin integrates with your application.
+
+| Mode                 | Description                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| `"auto"` (Default)   | Serves the worker script and provides the preconfigured `network` instance via the `virtual:msw` module. |
+| `"worker-only"`      | Only serves the worker script for a manual setup. The `virtual:msw` module is not available.        |
+
+```js
+export default defineConfig({
+  plugins: [
+    msw({
+      mode: 'worker-only',
+    }),
+  ],
+})
+```
 
 ## `virtual:msw`
 

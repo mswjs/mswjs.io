@@ -13,9 +13,9 @@ The `setupWorker()` function prepares the client-worker communication channel to
 
 ## Call signature
 
-The `setupWorker()` function expects an optional list of [Request handlers](/docs/http/intercepting-requests/) spread as its arguments and returns a [Worker instance](#worker-instance).
+The `setupWorker()` function expects an optional list of [handlers](/docs/http/intercepting-requests/) spread as its arguments and returns a [Worker instance](#worker-instance).
 
-When called without any arguments, the function will return you a worker instance that has no network description (i.e. no request handlers). Use the methods like [`worker.use()`](/api/setup-worker/use) and [`worker.resetHandlers()`](/api/setup-worker/reset-handlers) to add and remove _runtime_ request handlers to the worker instance.
+When called without any arguments, the function will return you a worker instance that has no network description (i.e. no handlers). Use the methods like [`worker.use()`](/api/setup-worker/use) and [`worker.resetHandlers()`](/api/setup-worker/reset-handlers) to add and remove _runtime_ handlers to the worker instance.
 
 ```js
 import { setupWorker } from 'msw/browser'
@@ -25,7 +25,7 @@ const worker = setupWorker()
 // worker.use(...handlers)
 ```
 
-However, if you provide request handlers as the spread argument to the `setupWorker()` function, those handlers will be considered _initial_ and will always persist on the worker instance even when resetting the handlers (learn how to opt-out from this [here](/api/setup-worker/reset-handlers)).
+However, if you provide handlers as the spread argument to the `setupWorker()` function, those handlers will be considered _initial_ and will always persist on the worker instance even when resetting the handlers (learn how to opt-out from this [here](/api/setup-worker/reset-handlers)).
 
 ```js
 import { http, HttpResponse } from 'msw/http'

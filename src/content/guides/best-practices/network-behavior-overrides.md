@@ -10,51 +10,51 @@ keywords:
   - restore
 ---
 
-The nature of the network can be highly dynamic, which makes it challenging to describe it completely in a fixed list of request handlers. MSW provides you the means to override any particular network behavior using the designated `.use()` API.
+The nature of the network can be highly dynamic, which makes it challenging to describe it completely in a fixed list of handlers. MSW provides you the means to override any particular network behavior using the designated `.use()` API.
 
 - [`worker.use()`](/api/setup-worker/use)
 - [`server.use()`](/api/setup-server/use)
 
-With the `.use()`, you can _prepend_ any list of request handlers to the initial request handlers provided to `setupWorker()`/`setupServer()`, making them take priority when handling requests. Since this is a runtime API, you can invoke it after the API mocking has been enabled, for example, on the individual test basis.
+With the `.use()`, you can _prepend_ any list of handlers to the initial handlers provided to `setupWorker()`/`setupServer()`, making them take priority when handling requests. Since this is a runtime API, you can invoke it after the API mocking has been enabled, for example, on the individual test basis.
 
 ## Initial vs runtime handlers
 
-The list of request handlers provided to the `setupWorker()`/`setupServer()` function calls is called _initial request handlers_.
+The list of handlers provided to the `setupWorker()`/`setupServer()` function calls is called _initial handlers_.
 
 ```js {5-8}
 import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer(
-  // These are the initial request handlers.
+  // These are the initial handlers.
   http.get('/resource', () => {
     return HttpResponse.text('Fallback')
   })
 )
 ```
 
-Any request handlers added past this point are referred to as _runtime request handlers_. This is the kind of request handlers you are adding with the `.use()` function:
+Any handlers added past this point are referred to as _runtime handlers_. This is the kind of handlers you are adding with the `.use()` function:
 
 ```js {12-15}
 import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer(
-  // These are the initial request handlers.
+  // These are the initial handlers.
   http.get('/resource', () => {
     return HttpResponse.text('Fallback')
   })
 )
 
 server.use(
-  // These are the runtime request handlers.
+  // These are the runtime handlers.
   http.post('/login', () => {
     return new HttpResponse()
   })
 )
 ```
 
-This distinction is important because you can add and exhaust runtime request handlers while relying on the initial handlers as the fallback network description.
+This distinction is important because you can add and exhaust runtime handlers while relying on the initial handlers as the fallback network description.
 
 ## Network override types
 
@@ -81,11 +81,11 @@ server.use(
 )
 ```
 
-In this example, the `GET /resource` request will always receive the `"Override"` plain text response because the request handler attached with `.use()` takes precedence.
+In this example, the `GET /resource` request will always receive the `"Override"` plain text response because the handler attached with `.use()` takes precedence.
 
 ### One-time override
 
-You can add a one-time network override by providing the `{ once: true }` option on any request handler.
+You can add a one-time network override by providing the `{ once: true }` option on any handler.
 
 ```js {7}
 const server = setupServer(
@@ -105,13 +105,13 @@ server.use(
 )
 ```
 
-With this setup, only _the first_ `GET /resource` request will receive the `"One-time override"` plain text response. As soon as the override request handler gets used, it will mark itself as exhausted, and won't affect the outgoing traffic anymore. Any subsequent requests to `GET /resource` will receive the `"Fallback"` plain text response as per the initial request handler provided to the `setupServer()` call.
+With this setup, only _the first_ `GET /resource` request will receive the `"One-time override"` plain text response. As soon as the override handler gets used, it will mark itself as exhausted, and won't affect the outgoing traffic anymore. Any subsequent requests to `GET /resource` will receive the `"Fallback"` plain text response as per the initial handler provided to the `setupServer()` call.
 
-## Resetting request handlers
+## Resetting handlers
 
-You can remove any request handlers added via `.use()` at any point in time by calling the `.resetHandlers()` method on the same `worker`/`server` object that called `.use()`.
+You can remove any handlers added via `.use()` at any point in time by calling the `.resetHandlers()` method on the same `worker`/`server` object that called `.use()`.
 
-This is particularly useful to clean up any runtime request handlers introduced in individual tests so they don't affect unrelated tests.
+This is particularly useful to clean up any runtime handlers introduced in individual tests so they don't affect unrelated tests.
 
 ```js {15-17}
 import { http, HttpResponse } from 'msw/http'
@@ -128,7 +128,7 @@ beforeAll(() => {
 })
 
 afterEach(() => {
-  // This will remove any runtime request handlers
+  // This will remove any runtime handlers
   // after each test, ensuring isolated network behavior.
   server.resetHandlers()
 })
@@ -150,15 +150,15 @@ it('handles a 500 server error response', () => {
 
 it('displays a greeting message', () => {
   // This test, however, will use the network description
-  // as provided in the initial request handlers of the
+  // as provided in the initial handlers of the
   // "setupServer()" call above. This means a 200 OK
   // application/json response to the "GET /user" requests.
 })
 ```
 
-### Resetting initial request handlers
+### Resetting initial handlers
 
-You can use the `.resetHandlers()` method to replace the initial request handlers and introduce an entirely new network description if you provide a list of next initial handlers as the argument to the `.resetHandlers()` function call.
+You can use the `.resetHandlers()` method to replace the initial handlers and introduce an entirely new network description if you provide a list of next initial handlers as the argument to the `.resetHandlers()` function call.
 
 ```js {8-10}
 const server = setupServer(
@@ -174,13 +174,13 @@ server.resetHandlers(
 )
 ```
 
-In this example, once you call the `.resetHandlers()` method with the list of next initial request handlers, any previous request handlers, both initial and runtime, will be wiped out. This means that there will be no request handler for the `GET /resource` request, only for the `POST /login` request.
+In this example, once you call the `.resetHandlers()` method with the list of next initial handlers, any previous handlers, both initial and runtime, will be wiped out. This means that there will be no handler for the `GET /resource` request, only for the `POST /login` request.
 
-> Mutating the initial request handlers is generally not recommended because it harms the predictability of the network. It can be useful, however, in certain situations, like testing different behaviors while developing in the browser.
+> Mutating the initial handlers is generally not recommended because it harms the predictability of the network. It can be useful, however, in certain situations, like testing different behaviors while developing in the browser.
 
-## Restoring request handlers
+## Restoring handlers
 
-You can restore any used one-time request handler by calling `.restoreHandlers()` on the `worker`/`server` object.
+You can restore any used one-time handler by calling `.restoreHandlers()` on the `worker`/`server` object.
 
 ```js {25}
 const server = setupServer(
@@ -218,4 +218,4 @@ await fetch('/resource')
 // "Fallback"
 ```
 
-> Note that if you [reset the runtime request handlers](#resetting-request-handlers), they will be removed before they can be restored.
+> Note that if you [reset the runtime handlers](#resetting-handlers), they will be removed before they can be restored.

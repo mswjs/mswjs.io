@@ -107,7 +107,7 @@ If unsure, please read through the documentation on intercepting requests with M
 
 ### Step 3: Verify response
 
-If the request handler is invoked but the request still doesn't get the mocked response, the next place to check is the mocked response itself. In the request handler, jump to the mock response(s) you define.
+If the handler is invoked but the request still doesn't get the mocked response, the next place to check is the mocked response itself. In the request handler, jump to the mock response(s) you define.
 
 ::: code-group
 

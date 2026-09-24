@@ -1,5 +1,5 @@
 ---
-order: 10
+order: 12
 title: getResponse
 description: Resolve a request against request handlers programmatically.
 ---
