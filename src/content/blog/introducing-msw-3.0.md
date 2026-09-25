@@ -44,26 +44,27 @@ Next month, MSW is celebrating its 8th birthday. Any software that exists for an
 
 **Starting since v3.0, MSW is ESM-only**. It's been authored in ESM for years and now it ships as one natively to everyone. ESM is the future of JavaScript and we are glad to contribute to its adoption, even if a little.
 
-### Granular entrypoints.
+### Granular entrypoints
 
-Adopting ESM meant we have to be more mindful of the way we ship things. A single `msw` import can pull _megabytes_ from the import graph, which is nothing short of disasterous in the environments that don't have tree shaking, like the browser.
+Adopting ESM meant we have to be more mindful of the way we ship things. A single `msw` import can pull megabytes from the import graph, which is nothing short of disasterous in the environments that don't have tree shaking, like the browser.
 
-With v3.0, we are providing a new, more bandwidth-efficient way to import MSW through designated _entrypoints_:
+With v3.0, we are providing a new, more bandwidth-efficient way to import MSW through designated entrypoints:
 
 ```ts
 import { http } from 'msw/http'
 import { graphql } from 'msw/graphql'
 import { sse } from 'msw/sse'
 import { ws } from 'msw/ws'
+import { bypass } from 'msw/utils/bypass'
 ```
 
-> TODO: What happens to the `msw` root import? Only utils?
+We are keeping root-level `msw` exports intact for backward-compatibility but will refactor them not to include anything you can import from designated entrypoints in the next major release.
 
 ### Node.js support
 
 This major version is a good opportunity to deprecate support for Node.js v18 and v20 in a single sweep. In exchange, we extend our support matrix to Node.js v22, v24, and v26, all used as the target matrix for each subsequent release.
 
-### Trimming dependencies
+### Minimizing the footprint
 
 We've managed to drop a number of dependencies, making your `node_modules` a tad lighter. Primarily:
 
@@ -71,9 +72,15 @@ We've managed to drop a number of dependencies, making your `node_modules` a tad
 - `path-to-regexp`
 - `picocolors`
 - `statuses`
+- `@open-draft/deferred-promise`
 - and `strict-event-emitter`
 
-> TODO: Mention how many MBs that shaves off.
+Together with the architectural changes, this amounts to smaller packaged tarballs, faster runtime execution (thanks to granular entrypoints), and just less space taken in your `node_modules`, which is always a win.
+
+| Area   | v2.0   | v3.0   | Change |
+| ----- | ----- | ----- | ------ |
+| Library tarball | 416KB | 234KB | -43%   |
+| Type defintions | 190KB | 90KB  | -50%   |
 
 ## GraphQL subscriptions
 
@@ -200,10 +207,10 @@ This means we can listen to raw connections as well as protocol-bound messages. 
 
 MSW has reduced the need to patch `global.fetch` in the browser to zero. Now it did the same for the entirety of Node.js. A pretty big deal, if I may say so myself!
 
-## Updating
+## Try it out
 
 ```
-npm i msw@latest
+npm i msw@^3.0.0
 ```
 
 While this post can make it seem like not much has changed for you in practice, we are making a major release for a reason. Things have been deprecated and removed. APIs have changed. We highly recommend you read through the migration guidelines for mode detail on how to migrate to MSW 3.0:
@@ -217,29 +224,10 @@ While this post can make it seem like not much has changed for you in practice, 
 
 ## Special thanks
 
-This release would have not been possible without the support of our incredible sponsors:
-
-- [Cathal Mac Donnacha](https://github.com/cmacdonnacha)
-- [Chromatic](https://github.com/Chromatic)
-- [Eric Casthart](https://github.com/pushred)
-- [Erik Rasmussen](https://github.com/erikras)
-- [Jonathan Ortega](https://github.com/Jhony0311)
-- [Khaled Mohamed](https://github.com/KhaledMohamedP)
-- [Kraken Tech](https://github.com/kraken-tech)
-- [Laststance.io](https://github.com/laststance)
-- [Materialize, Inc.](https://github.com/MaterializeInc)
-- [Matija Marohnić](https://github.com/silvenon)
-- [Nicholas Decker](https://github.com/niccholaspage)
-- [Replay](https://github.com/replayio)
-- [Ryan Magoon](https://github.com/ryanmagoon)
-- [Santosh Yadav](https://github.com/santoshyadavdev)
-- [Sent](https://github.com/sentdm)
-- [StackBlitz](https://github.com/stackblitz)
-- [Todoist Inc](https://github.com/Doist)
-- [Workleap IT](https://github.com/Infra-Workleap)
-
-as well as our partners:
+This release is possible with the support of our incredible sponsors: [Cathal Mac Donnacha](https://github.com/cmacdonnacha), [Chromatic](https://github.com/Chromatic), [Eric Casthart](https://github.com/pushred), [Erik Rasmussen](https://github.com/erikras), [Jonathan Ortega](https://github.com/Jhony0311), [Khaled Mohamed](https://github.com/KhaledMohamedP), [Kraken Tech](https://github.com/kraken-tech), [Laststance.io](https://github.com/laststance), [Materialize, Inc.](https://github.com/MaterializeInc), [Matija Marohnić](https://github.com/silvenon), [Nicholas Decker](https://github.com/niccholaspage), [Replay](https://github.com/replayio), [Ryan Magoon](https://github.com/ryanmagoon), [Santosh Yadav](https://github.com/santoshyadavdev), [Sent](https://github.com/sentdm), [StackBlitz](https://github.com/stackblitz), [Todoist Inc](https://github.com/Doist), [Workleap IT](https://github.com/Infra-Workleap), as well as our partners:
 
 - [CodeRabbit](https://coderabbit.link/mswjs)
 - [Chromatic](https://www.chromatic.com/?ref=mswjs)
 - [Workleap](https://workleap.com/?ref=mswjs)
+
+Thank you for supporting the present and the future of API mocking on the web.
