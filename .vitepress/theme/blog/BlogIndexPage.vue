@@ -6,13 +6,11 @@ import { data as posts } from './posts.data'
 </script>
 
 <template>
-      <!-- The grid's outer tile borders overhang onto the frame's own
+  <!-- The grid's outer tile borders overhang onto the frame's own
          borders; clipping keeps that overhang off the viewport edge below
          "lg", where the frame has no side rails. -->
   <div class="-mb-px -mt-px overflow-x-clip border-y border-neutral-800">
-    <header
-      class="border-b border-neutral-800 px-6 py-16 text-center md:py-24"
-    >
+    <header class="border-b border-neutral-800 px-6 py-16 text-center md:py-24">
       <h1 class="mb-6 capitalize">Blog</h1>
       <PageHeaderSubtitle class="lg:w-3/6">
         News and announcements from the Mock Service Worker team.

@@ -3,7 +3,7 @@ title: Introducing MSW 3.0
 slug: introducing-msw-3.0
 description: ESM, GraphQL subscriptions, and the best interception algorithm in the world.
 publishedAt: 2026-10-01
-thumbnailUrl: /thumbnails/introducing-msw-2.0.png
+thumbnailUrl: /thumbnails/introducing-msw-3.0.png
 author:
   name: Artem Zakharchenko
   twitterHandle: kettanaito
