@@ -77,15 +77,37 @@ export function createExternalLinkChecker(request: typeof fetch = fetch) {
     await Promise.all(Array.from({ length: 8 }, () => checkNext()))
 
     if (failures.length > 0) {
-      throw new Error(`External link validation failed (${failures.length}/${links.size} URLs):\n${failures.sort().join('\n')}`)
+      throw createValidationError(`External link validation failed (${failures.length}/${links.size} URLs):\n${failures.sort().join('\n')}`)
     }
   }
+
+  /**
+   * Vite rebuilds a build error's stack from its message, and VitePress then
+   * prints both "message" and "stack", so the failure list would show twice.
+   * The call site is meaningless for a failing link, so expose no stack at all.
+   */
+  function createValidationError(message: string): Error {
+    const error = new Error(message)
+    Object.defineProperty(error, 'stack', {
+      get: () => '',
+      set: () => {},
+    })
+    return error
+  }
+
+  // VitePress runs two Vite builds (client and SSR) that share this plugin,
+  // so "buildEnd" fires twice. Validate in the client build only; the
+  // Markdown renderer is shared as well, so every link is recorded by then.
+  let isServerBuild = false
 
   const plugin: Plugin = {
     name: 'msw:external-link-checker',
     apply: 'build',
+    configResolved(config) {
+      isServerBuild = Boolean(config.build.ssr)
+    },
     async buildEnd(error) {
-      if (error) {
+      if (error || isServerBuild) {
         return
       }
       validation ??= validate()

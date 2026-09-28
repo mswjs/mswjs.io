@@ -21,7 +21,7 @@ prev: false
 next: false
 ---
 
-Today, I am happy to announce [Source](https://source.mswjs.io)—an open-source library that helps you generate request handlers from various sources. It has been in development for a really long time, and now you can finally get your hands on it. Let's take a moment to talk about what problems the library solves and how it was created.
+Today, I am happy to announce [Source](/ecosystem/source/)—an open-source library that helps you generate request handlers from various sources. It has been in development for a really long time, and now you can finally get your hands on it. Let's take a moment to talk about what problems the library solves and how it was created.
 
 > For years I wasn't sure if I should open source Source. Releasing a new tool when you didn't have enough resources to support the existing ones felt like cutting the branch you are sitting on. That is why I am incredibly grateful to our sponsors who made today's announcement possible and saw that Source would be truly open.
 >
@@ -62,7 +62,7 @@ You can learn more about using Source with OpenAPI in the documentation:
 
 <PageCard
   icon="Bars2Icon"
-  url="https://source.mswjs.io/docs/integrations/open-api"
+  url="/ecosystem/source/integrations/open-api"
   title="OpenAPI (Swagger)"
   description="Learn how to generate request handlers from OpenAPI documents."
 />
@@ -94,7 +94,7 @@ More information on HAR files can be found in the documentation:
 
 <PageCard
   icon="Bars2Icon"
-  url="https://source.mswjs.io/docs/integrations/har"
+  url="/ecosystem/source/integrations/har"
   title="Network archive (HAR)"
   description="Learn how to generate request handlers from HAR files."
 />
@@ -128,7 +128,7 @@ I hope you welcome the new addition to the MSW ecosystem with warm embrace. Give
 
 <PageCard
   icon="Bars2Icon"
-  url="https://source.mswjs.io/docs/getting-started"
+  url="/ecosystem/source/getting-started"
   title="Getting started with Source"
   description="Three steps to get started with Source."
 />

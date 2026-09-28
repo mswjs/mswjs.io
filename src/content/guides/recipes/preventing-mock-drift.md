@@ -12,7 +12,7 @@ It's recommended to rely on a specification file that both backend and frontend 
 
 ### OpenAPI (Swagger)
 
-If you have an OpenAPI specification file, consider using [`@msw/source`](https://source.mswjs.io) to generate request handlers from your specifications. A number of community-driven packages are also available, like [`msw-auto-mock`](https://github.com/zoubingwu/msw-auto-mock).
+If you have an OpenAPI specification file, consider using [`@msw/source`](/ecosystem/source/) to generate request handlers from your specifications. A number of community-driven packages are also available, like [`msw-auto-mock`](https://github.com/zoubingwu/msw-auto-mock).
 
 ### GraphQL schema
 
@@ -22,7 +22,7 @@ In the case of a GraphQL server, consider using [GraphQL Code Generator](https:/
 
 In the case when there is no API specification available, you can record network behavior in the browser and store it in a `*.har` file. Then, it becomes a fixed source of truth you can use to generate handlers from.
 
-MSW provides a designated [Source](https://source.mswjs.io) package to help you create request handlers out of various sources, like OpenAPI specifications or HAR files. Here's how you use it:
+MSW provides a designated [Source](/ecosystem/source/) package to help you create request handlers out of various sources, like OpenAPI specifications or HAR files. Here's how you use it:
 
 ::: code-group
 

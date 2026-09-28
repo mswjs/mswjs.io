@@ -47,12 +47,34 @@ const example = '<a href="https://example.com/code">'
   ])
 })
 
+await test('skips validation in the SSR build so failures are reported once', async () => {
+  const requests = []
+  const checker = createExternalLinkChecker(async (url) => {
+    requests.push(url)
+    return new Response(null, { status: 404 })
+  })
+  const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
+  markdown.render('[Missing](https://example.com/missing)', { relativePath: 'blog/post.md' })
+
+  checker.plugin.configResolved({ build: { ssr: true } })
+  await checker.plugin.buildEnd()
+  assert.deepEqual(requests, [])
+
+  checker.plugin.configResolved({ build: { ssr: false } })
+  await assert.rejects(checker.plugin.buildEnd(), /HTTP 404/)
+  assert.deepEqual(requests, ['https://example.com/missing'])
+})
+
 await test('fails the build with the URL, status and Markdown source', async () => {
   const checker = createExternalLinkChecker(async () => new Response(null, { status: 404 }))
   const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
   markdown.render('[Missing](https://example.com/missing)', { relativePath: 'blog/post.md' })
 
-  await assert.rejects(checker.plugin.buildEnd(), /https:\/\/example.com\/missing — HTTP 404\n  in blog\/post.md/)
+  const error = await checker.plugin.buildEnd().catch((error) => error)
+  assert.match(error.message, /https:\/\/example.com\/missing — HTTP 404\n  in blog\/post.md/)
+  // Vite rewrites "stack" from "message" and VitePress prints both.
+  error.stack = `${error.message}\n    at rewritten`
+  assert.equal(error.stack, '')
 })
 
 await test('requires exactly 200 even for other successful statuses', async () => {

@@ -25,4 +25,4 @@ http.post('/login', () => {
 })
 ```
 
-> We recommend you use third-party cookie serialization libraries, like [`cookie`](https://www.npmjs.com/package/cookie), to work with your mocked cookies, set their path, expiration date, domain, etc.
+> We recommend you use third-party cookie serialization libraries, like `cookie`, to work with your mocked cookies, set their path, expiration date, domain, etc.
