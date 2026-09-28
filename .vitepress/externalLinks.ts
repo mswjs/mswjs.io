@@ -1,21 +1,39 @@
 import type MarkdownIt from 'markdown-it'
 import type { Plugin } from 'vite'
 
+interface ExternalLinkCheckerOptions {
+  request?: typeof fetch
+  /** URLs to leave unvalidated, e.g. links being resolved outside this site. */
+  ignore?: Array<string>
+}
+
 /** Collect links from rendered Markdown and validate them without reading bodies. */
-export function createExternalLinkChecker(request: typeof fetch = fetch) {
+export function createExternalLinkChecker({
+  request = fetch,
+  ignore = [],
+}: ExternalLinkCheckerOptions = {}) {
   const links = new Map<string, Set<string>>()
+  const ignored = new Set(ignore.map((value) => normalizeUrl(value)))
   let validation: Promise<void> | undefined
+
+  function normalizeUrl(value: string): string {
+    const url = new URL(value, 'https://mswjs.io')
+    url.hash = ''
+    return url.href
+  }
 
   function recordLink(value: string, source: string): void {
     if (!/^(https?:)?\/\//i.test(value)) {
       return
     }
 
-    const url = new URL(value, 'https://mswjs.io')
-    url.hash = ''
-    const sources = links.get(url.href) ?? new Set<string>()
+    const href = normalizeUrl(value)
+    if (ignored.has(href)) {
+      return
+    }
+    const sources = links.get(href) ?? new Set<string>()
     sources.add(source)
-    links.set(url.href, sources)
+    links.set(href, sources)
   }
 
   function markdown(md: MarkdownIt): void {

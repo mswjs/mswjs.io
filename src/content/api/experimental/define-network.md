@@ -146,4 +146,4 @@ await network.disable()
 
 > Both `setupWorker` and `setupServer` APIs are implemented on top of `defineNetwork`. Use their source code as the inspiration.
 
-Anything can become a network source: from the runtime requests to third-party libraries' events to locally stored HAR files. Learn more about defining [custom network sources](/TODO/BROKEN).
+Anything can become a network source: from the runtime requests to third-party libraries' events to locally stored HAR files. Learn more about defining [custom network sources](/api/experimental/network-source#custom-network-sources).

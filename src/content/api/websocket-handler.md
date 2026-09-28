@@ -225,7 +225,7 @@ You can customize the resolution by overriding the `run()` method in your custom
 
 ::: code-group
 
-```js [SearchParamsWebSocketHandler.js] {18-32}
+```js [SearchParamsWebSocketHandler.js] {17-29}
 import { WebSocketHandler } from 'msw/ws'
 
 export class SearchParamsWebSocketHandler extends WebSocketHandler {

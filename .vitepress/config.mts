@@ -71,7 +71,12 @@ function redirectApiIndex(
   next()
 }
 
-const externalLinks = createExternalLinkChecker()
+const externalLinks = createExternalLinkChecker({
+  ignore: [
+    // Broken on egghead's side, being resolved with them.
+    'https://egghead.io/blog/understanding-api-mocking-request-interception-algorithms',
+  ],
+})
 // Code snippets are typed against the latest published MSW release.
 // The development server reuses an existing checkout when there is one.
 const mswSource = await resolveMswSourceForSite({

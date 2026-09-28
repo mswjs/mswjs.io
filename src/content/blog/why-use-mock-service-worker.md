@@ -113,7 +113,7 @@ The problem is, those tools are looking at different directions because, well, t
 
 At the moment of writing this, MSW is the only tool in JavaScript that allows you to reuse API mocks across the entire stack. It has been such a tool for the half a decade and I have a strong feeling that won't change much in another decade to follow.
 
-The point of MSW is a single network layer. You describe the API behavior you want using [Request handlers](./docs/http/intercepting-requests/), and then integrate them into whichever environment you want. "Environment", not "tooling".
+The point of MSW is a single network layer. You describe the API behavior you want using [Request handlers](/docs/http/intercepting-requests/), and then integrate them into whichever environment you want. "Environment", not "tooling".
 
 Going environment-first might have been the most defining decision in MSW. By doing so, it automatically supports any tools that exist and any tools that ever will exist. MSW works in the browser and in Node.js. That is quite literally 100% of any JavaScript tooling out there.
 

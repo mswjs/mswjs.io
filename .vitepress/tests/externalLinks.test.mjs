@@ -18,9 +18,11 @@ afterEach(() => {
 
 await test('checks unique Markdown and component links with HEAD only', async () => {
   const requests = []
-  const checker = createExternalLinkChecker(async (url, options) => {
-    requests.push({ url, method: options.method, redirect: options.redirect })
-    return new Response(null, { status: 200 })
+  const checker = createExternalLinkChecker({
+    request: async (url, options) => {
+      requests.push({ url, method: options.method, redirect: options.redirect })
+      return new Response(null, { status: 200 })
+    },
   })
   const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
   markdown.render(`
@@ -49,9 +51,11 @@ const example = '<a href="https://example.com/code">'
 
 await test('skips validation in the SSR build so failures are reported once', async () => {
   const requests = []
-  const checker = createExternalLinkChecker(async (url) => {
-    requests.push(url)
-    return new Response(null, { status: 404 })
+  const checker = createExternalLinkChecker({
+    request: async (url) => {
+      requests.push(url)
+      return new Response(null, { status: 404 })
+    },
   })
   const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
   markdown.render('[Missing](https://example.com/missing)', { relativePath: 'blog/post.md' })
@@ -66,7 +70,9 @@ await test('skips validation in the SSR build so failures are reported once', as
 })
 
 await test('fails the build with the URL, status and Markdown source', async () => {
-  const checker = createExternalLinkChecker(async () => new Response(null, { status: 404 }))
+  const checker = createExternalLinkChecker({
+    request: async () => new Response(null, { status: 404 }),
+  })
   const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
   markdown.render('[Missing](https://example.com/missing)', { relativePath: 'blog/post.md' })
 
@@ -78,7 +84,9 @@ await test('fails the build with the URL, status and Markdown source', async () 
 })
 
 await test('requires exactly 200 even for other successful statuses', async () => {
-  const checker = createExternalLinkChecker(async () => new Response(null, { status: 204 }))
+  const checker = createExternalLinkChecker({
+    request: async () => new Response(null, { status: 204 }),
+  })
   const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
   markdown.render('[Empty](https://example.com/empty)', { relativePath: 'docs/empty.md' })
 
@@ -86,11 +94,33 @@ await test('requires exactly 200 even for other successful statuses', async () =
 })
 
 await test('fails the build when a HEAD request cannot complete', async () => {
-  const checker = createExternalLinkChecker(async () => {
-    throw new Error('Connection timed out')
+  const checker = createExternalLinkChecker({
+    request: async () => {
+      throw new Error('Connection timed out')
+    },
   })
   const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
   markdown.render('[Slow](https://example.com/slow)', { relativePath: 'docs/slow.md' })
 
   await assert.rejects(checker.plugin.buildEnd(), /Connection timed out\n  in docs\/slow.md/)
+})
+
+await test('leaves ignored URLs unvalidated regardless of hash or source', async () => {
+  const requests = []
+  const checker = createExternalLinkChecker({
+    request: async (url) => {
+      requests.push(url)
+      return new Response(null, { status: 404 })
+    },
+    ignore: ['https://example.com/broken#section'],
+  })
+  const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
+  markdown.render(`
+[Broken](https://example.com/broken)
+[Broken again](https://example.com/broken#other)
+[Checked](https://example.com/checked)
+`, { relativePath: 'blog/post.md' })
+
+  await assert.rejects(checker.plugin.buildEnd(), /https:\/\/example.com\/checked — HTTP 404/)
+  assert.deepEqual(requests, ['https://example.com/checked'])
 })
