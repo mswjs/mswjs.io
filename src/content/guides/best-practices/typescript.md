@@ -192,7 +192,7 @@ Use the `HttpResponseResolver` and `GraphQLResponseResolver` types to annotate c
 
 ```ts
 import { HttpResponseResolver, http, HttpResponse } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 import { PathParams, DefaultBodyType } from 'msw'
 
 function withDelay<

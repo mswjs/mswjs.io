@@ -54,9 +54,72 @@ function collectTargets(value) {
   return Object.values(value).flatMap(collectTargets)
 }
 
+const SOURCE_EXTENSIONS = [
+  '.ts',
+  '.mts',
+  '.cts',
+  '.tsx',
+  '.js',
+  '.mjs',
+  '.cjs',
+  '.jsx',
+  // Hand-written declarations shipped straight from "src/".
+  '.d.ts',
+  '.d.mts',
+  '.d.cts',
+]
+
+/**
+ * Resolve a wildcard export ("./utils/*" -> "./lib/utils/*.js") to a
+ * source pattern ("src/utils/*") that TypeScript path mappings expand.
+ */
+function resolveWildcardSourcePath(subpath, target, stem, sourceDirectory) {
+  if (
+    subpath.split('*').length !== 2 ||
+    target.split('*').length !== 2 ||
+    !stem.endsWith('/*')
+  ) {
+    throw new Error(
+      `Cannot map wildcard export ${subpath} (${target}) to release source`,
+    )
+  }
+  const directory = path.resolve(sourceDirectory, stem.slice(0, -2))
+  if (!existsSync(directory)) {
+    throw new Error(
+      `Cannot resolve public export ${subpath} (${target}) to release source`,
+    )
+  }
+  return path.join(directory, '*')
+}
+
+function resolveModuleSourcePath(subpath, target, stem, sourceDirectory) {
+  const candidates = SOURCE_EXTENSIONS.map((extension) => {
+    return path.resolve(sourceDirectory, `${stem}${extension}`)
+  })
+  const sourcePath = candidates.find(existsSync)
+  if (!sourcePath) {
+    throw new Error(
+      `Cannot resolve public export ${subpath} (${target}) to release source`,
+    )
+  }
+  const source = ts.createSourceFile(
+    sourcePath,
+    readFileSync(sourcePath, 'utf8'),
+    ts.ScriptTarget.Latest,
+    true,
+  )
+  // package.json, the standalone service-worker script, and ambient
+  // declarations are public assets, not modules with library APIs.
+  if (!ts.isExternalModule(source)) {
+    return undefined
+  }
+  return sourcePath
+}
+
 /**
  * Map the package.json "exports" of a release checkout to its source
  * modules, so "msw", "msw/browser", etc. resolve to the release's "src/".
+ * Wildcard exports map to a source pattern ("msw/utils/*" -> "src/utils/*").
  */
 export function resolvePublicEntryPoints(manifest, sourceDirectory) {
   if (!manifest.exports) {
@@ -71,9 +134,6 @@ export function resolvePublicEntryPoints(manifest, sourceDirectory) {
   const sources = new Map()
   for (const [subpath, conditions] of entries) {
     for (const target of collectTargets(conditions)) {
-      if (subpath.includes('*') || target.includes('*')) {
-        throw new Error(`Cannot map wildcard export ${subpath} to release source`)
-      }
       if (!/\.(?:[cm]?js|[cm]?ts|tsx|jsx)$/.test(target)) {
         continue
       }
@@ -85,31 +145,11 @@ export function resolvePublicEntryPoints(manifest, sourceDirectory) {
       const stem = target
         .replace(/^\.\/lib\//, './src/')
         .replace(/(?:\.d)?\.(?:[cm]?js|[cm]?ts|tsx|jsx)$/, '')
-      const candidates = [
-        '.ts',
-        '.mts',
-        '.cts',
-        '.tsx',
-        '.js',
-        '.mjs',
-        '.cjs',
-        '.jsx',
-      ].map((extension) => path.resolve(sourceDirectory, `${stem}${extension}`))
-      const sourcePath = candidates.find(existsSync)
+      const isWildcard = subpath.includes('*') || target.includes('*')
+      const sourcePath = isWildcard
+        ? resolveWildcardSourcePath(subpath, target, stem, sourceDirectory)
+        : resolveModuleSourcePath(subpath, target, stem, sourceDirectory)
       if (!sourcePath) {
-        throw new Error(
-          `Cannot resolve public export ${subpath} (${target}) to release source`,
-        )
-      }
-      const source = ts.createSourceFile(
-        sourcePath,
-        readFileSync(sourcePath, 'utf8'),
-        ts.ScriptTarget.Latest,
-        true,
-      )
-      // package.json and the standalone service-worker script are public
-      // assets, not modules with library APIs.
-      if (!ts.isExternalModule(source)) {
         continue
       }
       const entry = sources.get(sourcePath) ?? { sourcePath, exports: [] }
@@ -174,14 +214,14 @@ export async function ensureMswSource(release) {
   run('git', ['checkout', '--quiet', '--detach', 'FETCH_HEAD'], sourceDirectory)
   const commit = run('git', ['rev-parse', 'HEAD'], sourceDirectory)
   // Lifecycle scripts are unnecessary for type resolution.
-  // The checkout lives inside this pnpm workspace, so workspace mode is off.
+  // The checkout has its own "pnpm-workspace.yaml", so pnpm picks it up
+  // (and its install policies) before this site's workspace.
   run(
     'pnpm',
     [
       'install',
       '--frozen-lockfile',
       '--ignore-scripts',
-      '--ignore-workspace',
       '--store-dir',
       storeDirectory,
     ],

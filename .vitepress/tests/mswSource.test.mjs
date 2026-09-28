@@ -139,6 +139,89 @@ await test('omits public assets that do not declare library modules', async (con
   )
 })
 
+await test('resolves hand-written declaration files and omits ambient ones', async (context) => {
+  const directory = await createRelease(context, {
+    'src/core/index.ts': 'export const http = {}',
+    'src/vite/client.d.ts': "declare module 'virtual:msw' { export const network: {} }",
+    'src/vite/options.d.ts': 'export interface Options {}',
+  })
+  const entries = resolvePublicEntryPoints(
+    {
+      name: 'msw',
+      exports: {
+        '.': './lib/core/index.js',
+        './vite/client': { types: './src/vite/client.d.ts' },
+        './vite/options': { types: './src/vite/options.d.ts' },
+      },
+    },
+    directory,
+  )
+  assert.deepEqual(entries, [
+    { sourcePath: path.join(directory, 'src/core/index.ts'), exports: ['msw'] },
+    {
+      sourcePath: path.join(directory, 'src/vite/options.d.ts'),
+      exports: ['msw/vite/options'],
+    },
+  ])
+})
+
+await test('maps wildcard exports to a source pattern', async (context) => {
+  const directory = await createRelease(context, {
+    'src/core/index.ts': 'export const http = {}',
+    'src/utils/delay.ts': 'export const delay = {}',
+  })
+  const entries = resolvePublicEntryPoints(
+    {
+      name: 'msw',
+      exports: {
+        '.': './lib/core/index.js',
+        './utils/*': {
+          types: './lib/utils/*.d.ts',
+          default: './lib/utils/*.js',
+        },
+      },
+    },
+    directory,
+  )
+  assert.deepEqual(entries, [
+    { sourcePath: path.join(directory, 'src/core/index.ts'), exports: ['msw'] },
+    {
+      sourcePath: path.join(directory, 'src/utils/*'),
+      exports: ['msw/utils/*'],
+    },
+  ])
+})
+
+await test('fails on wildcard exports that do not map to a source directory', async (context) => {
+  const directory = await createRelease(context, {
+    'src/core/index.ts': 'export const http = {}',
+  })
+  assert.throws(
+    () =>
+      resolvePublicEntryPoints(
+        { name: 'msw', exports: { './utils/*': './lib/utils/*.js' } },
+        directory,
+      ),
+    /Cannot resolve public export/,
+  )
+  assert.throws(
+    () =>
+      resolvePublicEntryPoints(
+        { name: 'msw', exports: { './utils/*': './lib/utils.js' } },
+        directory,
+      ),
+    /Cannot map wildcard export/,
+  )
+  assert.throws(
+    () =>
+      resolvePublicEntryPoints(
+        { name: 'msw', exports: { './utils/*': './lib/*/index.js' } },
+        directory,
+      ),
+    /Cannot map wildcard export/,
+  )
+})
+
 await test('fails when a public target cannot be mapped instead of expanding all source files', async (context) => {
   const directory = await createRelease(context, {
     'src/internal.ts': 'export const hidden = {}',

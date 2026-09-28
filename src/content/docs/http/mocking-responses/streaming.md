@@ -36,7 +36,7 @@ You can use any kind of Web Stream supported by the Fetch API as a mocked respon
 
 ```ts {10-16} /latencyStream/
 import { http, HttpResponse } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 http.get('/video/:id', async ({ params }) => {
   const videoResponse = await fetch(

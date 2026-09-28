@@ -14,7 +14,7 @@ You can control the server response time when handling intercepted requests usin
 
 ```ts {5} /delay/
 import { http, HttpResponse } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 http.get('/resource', async () => {
   await delay(500)
@@ -79,7 +79,7 @@ Another option would be to define a _higher-order response resolver_ that encaps
 
 ```ts [with-delay.ts] {5-9} /delay/2
 import { type HttpResponseResolver } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
   return async (info) => {

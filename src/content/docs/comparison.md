@@ -333,7 +333,7 @@ MSW models its interception API after server-side routing and handles requests a
 
 ```js
 import { http } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 http.post('/users', async ({ request }) => {
   const user = await request.json()
@@ -409,7 +409,7 @@ page.route('/fruits', async (route) => {
 #### Mock Service Worker
 
 ```js
-import { bypass } from 'msw/utils'
+import { bypass } from 'msw/utils/bypass'
 
 http.post('/fruits', async ({ request }) => {
   const response = await fetch(bypass(request))

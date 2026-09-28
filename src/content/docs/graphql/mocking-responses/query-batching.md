@@ -61,7 +61,7 @@ You can mock batched GraphQL queries in Apollo by introducing a custom `batchedG
 
 ```js
 import { http, HttpResponse } from 'msw/http'
-import { bypass } from 'msw/utils'
+import { bypass } from 'msw/utils/bypass'
 import { getResponse } from 'msw'
 
 export function batchedGraphQLQuery(url, handlers) {
@@ -165,7 +165,7 @@ import {
   defaultFieldResolver,
 } from 'graphql'
 import { http, HttpResponse } from 'msw/http'
-import { bypass } from 'msw/utils'
+import { bypass } from 'msw/utils/bypass'
 
 // Describe the GraphQL schema.
 // You can also use an existing schema!

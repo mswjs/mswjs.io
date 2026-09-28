@@ -13,7 +13,7 @@ keywords:
 
 ```ts
 import { http } from 'msw/http'
-import { passthrough } from 'msw/utils'
+import { passthrough } from 'msw/utils/passthrough'
 
 http.get('/resource', () => {
   return passthrough()
@@ -24,7 +24,7 @@ http.get('/resource', () => {
 
 ```js /passthrough/ {7}
 import { http, HttpResponse } from 'msw/http'
-import { passthrough } from 'msw/utils'
+import { passthrough } from 'msw/utils/passthrough'
 
 export const handlers = [
   http.get('/resource', ({ request }) => {

@@ -11,11 +11,11 @@ keywords:
 
 You can combine original and mocked responses using a technique called **response patching**. It involves performing the intercepted request as-is, getting its original response, and modifying it as you want.
 
-Use the [`bypass()`](/api/bypass) function from `msw/utils` to perform any Fetch API `Request`, bypassing any otherwise matching request handlers and also preventing an infinite loop caused by the handler where you're using `bypass()`:
+Use the [`bypass()`](/api/bypass) function from `msw/utils/bypass` to perform any Fetch API `Request`, bypassing any otherwise matching request handlers and also preventing an infinite loop caused by the handler where you're using `bypass()`:
 
 ```ts {5-6,9-11} /bypass/
 import { http, HttpResponse } from 'msw/http'
-import { bypass } from 'msw/utils'
+import { bypass } from 'msw/utils/bypass'
 
 http.get('/resource', async ({ request }) => {
   // Get the original JSON response from the server.

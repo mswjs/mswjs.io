@@ -11,7 +11,7 @@ You can proxy the intercepted request by constructing a proxy Fetch API `Request
 
 ```ts /bypass/ {8-9,11-17,19-20}
 import { http } from 'msw/http'
-import { bypass } from 'msw/utils'
+import { bypass } from 'msw/utils/bypass'
 
 export const handlers = [
   http.get('/resource', async ({ request }) => {

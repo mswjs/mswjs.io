@@ -20,7 +20,7 @@ You can take advantage of that execution order and introduce a passthrough reque
 
 ```js {5-7} /http.all/
 import { http, HttpResponse } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 export const handlers = [
   http.all('*', async () => {
@@ -47,7 +47,7 @@ You can create a higher-order response resolver that encapsulates the delay logi
 
 ```ts [with-delay.ts] {5-9} /delay/2
 import { type HttpResponseResolver } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 export function withDelay(resolver: HttpResponseResolver): HttpResponseResolver {
   return async (info) => {

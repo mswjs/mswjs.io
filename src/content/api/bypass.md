@@ -14,7 +14,7 @@ keywords:
 The same as the `globalThis.fetch()` function, the `bypass` function expects a request input and an optional request init. It returns a modified `Request` to then be provided to the regular `globalThis.fetch()` call.
 
 ```ts
-import { bypass } from 'msw/utils'
+import { bypass } from 'msw/utils/bypass'
 
 const response = await fetch(bypass('/user'))
 ```
@@ -25,7 +25,7 @@ This method is designed to perform HTTP requests outside of the library's interc
 
 ```js /bypass/1,3 {8}
 import { http, HttpResponse } from 'msw/http'
-import { bypass } from 'msw/utils'
+import { bypass } from 'msw/utils/bypass'
 
 export const handlers = [
   http.get('/user', async ({ request }) => {

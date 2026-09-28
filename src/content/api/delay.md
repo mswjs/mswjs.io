@@ -16,7 +16,7 @@ By default, MSW does not delay any mocked responses, so they arrive nearly insta
 ## Call signature
 
 ```ts
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 await delay()
 await delay(1000)
@@ -29,7 +29,7 @@ When invoked without any arguments, the `delay` function applies a _realistic se
 
 ```js /delay/ {7}
 import { http, HttpResponse } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 export const handlers = [
   http.put('/books/:bookId', async () => {
@@ -49,7 +49,7 @@ You can provide an exact delay duration in milliseconds:
 
 ```js /delay/ {7}
 import { http, HttpResponse } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 export const handlers = [
   http.get('/user', async () => {
@@ -65,7 +65,7 @@ Controlling precise delay timing is handy when mocking response streams:
 
 ```js /delay/ {9,12}
 import { http, HttpResponse } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 export const handlers = [
   http.get('/video', () => {
@@ -102,7 +102,7 @@ Delay modes are useful to test certain server response scenarios. For example, b
 
 ```js /delay/ {7}
 import { http } from 'msw/http'
-import { delay } from 'msw/utils'
+import { delay } from 'msw/utils/delay'
 
 export const handlers = [
   http.get('/book/:bookId', async () => {

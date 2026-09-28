@@ -16,7 +16,7 @@ You can implement a custom request predicate using a [higher-order resolver](/gu
 ::: code-group
 
 ```js [withSearchParams.js]
-import { passthrough } from 'msw/utils'
+import { passthrough } from 'msw/utils/passthrough'
 
 export function withSearchParams(predicate, resolver) {
   return (args) => {

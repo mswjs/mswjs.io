@@ -12,7 +12,7 @@ keywords:
 ## Call signature
 
 ```ts
-import { isCommonAssetRequest } from 'msw/utils'
+import { isCommonAssetRequest } from 'msw/utils/is-common-asset-request'
 
 isCommonAssetRequest(new Request('https://example.com/favicon.ico'))
 // true
@@ -37,7 +37,7 @@ The `isCommonAssetRequest` function is meant to be used internally by MSW to aut
 One use case where you may want to use this function is when providing a custom function to the `onUnhandledFrame` option of your `server`/`worker`. Doing so will opt out from the default static assets exclusion and you would have to call `isCommonAssetRequest` manually if you want to rely on it again.
 
 ```ts
-import { isCommonAssetRequest } from 'msw/utils'
+import { isCommonAssetRequest } from 'msw/utils/is-common-asset-request'
 import { setupWorker } from 'msw/browser'
 
 const worker = setupWorker()
