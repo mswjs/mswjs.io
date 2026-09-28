@@ -42,9 +42,13 @@ export function resolvePublicEntryPoints(
   manifest: Record<string, unknown>,
   sourceDirectory: string,
 ): Array<PublicEntryPoint>
+export function ensureMswSourceSync(release: MswRelease): MswSource
 export function ensureMswSource(release: MswRelease): Promise<MswSource>
 export function ensureLatestMswSource(): Promise<MswSource>
 export function findCachedMswSource(): Promise<MswSource | undefined>
 export function resolveMswSourceForSite(
   options?: ResolveMswSourceOptions,
 ): Promise<MswSource>
+export function resolveMswReleaseForSite(
+  options?: ResolveMswSourceOptions,
+): Promise<MswRelease>

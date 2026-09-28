@@ -1,16 +1,57 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
 import type MarkdownIt from 'markdown-it'
 import type { Plugin } from 'vite'
+
+interface ExternalLinkCacheOptions {
+  /** JSON file recording when each URL last passed validation. */
+  path: string
+  /** How long a passing URL is trusted before it is checked again. */
+  maxAgeMs: number
+}
 
 interface ExternalLinkCheckerOptions {
   request?: typeof fetch
   /** URLs to leave unvalidated, e.g. links being resolved outside this site. */
   ignore?: Array<string>
+  /** Skip URLs that passed recently. Without it, every URL is checked. */
+  cache?: ExternalLinkCacheOptions
+  now?: () => number
+}
+
+type PassedAt = Record<string, number>
+
+function readPassedAt(cache: ExternalLinkCacheOptions | undefined): PassedAt {
+  if (!cache || !existsSync(cache.path)) {
+    return {}
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(readFileSync(cache.path, 'utf8'))
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+      return {}
+    }
+    return Object.fromEntries(
+      Object.entries(parsed).filter((entry): entry is [string, number] => {
+        return typeof entry[1] === 'number'
+      }),
+    )
+  } catch {
+    return {}
+  }
+}
+
+function writePassedAt(cache: ExternalLinkCacheOptions, passedAt: PassedAt): void {
+  mkdirSync(path.dirname(cache.path), { recursive: true })
+  writeFileSync(cache.path, JSON.stringify(passedAt, null, 2))
 }
 
 /** Collect links from rendered Markdown and validate them without reading bodies. */
 export function createExternalLinkChecker({
   request = fetch,
   ignore = [],
+  cache,
+  now = Date.now,
 }: ExternalLinkCheckerOptions = {}) {
   const links = new Map<string, Set<string>>()
   const ignored = new Set(ignore.map((value) => normalizeUrl(value)))
@@ -61,7 +102,16 @@ export function createExternalLinkChecker({
   }
 
   async function validate(): Promise<void> {
-    const pending = Array.from(links.entries())
+    const passedAt = readPassedAt(cache)
+    const startedAt = now()
+    const pending = Array.from(links.entries()).filter(([url]) => {
+      const lastPassedAt = passedAt[url]
+      return (
+        !cache ||
+        lastPassedAt === undefined ||
+        startedAt - lastPassedAt > cache.maxAgeMs
+      )
+    })
     const failures: Array<string> = []
 
     async function checkNext(): Promise<void> {
@@ -88,11 +138,18 @@ export function createExternalLinkChecker({
 
       if (failure) {
         failures.push(`${url} — ${failure}\n  in ${Array.from(sources).join(', ')}`)
+      } else {
+        passedAt[url] = startedAt
       }
       await checkNext()
     }
 
     await Promise.all(Array.from({ length: 8 }, () => checkNext()))
+
+    if (cache) {
+      // Failures stay uncached so the next build checks them again.
+      writePassedAt(cache, passedAt)
+    }
 
     if (failures.length > 0) {
       throw createValidationError(`External link validation failed (${failures.length}/${links.size} URLs):\n${failures.sort().join('\n')}`)
@@ -116,6 +173,9 @@ export function createExternalLinkChecker({
   // VitePress runs two Vite builds (client and SSR) that share this plugin,
   // so "buildEnd" fires twice. Validate in the client build only; the
   // Markdown renderer is shared as well, so every link is recorded by then.
+  // The requests start at "buildEnd" (every module is transformed) and are
+  // awaited at "closeBundle", so they overlap with chunk generation instead
+  // of delaying it.
   let isServerBuild = false
 
   const plugin: Plugin = {
@@ -124,11 +184,19 @@ export function createExternalLinkChecker({
     configResolved(config) {
       isServerBuild = Boolean(config.build.ssr)
     },
-    async buildEnd(error) {
+    buildEnd(error) {
       if (error || isServerBuild) {
         return
       }
       validation ??= validate()
+      // Awaited in "closeBundle"; without a handler until then, Node would
+      // treat an early failure as an unhandled rejection.
+      validation.catch(() => {})
+    },
+    async closeBundle() {
+      if (isServerBuild) {
+        return
+      }
       await validation
     },
   }

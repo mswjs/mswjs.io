@@ -15,7 +15,12 @@ import {
   type TwoslashInstance,
   type TwoslashReturn,
 } from 'twoslash'
-import { repositoryUrl, type MswSource } from '../scripts/msw-source.mjs'
+import {
+  ensureMswSourceSync,
+  repositoryUrl,
+  type MswRelease,
+  type MswSource,
+} from '../scripts/msw-source.mjs'
 import {
   LINE_COUNT_ATTRIBUTE,
   enhancePopupContent,
@@ -42,7 +47,14 @@ const siteDirectory = path.resolve(
 /**
  * Bump when the cached twoslash results change shape.
  */
-const CACHE_VERSION = 3
+const CACHE_VERSION = 4
+/**
+ * Twoslash results live under "node_modules/.cache" because that is the
+ * only directory Vercel restores between builds for the VitePress preset
+ * (".vitepress/cache" is not). A release-tagged directory keeps results
+ * of different MSW releases apart.
+ */
+const RESULT_CACHE_DIRECTORY = 'node_modules/.cache/mswjs.io/twoslash'
 const GLOBALS_FILENAME = 'msw-docs-globals.d.ts'
 
 /**
@@ -298,13 +310,20 @@ function createCompilerOptions(source: MswSource): ts.CompilerOptions {
   }
 }
 
-function createResultCache(source: MswSource) {
+function createResultCache(release: MswRelease) {
   const directory = path.join(
     siteDirectory,
-    '.vitepress/cache/twoslash',
-    source.tag,
+    RESULT_CACHE_DIRECTORY,
+    release.tag,
   )
-  const seed = [CACHE_VERSION, source.commit, DOCS_GLOBALS].join('\n')
+  // A release is identified by its tag and publication date, both known
+  // before its source is checked out.
+  const seed = [
+    CACHE_VERSION,
+    release.tag,
+    release.publishedAt,
+    DOCS_GLOBALS,
+  ].join('\n')
 
   function getPath(code: string, extension: string): string {
     const hash = createHash('sha256')
@@ -332,36 +351,60 @@ function createResultCache(source: MswSource) {
   }
 }
 
+interface TypeChecker {
+  twoslasher: TwoslashInstance
+  sourceRoot: string
+}
+
 /**
- * Create a twoslasher that resolves "msw" imports to the checked-out
- * release source and annotates hover nodes with their source definition.
+ * Create a twoslasher that resolves "msw" imports to the release source
+ * and annotates hover nodes with their source definition.
+ *
+ * The release source is checked out (and TypeScript booted) lazily, on
+ * the first snippet that misses the result cache. A build whose snippets
+ * are all cached never touches the MSW checkout at all.
  */
 export function createMswTwoslasher(
-  source: MswSource,
+  release: MswRelease,
   options: TwoslasherOptions = {},
 ): TwoslashInstance {
   const fsRoot = `${siteDirectory}/`
-  const sourceRoot = `${path.resolve(source.sourceDirectory)}/`
   const globalsPath = `${fsRoot}${GLOBALS_FILENAME}`
-  const twoslasher = createTwoslasher({
-    vfsRoot: siteDirectory,
-    compilerOptions: createCompilerOptions(source),
-    handbookOptions: {
-      // Snippets are illustrative and mostly partial: never fail
-      // the build on them, and only show diagnostics when reporting.
-      noErrorValidation: true,
-      noErrors: !options.reportErrors,
-    },
-    extraFiles: {
-      [GLOBALS_FILENAME]: DOCS_GLOBALS,
-    },
-  })
-  const cache = options.reportErrors ? undefined : createResultCache(source)
+  const cache = options.reportErrors ? undefined : createResultCache(release)
+  let typeChecker: TypeChecker | undefined
+
+  function getTypeChecker(): TypeChecker {
+    if (typeChecker) {
+      return typeChecker
+    }
+
+    const source = ensureMswSourceSync(release)
+    console.log(`Typing code snippets against MSW ${source.tag}`)
+    typeChecker = {
+      sourceRoot: `${path.resolve(source.sourceDirectory)}/`,
+      twoslasher: createTwoslasher({
+        vfsRoot: siteDirectory,
+        compilerOptions: createCompilerOptions(source),
+        handbookOptions: {
+          // Snippets are illustrative and mostly partial: never fail
+          // the build on them, and only show diagnostics when reporting.
+          noErrorValidation: true,
+          noErrors: !options.reportErrors,
+        },
+        extraFiles: {
+          [GLOBALS_FILENAME]: DOCS_GLOBALS,
+        },
+      }),
+    }
+
+    return typeChecker
+  }
 
   function toSourceDefinition(
     program: ts.Program,
     definition: ts.DefinitionInfo,
   ): SourceDefinition | undefined {
+    const { sourceRoot } = getTypeChecker()
     const fileName = path.resolve(definition.fileName)
 
     if (!fileName.startsWith(`${sourceRoot}src/`)) {
@@ -415,8 +458,8 @@ export function createMswTwoslasher(
   }
 
   function attachSourceDefinitions(result: TwoslashReturn): void {
-    const environment = twoslasher
-      .getCacheMap()
+    const environment = getTypeChecker()
+      .twoslasher.getCacheMap()
       ?.get(getObjectHash(result.meta.compilerOptions))
 
     if (!environment) {
@@ -482,7 +525,7 @@ export function createMswTwoslasher(
       return cached
     }
 
-    const result = twoslasher(code, extension, executeOptions)
+    const result = getTypeChecker().twoslasher(code, extension, executeOptions)
     result.nodes = result.nodes.filter((node) => {
       return node.type !== 'hover' || !isUnresolvedHover(node)
     })
@@ -498,7 +541,9 @@ export function createMswTwoslasher(
   }
 
   return Object.assign(mswTwoslasher, {
-    getCacheMap: twoslasher.getCacheMap,
+    getCacheMap() {
+      return typeChecker?.twoslasher.getCacheMap()
+    },
   })
 }
 
@@ -506,12 +551,12 @@ export function createMswTwoslasher(
  * Shiki transformer adding inline type information to the TypeScript
  * and JavaScript code snippets, resolved against the given MSW release.
  */
-export function mswTwoslashTransformer(source: MswSource): ShikiTransformer {
+export function mswTwoslashTransformer(release: MswRelease): ShikiTransformer {
   const twoslash = transformerTwoslash({
     explicitTrigger: false,
     langs: ['ts', 'tsx', 'js', 'jsx'],
-    twoslasher: createMswTwoslasher(source),
-    renderer: enhanceHoverPopups(rendererFloatingVue(), source),
+    twoslasher: createMswTwoslasher(release),
+    renderer: enhanceHoverPopups(rendererFloatingVue(), release),
     throws: false,
     onTwoslashError(error, code) {
       const [firstLine] = code.split('\n')

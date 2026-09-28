@@ -1,6 +1,12 @@
 import { execFileSync } from 'node:child_process'
-import { existsSync, readFileSync } from 'node:fs'
-import { mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
+import { readFile, readdir, stat } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
@@ -176,9 +182,9 @@ function run(command, argumentsList, cwd) {
   }).trim()
 }
 
-async function readSource(sourceDirectory) {
+function readSource(sourceDirectory) {
   const marker = JSON.parse(
-    await readFile(path.join(sourceDirectory, READY_MARKER), 'utf8'),
+    readFileSync(path.join(sourceDirectory, READY_MARKER), 'utf8'),
   )
   return { ...marker, sourceDirectory }
 }
@@ -187,8 +193,11 @@ async function readSource(sourceDirectory) {
  * Check out the source of the given MSW release and install its
  * dependencies so TypeScript can resolve the release's types.
  * The checkout is cached per release tag under ".vitepress/cache".
+ *
+ * Synchronous because it runs lazily from inside the (synchronous)
+ * Shiki pipeline, the first time a snippet misses the twoslash cache.
  */
-export async function ensureMswSource(release) {
+export function ensureMswSourceSync(release) {
   const sourceDirectory = path.join(cacheDirectory, release.tag)
 
   if (existsSync(path.join(sourceDirectory, READY_MARKER))) {
@@ -196,9 +205,9 @@ export async function ensureMswSource(release) {
   }
 
   console.log(`Checking out MSW ${release.tag} source`)
-  await rm(sourceDirectory, { recursive: true, force: true })
-  await mkdir(sourceDirectory, { recursive: true })
-  await mkdir(storeDirectory, { recursive: true })
+  rmSync(sourceDirectory, { recursive: true, force: true })
+  mkdirSync(sourceDirectory, { recursive: true })
+  mkdirSync(storeDirectory, { recursive: true })
 
   run('git', ['init', '--quiet'], sourceDirectory)
   run(
@@ -229,7 +238,7 @@ export async function ensureMswSource(release) {
   )
 
   const manifest = JSON.parse(
-    await readFile(path.join(sourceDirectory, 'package.json'), 'utf8'),
+    readFileSync(path.join(sourceDirectory, 'package.json'), 'utf8'),
   )
   const entryPoints = resolvePublicEntryPoints(manifest, sourceDirectory).map(
     (entry) => ({
@@ -243,12 +252,16 @@ export async function ensureMswSource(release) {
     commit,
     entryPoints,
   }
-  await writeFile(
+  writeFileSync(
     path.join(sourceDirectory, READY_MARKER),
     JSON.stringify(marker, null, 2),
   )
 
   return { ...marker, sourceDirectory }
+}
+
+export async function ensureMswSource(release) {
+  return ensureMswSourceSync(release)
 }
 
 /**
@@ -289,6 +302,30 @@ export async function findCachedMswSource() {
   }
 
   return readSource(path.join(cacheDirectory, newest.entry))
+}
+
+/**
+ * Resolve the MSW release to type the documentation's code snippets against,
+ * without checking out its source. The checkout happens lazily, only when a
+ * snippet misses the twoslash result cache (see ".vitepress/twoslash.ts").
+ *
+ * Builds always resolve the latest published release. The development
+ * server prefers an existing checkout to avoid network access on every
+ * start, and resolves the latest release only when nothing is cached yet.
+ */
+export async function resolveMswReleaseForSite({ preferCache = false } = {}) {
+  if (preferCache) {
+    const cached = await findCachedMswSource()
+
+    if (cached) {
+      console.log(
+        `Typing code snippets with the cached MSW ${cached.tag} source`,
+      )
+      return { tag: cached.tag, publishedAt: cached.publishedAt }
+    }
+  }
+
+  return resolveLatestRelease()
 }
 
 /**

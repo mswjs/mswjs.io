@@ -21,6 +21,18 @@ cached checkout to avoid network access on every start and resolves the latest
 release only when nothing is cached yet; delete `.vitepress/cache/msw-source` to
 pick up a newer release locally.
 
+The checkout itself is lazy. Only the release tag is resolved up front; the
+source is checked out (and TypeScript booted) the first time a snippet misses
+the twoslash result cache. Results are cached per release under
+`node_modules/.cache/mswjs.io/twoslash/<tag>`, keyed by the snippet, the release
+tag and its publication date. That location matters: Vercel's VitePress preset
+restores only `node_modules/**` between builds (not `.vitepress/cache`), so a
+build whose snippets all hit the cache never clones MSW or runs the type
+checker. A new MSW release changes the tag and regenerates everything once.
+External links that passed validation are recorded in
+`node_modules/.cache/mswjs.io/external-links.json` and are not re-checked for
+seven days; failures are never cached.
+
 Entrypoints come exclusively from the checked-out release's `package.json`
 `exports` map. `lib/` build paths map to their corresponding `src/` files, so
 hovers and source links point at the actual source. Standalone assets such as
@@ -34,6 +46,6 @@ snippet-level imports shadow them. Identifiers that would only resolve to `any`
 diagnostics never fail the build and are hidden from readers. Run
 `pnpm twoslash:report` to list them and find snippets that no longer type-check
 against the latest release. Add `notwoslash` to a fence's meta to opt a snippet
-out. Results are cached per release in `.vitepress/cache/twoslash`.
+out.
 
 The API reference under `src/content/api` is written by hand.

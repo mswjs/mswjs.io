@@ -14,7 +14,7 @@ import {
 } from './codeHighlight'
 import { buildRssFeed } from './rss'
 import { mswTwoslashTransformer, twoslashLineNumbersPlugin } from './twoslash'
-import { resolveMswSourceForSite } from '../scripts/msw-source.mjs'
+import { resolveMswReleaseForSite } from '../scripts/msw-source.mjs'
 import { prioritizeSearchResults } from './search'
 import cloudflareLight from './themes/cloudflare-light.json'
 import cloudflareDark from './themes/cloudflare-dark.json'
@@ -72,14 +72,24 @@ function redirectApiIndex(
 }
 
 const externalLinks = createExternalLinkChecker({
+  // Links that passed recently are not re-checked. The cache lives under
+  // "node_modules/.cache" so Vercel restores it between builds.
+  cache: {
+    path: path.resolve(
+      path.dirname(fileURLToPath(import.meta.url)),
+      '../node_modules/.cache/mswjs.io/external-links.json',
+    ),
+    maxAgeMs: 7 * 24 * 60 * 60 * 1000,
+  },
   ignore: [
     // Broken on egghead's side, being resolved with them.
     'https://egghead.io/blog/understanding-api-mocking-request-interception-algorithms',
   ],
 })
 // Code snippets are typed against the latest published MSW release.
+// Its source is checked out lazily, only for snippets missing the cache.
 // The development server reuses an existing checkout when there is one.
-const mswSource = await resolveMswSourceForSite({
+const mswRelease = await resolveMswReleaseForSite({
   preferCache: process.env.NODE_ENV !== 'production',
 })
 
@@ -139,7 +149,7 @@ export default defineConfig({
     lineNumbers: true,
     codeTransformers: [
       wordHighlightTransformer(),
-      mswTwoslashTransformer(mswSource),
+      mswTwoslashTransformer(mswRelease),
     ],
     config(md) {
       wordHighlightMetaPlugin(md)
