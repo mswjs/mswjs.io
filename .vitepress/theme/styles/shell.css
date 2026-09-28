@@ -562,9 +562,11 @@ code,
 }
 
 .library-select-caret {
+  width: 16px;
+  height: 16px;
   margin-left: auto;
+  flex-shrink: 0;
   color: var(--vp-c-text-2);
-  font-size: 0.75rem;
 }
 
 .library-select select::picker(select) {

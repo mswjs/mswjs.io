@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, h, type PropType } from 'vue'
 import { useRouter } from 'vitepress'
+import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { libraries, type Library } from '../libraries'
 
 /**
@@ -48,11 +49,11 @@ export default defineComponent({
           [
             h('button', { type: 'button' }, [
               h('selectedcontent'),
-              h(
-                'span',
-                { class: 'library-select-caret', 'aria-hidden': 'true' },
-                '▾',
-              ),
+              // The same chevron as the sidebar section toggles.
+              h(ChevronDownIcon, {
+                class: 'library-select-caret',
+                'aria-hidden': 'true',
+              }),
             ]),
             ...libraries.map((candidate) => {
               return h(
