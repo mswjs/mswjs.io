@@ -16,14 +16,10 @@ import {
 import { buildRssFeed } from './rss'
 import { mswTwoslashTransformer, twoslashLineNumbersPlugin } from './twoslash'
 import { readPulledMswRelease } from '../scripts/msw-source.mjs'
-import { prioritizeSearchResults } from './search'
 import cloudflareLight from './themes/cloudflare-light.json'
 import cloudflareDark from './themes/cloudflare-dark.json'
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from './consts'
 
-const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID || ''
-const ALGOLIA_SEARCH_API_KEY = process.env.PUBLIC_ALGOLIA_SEARCH_API_KEY || ''
-const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
 const GOOGLE_FONTS_STYLESHEET_URL =
   'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&display=swap&subset=latin'
 
@@ -299,25 +295,14 @@ export default defineConfig({
     },
     sidebarMenuLabel: 'Docs',
 
-    search: ALGOLIA_APP_ID
-      ? {
-          provider: 'algolia',
-          options: {
-            appId: ALGOLIA_APP_ID,
-            apiKey: ALGOLIA_SEARCH_API_KEY,
-            indexName: ALGOLIA_INDEX_NAME,
-            searchParameters: { hitsPerPage: 100 },
-            transformItems: prioritizeSearchResults,
-          },
-        }
-      : {
-          provider: 'local',
-          options: {
-            miniSearch: {
-              _splitIntoSections: splitSearchSections,
-            },
-          },
+    search: {
+      provider: 'local',
+      options: {
+        miniSearch: {
+          _splitIntoSections: splitSearchSections,
         },
+      },
+    },
 
     editLink: {
       pattern({ filePath }) {

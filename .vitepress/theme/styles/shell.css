@@ -169,24 +169,6 @@ pre[data-language] {
   );
 }
 
-.DocSearch-Button {
-  color: var(--vp-c-text-2);
-  border-color: var(--vp-c-border);
-}
-
-.DocSearch-Button:hover,
-.DocSearch-Button:focus {
-  color: var(--vp-c-text-2);
-  background: transparent;
-  border-color: var(--vp-c-brand-1);
-}
-
-.DocSearch-Button .DocSearch-Button-Key {
-  color: var(--vp-c-text-2);
-  background: var(--vp-c-bg-soft);
-  box-shadow: inset 0 0 0 1px var(--vp-c-border);
-}
-
 :root.dark .highlighted-word:not([data-chars-id]) {
   @apply bg-amber-700/25;
 }
@@ -422,47 +404,6 @@ code,
   line-height: var(--vp-code-line-height);
   white-space: pre;
   overflow-x: auto;
-}
-
-/*
- * Header search as a bordered cell (like the hero CTAs): full height,
- * no rounded box, and the cell's own border turns orange on hover.
- */
-.site-header-search .VPNavBarSearch,
-.site-header-search #local-search,
-.site-header-search .DocSearch {
-  display: flex;
-  height: 100%;
-}
-
-.site-header-search .DocSearch-Button,
-.site-header-search .DocSearch-Button:hover,
-.site-header-search .DocSearch-Button:focus {
-  height: 100%;
-  margin: 0;
-  padding: 0 1.25rem;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  /* The cell's border switches color instantly on hover. */
-  transition: none;
-}
-
-.site-header-search .DocSearch-Button:focus-visible {
-  outline-offset: -2px;
-}
-
-/* Key caps form one rounded pill: the left cap rounds its left side,
-   the right cap its right side, sharing a single divider (the shared
-   theme draws each cap's border as an inset shadow, which doubled it). */
-.site-header-search .DocSearch-Button .DocSearch-Button-Key {
-  border-radius: 4px 0 0 4px;
-}
-
-.site-header-search .DocSearch-Button .DocSearch-Button-Key + .DocSearch-Button-Key {
-  margin-left: -1px;
-  border-radius: 0 4px 4px 0;
 }
 
 /*

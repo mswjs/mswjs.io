@@ -2,9 +2,10 @@
 import { computed } from 'vue'
 import { useData, useRoute, useRouter } from 'vitepress'
 import type { DefaultTheme } from 'vitepress/theme'
-import { VPNavBarSearch, VPSocialLinks } from 'vitepress/theme-without-fonts'
+import { VPSocialLinks } from 'vitepress/theme-without-fonts'
 import VPSwitchAppearance from 'vitepress/dist/client/theme-default/components/VPSwitchAppearance.vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+import SiteSearch from './SiteSearch.vue'
 import { DOCUMENTATION_ROOTS, getLibraryFromPath } from '../libraries'
 import { useClickSound } from '../composables/useClickSound'
 
@@ -137,9 +138,9 @@ function navigateToBranding(event: MouseEvent): void {
 
         <div class="flex h-full min-w-0 items-center">
           <div
-            class="site-header-search relative z-10 hidden h-[calc(100%+1px)] self-start border border-transparent border-x-neutral-800 hover:border-primary md:flex"
+            class="relative z-10 hidden h-[calc(100%+1px)] self-start border border-transparent border-x-neutral-800 hover:border-primary md:flex"
           >
-            <VPNavBarSearch class="!p-0" />
+            <SiteSearch />
           </div>
           <div class="-mr-2 hidden h-full items-center gap-3 pl-5 md:flex">
             <VPSwitchAppearance @click="playClickSound" />
@@ -187,8 +188,6 @@ function navigateToBranding(event: MouseEvent): void {
 
 <style scoped>
 header :deep(.VPSocialLink),
-header :deep(.DocSearch-Button),
-header :deep(.DocSearch-Button *),
 header :deep(.VPSwitch) {
   transition: none !important;
 }
