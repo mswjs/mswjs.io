@@ -284,7 +284,7 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/mswjs/msw' },
-      { icon: 'twitter', link: 'https://twitter.com/ApiMocking' },
+      { icon: 'x', link: 'https://x.com/ApiMocking' },
     ],
 
     sidebar: buildSidebar(),

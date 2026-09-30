@@ -20,7 +20,7 @@ const currentYear = new Date().getFullYear()
         <p class="font-normal" aria-hidden="true">
           Created with <HeartIcon class="w-3.5 inline text-primary" />
           by
-          <a href="https://twitter.com/kettanaito" target="_blank">
+          <a href="https://x.com/kettanaito" target="_blank">
             kettanaito
           </a>
         </p>

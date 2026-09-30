@@ -8,7 +8,7 @@ export interface BlogPostSummary {
   thumbnailUrl: string
   author: {
     name: string
-    twitterHandle: string
+    xHandle: string
   }
 }
 

@@ -6,7 +6,7 @@ publishedAt: 2024-11-21
 thumbnailUrl: /thumbnails/enter-websockets.png
 author:
   name: Artem Zakharchenko
-  twitterHandle: kettanaito
+  xHandle: kettanaito
 keywords:
   - websocket
   - socket

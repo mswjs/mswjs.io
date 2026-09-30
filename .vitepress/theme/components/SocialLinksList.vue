@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import GitHubIcon from './icons/github.svg?component'
-import TwitterIcon from './icons/twitter.svg?component'
+import XIcon from './icons/x.svg?component'
 import YouTubeIcon from './icons/youtube.svg?component'
 import DiscordIcon from './icons/discord.svg?component'
 import OpenCollectiveIcon from './icons/opencollective.svg?component'
@@ -21,13 +21,13 @@ import OpenCollectiveIcon from './icons/opencollective.svg?component'
     </li>
     <li>
       <a
-        href="https://twitter.com/ApiMocking"
-        aria-label="Twitter account"
+        href="https://x.com/ApiMocking"
+        aria-label="X account"
         class="flex p-2 hover:text-white"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <TwitterIcon class="w-[20px]" />
+        <XIcon class="w-[20px]" />
       </a>
     </li>
     <li>

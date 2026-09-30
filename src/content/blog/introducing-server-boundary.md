@@ -5,7 +5,7 @@ description: Read about the new API that enables concurrent test runs with Mock 
 publishedAt: 2024-02-12
 author:
   name: Artem Zakharchenko
-  twitterHandle: kettanaito
+  xHandle: kettanaito
 thumbnailUrl: /thumbnails/introducing-server-boundary.png
 keywords:
   - server

@@ -246,7 +246,7 @@ const ecosystem = [
           class-name="flex-shrink-0 w-16 h-16"
         >
           <a
-            href="https://twitter.com/kettanaito"
+            href="https://x.com/kettanaito"
             class="text-left text-primary hover:underline"
             target="_blank"
             rel="noopener noreferrer"

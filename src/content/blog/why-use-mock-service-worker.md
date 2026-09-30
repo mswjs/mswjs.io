@@ -6,7 +6,7 @@ publishedAt: 2024-01-10
 thumbnailUrl: /thumbnails/why-use-msw.png
 author:
   name: Artem Zakharchenko
-  twitterHandle: kettanaito
+  xHandle: kettanaito
 keywords:
   - msw
   - why

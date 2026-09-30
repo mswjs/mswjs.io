@@ -6,7 +6,7 @@ publishedAt: 2025-11-05
 thumbnailUrl: /thumbnails/sse-are-here.png
 author:
   name: Artem Zakharchenko
-  twitterHandle: kettanaito
+  xHandle: kettanaito
 keywords:
   - sse
   - server-sent

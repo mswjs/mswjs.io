@@ -6,7 +6,7 @@ publishedAt: 2024-07-09
 thumbnailUrl: /thumbnails/introducing-source.png
 author:
   name: Artem Zakharchenko
-  twitterHandle: kettanaito
+  xHandle: kettanaito
 keywords:
   - source
   - openapi

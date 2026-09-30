@@ -21,17 +21,17 @@ const { frontmatter } = useData()
         </p>
         <div class="flex md:justify-center text-left">
           <Avatar
-            :url="`/users/${frontmatter.author.twitterHandle}.jpg`"
+            :url="`/users/${frontmatter.author.xHandle}.jpg`"
             :name="frontmatter.author.name"
             class-name="flex-shrink-0 w-16 h-16"
           >
             <a
-              :href="`https://twitter.com/${frontmatter.author.twitterHandle}`"
+              :href="`https://x.com/${frontmatter.author.xHandle}`"
               class="text-left text-primary hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              @{{ frontmatter.author.twitterHandle }}
+              @{{ frontmatter.author.xHandle }}
             </a>
           </Avatar>
         </div>

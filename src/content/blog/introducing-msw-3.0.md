@@ -6,7 +6,7 @@ publishedAt: 2026-09-30
 thumbnailUrl: /thumbnails/introducing-msw-3.0.png
 author:
   name: Artem Zakharchenko
-  twitterHandle: kettanaito
+  xHandle: kettanaito
 keywords:
   - msw
   - '3.0'

@@ -240,8 +240,8 @@ useSidebarAutoScroll()
                     </a>
                   </li>
                   <li>
-                    <a href="https://twitter.com/ApiMocking" target="_blank">
-                      Twitter
+                    <a href="https://x.com/ApiMocking" target="_blank">
+                      X
                     </a>
                   </li>
                   <li>
