@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
+import { useData } from 'vitepress'
 
 defineProps<{
   publisher: string
 }>()
 
+const { isDark } = useData()
+const adElement = ref<HTMLDivElement>()
 const isAdBlockerDetected = ref(false)
 
 onMounted(() => {
+  // Toggle the class directly since the ad client
+  // adds its own classes to this element.
+  watchEffect(() => {
+    adElement.value?.classList.toggle('dark', isDark.value)
+  })
+
   const script = document.createElement('script')
   script.async = true
   script.src = 'https://media.ethicalads.io/media/client/ethicalads.min.js'
@@ -21,7 +30,8 @@ onMounted(() => {
 <template>
   <div id="ethical-container">
     <div
-      class="horizontal dark flat"
+      ref="adElement"
+      class="horizontal flat"
       :data-ea-publisher="publisher"
       data-ea-type="text"
     />
