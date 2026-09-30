@@ -37,7 +37,7 @@ Yes. Although there's no Service Worker in Node.js, MSW provides you with a desi
 
 ## Can I use it in React Native?
 
-Yes, you can use MSW while developing and testing your React Native application. The setup would be similar to that in Node.js, and you can learn more about it following this guide:
+Yes, you can use MSW while developing and testing your React Native application through the official `@msw/react-native` package. You can learn more about it following this guide:
 
 <PageCard
   icon="DevicePhoneMobileIcon"

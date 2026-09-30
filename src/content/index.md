@@ -26,7 +26,7 @@ import { setupWorker } from 'msw/browser'
 
 // Describe the network once.
 const handlers = [
-  http.get('https://acme.com/product/:id', ({ params }) => {
+  http.get<{ id: string }>('https://acme.com/product/:id', ({ params }) => {
     return HttpResponse.json({
       id: params.id,
       title: 'Porcelain Mug',

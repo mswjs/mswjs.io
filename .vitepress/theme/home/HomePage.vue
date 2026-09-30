@@ -389,11 +389,11 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
           API mocking that can do more.
         </h2>
       </header>
-      <div class="grid md:grid-cols-3">
+      <div class="grid xl:grid-cols-3">
         <article
           v-for="library in ecosystemLibraries"
           :key="library.name"
-          class="flex min-w-0 flex-col items-start border-b border-neutral-800 px-6 py-8 last:border-b-0 md:border-b-0 md:border-r md:border-fade-t md:px-10 md:py-12 md:last:border-r-0 lg:py-14"
+          class="flex min-w-0 flex-col items-start border-b border-neutral-800 px-6 py-8 last:border-b-0 md:px-10 md:py-12 lg:py-14 xl:border-b-0 xl:border-r xl:border-fade-t xl:last:border-r-0"
         >
           <img
             :src="library.logoUrl"

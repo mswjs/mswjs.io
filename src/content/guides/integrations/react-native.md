@@ -10,70 +10,69 @@ keywords:
   - mobile
 ---
 
-In React Native, MSW works similarly to Node.js, but omits certain request interceptors for modules that are not present in React Native, like the standard `http` module in Node.js.
+In React Native, you integrate MSW through the official [`@msw/react-native`](https://github.com/mswjs/react-native) package. It exposes a `network` instance preconfigured for the React Native environment: it intercepts the `fetch` and `XMLHttpRequest` requests your application makes and installs the standard APIs that MSW needs but React Native lacks.
 
 ::: warning
-  **This integration is potentially incomplete**. If you are a React Native
-  developer, please follow these steps and share any discrepancies/missing
-  pieces with us on [GitHub](https://github.com/mswjs/mswjs.io/issues). Let's
-  improve the React Native integration guidelines together.
+  React Native is missing certain standard browser APIs and doesn't implement
+  certain others per specification. **Use this integration at your own risk.**
 :::
 
-## Prerequisites
+## Install
 
-### Polyfills
+Add `@msw/react-native` as a dependency to your project:
 
-MSW relies on standard JavaScript classes that are not present in React Native, like `URL`. Please install the polyfills below to guarantee proper MSW execution in React Native.
-
-```sh
-npm install react-native-url-polyfill fast-text-encoding
-```
-
-Create a new `msw.polyfills.js` file with the following content:
+<div class="copyable-code">
 
 ::: code-group
 
-```js [msw.polyfills.js]
-import 'fast-text-encoding'
-import 'react-native-url-polyfill/auto'
+```sh [npm]
+npm install msw @msw/react-native --save-dev
+```
+
+```sh [pnpm]
+pnpm add msw @msw/react-native --save-dev
 ```
 
 :::
 
-We will import this file later, when [Enabling mocking](#enable-mocking).
+</div>
+
+> You don't have to install or import any polyfills. The package installs the missing APIs, like `URL` or `TextEncoder`, by itself and never replaces those your runtime already has.
 
 ## Setup
 
-Import the `setupServer` function from `msw/native` and call it, providing your handlers as the argument.
+Import the `network` from `@msw/react-native` and configure it with your handlers.
 
 ::: code-group
 
-```js [src/mocks/server.js] {1}
-import { setupServer } from 'msw/native'
+```js [src/mocks/network.js] {1}
+import { network } from '@msw/react-native'
 import { handlers } from './handlers'
 
-export const server = setupServer(...handlers)
+network.configure({ handlers })
+
+export { network }
 ```
 
 :::
 
-> Learn more about the [`setupServer` API](/api/setup-server/). It's the same for Node.js and React Native.
+> The `network` is the object returned by the [`defineNetwork`](/api/experimental/define-network) API. You can use it the same way you would use `setupServer` in Node.js.
 
 ::: warning
-  In React Native, import `setupServer` from `msw/native`. The `/native` export
-  contains pre-configured interceptors relevant for the React Native
-  environment.
+  Always import `@msw/react-native` _before_ importing anything from `msw`,
+  including the modules that import from `msw` themselves (like your handlers).
+  The package prepares the React Native environment for MSW when imported.
 :::
 
 ## Enable mocking
 
 ### Development
 
-Import `server` in the entrypoint of your React Native application and call `server.listen()` _conditionally_.
+Import the `network` in the entrypoint of your React Native application and call `network.enable()` _conditionally_.
 
 ::: code-group
 
-```js [index.js] {5-13} /enableMocking/
+```js [index.js] {5-12} /enableMocking/
 import { AppRegistry } from 'react-native'
 import App from './src/App'
 import { name as appName } from './app.json'
@@ -83,9 +82,8 @@ async function enableMocking() {
     return
   }
 
-  await import('./msw.polyfills')
-  const { server } = await import('./src/mocks/server')
-  server.listen()
+  const { network } = await import('./src/mocks/network')
+  await network.enable()
 }
 
 enableMocking().then(() => {
@@ -95,23 +93,60 @@ enableMocking().then(() => {
 
 :::
 
-> Don't forget to import the `msw.polyfills.js` module!
-
 ### Testing
 
 When testing your React Native application, the way you set up MSW will differ based on how you run your tests. For example, for unit/integration testing where you render your React components in isolation, you should follow the regular [Node.js integration](/guides/integrations/node) to configure MSW with tools like Vitest or Jest.
 
 For end-to-end testing, make sure you have [Enabled MSW in development](#development) and spawn the instance of your React Native application accordingly (feel free to introduce new environment variables just for that). That way, you will be running your end-to-end tests against the application instance that has MSW up and running.
 
+## Managing handlers
+
+Use the `network` to change the handlers on runtime, the same way you would with `server` in Node.js:
+
+```js
+import { network } from '@msw/react-native'
+import { http, HttpResponse } from 'msw/http'
+
+// Prepend handler overrides.
+network.use(
+  http.get('https://example.com/user', () => {
+    return HttpResponse.json({ name: 'John' })
+  }),
+)
+
+// Remove the overrides added via `network.use()`.
+network.resetHandlers()
+
+// Stop the request interception.
+network.disable()
+```
+
 ## Common issues
+
+### Unable to resolve module `msw/native`
+
+**Reason:** The `msw/native` export has been removed from MSW. React Native is now supported through the `@msw/react-native` package.
+
+**Solution:** Install `@msw/react-native` and replace `setupServer` from `msw/native` with the `network`.
+
+```diff
+-import { setupServer } from 'msw/native'
++import { network } from '@msw/react-native'
+ import { handlers } from './handlers'
+
+-export const server = setupServer(...handlers)
++network.configure({ handlers })
+```
+
+Then, replace the `server.listen()` and `server.close()` calls with `network.enable()` and `network.disable()`, respectively.
 
 ### Unable to resolve module `http`
 
 **Reason:** Your React Native code ends up importing the `http` module that doesn't exist in React Native.
 
-**Solution:** Find the incorrect `msw/node` import in your application and replace it with `msw/native`.
+**Solution:** Find the incorrect `msw/node` import in your application and replace it with `@msw/react-native`.
 
-```diff /native/
+```diff
 -import { setupServer } from 'msw/node'
-+import { setupServer } from 'msw/native'
++import { network } from '@msw/react-native'
 ```
