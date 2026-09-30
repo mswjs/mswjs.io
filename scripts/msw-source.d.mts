@@ -27,11 +27,12 @@ export interface PublicEntryPoint {
   exports: Array<string>
 }
 
-export interface ResolveMswSourceOptions {
+export interface PullMswTypesOptions {
   /**
-   * Reuse the newest cached checkout instead of resolving the latest release.
+   * Only pin the release, leaving its source to be checked out
+   * on the first twoslash result cache miss.
    */
-  preferCache?: boolean
+  lazy?: boolean
 }
 
 export const repositoryUrl: string
@@ -43,12 +44,5 @@ export function resolvePublicEntryPoints(
   sourceDirectory: string,
 ): Array<PublicEntryPoint>
 export function ensureMswSourceSync(release: MswRelease): MswSource
-export function ensureMswSource(release: MswRelease): Promise<MswSource>
-export function ensureLatestMswSource(): Promise<MswSource>
-export function findCachedMswSource(): Promise<MswSource | undefined>
-export function resolveMswSourceForSite(
-  options?: ResolveMswSourceOptions,
-): Promise<MswSource>
-export function resolveMswReleaseForSite(
-  options?: ResolveMswSourceOptions,
-): Promise<MswRelease>
+export function pullMswTypes(options?: PullMswTypesOptions): Promise<MswRelease>
+export function readPulledMswRelease(): MswRelease | undefined

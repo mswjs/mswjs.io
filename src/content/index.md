@@ -113,11 +113,20 @@ afterAll(() => server.close())
 ```js notwoslash
 // test/fixtures.js
 import { test as base } from '@playwright/test'
-import { createNetworkFixture } from '@msw/playwright'
+import { defineNetworkFixture } from '@msw/playwright'
 import { handlers } from '../src/mocks/handlers'
 
 export const test = base.extend({
-  network: createNetworkFixture({ initialHandlers: handlers }),
+  network: [
+    async ({ context }, use) => {
+      const network = defineNetworkFixture({ context, handlers })
+
+      await network.enable()
+      await use(network)
+      await network.disable()
+    },
+    { auto: true },
+  ],
 })
 ```
 

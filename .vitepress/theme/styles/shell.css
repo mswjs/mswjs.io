@@ -135,6 +135,14 @@ body {
   padding-top: 2rem;
 }
 
+/*
+ * Keep the anchor on the line of its heading regardless of the heading's
+ * padding: without an offset, it stays at its in-flow vertical position.
+ */
+.vp-doc .header-anchor.header-anchor {
+  top: auto;
+}
+
 .vp-doc :not(pre) > code {
   white-space: normal;
   overflow-wrap: break-word;

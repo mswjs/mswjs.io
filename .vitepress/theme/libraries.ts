@@ -1,5 +1,6 @@
 import sourceLogo from '../../src/images/source.svg'
 import dataLogo from '../../src/images/data.svg'
+import serveLogo from '../../src/images/serve.svg'
 
 export interface Library {
   /**
@@ -38,6 +39,13 @@ export const libraries: Array<Library> = [
     description: 'Model test data with ORM-like capabilities.',
     logoUrl: dataLogo,
     url: '/ecosystem/data/',
+  },
+  {
+    slug: 'serve',
+    name: 'Serve',
+    description: 'Spawn an HTTP server from handlers.',
+    logoUrl: serveLogo,
+    url: '/ecosystem/serve/',
   },
 ]
 

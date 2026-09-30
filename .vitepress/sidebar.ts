@@ -1,7 +1,8 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import matter from 'gray-matter'
-import type { DefaultTheme } from 'vitepress'
+import type { Plugin, ResolvedConfig } from 'vite'
+import type { DefaultTheme, SiteConfig } from 'vitepress'
 
 export interface DocsFrontmatter {
   title: string
@@ -300,4 +301,91 @@ export function buildDocsSidebar(
     },
     ...tree.map(toDefaultThemeItem),
   ]
+}
+
+/**
+ * The virtual module VitePress serves the site data (including
+ * the theme config) from. The client accepts its hot updates.
+ */
+const SITE_DATA_MODULE_ID = '/@siteData'
+
+function hasSiteConfig(
+  config: ResolvedConfig,
+): config is ResolvedConfig & { vitepress: SiteConfig<DefaultTheme.Config> } {
+  return (
+    'vitepress' in config &&
+    typeof config.vitepress === 'object' &&
+    config.vitepress !== null
+  )
+}
+
+/**
+ * A Vite plugin keeping the generated sidebars in sync with the pages
+ * on disk during development. The sidebars are part of the config, which
+ * VitePress resolves once, so a page that is added, removed, or has its
+ * frontmatter (title, order) changed would otherwise only show up after
+ * a server restart. The sidebars are rebuilt on such changes and the
+ * site data is hot-updated if they differ.
+ */
+export function docsSidebarHmr(
+  buildSidebar: () => DefaultTheme.SidebarMulti,
+): Plugin {
+  return {
+    name: 'msw:docs-sidebar-hmr',
+    apply: 'serve',
+    configureServer(server) {
+      const { config } = server
+
+      if (!hasSiteConfig(config)) {
+        return
+      }
+
+      const siteConfig = config.vitepress
+      const contentDirectory = `${siteConfig.srcDir.replaceAll('\\', '/')}/`
+      let serializedSidebar = JSON.stringify(
+        siteConfig.site.themeConfig.sidebar,
+      )
+
+      const updateSidebar = async (filePath: string): Promise<void> => {
+        const normalizedPath = filePath.replaceAll('\\', '/')
+
+        if (
+          !normalizedPath.startsWith(contentDirectory) ||
+          !normalizedPath.endsWith('.md')
+        ) {
+          return
+        }
+
+        const nextSidebar = buildSidebar()
+        const nextSerializedSidebar = JSON.stringify(nextSidebar)
+
+        if (nextSerializedSidebar === serializedSidebar) {
+          return
+        }
+
+        serializedSidebar = nextSerializedSidebar
+        siteConfig.site.themeConfig.sidebar = nextSidebar
+
+        const siteDataModule =
+          server.moduleGraph.getModuleById(SITE_DATA_MODULE_ID)
+
+        if (siteDataModule) {
+          await server.reloadModule(siteDataModule)
+        }
+      }
+
+      const handleFileEvent = (filePath: string): void => {
+        updateSidebar(filePath).catch((error: unknown) => {
+          siteConfig.logger.error(
+            `Failed to update the sidebar: ${error instanceof Error ? error.message : error}`,
+          )
+        })
+      }
+
+      server.watcher
+        .on('add', handleFileEvent)
+        .on('unlink', handleFileEvent)
+        .on('change', handleFileEvent)
+    },
+  }
 }

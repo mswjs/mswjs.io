@@ -361,7 +361,7 @@ onBeforeUnmount(() => {
           <span class="font-mono text-sm font-semibold text-white">
             {{ step.label }}
           </span>
-          <span v-if="step.detail" class="text-xs text-neutral-500">
+          <span v-if="step.detail" class="text-xs font-medium text-neutral-500">
             {{ step.detail }}
           </span>
         </li>

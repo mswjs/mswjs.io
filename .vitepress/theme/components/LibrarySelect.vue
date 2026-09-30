@@ -43,6 +43,7 @@ export default defineComponent({
           'select',
           {
             value: props.library.url,
+            id: 'library',
             'aria-label': 'Library',
             onChange: handleChange,
           },
@@ -70,7 +71,11 @@ export default defineComponent({
                     class: 'library-select-logo',
                   }),
                   h('span', { class: 'library-select-text' }, [
-                    h('span', { class: 'library-select-name' }, candidate.name),
+                    h(
+                      'span',
+                      { class: 'library-select-name leading-tight' },
+                      candidate.name,
+                    ),
                     // Drawn with CSS so the option's text (the fallback
                     // label in browsers without the customizable select
                     // API) stays the library name.

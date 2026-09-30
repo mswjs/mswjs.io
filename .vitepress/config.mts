@@ -3,18 +3,19 @@ import { splitSearchSections } from './searchSections'
 import { createExternalLinkChecker } from './externalLinks'
 import * as path from 'node:path'
 import type { DefaultTheme } from 'vitepress'
+import type { ShikiTransformer } from 'shiki'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type HeadConfig } from 'vitepress'
 import svgLoader from 'vite-svg-loader'
-import { buildDocsSidebar } from './sidebar'
+import { buildDocsSidebar, docsSidebarHmr } from './sidebar'
 import {
   wordHighlightTransformer,
   wordHighlightMetaPlugin,
 } from './codeHighlight'
 import { buildRssFeed } from './rss'
 import { mswTwoslashTransformer, twoslashLineNumbersPlugin } from './twoslash'
-import { resolveMswReleaseForSite } from '../scripts/msw-source.mjs'
+import { readPulledMswRelease } from '../scripts/msw-source.mjs'
 import { prioritizeSearchResults } from './search'
 import cloudflareLight from './themes/cloudflare-light.json'
 import cloudflareDark from './themes/cloudflare-dark.json'
@@ -26,20 +27,22 @@ const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
 const GOOGLE_FONTS_STYLESHEET_URL =
   'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&display=swap&subset=latin'
 
-const apiSidebar = buildDocsSidebar(
-  path.resolve(
-    path.dirname(fileURLToPath(import.meta.url)),
-    '../src/content/api',
-  ),
-  [
-    ['CLI', 'cli/**/*.md'],
-    ['Browser', 'setup-worker/**/*.md'],
-    ['Node.js', 'setup-server/**/*.md'],
-    ['Experimental', 'experimental/**/*.md'],
-  ],
-  '/api',
-  'API',
-)
+function buildApiSidebar(): Array<DefaultTheme.SidebarItem> {
+  return buildDocsSidebar(
+    path.resolve(
+      path.dirname(fileURLToPath(import.meta.url)),
+      '../src/content/api',
+    ),
+    [
+      ['CLI', 'cli/**/*.md'],
+      ['Browser', 'setup-worker/**/*.md'],
+      ['Node.js', 'setup-server/**/*.md'],
+      ['Experimental', 'experimental/**/*.md'],
+    ],
+    '/api',
+    'API',
+  )
+}
 
 function firstPage(items: Array<DefaultTheme.SidebarItem>): string | undefined {
   for (const item of items) {
@@ -53,7 +56,77 @@ function firstPage(items: Array<DefaultTheme.SidebarItem>): string | undefined {
   }
 }
 
-const apiEntryPath = firstPage(apiSidebar) ?? '/api/http'
+const apiEntryPath = firstPage(buildApiSidebar()) ?? '/api/http'
+
+/**
+ * The documentation sidebars, generated from the pages on disk.
+ * Rebuilt by "docsSidebarHmr" whenever those pages change.
+ */
+function buildSidebar(): DefaultTheme.SidebarMulti {
+  return {
+    '/docs/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/docs',
+      ),
+      [
+        ['Mocking HTTP', 'http/**/*.md'],
+        ['Mocking SSE', 'sse/**/*.md'],
+        ['Mocking GraphQL', 'graphql/**/*.md'],
+        ['Mocking WebSocket', 'websocket/**/*.md'],
+      ],
+    ),
+    '/guides/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/guides',
+      ),
+      [
+        ['Integrations', 'integrations/**/*.md'],
+        ['Best practices', 'best-practices/**/*.md'],
+        ['Recipes', 'recipes/**/*.md'],
+      ],
+      '/guides',
+    ),
+    '/api/': buildApiSidebar(),
+    '/ecosystem/source/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/ecosystem/source',
+      ),
+      [
+        ['Integrations', 'integrations/**/*.md'],
+        ['API', 'api/**/*.md'],
+        ['Recipes', 'recipes/**/*.md'],
+      ],
+      '/ecosystem/source',
+    ),
+    '/ecosystem/data/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/ecosystem/data',
+      ),
+      [
+        ['Relations', 'relations/**/*.md'],
+        ['Extensions', 'extensions/**/*.md'],
+        ['API', 'api/**/*.md'],
+      ],
+      '/ecosystem/data',
+    ),
+    '/ecosystem/serve/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/ecosystem/serve',
+      ),
+      [
+        ['Integrations', 'integrations/**/*.md'],
+        ['API', 'api/**/*.md'],
+        ['Recipes', 'recipes/**/*.md'],
+      ],
+      '/ecosystem/serve',
+    ),
+  }
+}
 
 function redirectApiIndex(
   request: IncomingMessage,
@@ -86,12 +159,22 @@ const externalLinks = createExternalLinkChecker({
     'https://egghead.io/blog/understanding-api-mocking-request-interception-algorithms',
   ],
 })
-// Code snippets are typed against the latest published MSW release.
-// Its source is checked out lazily, only for snippets missing the cache.
-// The development server reuses an existing checkout when there is one.
-const mswRelease = await resolveMswReleaseForSite({
-  preferCache: process.env.NODE_ENV !== 'production',
-})
+// Code snippets are typed against the MSW release pulled by "pnpm pull-types".
+// The site never pulls the types itself. Builds require them, while the
+// development server runs on whichever types are there (or without any).
+const mswRelease = readPulledMswRelease()
+const codeTransformers: Array<ShikiTransformer> = [wordHighlightTransformer()]
+
+if (mswRelease) {
+  console.log(`Typing code snippets against MSW ${mswRelease.tag}`)
+  codeTransformers.push(mswTwoslashTransformer(mswRelease))
+} else if (process.env.NODE_ENV === 'production') {
+  throw new Error('No MSW types found. Run "pnpm pull-types" before building.')
+} else {
+  console.warn(
+    'No MSW types found: code snippets have no inline type information. Run "pnpm pull-types" to pull them.',
+  )
+}
 
 export default defineConfig({
   title: SITE_TITLE,
@@ -147,10 +230,7 @@ export default defineConfig({
       dark: { ...cloudflareDark, type: 'dark' },
     },
     lineNumbers: true,
-    codeTransformers: [
-      wordHighlightTransformer(),
-      mswTwoslashTransformer(mswRelease),
-    ],
+    codeTransformers,
     config(md) {
       wordHighlightMetaPlugin(md)
       twoslashLineNumbersPlugin(md)
@@ -175,6 +255,7 @@ export default defineConfig({
       svgLoader({ svgo: false, defaultImport: 'url' }),
       localSearchRanking(),
       externalLinks.plugin,
+      docsSidebarHmr(buildSidebar),
       {
         name: 'api-index-redirect',
         configureServer(server) {
@@ -210,57 +291,7 @@ export default defineConfig({
       { icon: 'twitter', link: 'https://twitter.com/ApiMocking' },
     ],
 
-    sidebar: {
-      '/docs/': buildDocsSidebar(
-        path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          '../src/content/docs',
-        ),
-        [
-          ['Mocking HTTP', 'http/**/*.md'],
-          ['Mocking SSE', 'sse/**/*.md'],
-          ['Mocking GraphQL', 'graphql/**/*.md'],
-          ['Mocking WebSocket', 'websocket/**/*.md'],
-        ],
-      ),
-      '/guides/': buildDocsSidebar(
-        path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          '../src/content/guides',
-        ),
-        [
-          ['Integrations', 'integrations/**/*.md'],
-          ['Best practices', 'best-practices/**/*.md'],
-          ['Recipes', 'recipes/**/*.md'],
-        ],
-        '/guides',
-      ),
-      '/api/': apiSidebar,
-      '/ecosystem/source/': buildDocsSidebar(
-        path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          '../src/content/ecosystem/source',
-        ),
-        [
-          ['Integrations', 'integrations/**/*.md'],
-          ['API', 'api/**/*.md'],
-          ['Recipes', 'recipes/**/*.md'],
-        ],
-        '/ecosystem/source',
-      ),
-      '/ecosystem/data/': buildDocsSidebar(
-        path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          '../src/content/ecosystem/data',
-        ),
-        [
-          ['Relations', 'relations/**/*.md'],
-          ['Extensions', 'extensions/**/*.md'],
-          ['API', 'api/**/*.md'],
-        ],
-        '/ecosystem/data',
-      ),
-    },
+    sidebar: buildSidebar(),
 
     outline: {
       level: 'deep',

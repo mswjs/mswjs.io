@@ -6,7 +6,6 @@ import {
   rmSync,
   writeFileSync,
 } from 'node:fs'
-import { readFile, readdir, stat } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
@@ -17,6 +16,7 @@ const siteDirectory = fileURLToPath(new URL('../', import.meta.url))
 const cacheDirectory = path.join(siteDirectory, '.vitepress/cache/msw-source')
 const storeDirectory = path.join(cacheDirectory, 'store')
 const READY_MARKER = '.msw-source.json'
+const pulledReleasePath = path.join(cacheDirectory, 'pulled-release.json')
 
 /**
  * Resolve the latest published stable MSW release from GitHub.
@@ -194,7 +194,7 @@ function readSource(sourceDirectory) {
  * dependencies so TypeScript can resolve the release's types.
  * The checkout is cached per release tag under ".vitepress/cache".
  *
- * Synchronous because it runs lazily from inside the (synchronous)
+ * Synchronous because it may also run lazily from inside the (synchronous)
  * Shiki pipeline, the first time a snippet misses the twoslash cache.
  */
 export function ensureMswSourceSync(release) {
@@ -260,92 +260,40 @@ export function ensureMswSourceSync(release) {
   return { ...marker, sourceDirectory }
 }
 
-export async function ensureMswSource(release) {
-  return ensureMswSourceSync(release)
-}
-
 /**
- * Resolve the latest published MSW release and check out its source.
+ * Pull the types of the latest published MSW release: resolve the release,
+ * check out its source, and pin it for the development server and builds
+ * (see "readPulledMswRelease"). This is the only place that reaches for
+ * the network; the site itself only reads what has been pulled.
+ *
+ * A lazy pull only pins the release. Its source is then checked out the
+ * first time a snippet misses the twoslash result cache, so a build whose
+ * snippets are all cached never clones MSW at all (meant for CI).
  */
-export async function ensureLatestMswSource() {
+export async function pullMswTypes({ lazy = false } = {}) {
   const release = await resolveLatestRelease()
-  return ensureMswSource(release)
+
+  if (!lazy) {
+    ensureMswSourceSync(release)
+  }
+
+  mkdirSync(cacheDirectory, { recursive: true })
+  writeFileSync(pulledReleasePath, JSON.stringify(release, null, 2))
+
+  return release
 }
 
 /**
- * Find the most recently checked out MSW source, if any.
+ * Read the MSW release pinned by the last "pnpm pull-types", if any.
  */
-export async function findCachedMswSource() {
-  if (!existsSync(cacheDirectory)) {
+export function readPulledMswRelease() {
+  if (!existsSync(pulledReleasePath)) {
     return undefined
   }
 
-  const candidates = []
+  const { tag, publishedAt } = JSON.parse(
+    readFileSync(pulledReleasePath, 'utf8'),
+  )
 
-  for (const entry of await readdir(cacheDirectory)) {
-    const markerPath = path.join(cacheDirectory, entry, READY_MARKER)
-
-    if (existsSync(markerPath)) {
-      const { mtimeMs } = await stat(markerPath)
-      candidates.push({ entry, mtimeMs })
-    }
-  }
-
-  candidates.sort((left, right) => {
-    return right.mtimeMs - left.mtimeMs
-  })
-
-  const newest = candidates[0]
-
-  if (!newest) {
-    return undefined
-  }
-
-  return readSource(path.join(cacheDirectory, newest.entry))
-}
-
-/**
- * Resolve the MSW release to type the documentation's code snippets against,
- * without checking out its source. The checkout happens lazily, only when a
- * snippet misses the twoslash result cache (see ".vitepress/twoslash.ts").
- *
- * Builds always resolve the latest published release. The development
- * server prefers an existing checkout to avoid network access on every
- * start, and resolves the latest release only when nothing is cached yet.
- */
-export async function resolveMswReleaseForSite({ preferCache = false } = {}) {
-  if (preferCache) {
-    const cached = await findCachedMswSource()
-
-    if (cached) {
-      console.log(
-        `Typing code snippets with the cached MSW ${cached.tag} source`,
-      )
-      return { tag: cached.tag, publishedAt: cached.publishedAt }
-    }
-  }
-
-  return resolveLatestRelease()
-}
-
-/**
- * Resolve the MSW source used to type the documentation's code snippets.
- *
- * Builds always resolve the latest published release. The development
- * server prefers an existing checkout to avoid network access on every
- * start, and resolves the latest release only when nothing is cached yet.
- */
-export async function resolveMswSourceForSite({ preferCache = false } = {}) {
-  if (preferCache) {
-    const cached = await findCachedMswSource()
-
-    if (cached) {
-      console.log(
-        `Typing code snippets with the cached MSW ${cached.tag} source`,
-      )
-      return cached
-    }
-  }
-
-  return ensureLatestMswSource()
+  return { tag, publishedAt }
 }

@@ -6,6 +6,7 @@ import PageHeaderSubtitle from '../components/PageHeaderSubtitle.vue'
 import IconBlock from '../components/IconBlock.vue'
 import sourceLogo from '../../../src/images/source.svg'
 import dataLogo from '../../../src/images/data.svg'
+import serveLogo from '../../../src/images/serve.svg'
 </script>
 
 <template>
@@ -49,6 +50,22 @@ import dataLogo from '../../../src/images/data.svg'
           </p>
           <footer class="mt-10">
             <a href="/ecosystem/source" class="inline-flex button button-primary"
+              >Read the docs</a
+            >
+          </footer>
+        </div>
+      </article>
+
+      <article class="sm:col-span-6 flex items-start gap-8">
+        <IconBlock :image-url="serveLogo" alt="Serve logo" />
+        <div>
+          <h2 class="mt-7">Serve</h2>
+          <p class="text-lg leading-tight text-neutral-400 text-pretty">
+            Spawn an HTTP server from your handlers, or apply them as a
+            middleware to Express, Hono, or Fastify.
+          </p>
+          <footer class="mt-10">
+            <a href="/ecosystem/serve" class="inline-flex button button-primary"
               >Read the docs</a
             >
           </footer>

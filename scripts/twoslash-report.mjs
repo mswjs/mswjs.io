@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createMswTwoslasher } from '../.vitepress/twoslash.ts'
-import { resolveMswSourceForSite } from './msw-source.mjs'
+import { readPulledMswRelease } from './msw-source.mjs'
 
 const contentDirectory = fileURLToPath(new URL('../src/content', import.meta.url))
 const FENCE_REGEXP = /^```(ts|tsx|js|jsx)(?![\w-])([^\n]*)\n([\s\S]*?)^```/gm
@@ -24,8 +24,13 @@ async function listMarkdownFiles(directory) {
   return files
 }
 
-const source = await resolveMswSourceForSite()
-const twoslasher = createMswTwoslasher(source, { reportErrors: true })
+const release = readPulledMswRelease()
+
+if (!release) {
+  throw new Error('No MSW types found. Run "pnpm pull-types" first.')
+}
+
+const twoslasher = createMswTwoslasher(release, { reportErrors: true })
 const summary = new Map()
 let snippetCount = 0
 let failedSnippetCount = 0
