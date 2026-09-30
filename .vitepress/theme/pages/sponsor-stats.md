@@ -20,3 +20,9 @@ that these companies sponsor MSW.
   compares it to; `comparisons.repositories` holds `stargazers_count` from
   `https://api.github.com/repos/<owner>/<name>` for the same date. Refresh
   them together with the rest of the snapshot so every number shares `asOf`.
+- Sponsors: `sponsors` holds the public sponsors of the `mswjs` organization
+  from the GitHub GraphQL API (`organization(login: "mswjs") { sponsors }`,
+  requires an authenticated request, e.g. `gh api graphql`). Their avatars are
+  stored next to the snapshot under `src/content/public/users/sponsors/<login>.png`
+  (128px, flattened onto white). Refresh both together: add the avatars of new
+  sponsors and remove those of the former ones.

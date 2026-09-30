@@ -38,7 +38,7 @@ defineProps<{
     <div class="flex justify-center border-y border-neutral-800">
       <a
         href="/sponsor"
-        class="group w-24 flex-shrink-0 border-x-2 border-neutral-800 bg-neutral-900 p-5"
+        class="group w-24 flex-shrink-0 border-x border-neutral-800 bg-neutral-900 p-5"
         aria-label="Sponsor Mock Service Worker"
       >
         <img

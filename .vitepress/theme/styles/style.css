@@ -83,7 +83,7 @@ blockquote em {
 
 /* Buttons */
 .button {
-  @apply px-6 py-3 font-bold rounded-lg select-none text-center;
+  @apply px-6 py-3 font-bold select-none text-center;
 }
 .button-primary {
   @apply bg-neutral-700 text-white bg-opacity-40 border border-neutral-700;

@@ -10,7 +10,9 @@ const totalDownloads = new Intl.NumberFormat('en', {
   notation: 'compact',
   maximumFractionDigits: 2,
 }).format(stats.totalDownloads)
-const githubStars = new Intl.NumberFormat('en').format(stats.githubStars)
+const exactGithubStars = new Intl.NumberFormat('en').format(stats.githubStars)
+const roundedGithubStars = Math.floor(stats.githubStars / 100) * 100
+const githubStars = `${new Intl.NumberFormat('en').format(roundedGithubStars)}${stats.githubStars > roundedGithubStars ? '+' : ''}`
 const comparisonPosition = ref(50)
 const comparisonStyle = computed(() => ({
   '--comparison-position': `${comparisonPosition.value}%`,
@@ -61,17 +63,27 @@ const starComparisons = [
   downloads: compact.format(downloadsByPackage[project.pkg]),
 }))
 const graphDescription = `Monthly npm downloads, March–August 2026: ${graphPoints.map((point) => `${point.label}: ${point.downloads.toLocaleString('en')}`).join('; ')}.`
+const dependents = [
+  { name: 'Google', avatarUrl: '/users/orgs/google.png' },
+  { name: 'Microsoft', avatarUrl: '/users/orgs/microsoft.png' },
+  { name: 'Amazon', avatarUrl: '/users/orgs/amazon.png' },
+  { name: 'Spotify', avatarUrl: '/users/orgs/spotify.png' },
+  { name: 'Meta', avatarUrl: '/users/orgs/meta.png' },
+]
+// The sponsors are repeated to fill the background collage on any screen.
+const sponsorCollage = Array.from({ length: 6 }).flatMap(() => {
+  return stats.sponsors
+})
 const ecosystem = [
   {
     name: 'Nock',
-    description:
-      'Yes, Nock uses MSW’s interception layer. Two established mocking tools now share the same foundation, so improvements in network interception benefit both communities.',
+    description: `Nock uses MSW to intercept the network. Two established mocking tools now share the same foundation so that everyone can enjoy the quality interception with their own preferred API experience.`,
     url: 'https://github.com/nock/nock',
   },
   {
     name: 'Vitest',
     description:
-      'MSW powers browser module interception in Vitest’s mocker. It’s also the tool Vitest recommends for mocking network requests.',
+      'MSW powers browser module interception in Vitest’s mocker. Vitest recommends MSW as the go-to approach to API mocking as well.',
     url: 'https://github.com/vitest-dev/vitest/tree/main/packages/mocker',
   },
   {
@@ -88,51 +100,51 @@ const ecosystem = [
     class="grid grid-cols-[20px_minmax(0,1fr)_20px] text-base leading-7 sm:grid-cols-[minmax(24px,1fr)_minmax(0,1080px)_minmax(24px,1fr)] [&_a:focus-visible]:outline [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-[5px] [&_a:focus-visible]:outline-primary"
   >
     <header
-      class="col-start-2 min-w-0 max-w-[720px] pb-14 pt-12 sm:py-20"
+      class="col-start-2 min-w-0 max-w-[720px] py-14 sm:py-20"
       aria-labelledby="sponsor-title"
     >
-      <h1
-        id="sponsor-title"
-        class="mb-6 mt-5 text-[clamp(2.4rem,4.5vw,3.5rem)] leading-[1.12] tracking-[-0.045em] text-balance"
-      >
-        An open letter from MSW creator
+      <h1 id="sponsor-title" class="text-balance">
+        An open letter from the MSW creator
       </h1>
-      <p class="text-lg text-white">
-        Over the past decade, Mock Service Worker has evolved from a prototype I
-        built over the weekend to the foundational testing infrastructure
-        powering the entire web. Sadly, it remains severely underfunded and a
-        few sponsor cancelations away from becoming abandonware.
-      </p>
-      <p class="mt-4 text-lg text-white">
-        Most of you probably don't know that. When you see a successful
-        open-source project, you imagine a team of people toiling day and night
-        to make it better. It seldom crosses your mind it might be a single guy
-        who barely makes the ends meet.
-      </p>
-      <p class="mt-4 text-lg text-white">
-        The scariest part about this: <strong>I don't know what to do</strong>.
-      </p>
-      <p class="mt-4 text-lg text-white">
-        I tried so many things over the years. I reached out to companies,
-        struck deals, and turned down opportunities that would likely set me up
-        for life but sacrified the quality and integrity of the project in the
-        process. Sorry little of that bore any fruits. Although I've been
-        <em>immensely</em> lucky to win grants, get sponsored, and secure
-        partnerships with a number of incredible companies, that's barely enough
-        to fund my work on the project, let alone establish something akin to a
-        team.
-      </p>
-      <p class="mt-4 text-lg text-white">
-        As it stands now, I don't see MSW having a future.
-      </p>
-      <p class="mt-4 text-lg text-white">I want that to change.</p>
-      <p class="mt-4 text-lg text-white">
-        I created this page as a reminder of how absurdly influential MSW is
-        while remaining a sad epitome of the "random maintainer from Nebraska"
-        meme, in hopes that that contrast inspires you (or, better, your
-        company), to support the project. Please read this, it won't take much
-        of your time. Thank you.
-      </p>
+      <div class="space-y-4">
+        <p class="text-lg text-white">
+          Over the past decade, Mock Service Worker has evolved from a prototype
+          I built over the weekend to the foundational testing infrastructure
+          powering the entire web. Sadly, it remains severely underfunded and a
+          few sponsor cancelations away from becoming abandonware.
+        </p>
+        <p class="text-lg text-white">
+          Most of you probably don't know that. When you see a successful
+          open-source project, you imagine a team of people toiling day and
+          night to make it better. It seldom crosses your mind it might be a
+          single guy who barely makes the ends meet.
+        </p>
+        <p class="text-lg text-white">
+          The scariest part about this:
+          <strong>I don't know what to do</strong>.
+        </p>
+        <p class="text-lg text-white">
+          I tried so many things over the years. I reached out to companies,
+          struck deals, and turned down opportunities that would likely set me
+          up for life but sacrified the quality and integrity of the project in
+          the process. Sorry little of that bore any fruits. Although I've been
+          <em>immensely</em> lucky to win grants, get sponsored, and secure
+          partnerships with a number of incredible companies, that's barely
+          enough to fund my work on the project, let alone establish something
+          akin to a team.
+        </p>
+        <p class="text-lg text-white">
+          As it stands now, I don't see MSW having a future.
+        </p>
+        <p class="text-lg text-white">I want that to change.</p>
+        <p class="text-lg text-white">
+          I created this page as a reminder of how absurdly influential MSW is
+          while remaining a sad epitome of the "random maintainer from Nebraska"
+          meme, in hopes that that contrast inspires you (or, better, your
+          company), to support the project. Please read this, it won't take much
+          of your time. Thank you.
+        </p>
+      </div>
       <footer
         class="mt-12 flex pb-4 text-left sm:mt-16"
         aria-label="Letter signature"
@@ -158,26 +170,24 @@ const ecosystem = [
       class="col-start-2 min-w-0 border-t border-neutral-800 py-14 sm:py-20"
       aria-label="MSW project statistics"
     >
-      <h1
-        class="mb-6 mt-5 text-[clamp(2.4rem,4.5vw,3.5rem)] leading-[1.12] tracking-[-0.045em]"
-      >
-        Stats for nerds
-      </h1>
+      <h2>Where we are</h2>
       <p class="-mt-3 mb-8 text-sm text-neutral-400">As of {{ asOfDate }}</p>
-      <dl
-        class="grid grid-cols-1 gap-7 tabular-nums sm:grid-cols-3 sm:gap-5 md:gap-9"
-      >
+      <dl class="grid grid-cols-1 gap-7 tabular-nums lg:grid-cols-3 lg:gap-9">
         <div class="flex flex-col items-start">
           <dt class="mb-3 text-lg font-semibold leading-[1.4] text-white">
             Total npm downloads
           </dt>
+          <p>
+            That's more than Svelte, Angular, SolidJS, and Astro
+            <strong>combined</strong>, every month.
+          </p>
           <dd
-            class="order-first mb-0.5 whitespace-nowrap text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.05em] sm:text-[2.6rem] md:text-[clamp(2.6rem,5vw,4rem)]"
+            class="order-first mb-0.5 whitespace-nowrap text-6xl font-semibold leading-tight tracking-tighter lg:text-5xl xl:text-6xl"
             :title="stats.totalDownloads.toLocaleString('en')"
           >
             {{ totalDownloads }}
           </dd>
-          <figure class="mt-5 w-full max-w-[240px] sm:max-w-none">
+          <figure class="mt-5 w-full max-w-sm lg:max-w-none">
             <svg
               class="block w-full overflow-visible"
               viewBox="0 0 280 100"
@@ -211,66 +221,103 @@ const ecosystem = [
               </circle>
             </svg>
           </figure>
-          <p class="mt-5 text-sm text-neutral-400">
-            That's more than Svelte, Angular, SolidJS, and Astro
-            <strong>combined</strong>, every month.
-          </p>
         </div>
         <div
-          class="flex flex-col items-start border-t border-neutral-800 pt-7 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0 md:pl-9"
+          class="flex flex-col items-start border-t border-neutral-800 pt-7 lg:border-l lg:border-t-0 lg:pl-9 lg:pt-0"
         >
           <dt class="mb-3 text-lg font-semibold leading-[1.4] text-white">
-            GitHub stars
+            GitHub stargazers
           </dt>
           <dd
-            class="order-first mb-0.5 whitespace-nowrap text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.05em] sm:text-[2.6rem] md:text-[clamp(2.6rem,5vw,4rem)]"
+            class="order-first mb-0.5 whitespace-nowrap text-6xl font-semibold leading-tight tracking-tighter lg:text-5xl xl:text-6xl"
           >
             {{ githubStars }}
           </dd>
-          <p class="text-sm text-neutral-400">
-            That's an absurd number of developers who liked MSW and went to
-            introduce it to their team.
+          <p>
+            A, frankly, insane number of developers like MSW, give talks, shoot
+            videos, and even write books about it.
           </p>
+          <!-- GitHub's "Star" button, scaled up. Colors are GitHub's own. -->
+          <a
+            href="https://github.com/mswjs/msw/stargazers"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-5 inline-flex h-10 select-none items-center gap-2 rounded-lg border border-[#d1d9e0] bg-[#f6f8fa] px-4 text-base font-medium leading-none text-[#25292e] no-underline transition-colors duration-75 [font-family:-apple-system,BlinkMacSystemFont,'Segoe_UI','Noto_Sans',Helvetica,Arial,sans-serif] hover:border-[#d1d9e0] hover:bg-[#eff2f5] [.dark_&]:border-[#3d444d] [.dark_&]:bg-[#212830] [.dark_&]:text-[#f0f6fc] [.dark_&]:hover:bg-[#262c36]"
+          >
+            <svg
+              class="size-5 shrink-0 fill-[#59636e] [.dark_&]:fill-[#9198a1]"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"
+              />
+            </svg>
+            <span>Star</span>
+            <span
+              class="rounded-full bg-[#818b981f] px-2 text-sm font-medium leading-6 tabular-nums [.dark_&]:bg-[#2f3742]"
+            >
+              {{ exactGithubStars }}
+            </span>
+          </a>
         </div>
         <div
-          class="flex flex-col items-start border-t border-neutral-800 pt-7 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0 md:pl-9"
+          class="flex flex-col items-start border-t border-neutral-800 pt-7 lg:border-l lg:border-t-0 lg:pl-9 lg:pt-0"
         >
           <dt class="mb-3 text-lg font-semibold leading-[1.4] text-white">
             Repositories depend on MSW
           </dt>
           <dd
-            class="order-first mb-0.5 whitespace-nowrap text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.05em] sm:text-[2.6rem] md:text-[clamp(2.6rem,5vw,4rem)]"
+            class="order-first mb-0.5 whitespace-nowrap text-6xl font-semibold leading-tight tracking-tighter lg:text-5xl xl:text-6xl"
           >
             200,000+
           </dd>
-          <p class="text-sm text-neutral-400">
-            And that's only counting public repositories on GitHub. It's faster
-            to point out who from the Fortune 500 companies doesn't use MSW than
-            listing everyone who does.
+          <p>
+            Publicly, on GitHub alone. It's easier to point out the Fortune 500
+            companies that don't use MSW than those who do.
           </p>
+          <ul class="mt-5 flex list-none -space-x-3 p-0">
+            <li
+              v-for="(dependent, index) in dependents"
+              :key="dependent.name"
+              class="relative"
+              :style="{ zIndex: dependents.length - index }"
+            >
+              <img
+                :src="dependent.avatarUrl"
+                :alt="dependent.name"
+                :title="dependent.name"
+                width="48"
+                height="48"
+                loading="lazy"
+                class="size-12 rounded-full border border-neutral-800 bg-[#fff] object-cover ring-2 ring-[var(--vp-c-bg)]"
+              />
+            </li>
+            <li
+              class="relative flex size-12 select-none items-center justify-center rounded-full border border-neutral-800 bg-[#fff] font-semibold leading-none text-[#a3a3a3] ring-2 ring-[var(--vp-c-bg)]"
+              aria-label="And many more"
+            >
+              <!-- The dots sit on the baseline: lift them to the optical center. -->
+              <span class="relative -top-[0.25em]" aria-hidden="true">...</span>
+            </li>
+          </ul>
         </div>
       </dl>
-      <div class="mt-10 max-w-[720px] tabular-nums"></div>
     </section>
 
     <section
       class="col-start-2 min-w-0 border-t border-neutral-800 py-14 sm:py-20"
       aria-labelledby="history-title"
     >
-      <h2
-        id="history-title"
-        class="mb-6 mt-0 text-[clamp(1.6rem,3vw,2rem)] leading-[1.25] tracking-[-0.03em]"
-      >
-        Changing the game since 2018
-      </h2>
+      <h2 id="history-title">A new take on API mocking</h2>
       <div class="max-w-[720px] space-y-4">
         <p class="">
           Do you know when was the last day API mocking was tedious? It's
           November 17th, 2018. Because the very next day, the first version of
-          MSW got released. And it nothing short of changed the game.
+          MSW got released. And it did nothing short of changing the game.
         </p>
         <p>
-          Before that time, mocking was in a bad place. You spied on the request
+          Before it, mocking was in a bad place. You spied on the request
           client, praying its APIs stay the same between updates. You repeated
           the same mocks over and over between your component and end-to-end
           tests. Mock-first development? That'd be one more dependency and an
@@ -349,7 +396,7 @@ const ecosystem = [
         </p>
         <p>
           But, most importantly,
-          <strong>it showed you that mocking can be beautiful</strong>.
+          <strong>it showed you that mocking can be ✨ beautiful ✨</strong>.
         </p>
       </div>
     </section>
@@ -359,58 +406,57 @@ const ecosystem = [
       aria-labelledby="innovation-title"
     >
       <div class="max-w-[720px]">
-        <h2
-          id="innovation-title"
-          class="mb-6 mt-0 text-[clamp(1.6rem,3vw,2rem)] leading-[1.25] tracking-[-0.03em]"
-        >
-          A decade of research for everyone's benefit.
-        </h2>
-        <p class="mt-4">
-          <a
-            class="text-primary underline underline-offset-[3px] [&_code]:text-[inherit]"
-            href="https://github.com/mswjs/interceptors"
-            target="_blank"
-            rel="noopener noreferrer"
-            ><code>@mswjs/interceptors</code></a
-          >, which is the library powering the network interception in Node.js,
-          remains my most challenging project to date. That difficulty is,
-          mostly, self-inflicted because I want to achieve the impossible: let
-          the requests happen while simultaneously giving you control over their
-          resolution.
-        </p>
-        <p class="mt-4">
-          That's not a contradictory statement, and I've spent the last decade
-          proving that.
-        </p>
-        <p class="mt-4">
-          My work on the interception algorithms has been recognized by grants
-          from
-          <a
-            class="text-primary underline underline-offset-[3px]"
-            href="https://github.com/microsoft/foss-fund"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Microsoft</a
-          >
-          and
-          <a
-            class="text-primary underline underline-offset-[3px]"
-            href="https://engineering.atspotify.com/2024/11/congratulations-to-the-recipients-of-the-2024-spotify-foss-fund"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Spotify</a
-          >, as well as other API mocking libraries, like Nock, that have
-          adopted those same algorithms so everyone has the best in class
-          interception even if they don't use MSW directly.
-        </p>
+        <h2 id="innovation-title">The network interception algorithms</h2>
+        <div class="mt-4 space-y-4">
+          <p>
+            While MSW relies on the Service Worker API in the browser, Node.js
+            needs a different approach. I spent the last eight years researching
+            and developing the network interception algorithms that aim to
+            achieve the impossible: let the requests actually happen while
+            giving you control over their resolution. Something no other API
+            mocking library has dared to do before or since.
+          </p>
+          <p>
+            The result of my work is the
+            <a
+              class="text-primary underline underline-offset-[3px] [&_code]:text-[inherit]"
+              href="https://github.com/mswjs/interceptors"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><code>@mswjs/interceptors</code></a
+            >
+            library that powers MSW, Nock, and many custom network mocking
+            solutions in Node.js. This remains the most challenging project I've
+            ever worked on and I'm glad to be able to share my hard work with
+            the ecosystem in the open as well as see it recognized by grants
+            from
+            <a
+              class="text-primary underline underline-offset-[3px]"
+              href="https://github.com/microsoft/foss-fund"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Microsoft</a
+            >
+            and
+            <a
+              class="text-primary underline underline-offset-[3px]"
+              href="https://engineering.atspotify.com/2024/11/congratulations-to-the-recipients-of-the-2024-spotify-foss-fund"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Spotify</a
+            >.
+          </p>
+        </div>
       </div>
     </section>
 
     <section
-      class="col-start-2 grid min-w-0 grid-cols-1 items-center gap-9 border-t border-neutral-800 py-14 sm:py-20 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
+      class="col-start-2 grid min-w-0 grid-cols-1 items-center gap-9 border-t border-neutral-800 py-14 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-12"
       aria-labelledby="ecosystem-title"
     >
-      <figure class="mx-auto w-[min(400px,100%)] min-w-0 md:mx-0 md:w-auto">
+      <figure
+        class="mx-auto w-[min(400px,100%)] min-w-0 -mb-16 -mt-32 lg:mx-0 lg:my-0 lg:w-auto"
+      >
         <div
           class="vp-doc [--manifest-focus:calc(16px_+_6.5_*_var(--manifest-line-height))] [--manifest-line-height:2.25rem] [mask-image:linear-gradient(to_bottom,transparent_calc(var(--manifest-focus)_-_2.5_*_var(--manifest-line-height)),#000_calc(var(--manifest-focus)_-_0.5_*_var(--manifest-line-height)),#000_calc(var(--manifest-focus)_+_0.5_*_var(--manifest-line-height)),transparent_calc(var(--manifest-focus)_+_2.5_*_var(--manifest-line-height)))] [&_.lang]:hidden [&_.language-json]:!m-0 [&_.language-json]:!border-0 [&_.language-json]:!bg-transparent [&_.language-json]:[--vp-code-font-size:1.125rem] [&_.line-numbers-wrapper]:hidden [&_code_.highlighted]:!-mx-5 [&_code_.highlighted]:!w-[calc(100%_+_40px)] [&_code_.highlighted]:!border-l [&_code_.highlighted]:!border-primary [&_code_.highlighted]:!bg-[var(--vp-code-line-highlight-color)] [&_code_.highlighted]:!pl-[19px] [&_code_.highlighted]:!pr-5 [&_pre]:!bg-transparent [&_pre]:!px-0 [&_pre]:!py-4 [&_pre_code]:!px-5 [&_pre_code]:!leading-[2]"
         >
@@ -419,24 +465,18 @@ const ecosystem = [
       </figure>
       <div class="min-w-0">
         <div class="max-w-[720px]">
-          <h2
-            id="ecosystem-title"
-            class="mb-6 mt-0 text-[clamp(1.6rem,3vw,2rem)] leading-[1.25] tracking-[-0.03em]"
-          >
-            A dependency of your dependencies.
-          </h2>
-          <p class="text-neutral-400">
-            Speaking of not using MSW directly... You're likely benefitting from
-            it, too, even if this the first time you hear about its existence.
-            MSW widely adopted by countless open-source projects, both for
-            internal testing and as as part of their public APIs.
+          <h2 id="ecosystem-title">A dependency of your dependencies</h2>
+          <p>
+            You are benefiting from MSW even if it's not in your package.json.
+            Countless open-source projects have adopted it for testing purposes
+            as well as a part of their public APIs.
           </p>
         </div>
-        <div class="my-7">
+        <div class="mt-7">
           <article
             v-for="tool in ecosystem"
             :key="tool.name"
-            class="grid grid-cols-1 gap-3 border-b border-neutral-800 py-6 sm:grid-cols-[100px_minmax(0,1fr)] sm:gap-6"
+            class="grid grid-cols-1 gap-3 border-b border-neutral-800 py-6 last:border-b-0 last:pb-0 sm:grid-cols-[100px_minmax(0,1fr)] sm:gap-6"
           >
             <h3 class="m-0 text-lg leading-6">
               <a
@@ -454,117 +494,102 @@ const ecosystem = [
     </section>
 
     <section
-      class="col-start-2 min-w-0 border-t border-neutral-800 pb-8 pt-14 sm:pt-20"
+      class="col-start-2 min-w-0 border-t border-neutral-800 py-14 sm:py-20"
       aria-labelledby="independence-title"
     >
       <div class="max-w-[720px]">
-        <h2
-          id="independence-title"
-          class="mb-6 mt-0 text-[clamp(2rem,3.4vw,2.8rem)] leading-[1.15] tracking-[-0.04em]"
-        >
-          Hugely independent.
-        </h2>
-        <p class="mb-4">
-          I've been offered funding to turn MSW into a startup. I've been
-          offered life-changing money to have the project associated with
-          certain companies. I've been given job opportunities that were,
-          essentially, acquihires.
-        </p>
-        <p class="mb-4">
-          This isn't bragging. Neither is this a cautionary tale of all the
-          chances I've squandered.
-        </p>
-        <p>
-          I just don't like talking about these things. One doesn't need to
-          scream about his principles to have them. Mine are reflected in my
-          work, which remains independent so I can always make decisions that
-          are in the best interest of the developers relying on it.
-        </p>
+        <h2 id="independence-title">Hugely independent</h2>
+        <div class="space-y-4">
+          <p>
+            I've been offered funding to turn MSW into a startup. I've been
+            offered life-changing money to have the project associated with
+            certain companies. I've been given job opportunities that were,
+            essentially, acquihires.
+          </p>
+          <p>
+            This isn't bragging. Neither is this a cautionary tale of all the
+            chances I've squandered.
+          </p>
+          <p>
+            I just don't like talking about these things. One doesn't need to
+            scream about his principles to have them. Mine are reflected in my
+            work, which remains independent so I can always make decisions that
+            are in the best interest of the developers relying on it.
+          </p>
+        </div>
       </div>
     </section>
 
     <section
-      class="col-start-2 min-w-0 border-t border-neutral-800 pb-24 pt-14 sm:pt-20"
+      class="col-start-2 min-w-0 border-t border-neutral-800 py-14 sm:py-20"
+      aria-labelledby="independence-title"
+    >
+      <div class="max-w-[720px]">
+        <h2 id="independence-title">But, most importantly...</h2>
+        <div class="space-y-4">
+          <p>
+            <strong>I genuinely love what I do</strong>. I've been working on
+            MSW on weekends and holidays for years because I have the vision of
+            what I want API mocking to be without the time to fully realize it.
+          </p>
+
+          <p>
+            Since 2023, I began working on the project full-time. I believe my
+            open-source work is the best way for me to make positive impact on
+            the world. It wasn't an easy decision. I lose money every month, but
+            I want to believe MSW will become susintable one day so I can pave
+            the future of API mocking without worrying about rent or food.
+          </p>
+          <p>
+            This is what I sincerely wish upon any open-source creator. This is
+            what I want open-source to be: independent, sustainable, and
+            infectiously inspiring.
+          </p>
+          <p>Thank you.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The padding of the outer block frames the collage in the inner one. -->
+    <section
+      class="col-start-2 mb-14 min-w-0 rounded-2xl border border-black/20 p-4 shadow-2xl sm:p-10 sm:mb-20 [.dark_&]:border-[#fff]/10"
       aria-labelledby="closing-title"
     >
       <div
-        class="grid grid-cols-1 items-start gap-9 md:grid-cols-[1.1fr_1fr] md:gap-[72px]"
+        class="relative overflow-hidden rounded-lg px-2 py-16 text-center sm:px-6 sm:py-32"
       >
-        <div>
-          <p class="text-sm font-medium text-primary">What comes next</p>
-          <h2
-            id="closing-title"
-            class="mb-6 mt-0 text-[clamp(2rem,3.4vw,2.8rem)] leading-[1.15] tracking-[-0.04em]"
-          >
-            You won't believe it,<br />but we can do
-            <em class="not-italic text-primary">better.</em>
-          </h2>
-          <p class="text-neutral-400">
-            If you’ve ever finished a test with MSW and thought “that was
-            easier,” we’d appreciate your support. And if your team relies on it
-            every day, consider asking whether your company can sponsor.
+        <!-- A collage of the current sponsors, faded out behind the content. -->
+        <ul
+          class="pointer-events-none absolute inset-0 m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(4rem,1fr))] content-center gap-4 p-0 [mask-image:radial-gradient(ellipse_at_center,transparent_60%,#000_120%)] sm:[mask-image:radial-gradient(ellipse_at_center,transparent_35%,#000_90%)]"
+          aria-hidden="true"
+        >
+          <li v-for="(sponsor, index) in sponsorCollage" :key="index">
+            <img
+              :src="`/users/sponsors/${sponsor.login}.png`"
+              alt=""
+              width="64"
+              height="64"
+              loading="lazy"
+              class="aspect-square w-full rounded-xl object-cover opacity-30"
+            />
+          </li>
+        </ul>
+
+        <div class="relative">
+          <h2 id="closing-title">Become a sponsor</h2>
+          <p class="mx-auto max-w-[36ch] text-lg text-neutral-400 text-balance">
+            Contribute to the present and the future of API mocking on the web.
           </p>
-        </div>
-        <div>
-          <p class="text-base leading-[1.3] text-white">
-            Your support gives us
-            <strong
-              class="mt-2 block text-[4rem] font-medium tracking-[-0.065em]"
-              >time.</strong
+          <div class="mt-10 flex justify-center">
+            <a
+              :href="sponsorUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="button inline-flex items-center justify-center gap-3 whitespace-nowrap bg-primary px-8 py-4 text-lg text-[#fff] hover:bg-primary/90 [&_svg]:h-6 [&_svg]:w-6"
+              ><GitHubIcon aria-hidden="true" /> Sponsor on GitHub</a
             >
-          </p>
-          <ol class="mt-6 list-none">
-            <li class="flex gap-5 border-t border-neutral-800 py-[18px]">
-              <span class="pt-1 font-mono text-xs text-primary">01</span>
-              <div>
-                <strong class="font-semibold">To go deeper.</strong>
-                <p class="mt-1 text-sm leading-relaxed text-neutral-400">
-                  Research the network behavior that other tools work around.
-                </p>
-              </div>
-            </li>
-            <li class="flex gap-5 border-t border-neutral-800 py-[18px]">
-              <span class="pt-1 font-mono text-xs text-primary">02</span>
-              <div>
-                <strong class="font-semibold">To get it right.</strong>
-                <p class="mt-1 text-sm leading-relaxed text-neutral-400">
-                  Work through the difficult bugs and make MSW more reliable.
-                </p>
-              </div>
-            </li>
-            <li class="flex gap-5 border-t border-neutral-800 py-[18px]">
-              <span class="pt-1 font-mono text-xs text-primary">03</span>
-              <div>
-                <strong class="font-semibold">To share what we learn.</strong>
-                <p class="mt-1 text-sm leading-relaxed text-neutral-400">
-                  Write docs and examples that make the next person’s work
-                  easier.
-                </p>
-              </div>
-            </li>
-          </ol>
+          </div>
         </div>
-      </div>
-      <div
-        class="mt-10 grid grid-cols-1 items-center gap-6 rounded-xl border border-neutral-800 bg-[var(--vp-c-bg-elv)] p-7 md:grid-cols-[minmax(0,52ch)_auto] md:justify-between md:gap-16 md:p-10"
-      >
-        <div>
-          <h3 class="m-0 text-2xl font-semibold leading-[1.25] text-white">
-            Become a sponsor
-          </h3>
-          <p class="mt-3 text-base leading-[1.65] text-neutral-400 text-pretty">
-            Support the present and the future of API mocking on the web by
-            becoming our GitHub sponsor. Every contribution counts. Thank you!
-          </p>
-        </div>
-        <a
-          :href="sponsorUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-3 justify-self-start whitespace-nowrap rounded-lg border border-primary bg-[var(--vp-c-bg-elv)] px-[18px] py-3 font-semibold leading-6 text-white hover:bg-primary/[0.08] md:justify-self-end [&_svg]:h-5 [&_svg]:w-5 [&_svg]:text-primary"
-          ><GitHubIcon aria-hidden="true" /> Sponsor on GitHub
-          <ArrowUpRightIcon aria-hidden="true"
-        /></a>
       </div>
     </section>
   </div>

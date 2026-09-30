@@ -107,7 +107,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
     getting-started-url="/docs/quick-start"
   >
     <template #headnote>
-      <span>Learn best testing practices from MSW creator</span>
+      <span>Learn best testing practices from the MSW creator</span>
       <a
         href="https://epicweb.dev/testing"
         class="ml-auto inline-flex shrink-0 items-center gap-1 text-neutral-400 hover:text-white hover:underline"
@@ -134,42 +134,42 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
 
   <!-- Companies -->
   <div class="-mb-px border-y border-neutral-800">
-      <p
-        class="border-b border-neutral-800 h-14 px-4 flex items-center justify-center text-center text-sm font-semibold uppercase tracking-widest text-neutral-400"
-      >
-        Trusted by teams at
-      </p>
-      <!-- One row of logos scrolling right to left, same mechanics as the
+    <p
+      class="border-b border-neutral-800 h-14 px-4 flex items-center justify-center text-center text-sm font-semibold uppercase tracking-widest text-neutral-400"
+    >
+      Trusted by teams at
+    </p>
+    <!-- One row of logos scrolling right to left, same mechanics as the
            reviews below: every company once plus copies of the first few. -->
-      <div class="marquee overflow-hidden text-neutral-400 fill-neutral-400">
+    <div class="marquee overflow-hidden text-neutral-400 fill-neutral-400">
+      <div
+        class="marquee-track flex"
+        :style="{
+          '--marquee-count': companies.length,
+          '--marquee-item': 224,
+        }"
+      >
         <div
-          class="marquee-track flex"
-          :style="{
-            '--marquee-count': companies.length,
-            '--marquee-item': 224,
-          }"
+          v-for="company in companies"
+          :key="company.name"
+          class="marquee-item flex shrink-0 items-center justify-center border-r border-neutral-800 px-6 py-6"
         >
-          <div
-            v-for="company in companies"
-            :key="company.name"
-            class="marquee-item flex shrink-0 items-center justify-center border-r border-neutral-800 px-6 py-6"
-          >
-            <component
-              :is="company.icon"
-              :class="company.class"
-              :aria-label="company.name"
-            />
-          </div>
-          <div
-            v-for="company in companies.slice(0, REPEATED_COMPANIES)"
-            :key="`repeat-${company.name}`"
-            class="marquee-item flex shrink-0 items-center justify-center border-r border-neutral-800 px-6 py-6"
-            aria-hidden="true"
-          >
-            <component :is="company.icon" :class="company.class" />
-          </div>
+          <component
+            :is="company.icon"
+            :class="company.class"
+            :aria-label="company.name"
+          />
+        </div>
+        <div
+          v-for="company in companies.slice(0, REPEATED_COMPANIES)"
+          :key="`repeat-${company.name}`"
+          class="marquee-item flex shrink-0 items-center justify-center border-r border-neutral-800 px-6 py-6"
+          aria-hidden="true"
+        >
+          <component :is="company.icon" :class="company.class" />
         </div>
       </div>
+    </div>
   </div>
 
   <!-- Features -->
@@ -206,9 +206,9 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
           class="border-b border-neutral-800"
         >
           <template #description>
-            The era of patching <code>window.fetch</code> is over. MSW
-            pioneered transparent network interception where you describe your
-            mocks once and they work everywhere.
+            The era of patching <code>window.fetch</code> is over. MSW pioneered
+            transparent network interception where you describe your mocks once
+            and they work everywhere.
           </template>
           <template #links>
             <FeatureLink href="/guides/">Integration guides</FeatureLink>
@@ -304,8 +304,8 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
             class="home-prose mt-4 max-w-lg text-lg leading-snug text-neutral-400"
           >
             In Node.js, MSW intercepts raw socket connections at the lowest
-            possible level before they reach the actual network code written
-            in C.
+            possible level before they reach the actual network code written in
+            C.
           </p>
           <InterceptionDiagram
             class="mt-12 lg:mt-20"
@@ -361,10 +361,10 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
           class="border-b border-neutral-800 lg:border-r lg:border-fade-t"
         >
           I found MSW and was thrilled that not only could I still see the
-          mocked responses in my DevTools, but that the mocks didn't have to
-          be written in a Service Worker and could instead live alongside the
-          rest of my app. This made it <em>silly easy to adopt</em>. The fact
-          that I can use it for testing as well makes MSW a
+          mocked responses in my DevTools, but that the mocks didn't have to be
+          written in a Service Worker and could instead live alongside the rest
+          of my app. This made it <em>silly easy to adopt</em>. The fact that I
+          can use it for testing as well makes MSW a
           <em>huge productivity booster</em>.
         </FeaturedQuote>
         <FeaturedQuote
@@ -374,11 +374,10 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
           class="border-b border-neutral-800"
         >
           Mock Service Worker has become a
-          <em>fundamental part of my development and testing workflow</em>.
-          With MSW I don't have to worry about endpoints or databases being
-          down or slow. And I can forget about brittle tests due to changing
-          data. I configure mocks that are 100% reliable and predictable. The
-          result?
+          <em>fundamental part of my development and testing workflow</em>. With
+          MSW I don't have to worry about endpoints or databases being down or
+          slow. And I can forget about brittle tests due to changing data. I
+          configure mocks that are 100% reliable and predictable. The result?
           <em>Faster development and rock-solid automated UI tests</em>.
         </FeaturedQuote>
       </div>

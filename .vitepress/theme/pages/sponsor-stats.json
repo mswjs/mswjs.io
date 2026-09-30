@@ -45,7 +45,8 @@
   "sources": {
     "downloads": "https://api.npmjs.org/downloads/point/",
     "github": "https://api.github.com/repos/mswjs/msw",
-    "comparisons": "https://api.npmjs.org/downloads/point/last-month/<package> and https://api.github.com/repos/<owner>/<name>"
+    "comparisons": "https://api.npmjs.org/downloads/point/last-month/<package> and https://api.github.com/repos/<owner>/<name>",
+    "sponsors": "GitHub GraphQL API: organization(login: \"mswjs\").sponsors"
   },
   "monthlyDownloads": [
     {
@@ -126,5 +127,117 @@
         "stars": 54409
       }
     ]
-  }
+  },
+  "sponsors": [
+    {
+      "login": "jrjohnson",
+      "name": "Jon Johnson",
+      "url": "https://github.com/jrjohnson"
+    },
+    {
+      "login": "pushred",
+      "name": "Eric Casthart",
+      "url": "https://github.com/pushred"
+    },
+    {
+      "login": "silvenon",
+      "name": "Matija Marohnić",
+      "url": "https://github.com/silvenon"
+    },
+    {
+      "login": "niccholaspage",
+      "name": "Nicholas Decker",
+      "url": "https://github.com/niccholaspage"
+    },
+    {
+      "login": "Doist",
+      "name": "Todoist Inc",
+      "url": "https://github.com/Doist"
+    },
+    {
+      "login": "erikras",
+      "name": "Erik Rasmussen",
+      "url": "https://github.com/erikras"
+    },
+    {
+      "login": "ryanmagoon",
+      "name": "Ryan Magoon",
+      "url": "https://github.com/ryanmagoon"
+    },
+    {
+      "login": "KhaledMohamedP",
+      "name": "Khaled Mohamed",
+      "url": "https://github.com/KhaledMohamedP"
+    },
+    {
+      "login": "Jhony0311",
+      "name": "Jonathan Ortega",
+      "url": "https://github.com/Jhony0311"
+    },
+    {
+      "login": "cmacdonnacha",
+      "name": "Cathal Mac Donnacha",
+      "url": "https://github.com/cmacdonnacha"
+    },
+    {
+      "login": "santoshyadavdev",
+      "name": "Santosh Yadav",
+      "url": "https://github.com/santoshyadavdev"
+    },
+    {
+      "login": "fimion",
+      "name": "Alex Riviere",
+      "url": "https://github.com/fimion"
+    },
+    {
+      "login": "chromaui",
+      "name": "Chromatic",
+      "url": "https://github.com/chromaui"
+    },
+    {
+      "login": "stackblitz",
+      "name": "StackBlitz",
+      "url": "https://github.com/stackblitz"
+    },
+    {
+      "login": "MaterializeInc",
+      "name": "Materialize, Inc.",
+      "url": "https://github.com/MaterializeInc"
+    },
+    {
+      "login": "Infra-Workleap",
+      "name": "Workleap IT",
+      "url": "https://github.com/Infra-Workleap"
+    },
+    {
+      "login": "laststance",
+      "name": "Laststance.io",
+      "url": "https://github.com/laststance"
+    },
+    {
+      "login": "replayio",
+      "name": "Replay",
+      "url": "https://github.com/replayio"
+    },
+    {
+      "login": "yevheniizh",
+      "name": "Yevhenii Zh.",
+      "url": "https://github.com/yevheniizh"
+    },
+    {
+      "login": "currents-dev",
+      "name": "Currents.dev",
+      "url": "https://github.com/currents-dev"
+    },
+    {
+      "login": "kraken-tech",
+      "name": "Kraken Tech",
+      "url": "https://github.com/kraken-tech"
+    },
+    {
+      "login": "sentdm",
+      "name": "Sent",
+      "url": "https://github.com/sentdm"
+    }
+  ]
 }
