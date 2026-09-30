@@ -409,7 +409,7 @@ onBeforeUnmount(() => {
           class="h-2.5 w-2.5 rounded-full bg-neutral-500"
           aria-hidden="true"
         />
-        Request witouth MSW
+        Request without MSW
       </span>
     </figcaption>
   </figure>
