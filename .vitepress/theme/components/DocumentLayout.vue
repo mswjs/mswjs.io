@@ -21,7 +21,7 @@ defineProps<{
   activeOutlineLink: string | null
 }>()
 
-const { frontmatter, theme } = useData<DefaultTheme.Config>()
+const { frontmatter, page, theme } = useData<DefaultTheme.Config>()
 const feedbackPageTitle = computed(() => {
   return frontmatter.value.displayTitle || frontmatter.value.title
 })
@@ -52,7 +52,8 @@ const feedbackPageTitle = computed(() => {
       >
         <template v-if="documentationPage">
           <DocsPageHeader />
-          <Ads v-if="theme.ads" publisher="mswjsio" />
+          <!-- Keyed by the page so every navigation re-mounts the ad (new ad hit). -->
+          <Ads v-if="theme.ads" :key="page.relativePath" publisher="mswjsio" />
         </template>
         <slot v-if="blogPost" name="header" />
 

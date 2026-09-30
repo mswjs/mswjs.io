@@ -6,6 +6,8 @@ defineProps<{
   publisher: string
 }>()
 
+const adClientUrl = 'https://media.ethicalads.io/media/client/ethicalads.min.js'
+
 const { isDark } = useData()
 const adElement = ref<HTMLDivElement>()
 const isAdBlockerDetected = ref(false)
@@ -17,11 +19,25 @@ onMounted(() => {
     adElement.value?.classList.toggle('dark', isDark.value)
   })
 
+  // This component is re-mounted on every page navigation.
+  // Once the ad client is present, request a new ad for the new element.
+  if (window.ethicalads) {
+    window.ethicalads.reload()
+    return
+  }
+
+  // The client is still loading (will pick up this element once loaded).
+  if (document.querySelector(`script[src="${adClientUrl}"]`)) {
+    return
+  }
+
   const script = document.createElement('script')
   script.async = true
-  script.src = 'https://media.ethicalads.io/media/client/ethicalads.min.js'
+  script.src = adClientUrl
   script.onerror = () => {
     isAdBlockerDetected.value = true
+    // Remove the failed script so the next page retries (and re-detects).
+    script.remove()
   }
   document.head.appendChild(script)
 })
