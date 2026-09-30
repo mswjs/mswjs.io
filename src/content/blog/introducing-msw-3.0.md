@@ -211,6 +211,8 @@ MSW has reduced the need to patch `global.fetch` in the browser to zero. Now it 
 
 The release also includes a plethora of smaller improvements, for example:
 
+- Handlers are now grouped by kind internally, resulting in faster handler lookup;
+- GraphQL handlers are now link-first, improving the differentiation between GraphQL requests and regular HTTP requests;
 - A complete redesign of this website, including refined and updated documentation for v3.0;
 - [`@msw/data`](/ecosystem/data), [`@msw/source`](/ecosystem/source), and [`@msw/serve`](/ecosystem/serve) are now documented as a part of this website;
 - `@msw/serve` now supports WebSocket handlers;
