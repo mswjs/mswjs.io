@@ -32,7 +32,7 @@ const props = defineProps<{
  * so the request, its trail, and the lit steps can never drift apart,
  * whatever happens to the layout in between.
  */
-const CYCLE_MS = 5000
+const CYCLE_MS = 3500
 /**
  * "--progress" at which MSW's request arrives at the interception point.
  * Keep in sync with the "--reach" definition in "site.css".
@@ -55,6 +55,13 @@ const PULSE_RADIUS = 7
  * request that other tools fake.
  */
 const OTHER_LANE_GAP = PULSE_RADIUS + 4
+/**
+ * "--progress" at which the request that other tools fake reaches the far
+ * edge of the request client. Fixed (not derived from the distances) so it
+ * is the same in every diagram, and early enough for that request to have
+ * faded by the time MSW's request arrives.
+ */
+const OTHER_ARRIVAL_PROGRESS = ARRIVAL_PROGRESS - FADE_PROGRESS
 /**
  * Below this width the steps stack vertically with a fixed gap.
  */
@@ -94,9 +101,8 @@ interface Layout {
     start: number
     distance: number
     /**
-     * "--progress" at which it reaches the client's far edge: it moves at
-     * the same speed as MSW's request, so it gets there sooner, and it is
-     * gone before MSW's request arrives.
+     * "--progress" at which it reaches the client's far edge
+     * (see "OTHER_ARRIVAL_PROGRESS").
      */
     arrival: number
   }
@@ -111,7 +117,6 @@ let visibilityObserver: IntersectionObserver | undefined
 let horizontalQuery: MediaQueryList | undefined
 let reducedMotionQuery: MediaQueryList | undefined
 let frame = 0
-let cycleStart = 0
 
 function setStepElement(element: unknown, index: number): void {
   if (element instanceof HTMLElement) {
@@ -170,10 +175,7 @@ function measure(): void {
           : clientRect.left - trackRect.left) - OTHER_LANE_GAP,
       start: edges[0].near + PULSE_RADIUS,
       distance: otherDistance,
-      arrival: Math.min(
-        (ARRIVAL_PROGRESS * otherDistance) / distance,
-        ARRIVAL_PROGRESS - FADE_PROGRESS,
-      ),
+      arrival: OTHER_ARRIVAL_PROGRESS,
     },
   }
 }
@@ -183,11 +185,9 @@ function setProgress(progress: number): void {
 }
 
 function tick(now: number): void {
-  if (cycleStart === 0) {
-    cycleStart = now
-  }
-
-  setProgress((((now - cycleStart) % CYCLE_MS) / CYCLE_MS) * 100)
+  // The cycle is derived from the shared document timeline (not from when
+  // this diagram started playing) so every diagram on the page is in sync.
+  setProgress(((now % CYCLE_MS) / CYCLE_MS) * 100)
   frame = requestAnimationFrame(tick)
 }
 

@@ -30,6 +30,9 @@ import MercedesIcon from '../components/icons/mercedes.svg?component'
 import BasecampIcon from '../components/icons/basecamp.svg?component'
 
 import mswLogo from '../../../src/images/msw.svg'
+import sourceLogo from '../../../src/images/source.svg'
+import dataLogo from '../../../src/images/data.svg'
+import serveLogo from '../../../src/images/serve.svg'
 import kentCDoddsAvatar from '../../../src/images/people/kent-c-dodds.jpg'
 import coryHouseAvatar from '../../../src/images/people/cory-house.jpg'
 
@@ -86,6 +89,41 @@ const companies: Array<Company> = [
   { name: 'AMD', icon: AmdIcon, class: 'h-4 md:h-5 max-w-full' },
   { name: 'Mercedes-Benz', icon: MercedesIcon, class: 'h-6 md:h-9 max-w-full' },
   { name: 'Basecamp', icon: BasecampIcon, class: 'h-5 md:h-7 max-w-full' },
+]
+
+interface EcosystemLibrary {
+  name: string
+  description: string
+  logoUrl: string
+  url: string
+  repositoryUrl: string
+}
+
+const ecosystemLibraries: Array<EcosystemLibrary> = [
+  {
+    name: 'Source',
+    description:
+      'Generate request handlers from OpenAPI documents and HAR files instead of writing them by hand.',
+    logoUrl: sourceLogo,
+    url: '/ecosystem/source/',
+    repositoryUrl: 'https://github.com/mswjs/source',
+  },
+  {
+    name: 'Data',
+    description:
+      'Model, seed, and query your data using schema-based collections with an ORM-inspired syntax.',
+    logoUrl: dataLogo,
+    url: '/ecosystem/data/',
+    repositoryUrl: 'https://github.com/mswjs/data',
+  },
+  {
+    name: 'Serve',
+    description:
+      'Turn your handlers into an actual HTTP server, or use them as a middleware in Express, Hono, and Fastify.',
+    logoUrl: serveLogo,
+    url: '/ecosystem/serve/',
+    repositoryUrl: 'https://github.com/mswjs/serve',
+  },
 ]
 
 /**
@@ -340,6 +378,52 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
           <slot :name="scene.slot" />
         </template>
       </SourceOfTruth>
+    </div>
+  </section>
+
+  <!-- Ecosystem -->
+  <section>
+    <div class="-mb-px border-y border-neutral-800">
+      <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
+        <h2 class="mb-0 capitalize max-w-lg md:max-w-2xl mx-auto">
+          API mocking that can do more.
+        </h2>
+      </header>
+      <div class="grid md:grid-cols-3">
+        <article
+          v-for="library in ecosystemLibraries"
+          :key="library.name"
+          class="flex min-w-0 flex-col items-start border-b border-neutral-800 px-6 py-8 last:border-b-0 md:border-b-0 md:border-r md:border-fade-t md:px-10 md:py-12 md:last:border-r-0 lg:py-14"
+        >
+          <img
+            :src="library.logoUrl"
+            :alt="`${library.name} logo`"
+            class="h-16 w-16"
+            loading="lazy"
+          />
+          <!-- A block wrapper so the heading and description margins
+               collapse exactly as they do in "FeatureCard". -->
+          <div class="mt-6">
+            <h3 class="text-xl font-bold text-white md:text-2xl">
+              {{ library.name }}
+            </h3>
+            <p class="home-prose mt-4 text-lg leading-snug text-neutral-400">
+              {{ library.description }}
+            </p>
+          </div>
+          <div class="mt-auto flex flex-wrap items-center gap-x-2 gap-y-2 pt-5">
+            <FeatureLink :href="library.url"> Learn more </FeatureLink>
+            <a
+              :href="library.repositoryUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-400 transition-colors hover:text-white"
+            >
+              View on GitHub
+            </a>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
