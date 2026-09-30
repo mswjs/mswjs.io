@@ -1,13 +1,21 @@
 <script lang="ts">
-import { defineComponent, h, type PropType } from 'vue'
+import {
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  type PropType,
+} from 'vue'
 import { useRouter } from 'vitepress'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { libraries, type Library } from '../libraries'
 
 /**
  * The library whose documentation is being read. A native select styled
- * with the customizable select API ("appearance: base-select"); browsers
- * without it show the plain select with the library names (the "label").
+ * with the customizable select API ("appearance: base-select"). Browsers
+ * without it (Safari, including every browser on iOS) can only render a
+ * plain text select, so they get a menu of links that looks the same.
  *
  * Rendered with a render function: the rich option content is only valid
  * markup under the customizable select API, which the template compiler
@@ -36,7 +44,127 @@ export default defineComponent({
       window.location.assign(url)
     }
 
+    // Only ever evaluated on the client (see the component description).
+    const supportsCustomizableSelect =
+      typeof CSS !== 'undefined' && CSS.supports('appearance', 'base-select')
+    const menuElement = ref<HTMLElement>()
+    const isMenuOpen = ref(false)
+
+    function closeMenu(): void {
+      isMenuOpen.value = false
+    }
+
+    function handleDocumentPointerDown(event: PointerEvent): void {
+      if (
+        event.target instanceof Node &&
+        menuElement.value?.contains(event.target)
+      ) {
+        return
+      }
+
+      closeMenu()
+    }
+
+    function handleDocumentKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Escape') {
+        closeMenu()
+      }
+    }
+
+    onMounted(() => {
+      if (supportsCustomizableSelect) {
+        return
+      }
+
+      document.addEventListener('pointerdown', handleDocumentPointerDown)
+      document.addEventListener('keydown', handleDocumentKeyDown)
+    })
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('pointerdown', handleDocumentPointerDown)
+      document.removeEventListener('keydown', handleDocumentKeyDown)
+    })
+
+    function renderLibrary(candidate: Library) {
+      return [
+        h('img', {
+          src: candidate.logoUrl,
+          alt: '',
+          class: 'library-select-logo',
+        }),
+        h('span', { class: 'library-select-text' }, [
+          h(
+            'span',
+            { class: 'library-select-name leading-tight' },
+            candidate.name,
+          ),
+          h('span', {
+            class: 'library-select-description',
+            'data-text': candidate.description,
+          }),
+        ]),
+      ]
+    }
+
+    function renderMenu() {
+      return h(
+        'div',
+        { ref: menuElement, class: 'library-select library-menu items-center' },
+        [
+          h(
+            'button',
+            {
+              type: 'button',
+              class: 'library-menu-button',
+              'aria-label': `Library: ${props.library.name}`,
+              'aria-haspopup': 'true',
+              'aria-expanded': isMenuOpen.value,
+              onClick() {
+                isMenuOpen.value = !isMenuOpen.value
+              },
+            },
+            [
+              h(
+                'span',
+                { class: 'library-menu-selected' },
+                renderLibrary(props.library),
+              ),
+              h(ChevronDownIcon, {
+                class: 'library-select-caret',
+                'aria-hidden': 'true',
+              }),
+            ],
+          ),
+          isMenuOpen.value
+            ? h(
+                'div',
+                { class: 'library-menu-list' },
+                libraries.map((candidate) => {
+                  const isCurrent = candidate.url === props.library.url
+
+                  return h(
+                    'a',
+                    {
+                      key: candidate.name,
+                      href: candidate.url,
+                      class: 'library-menu-item',
+                      'aria-current': isCurrent ? 'page' : undefined,
+                      onClick: closeMenu,
+                    },
+                    renderLibrary(candidate),
+                  )
+                }),
+              )
+            : null,
+        ],
+      )
+    }
+
     return () => {
+      if (!supportsCustomizableSelect) {
+        return renderMenu()
+      }
+
       return h('label', { class: 'library-select items-center' }, [
         h('span', { class: 'sr-only' }, 'Library'),
         h(

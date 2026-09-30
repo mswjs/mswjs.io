@@ -62,8 +62,9 @@ const codeClass = computed(() => {
       return 'home-code-bleed-r home-code-bleed-b mt-10 -mb-[var(--card-padding)] -mr-[var(--card-padding-x)] md:mt-0 md:self-stretch'
     }
     case 'right-bottom': {
-      // Beside the copy, bleeding only through the bottom edge.
-      return 'home-code-bleed-b mt-10 -mb-[var(--card-padding)] md:mt-0 md:self-stretch'
+      // Beside the copy, bleeding only through the bottom edge. While
+      // stacked on mobile, it also bleeds right, like the corner panels.
+      return 'home-code-bleed-b home-code-bleed-r-mobile mt-10 -mb-[var(--card-padding)] -mr-[var(--card-padding-x)] md:mr-0 md:mt-0 md:self-stretch'
     }
     default: {
       return 'mt-8'

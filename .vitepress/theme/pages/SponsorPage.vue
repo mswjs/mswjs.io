@@ -17,6 +17,97 @@ const comparisonPosition = ref(50)
 const comparisonStyle = computed(() => ({
   '--comparison-position': `${comparisonPosition.value}%`,
 }))
+
+/**
+ * Dragging the comparison handle. The invisible range input underneath
+ * keeps the comparison keyboard-accessible, but mobile browsers only let
+ * you drag a range input by its (invisible, differently positioned) thumb.
+ * The handle is therefore draggable on its own via pointer events.
+ */
+const DOUBLE_TAP_MS = 300
+/**
+ * How far (in pixels) the pointer travels before a press becomes a drag.
+ * Touch screens report tiny movements even for a still finger.
+ */
+const DRAG_THRESHOLD = 4
+const comparisonTrack = ref<HTMLElement>()
+/**
+ * Resetting moves the handle from under the pointer, so the click that
+ * follows the second tap would land on the range input and move the handle
+ * right back. The input ignores the pointer for that brief moment.
+ */
+const isComparisonInputInert = ref(false)
+let isDraggingComparison = false
+let hasMovedComparison = false
+let comparisonPointerStart = 0
+let lastComparisonTap = 0
+
+function setComparisonPositionFromPointer(event: PointerEvent): void {
+  const track = comparisonTrack.value
+
+  if (!track) {
+    return
+  }
+
+  const rect = track.getBoundingClientRect()
+  const ratio = (event.clientX - rect.left) / rect.width
+  comparisonPosition.value = Math.round(Math.min(Math.max(ratio, 0), 1) * 100)
+}
+
+function handleComparisonPointerDown(event: PointerEvent): void {
+  if (event.currentTarget instanceof HTMLElement) {
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+
+  isDraggingComparison = true
+  hasMovedComparison = false
+  comparisonPointerStart = event.clientX
+}
+
+function handleComparisonPointerMove(event: PointerEvent): void {
+  if (!isDraggingComparison) {
+    return
+  }
+
+  if (
+    !hasMovedComparison &&
+    Math.abs(event.clientX - comparisonPointerStart) < DRAG_THRESHOLD
+  ) {
+    return
+  }
+
+  hasMovedComparison = true
+  setComparisonPositionFromPointer(event)
+}
+
+function handleComparisonPointerUp(event: PointerEvent): void {
+  if (!isDraggingComparison) {
+    return
+  }
+
+  isDraggingComparison = false
+
+  if (hasMovedComparison) {
+    return
+  }
+
+  // Two taps (or clicks) in a row reset the handle to the middle.
+  if (event.timeStamp - lastComparisonTap < DOUBLE_TAP_MS) {
+    comparisonPosition.value = 50
+    lastComparisonTap = 0
+    isComparisonInputInert.value = true
+    setTimeout(() => {
+      isComparisonInputInert.value = false
+    }, DOUBLE_TAP_MS)
+    return
+  }
+
+  lastComparisonTap = event.timeStamp
+}
+
+function handleComparisonPointerCancel(): void {
+  isDraggingComparison = false
+}
 const maximumDownloads = Math.max(
   ...stats.monthlyDownloads.map((entry) => entry.downloads),
 )
@@ -347,6 +438,7 @@ const ecosystem = [
           </button>
         </div>
         <div
+          ref="comparisonTrack"
           class="relative grid overflow-hidden rounded-lg border border-neutral-700 bg-[var(--vp-code-block-bg)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-[3px] focus-within:outline-primary"
         >
           <div
@@ -364,14 +456,20 @@ const ecosystem = [
             class="pointer-events-none absolute inset-y-0 left-[var(--comparison-position)] z-[3] w-0.5 -translate-x-1/2 bg-primary"
             aria-hidden="true"
           >
+            <!-- The pseudo-element enlarges the touch target around the handle. -->
             <span
-              class="absolute left-1/2 top-1/2 grid h-11 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg border border-primary bg-[var(--vp-c-bg-elv)] text-white"
+              class="pointer-events-auto absolute left-1/2 top-1/2 grid h-11 w-9 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize touch-none select-none place-items-center rounded-lg border border-primary bg-[var(--vp-c-bg-elv)] text-white before:absolute before:-inset-3 before:content-['']"
+              @pointerdown="handleComparisonPointerDown"
+              @pointermove="handleComparisonPointerMove"
+              @pointerup="handleComparisonPointerUp"
+              @pointercancel="handleComparisonPointerCancel"
               >↔</span
             >
           </div>
           <input
             v-model.number="comparisonPosition"
             class="absolute inset-0 z-[2] m-0 h-full w-full cursor-ew-resize opacity-0 [touch-action:pan-y]"
+            :class="{ 'pointer-events-none': isComparisonInputInert }"
             type="range"
             min="0"
             max="100"
@@ -560,7 +658,7 @@ const ecosystem = [
       >
         <!-- A collage of the current sponsors, faded out behind the content. -->
         <ul
-          class="pointer-events-none absolute inset-0 m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(4rem,1fr))] content-center gap-4 p-0 [mask-image:radial-gradient(ellipse_at_center,transparent_60%,#000_120%)] sm:[mask-image:radial-gradient(ellipse_at_center,transparent_35%,#000_90%)]"
+          class="pointer-events-none absolute inset-0 m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(2.5rem,1fr))] content-center gap-3 sm:grid-cols-[repeat(auto-fill,minmax(4rem,1fr))] sm:gap-4 p-0 [mask-image:radial-gradient(ellipse_at_center,transparent_50%,#000_110%)] sm:[mask-image:radial-gradient(ellipse_at_center,transparent_35%,#000_90%)]"
           aria-hidden="true"
         >
           <li v-for="(sponsor, index) in sponsorCollage" :key="index">
@@ -570,7 +668,7 @@ const ecosystem = [
               width="64"
               height="64"
               loading="lazy"
-              class="aspect-square w-full rounded-xl object-cover opacity-30"
+              class="aspect-square w-full rounded-lg object-cover opacity-30 sm:rounded-xl"
             />
           </li>
         </ul>

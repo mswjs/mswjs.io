@@ -216,7 +216,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
       <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
         <h2 class="mb-0 capitalize max-w-lg md:max-w-2xl mx-auto">
           API mocking that feels
-          <span class="whitespace-nowrap">like an extension</span> of
+          <span class="md:whitespace-nowrap">like an extension</span> of
           JavaScript.
         </h2>
       </header>

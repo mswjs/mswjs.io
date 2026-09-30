@@ -44,6 +44,29 @@
   border: 1px solid #404040;
 }
 
+/*
+ * Below 640px VitePress bleeds code blocks (and code group tabs) into the
+ * page gutter with negative inline margins and squares their corners. Its
+ * gutter is not this site's, so they would stick out of the content column.
+ * Code blocks stay inside the column at every width and scroll horizontally.
+ */
+.vp-doc div[class*='language-'],
+.vp-doc .vp-block,
+.vp-doc li div[class*='language-'] {
+  margin-inline: 0;
+  border-radius: 8px;
+}
+
+.vp-doc .vp-code-group .tabs {
+  margin-inline: 0;
+  border-radius: 8px 8px 0 0;
+}
+
+.vp-doc .vp-code-group div[class*='language-'] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .vp-doc div[class*='language-'],
 .vp-doc .custom-block.info,
 .vp-doc .custom-block.warning,

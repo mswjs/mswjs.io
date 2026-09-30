@@ -38,6 +38,10 @@
  */
 .home-code div[class*='language-'] {
   margin: 0;
+  /* VitePress only rounds code blocks from 640px up (below that they
+     bleed to the screen edges in the docs). The homepage panels are
+     rounded at every width. */
+  border-radius: 8px;
 }
 
 .home-code div[class*='language-'] pre {
@@ -121,6 +125,15 @@
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+/* The same right bleed, but only while the cards are stacked (mobile). */
+@media (max-width: 767px) {
+  .home-code-bleed-r-mobile div[class*='language-'] {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }
 
 .home-code-bleed-l div[class*='language-'] {

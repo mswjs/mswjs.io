@@ -655,3 +655,87 @@ code,
   font-size: 0.75rem;
   color: var(--vp-c-text-2);
 }
+
+/*
+ * The menu of links that replaces the select in browsers without the
+ * customizable select API. It mirrors the select's look rule by rule.
+ */
+.library-menu {
+  position: relative;
+}
+
+.library-menu-button {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  gap: 6px;
+  height: 2rem;
+  padding: 0 8px 0 10px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 6px;
+  background: var(--vp-c-bg-elv);
+  color: var(--vp-c-text-1);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.library-menu-button:hover,
+.library-menu-button[aria-expanded='true'] {
+  border-color: var(--primary);
+}
+
+.library-menu-selected {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.library-menu-selected .library-select-logo {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.library-menu-selected .library-select-description {
+  display: none;
+}
+
+.library-menu-list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  margin-top: 6px;
+  padding: 4px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  background: var(--vp-c-bg-elv);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+:root.dark .library-menu-list {
+  box-shadow: 0 8px 24px rgb(0 0 0 / 50%);
+}
+
+.library-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--vp-c-text-1);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.library-menu-item:hover,
+.library-menu-item:focus-visible {
+  background-color: rgb(var(--site-neutral-800) / 60%);
+  outline: none;
+}
+
+.library-menu-item[aria-current='page'] {
+  background-color: rgb(var(--site-accent) / 10%);
+}
