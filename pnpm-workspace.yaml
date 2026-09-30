@@ -1,5 +1,6 @@
-packages:
-  - websites/*
 allowBuilds:
   esbuild: true
+  msw: true
   sharp: true
+overrides:
+  '@shikijs/twoslash': 2.5.0

@@ -1,0 +1,420 @@
+/*
+ * Styles specific to mswjs.io. The shell (design tokens, documentation
+ * content, header, twoslash popups) lives in
+ * "./styles/shell.css".
+ */
+
+:root:not(.dark) .cypress-runner .text-green-600 {
+  color: #15803d;
+}
+
+:root:not(.dark) .cypress-runner .text-green-300 {
+  color: #166534;
+}
+
+.promo-banner {
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.promo-banner > a {
+  font-weight: 600;
+}
+
+:root:not(.dark) .promo-banner {
+  background-color: #fff;
+  border-color: #e7e5e4;
+  color: #57534e;
+}
+
+:root.dark .promo-banner {
+  background-color: rgb(115 115 115 / 20%);
+  border-color: rgb(var(--site-neutral-700));
+}
+
+/*
+ * Homepage code snippets, rendered from Markdown slots so they get
+ * the same highlighting and inline type information as the docs.
+ */
+.home-code div[class*='language-'] {
+  margin: 0;
+  /* VitePress only rounds code blocks from 640px up (below that they
+     bleed to the screen edges in the docs). The homepage panels are
+     rounded at every width. */
+  border-radius: 8px;
+}
+
+.home-code div[class*='language-'] pre {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.home-code-compact {
+  --vp-code-font-size: 13px;
+}
+
+/* The hero snippet sits in its own framed cell; no card chrome. */
+.home-code-flush div[class*='language-'] {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.home-code-flush div[class*='language-'] pre {
+  background-color: transparent !important;
+}
+
+
+/* Feature snippets read as panels floating over the card. */
+.home-code-panel div[class*='language-'] {
+  box-shadow: 0 24px 48px -16px rgb(0 0 0 / 35%);
+}
+
+.home-code-panel div[class*='language-'] pre {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.home-code-panel div[class*='language-'] pre code {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* Line numbers follow the panel's taller top padding, and the whole
+   gutter + code sits a bit further from the panel edges. */
+.home-code-panel .line-numbers-wrapper {
+  padding-top: 24px;
+  left: 12px;
+}
+
+.home-code-panel div[class*='language-'].line-numbers-mode pre {
+  padding-left: 44px;
+}
+
+.home-code-panel div[class*='language-'].line-numbers-mode pre code {
+  padding-right: 44px;
+}
+
+/* On large screens the copy sits 62px in from the panel edge; extra
+   left padding pushes the line numbers and the code along so the code
+   starts on the copy's vertical line (62px - 32px gutter - 8px = 22px). */
+@media (min-width: 1536px) {
+  .home-code-bleed-r div[class*='language-'].line-numbers-mode pre {
+    padding-left: 54px;
+  }
+
+  .home-code-bleed-r .line-numbers-wrapper {
+    left: 22px;
+  }
+}
+
+/* A panel bleeding to the bottom stretches down to the card border,
+   growing from the copy above it and leaving white space beneath the code. */
+.home-code-bleed-b {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-code-bleed-b div[class*='language-'] {
+  flex: 1;
+}
+
+/* A panel bleeding to a card edge drops its own border and rounding
+   on that side, so the card border becomes the panel edge. */
+.home-code-bleed-r div[class*='language-'] {
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* The same right bleed, but only while the cards are stacked (mobile). */
+@media (max-width: 767px) {
+  .home-code-bleed-r-mobile div[class*='language-'] {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.home-code-bleed-l div[class*='language-'] {
+  border-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.home-code-bleed-b div[class*='language-'] {
+  border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Inline code in homepage copy looks like inline code in the docs. */
+.home-prose code {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 4px;
+  padding: 0 6px;
+  font-family: var(--vp-font-family-mono);
+  font-size: var(--vp-code-font-size);
+  color: var(--vp-code-color);
+  background-color: var(--vp-code-bg);
+  white-space: normal;
+  overflow-wrap: break-word;
+  transition:
+    color 0.25s,
+    background-color 0.5s;
+}
+
+/*
+ * Interception schematic. A single "--progress" value (0–100, set on the
+ * figure every frame by the component) drives everything below through
+ * pure functions of that value, so nothing can drift out of sync:
+ *
+ *   0–56   the request travels from the client to the interception point,
+ *          painting the track behind it and lighting each step it reaches
+ *   56–66  the request fades on arrival
+ *   80–92  the trail and the lit steps fade back
+ *   92–100 pause before the next cycle
+ *
+ * The track runs horizontally from "md" up and vertically below.
+ */
+.interception-diagram {
+  --progress: 0;
+  /* Share of the travel completed. */
+  --reach: clamp(0, var(--progress) / 56, 1);
+  /* Visibility of the trail and the lit steps. */
+  --linger: clamp(0, (92 - var(--progress)) / 12, 1);
+}
+
+.interception-step::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--primary);
+  border-radius: inherit;
+  pointer-events: none;
+  /* Lit once the request has reached this step ("--arrival"). The last
+     step's arrival is exactly 1, the same as the completed travel, so a
+     small tolerance keeps it from never lighting. */
+  opacity: min(
+    clamp(0, (var(--reach) - var(--arrival) + 0.001) * 1000, 1),
+    var(--linger)
+  );
+}
+
+.interception-request {
+  position: absolute;
+  /* Below the step boxes: the request passes behind them, not over their labels. */
+  z-index: 6;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 9999px;
+  background-color: var(--primary);
+  box-shadow: 0 0 0 4px rgb(var(--site-accent) / 25%);
+  /* When this request arrives; MSW's request at 56, the faked one sooner
+     (set by the component, since it covers a shorter distance at the same
+     speed). Each request travels until its own arrival, then fades over
+     the next 10 units. */
+  --arrival-progress: 56;
+  --request-reach: clamp(0, var(--progress) / var(--arrival-progress), 1);
+  translate: calc(var(--travel-x) * var(--request-reach))
+    calc(var(--travel-y) * var(--request-reach));
+  opacity: min(
+    clamp(0, var(--progress) / 6, 1),
+    clamp(0, (var(--arrival-progress) + 10 - var(--progress)) / 10, 1)
+  );
+}
+
+/* The request other tools fake: it never leaves the request client. */
+.interception-request-other {
+  background-color: rgb(var(--site-neutral-500));
+  box-shadow: 0 0 0 4px rgb(var(--site-neutral-500) / 25%);
+}
+
+.interception-trail {
+  position: absolute;
+  z-index: 5;
+  height: 2px;
+  margin-top: -1px;
+  background-color: var(--primary);
+  transform: scaleX(var(--reach));
+  transform-origin: left center;
+  opacity: var(--linger);
+}
+
+.interception-diagram-vertical .interception-trail {
+  width: 2px;
+  height: auto;
+  margin: 0 0 0 -1px;
+  transform: scaleY(var(--reach));
+  transform-origin: center top;
+}
+
+/*
+ * Marquee (companies, reviews). The track holds every item once plus
+ * copies of the first few; one cycle translates by exactly one full set
+ * of items, so the copies sit where the originals reappear and the loop
+ * has no seam. Every marquee moves at the same speed (px per second),
+ * so the cycle length follows from the item width and count.
+ * Hovering pauses it.
+ */
+.marquee {
+  --marquee-speed: 52.8;
+}
+
+.marquee-item {
+  width: calc(var(--marquee-item) * 1px);
+}
+
+.marquee-track {
+  width: max-content;
+  animation: marquee-scroll linear infinite;
+  animation-duration: calc(
+    var(--marquee-count) * var(--marquee-item) / var(--marquee-speed) * 1s
+  );
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(
+      calc(-1px * var(--marquee-count) * var(--marquee-item))
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  /* A static row shows each item once: no need for the looping copies. */
+  .marquee-track [aria-hidden='true'] {
+    display: none;
+  }
+}
+
+/* "Source of truth" heading: the wrapper slides to the next word's width
+   while the last word leaves upwards and the next one arrives from below. */
+.scene-word-slot {
+  /* Only the width animates; the word itself is never clipped, so glyphs
+     that overhang their advance width (or dip below the line box) stay
+     intact in any font. The leaving word simply fades while it moves. */
+  transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scene-word-enter-active,
+.scene-word-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* The leaving word steps out of the flow so the entering word alone
+   defines the wrapper's width. */
+.scene-word-leave-active {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.scene-word-enter-from {
+  opacity: 0;
+  transform: translateY(0.4em);
+}
+
+.scene-word-leave-to {
+  opacity: 0;
+  transform: translateY(-0.4em);
+}
+
+/* "Source of truth" snippets stack like toasts: the new one lands on top
+   while the previous one shrinks and dims behind it and stays there;
+   older ones disappear. */
+.scene-panel {
+  transform-origin: top center;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.45s ease;
+}
+
+.scene-panel-active {
+  position: relative;
+  z-index: 20;
+  animation: scene-panel-enter 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scene-panel-behind,
+.scene-panel-hidden {
+  transform: scale(0.96) translateY(-12px);
+  pointer-events: none;
+}
+
+.scene-panel-behind {
+  z-index: 10;
+  opacity: 0.5;
+}
+
+.scene-panel-hidden {
+  opacity: 0;
+}
+
+@keyframes scene-panel-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* "Source of truth" scene controls: 3px bars inside generous hit areas;
+   the active bar grows, turns white, and fills with orange as the
+   scene's time elapses. */
+.scene-control-bar {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: rgb(var(--site-neutral-700));
+  transition:
+    width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.3s ease;
+}
+
+.scene-control:hover .scene-control-bar {
+  background-color: rgb(var(--site-neutral-600));
+}
+
+.scene-control-active .scene-control-bar,
+.scene-control-active:hover .scene-control-bar {
+  width: 40px;
+  background-color: rgb(var(--site-foreground));
+}
+
+.scene-control-progress {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background-color: var(--primary);
+  animation: scene-control-progress var(--scene-interval) linear forwards;
+}
+
+@keyframes scene-control-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}

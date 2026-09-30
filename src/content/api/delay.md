@@ -1,0 +1,116 @@
+---
+order: 6
+title: delay
+description: Control response timing.
+keywords:
+  - delay
+  - timing
+  - latency
+  - real
+  - infinite
+  - response
+---
+
+By default, MSW does not delay any mocked responses, so they arrive nearly instantaneously. This behavior may not be desired in certain scenarios, like testing server latency or request timeouts, as it doesn't reflect the real-world client-server communication.
+
+## Call signature
+
+```ts
+import { delay } from 'msw/utils/delay'
+
+await delay()
+await delay(1000)
+await delay('infinite')
+```
+
+## Implicit delay
+
+When invoked without any arguments, the `delay` function applies a _realistic server response time_. It's a random number equal to the average response time you encounter when communicating with an actual HTTP server (~100-400ms).
+
+```js /delay/ {7}
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils/delay'
+
+export const handlers = [
+  http.put('/books/:bookId', async () => {
+    // Await a random realistic server response time.
+    await delay()
+
+    return HttpResponse.json({ id: 'abc-123' })
+  }),
+]
+```
+
+> Note that when testing in Node.js, the implicit delay is negated to prevent it affecting the test performance. If you wish to delay responses in Node.js, please use one of the options below.
+
+## Explicit delay
+
+You can provide an exact delay duration in milliseconds:
+
+```js /delay/ {7}
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils/delay'
+
+export const handlers = [
+  http.get('/user', async () => {
+    // Wait for 1000ms before responding.
+    await delay(1000)
+
+    return new HttpResponse(null, { status: 404 })
+  }),
+]
+```
+
+Controlling precise delay timing is handy when mocking response streams:
+
+```js /delay/ {9,12}
+import { http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils/delay'
+
+export const handlers = [
+  http.get('/video', () => {
+    const stream = new ReadableStream({
+      async start(controller) {
+        controller.enqueue(new Uint8Array([1, 2, 3]))
+        await delay(1000)
+
+        controller.enqueue(new Uint8Array([4, 5, 6]))
+        await delay(200)
+
+        controller.enqueue(new Uint8Array([7, 8, 9]))
+        controller.close()
+      },
+    })
+
+    return new HttpResponse(stream, {
+      headers: {
+        'content-type': 'video/mp4',
+      },
+    })
+  }),
+]
+```
+
+## Delay modes
+
+The `delay` function also accepts a string that's an enum representing a delay mode:
+
+- `"real"`, explicitly sets the [realistic response time](#implicit-delay);
+- `"infinite"`, indefinitely delays the response, making it pend forever.
+
+Delay modes are useful to test certain server response scenarios. For example, by using the "infinite" mode, you can test how your application handles response timeouts:
+
+```js /delay/ {7}
+import { http } from 'msw/http'
+import { delay } from 'msw/utils/delay'
+
+export const handlers = [
+  http.get('/book/:bookId', async () => {
+    // This request will hang indefinitely.
+    await delay('infinite')
+
+    // And this response will never be sent.
+    return new Response()
+  }),
+]
+```

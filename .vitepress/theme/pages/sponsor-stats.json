@@ -1,0 +1,243 @@
+{
+  "asOf": "2026-09-16",
+  "downloadsThrough": "2026-09-16",
+  "totalDownloads": 1199996238,
+  "githubStars": 18209,
+  "createdAt": "2018-11-13",
+  "annualDownloads": [
+    {
+      "year": 2018,
+      "downloads": 1222
+    },
+    {
+      "year": 2019,
+      "downloads": 1140
+    },
+    {
+      "year": 2020,
+      "downloads": 2119926
+    },
+    {
+      "year": 2021,
+      "downloads": 20994534
+    },
+    {
+      "year": 2022,
+      "downloads": 61499647
+    },
+    {
+      "year": 2023,
+      "downloads": 116412377
+    },
+    {
+      "year": 2024,
+      "downloads": 160847388
+    },
+    {
+      "year": 2025,
+      "downloads": 292600556
+    },
+    {
+      "year": 2026,
+      "downloads": 545519448
+    }
+  ],
+  "sources": {
+    "downloads": "https://api.npmjs.org/downloads/point/",
+    "github": "https://api.github.com/repos/mswjs/msw",
+    "comparisons": "https://api.npmjs.org/downloads/point/last-month/<package> and https://api.github.com/repos/<owner>/<name>",
+    "sponsors": "GitHub GraphQL API: organization(login: \"mswjs\").sponsors"
+  },
+  "monthlyDownloads": [
+    {
+      "month": "2026-03",
+      "downloads": 54933557
+    },
+    {
+      "month": "2026-04",
+      "downloads": 64458147
+    },
+    {
+      "month": "2026-05",
+      "downloads": 70461137
+    },
+    {
+      "month": "2026-06",
+      "downloads": 75923681
+    },
+    {
+      "month": "2026-07",
+      "downloads": 84660256
+    },
+    {
+      "month": "2026-08",
+      "downloads": 80231881
+    }
+  ],
+  "comparisons": {
+    "period": {
+      "start": "2026-08-18",
+      "end": "2026-09-16"
+    },
+    "packages": [
+      {
+        "name": "msw",
+        "downloads": 79991248
+      },
+      {
+        "name": "vue",
+        "downloads": 59444471
+      },
+      {
+        "name": "svelte",
+        "downloads": 20786696
+      },
+      {
+        "name": "@angular/core",
+        "downloads": 22622510
+      },
+      {
+        "name": "solid-js",
+        "downloads": 15645201
+      },
+      {
+        "name": "astro",
+        "downloads": 19422862
+      },
+      {
+        "name": "cypress",
+        "downloads": 27717542
+      }
+    ],
+    "repositories": [
+      {
+        "name": "mswjs/msw",
+        "stars": 18209
+      },
+      {
+        "name": "sveltejs/svelte",
+        "stars": 88131
+      },
+      {
+        "name": "cypress-io/cypress",
+        "stars": 51018
+      },
+      {
+        "name": "vuejs/core",
+        "stars": 54409
+      }
+    ]
+  },
+  "sponsors": [
+    {
+      "login": "jrjohnson",
+      "name": "Jon Johnson",
+      "url": "https://github.com/jrjohnson"
+    },
+    {
+      "login": "pushred",
+      "name": "Eric Casthart",
+      "url": "https://github.com/pushred"
+    },
+    {
+      "login": "silvenon",
+      "name": "Matija Marohnić",
+      "url": "https://github.com/silvenon"
+    },
+    {
+      "login": "niccholaspage",
+      "name": "Nicholas Decker",
+      "url": "https://github.com/niccholaspage"
+    },
+    {
+      "login": "Doist",
+      "name": "Todoist Inc",
+      "url": "https://github.com/Doist"
+    },
+    {
+      "login": "erikras",
+      "name": "Erik Rasmussen",
+      "url": "https://github.com/erikras"
+    },
+    {
+      "login": "ryanmagoon",
+      "name": "Ryan Magoon",
+      "url": "https://github.com/ryanmagoon"
+    },
+    {
+      "login": "KhaledMohamedP",
+      "name": "Khaled Mohamed",
+      "url": "https://github.com/KhaledMohamedP"
+    },
+    {
+      "login": "Jhony0311",
+      "name": "Jonathan Ortega",
+      "url": "https://github.com/Jhony0311"
+    },
+    {
+      "login": "cmacdonnacha",
+      "name": "Cathal Mac Donnacha",
+      "url": "https://github.com/cmacdonnacha"
+    },
+    {
+      "login": "santoshyadavdev",
+      "name": "Santosh Yadav",
+      "url": "https://github.com/santoshyadavdev"
+    },
+    {
+      "login": "fimion",
+      "name": "Alex Riviere",
+      "url": "https://github.com/fimion"
+    },
+    {
+      "login": "chromaui",
+      "name": "Chromatic",
+      "url": "https://github.com/chromaui"
+    },
+    {
+      "login": "stackblitz",
+      "name": "StackBlitz",
+      "url": "https://github.com/stackblitz"
+    },
+    {
+      "login": "MaterializeInc",
+      "name": "Materialize, Inc.",
+      "url": "https://github.com/MaterializeInc"
+    },
+    {
+      "login": "Infra-Workleap",
+      "name": "Workleap IT",
+      "url": "https://github.com/Infra-Workleap"
+    },
+    {
+      "login": "laststance",
+      "name": "Laststance.io",
+      "url": "https://github.com/laststance"
+    },
+    {
+      "login": "replayio",
+      "name": "Replay",
+      "url": "https://github.com/replayio"
+    },
+    {
+      "login": "yevheniizh",
+      "name": "Yevhenii Zh.",
+      "url": "https://github.com/yevheniizh"
+    },
+    {
+      "login": "currents-dev",
+      "name": "Currents.dev",
+      "url": "https://github.com/currents-dev"
+    },
+    {
+      "login": "kraken-tech",
+      "name": "Kraken Tech",
+      "url": "https://github.com/kraken-tech"
+    },
+    {
+      "login": "sentdm",
+      "name": "Sent",
+      "url": "https://github.com/sentdm"
+    }
+  ]
+}

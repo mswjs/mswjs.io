@@ -1,0 +1,106 @@
+---
+order: 7
+title: Vitest
+description: Integrate Mock Service Worker with Vitest.
+keywords:
+  - vitest
+  - browser
+  - mode
+  - msw
+  - use
+---
+
+::: info
+If you're already using Vite, please see the [Vite integration](/guides/integrations/vite) as it automatically covers Vitest. The guide below is meant for applications that use Vitest without Vite.
+:::
+
+::: warning
+If you're using Vitest for unit testing in Node.js, please see the [Node.js integration](/guides/integrations/node) instead. Vitest's test runner is a Node.js process and it doesn't need anything special to integrate MSW. **The guide below is meant for Vitest Browser Mode only**.
+:::
+
+[Vitest Browser Mode](https://main.vitest.dev/guide/browser/) is a fantastic tool for testing your UI components in the actual browser. There are a few things to consider when integrating MSW with the Browser Mode:
+
+- As the name suggests, your Browser Mode tests run _in the actual browser_. This means you will be using the [Browser integration](/guides/integrations/browser) of MSW (i.e. `setupWorker()`);
+- You cannot reuse the app-level integration (e.g. in your `main.tsx`) because you don't normally render your entire component tree during component testing. You can still rely on that integration for local development with MSW though;
+- Vitest actually ships with MSW built-in, however, as of the time of writing this, you cannot directly access the `worker` instance created by Vitest. This may change in the future.
+
+## Example
+
+We recommend integrating MSW with Vitest Browser Mode by [extending the test context](https://vitest.dev/guide/test-context.html#extend-test-context).
+
+::: code-group
+
+```ts [test-extend.ts] {5-21}
+import { test as testBase } from 'vitest'
+import { worker } from './mocks/browser.js'
+
+export const test = testBase.extend({
+  worker: [
+    async ({}, use) => {
+      // Start the worker before the test.
+      await worker.start()
+
+      // Expose the worker object on the test's context.
+      await use(worker)
+
+      // Remove any handlers added in individual test cases.
+      // This prevents them from affecting unrelated tests.
+      worker.resetHandlers()
+    },
+    {
+      auto: true,
+    },
+  ],
+})
+```
+
+:::
+
+::: warning
+  Provide the `auto: true` fixture option so MSW would affect the tests that
+  don't reference the `worker` fixture explicitly.
+:::
+
+We recommend skipping `worker.stop()` at the end of the fixture because there's no practical reason for it. `worker.stop()` only controls whether the current client should be visible by the registered worker. It does not unregister the worker as that is a costly operation that is entirely redundant when testing in the browser (page context provides the network isolation).
+
+### Initial handlers
+
+Any `test()` now runs against the initial, happy-path handlers (like those in `handlers.ts`) without explicitly referencing MSW. Leverage this for cleaner test suites and predictable baseline behavior.
+
+```ts {1}
+import { test } from './test-extend'
+import { Dashboard } from './components/dashboard.js'
+
+test('renders the dashboard', () => {
+  // Uses only the happy-path handlers.
+  render(<Dashboard />)
+
+  // Your actions and assertions...
+})
+```
+
+### Overriding handlers
+
+You can [override handlers](/guides/best-practices/network-behavior-overrides) by accessing the `worker` object of your test's context and calling `.use()`, providing it with the handlers that should take priority:
+
+```ts {2,10-14} /worker/1,3
+import { http, HttpResponse } from 'msw/http'
+import { test } from './test-extend'
+import { Dashboard } from './components/dashboard.js'
+
+test('displays a notification if fetching the dashboard failed', async ({
+  worker,
+}) => {
+  // Prepend overrides to the happy-path handlers
+  // on the `worker` object from the test's context.
+  worker.use(
+    http.post('/dashboard', () => {
+      return new HttpResponse(null, { status: 500 })
+    }),
+  )
+
+  render(<Dashboard />)
+
+  // Your actions and assertions...
+})
+```

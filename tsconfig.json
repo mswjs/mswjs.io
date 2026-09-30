@@ -1,14 +1,22 @@
 {
-  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "types": ["vite/client", "vite-svg-loader"]
   },
   "include": [
-    "./websites/**/*.astro",
-    "./websites/**/*.tsx",
-    "./websites/**/*.ts"
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.tsx",
+    ".vitepress/**/*.vue"
   ]
 }

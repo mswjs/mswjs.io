@@ -1,0 +1,409 @@
+import { localSearchRanking } from './localSearchRanking'
+import { splitSearchSections } from './searchSections'
+import { createExternalLinkChecker } from './externalLinks'
+import * as path from 'node:path'
+import type { DefaultTheme } from 'vitepress'
+import type { ShikiTransformer } from 'shiki'
+import type { IncomingMessage, ServerResponse } from 'node:http'
+import { fileURLToPath } from 'node:url'
+import { defineConfig, type HeadConfig } from 'vitepress'
+import svgLoader from 'vite-svg-loader'
+import { buildDocsSidebar, docsSidebarHmr } from './sidebar'
+import {
+  wordHighlightTransformer,
+  wordHighlightMetaPlugin,
+} from './codeHighlight'
+import { buildRssFeed } from './rss'
+import { mswTwoslashTransformer, twoslashLineNumbersPlugin } from './twoslash'
+import { readPulledMswRelease } from '../scripts/msw-source.mjs'
+import { prioritizeSearchResults } from './search'
+import cloudflareLight from './themes/cloudflare-light.json'
+import cloudflareDark from './themes/cloudflare-dark.json'
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from './consts'
+
+const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID || ''
+const ALGOLIA_SEARCH_API_KEY = process.env.PUBLIC_ALGOLIA_SEARCH_API_KEY || ''
+const ALGOLIA_INDEX_NAME = process.env.PUBLIC_ALGOLIA_INDEX_NAME || ''
+const GOOGLE_FONTS_STYLESHEET_URL =
+  'https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400..800;1,400..800&display=swap&subset=latin'
+
+function buildApiSidebar(): Array<DefaultTheme.SidebarItem> {
+  return buildDocsSidebar(
+    path.resolve(
+      path.dirname(fileURLToPath(import.meta.url)),
+      '../src/content/api',
+    ),
+    [
+      ['CLI', 'cli/**/*.md'],
+      ['Browser', 'setup-worker/**/*.md'],
+      ['Node.js', 'setup-server/**/*.md'],
+      ['Experimental', 'experimental/**/*.md'],
+    ],
+    '/api',
+    'API',
+  )
+}
+
+function firstPage(items: Array<DefaultTheme.SidebarItem>): string | undefined {
+  for (const item of items) {
+    if (item.link) {
+      return item.link
+    }
+    const childLink = item.items && firstPage(item.items)
+    if (childLink) {
+      return childLink
+    }
+  }
+}
+
+const apiEntryPath = firstPage(buildApiSidebar()) ?? '/api/http'
+
+/**
+ * The documentation sidebars, generated from the pages on disk.
+ * Rebuilt by "docsSidebarHmr" whenever those pages change.
+ */
+function buildSidebar(): DefaultTheme.SidebarMulti {
+  return {
+    '/docs/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/docs',
+      ),
+      [
+        ['Mocking HTTP', 'http/**/*.md'],
+        ['Mocking SSE', 'sse/**/*.md'],
+        ['Mocking GraphQL', 'graphql/**/*.md'],
+        ['Mocking WebSocket', 'websocket/**/*.md'],
+      ],
+    ),
+    '/guides/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/guides',
+      ),
+      [
+        ['Integrations', 'integrations/**/*.md'],
+        ['Best practices', 'best-practices/**/*.md'],
+        ['Recipes', 'recipes/**/*.md'],
+      ],
+      '/guides',
+    ),
+    '/api/': buildApiSidebar(),
+    '/ecosystem/source/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/ecosystem/source',
+      ),
+      [
+        ['Integrations', 'integrations/**/*.md'],
+        ['API', 'api/**/*.md'],
+        ['Recipes', 'recipes/**/*.md'],
+      ],
+      '/ecosystem/source',
+    ),
+    '/ecosystem/data/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/ecosystem/data',
+      ),
+      [
+        ['Relations', 'relations/**/*.md'],
+        ['Extensions', 'extensions/**/*.md'],
+        ['API', 'api/**/*.md'],
+      ],
+      '/ecosystem/data',
+    ),
+    '/ecosystem/serve/': buildDocsSidebar(
+      path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../src/content/ecosystem/serve',
+      ),
+      [
+        ['Integrations', 'integrations/**/*.md'],
+        ['API', 'api/**/*.md'],
+        ['Recipes', 'recipes/**/*.md'],
+      ],
+      '/ecosystem/serve',
+    ),
+  }
+}
+
+function redirectApiIndex(
+  request: IncomingMessage,
+  response: ServerResponse,
+  next: () => void,
+): void {
+  const url = new URL(request.url ?? '/', 'http://localhost')
+
+  if (url.pathname === '/api' || url.pathname === '/api/') {
+    response.writeHead(302, { Location: `${apiEntryPath}${url.search}` })
+    response.end()
+    return
+  }
+
+  next()
+}
+
+const externalLinks = createExternalLinkChecker({
+  // Links that passed recently are not re-checked. The cache lives under
+  // "node_modules/.cache" so Vercel restores it between builds.
+  cache: {
+    path: path.resolve(
+      path.dirname(fileURLToPath(import.meta.url)),
+      '../node_modules/.cache/mswjs.io/external-links.json',
+    ),
+    maxAgeMs: 7 * 24 * 60 * 60 * 1000,
+  },
+  ignore: [
+    // Broken on egghead's side, being resolved with them.
+    'https://egghead.io/blog/understanding-api-mocking-request-interception-algorithms',
+  ],
+})
+// Code snippets are typed against the MSW release pulled by "pnpm pull-types".
+// The site never pulls the types itself. Builds require them, while the
+// development server runs on whichever types are there (or without any).
+const mswRelease = readPulledMswRelease()
+const codeTransformers: Array<ShikiTransformer> = [wordHighlightTransformer()]
+
+if (mswRelease) {
+  console.log(`Typing code snippets against MSW ${mswRelease.tag}`)
+  codeTransformers.push(mswTwoslashTransformer(mswRelease))
+} else if (process.env.NODE_ENV === 'production') {
+  throw new Error('No MSW types found. Run "pnpm pull-types" before building.')
+} else {
+  console.warn(
+    'No MSW types found: code snippets have no inline type information. Run "pnpm pull-types" to pull them.',
+  )
+}
+
+export default defineConfig({
+  title: SITE_TITLE,
+  titleTemplate: `:title - ${SITE_TITLE}`,
+  description: SITE_DESCRIPTION,
+  lang: 'en',
+  srcDir: 'src/content',
+  srcExclude: ['docs/shared/**'],
+  cleanUrls: true,
+  lastUpdated: true,
+  ignoreDeadLinks: false,
+  appearance: true,
+  sitemap: {
+    hostname: SITE_URL,
+  },
+
+  head: [
+    [
+      'link',
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: '',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: GOOGLE_FONTS_STYLESHEET_URL,
+      },
+    ],
+    // Favicon.
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' }],
+    [
+      'link',
+      { rel: 'icon', type: 'image/png', sizes: 'any', href: '/icon.png' },
+    ],
+    ['link', { rel: 'apple-touch-icon', href: '/icon-apple.png' }],
+    ['link', { rel: 'manifest', href: '/manifest.json' }],
+  ],
+
+  markdown: {
+    theme: {
+      light: { ...cloudflareLight, type: 'light' },
+      dark: { ...cloudflareDark, type: 'dark' },
+    },
+    lineNumbers: true,
+    codeTransformers,
+    config(md) {
+      wordHighlightMetaPlugin(md)
+      twoslashLineNumbersPlugin(md)
+      externalLinks.markdown(md)
+    },
+  },
+
+  vue: {
+    template: {
+      compilerOptions: {
+        // The customizable select API's element (see "LibrarySelect").
+        isCustomElement: (tag) => tag === 'selectedcontent',
+      },
+    },
+  },
+
+  vite: {
+    plugins: [
+      // "*.svg?component" imports inline the file as a Vue component so
+      // the icons under "theme/components/icons" stay plain SVG files.
+      // Plain "*.svg" imports stay URLs (for "<img>" sources).
+      svgLoader({ svgo: false, defaultImport: 'url' }),
+      localSearchRanking(),
+      externalLinks.plugin,
+      docsSidebarHmr(buildSidebar),
+      {
+        name: 'api-index-redirect',
+        configureServer(server) {
+          server.middlewares.use(redirectApiIndex)
+        },
+        configurePreviewServer(server) {
+          server.middlewares.use(redirectApiIndex)
+        },
+      },
+    ],
+    esbuild: {
+      jsx: 'automatic',
+      jsxImportSource: 'react',
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom/client'],
+    },
+  },
+
+  themeConfig: {
+    logo: '/logo.svg',
+    siteTitle: false,
+
+    nav: [
+      { text: 'Docs', link: '/docs/', activeMatch: '^/docs' },
+      { text: 'Guides', link: '/guides/', activeMatch: '^/guides' },
+      { text: 'API', link: apiEntryPath, activeMatch: '^/api' },
+      { text: 'Blog', link: '/blog/', activeMatch: '^/blog' },
+    ],
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/mswjs/msw' },
+      { icon: 'twitter', link: 'https://twitter.com/ApiMocking' },
+    ],
+
+    sidebar: buildSidebar(),
+
+    outline: {
+      level: 'deep',
+      label: 'Contents',
+    },
+    sidebarMenuLabel: 'Docs',
+
+    search: ALGOLIA_APP_ID
+      ? {
+          provider: 'algolia',
+          options: {
+            appId: ALGOLIA_APP_ID,
+            apiKey: ALGOLIA_SEARCH_API_KEY,
+            indexName: ALGOLIA_INDEX_NAME,
+            searchParameters: { hitsPerPage: 100 },
+            transformItems: prioritizeSearchResults,
+          },
+        }
+      : {
+          provider: 'local',
+          options: {
+            miniSearch: {
+              _splitIntoSections: splitSearchSections,
+            },
+          },
+        },
+
+    editLink: {
+      pattern({ filePath }) {
+        return `https://github.com/mswjs/mswjs.io/edit/main/src/content/${filePath}`
+      },
+      text: 'Edit this page on GitHub',
+    },
+
+    lastUpdated: {
+      text: 'Last updated on',
+    },
+
+    docsLinks: {
+      gitHubUrl: 'https://github.com/mswjs/msw',
+      blogUrl: '/blog',
+    },
+    ads: Boolean(process.env.ADS),
+  },
+
+  transformPageData(pageData) {
+    if (pageData.relativePath === 'api/index.md') {
+      pageData.frontmatter.redirect = apiEntryPath
+    }
+
+    // The API reference outlines its methods (h2) and options (h3) only.
+    if (pageData.relativePath.startsWith('api/')) {
+      pageData.frontmatter.outline ??= [2, 3]
+    }
+  },
+
+  transformHead(context) {
+    const { pageData } = context
+    const frontmatter = pageData.frontmatter
+
+    if (frontmatter.redirect) {
+      return [
+        [
+          'meta',
+          { 'http-equiv': 'refresh', content: `0;url=${frontmatter.redirect}` },
+        ],
+        [
+          'link',
+          { rel: 'canonical', href: `${SITE_URL}${frontmatter.redirect}` },
+        ],
+      ]
+    }
+
+    const pagePath = pageData.relativePath
+      .replace(/(^|\/)index\.md$/, '$1')
+      .replace(/\.md$/, '')
+    const pageUrl = `${SITE_URL}/${pagePath}`
+
+    const title = frontmatter.displayTitle || frontmatter.title || SITE_TITLE
+    const description = frontmatter.description || SITE_DESCRIPTION
+    const image = `${SITE_URL}/og-image.jpg`
+
+    const head: Array<HeadConfig> = [
+      ['link', { rel: 'canonical', href: pageUrl }],
+      ['meta', { name: 'title', content: title }],
+      ['meta', { property: 'og:type', content: 'website' }],
+      ['meta', { property: 'og:url', content: pageUrl }],
+      ['meta', { property: 'og:title', content: title }],
+      ['meta', { property: 'og:description', content: description }],
+      ['meta', { property: 'og:image', content: image }],
+      ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
+      ['meta', { property: 'twitter:url', content: pageUrl }],
+      ['meta', { property: 'twitter:title', content: title }],
+      ['meta', { property: 'twitter:description', content: description }],
+      ['meta', { property: 'twitter:image', content: image }],
+    ]
+
+    if (frontmatter.keywords?.length) {
+      head.push([
+        'meta',
+        { name: 'keywords', content: frontmatter.keywords.join(', ') },
+      ])
+    }
+
+    if (frontmatter.author?.name) {
+      head.push(['meta', { name: 'author', content: frontmatter.author.name }])
+    }
+
+    return head
+  },
+
+  async buildEnd(config) {
+    await buildRssFeed(config)
+  },
+})

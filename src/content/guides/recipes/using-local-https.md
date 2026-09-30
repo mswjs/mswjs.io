@@ -1,0 +1,46 @@
+---
+title: Using local HTTPS
+keywords:
+  - https
+  - local
+  - service worker
+  - self-signed
+---
+
+Due to security considerations, Service Workers can only be registered over a secure connection (exception being the local development on `localhost`). In some project setups, you may need to run your local application over HTTPS and will shortly encounter the following error when starting MSW's worker:
+
+```txt
+SecurityError: Failed to register a ServiceWorker:
+  An SSL certificate error occurred when fetching the script.
+```
+
+This error occurs because your browser will not trust your self-signed certificate. As a result of it, the browser will block the Service Worker registration attempt and MSW will not work.
+
+To use the library with a local HTTPS setup you must make your browser trust your self-signed certificate. This can be achieved in multiple ways described below.
+
+## Trust certificate on system level
+
+You can add your self-signed certificate to the system's trusted certificates. Please refer to the respective resources online on how to do so based on your operating system.
+
+## Trust certificate on browser level
+
+### Chrome / Brave
+
+1. Open `chrome://flags` (or `brave://flags` if using Brave);
+1. Search for `unsafely-treat-insecure-origin-as-secure` flag in the list;
+1. Select the "Enabled" option next to the flag.
+1. Enter your local host into the field.
+
+> If encountering certificate fetching/validation issues, set the `ignore-certificate-errors` flag to "Enabled".
+
+### Firefox
+
+1. Open your local application served by HTTPS;
+1. On the "Connection is not secure" screen click the "Advanced" button;
+1. In the section below, click the "Add Exception" button.
+1. Specify your application's URL as the "Location" input value;
+1. Click the "Confirm Security Exception" button.
+
+### Safari
+
+We are not aware of any settings to make Safari trust self-signed certificates. Consider enabling [System-wide trust](#trust-certificate-on-system-level) on macOS instead.

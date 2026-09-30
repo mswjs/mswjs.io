@@ -1,0 +1,43 @@
+---
+title: Preventing mock drift
+---
+
+You write mocks to describe a server behavior fixed in time. But as time goes on, that behavior may change, potentially rendering your mocks obsolete.
+
+There are multiple ways to keep your mock definitions in sync with the actual backend.
+
+## Use specification (Recommended)
+
+It's recommended to rely on a specification file that both backend and frontend can use as the source of truth. Treating the backend runtime as the truth is prone to issues as the backend may introduce faulty runtime behavior that violates the intended specification.
+
+### OpenAPI (Swagger)
+
+If you have an OpenAPI specification file, consider using [`@msw/source`](/ecosystem/source/) to generate request handlers from your specifications. A number of community-driven packages are also available, like [`msw-auto-mock`](https://github.com/zoubingwu/msw-auto-mock).
+
+### GraphQL schema
+
+In the case of a GraphQL server, consider using [GraphQL Code Generator](https://www.the-guild.dev/graphql/codegen) and its [`typescript-msw`](https://www.the-guild.dev/graphql/codegen/plugins/typescript/typescript-msw) plugin to automatically create request handlers from your GraphQL queries.
+
+## Use network snapshots
+
+In the case when there is no API specification available, you can record network behavior in the browser and store it in a `*.har` file. Then, it becomes a fixed source of truth you can use to generate handlers from.
+
+MSW provides a designated [Source](/ecosystem/source/) package to help you create request handlers out of various sources, like OpenAPI specifications or HAR files. Here's how you use it:
+
+::: code-group
+
+```js [mocks/browser.js]
+import { setupWorker } from 'msw/browser'
+import { fromTraffic } from '@msw/source/traffic'
+import * as har from './snapshort.har'
+
+const handlers = fromTraffic(har)
+
+export const worker = setupWorker(...handlers)
+```
+
+:::
+
+## Automate the process
+
+Regardless of the approach you choose, consider automating the process by configuring your CI to regularly update the specification/network snapshots. That way we can ensure that the mocks remain relevant over time.

@@ -1,0 +1,28 @@
+# Sponsor page statistics
+
+`sponsor-stats.json` is a dated snapshot, rendered without client-side API calls.
+
+- Downloads: sum the npm Downloads API counts for each calendar year since the
+  first publication in November 2018. Use
+  `https://api.npmjs.org/downloads/point/YYYY-01-01:YYYY-12-31/msw` for completed
+  years and stop the current year at `downloadsThrough`. Annual counts are retained for the lifetime total. The visible graph uses the latest six complete calendar months in `monthlyDownloads`, currently March–August 2026, fetched with the same endpoint and monthly date ranges.
+- Stars and project creation: `https://api.github.com/repos/mswjs/msw`, fields
+  `stargazers_count` and `created_at`.
+- Update the snapshot date, the visible source note, and the chart's accessible
+  description together when refreshing these values.
+
+Counts measure package downloads, not unique developers or installations.
+Company logos reuse the homepage's existing adoption list; they do not imply
+that these companies sponsor MSW.
+- Comparisons: `comparisons.packages` holds the last-month npm downloads
+  (`https://api.npmjs.org/downloads/point/last-month/<package>`, the 30-day
+  window recorded in `comparisons.period`) for MSW and the packages the copy
+  compares it to; `comparisons.repositories` holds `stargazers_count` from
+  `https://api.github.com/repos/<owner>/<name>` for the same date. Refresh
+  them together with the rest of the snapshot so every number shares `asOf`.
+- Sponsors: `sponsors` holds the public sponsors of the `mswjs` organization
+  from the GitHub GraphQL API (`organization(login: "mswjs") { sponsors }`,
+  requires an authenticated request, e.g. `gh api graphql`). Their avatars are
+  stored next to the snapshot under `src/content/public/users/sponsors/<login>.png`
+  (128px, flattened onto white). Refresh both together: add the avatars of new
+  sponsors and remove those of the former ones.

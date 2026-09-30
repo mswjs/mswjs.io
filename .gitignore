@@ -1,11 +1,14 @@
 # build output
 dist/
-# generated types
-.astro/
+
+# VitePress
+**/.vitepress/dist/
+**/.vitepress/cache/
+**/.vitepress/.temp/
 
 # dependencies
 node_modules/
-.pnpm-store/
+.pnpm-store
 
 # logs
 npm-debug.log*

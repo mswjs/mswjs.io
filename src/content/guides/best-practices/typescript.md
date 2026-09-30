@@ -1,0 +1,222 @@
+---
+title: Using with TypeScript
+keywords:
+  - typescript
+  - types
+  - type-safe
+  - generic
+  - params
+  - request
+  - response
+  - mocking
+---
+
+Mock Service Worker facilitates type-safe API mocking through _generic arguments_ in TypeScript. Using generic arguments, you can annotate things like path parameters, request and response body types, GraphQL variables, and more. Please see the examples of usage below.
+
+> We highly recommend exploring all the types ([core](https://github.com/mswjs/msw/blob/main/src/core/index.ts), [browser](https://github.com/mswjs/msw/blob/main/src/browser/index.ts), and [node](https://github.com/mswjs/msw/blob/main/src/node/index.ts)) exported from the `msw` package.
+
+## Request handlers
+
+### HTTP handlers
+
+All request handlers in the [`http`](/api/http) namespace support four generic arguments:
+
+```ts
+http.get<Params, RequestBodyType, ResponseBodyType, Path>(path, resolver)
+```
+
+| Argument name      | Type     | Description                                                                                              |
+| ------------------ | -------- | -------------------------------------------------------------------------------------------------------- |
+| `Params`           | `object` | Request path parameters. Narrows the `params` response resolver argument type.                           |
+| `RequestBodyType`  | `object` | Request body type. Narrows the `request.json()` return type.                                             |
+| `ResponseBodyType` | `object` | Response body type. Narrows the `HttpResponse.text()` and `HttpResponse.json()` response body type.      |
+| `Path`             | `string` | Request path. Narrows the `path` argument on the request handler.                                        |
+
+```ts
+import { http, HttpResponse } from 'msw/http'
+
+type AddCommentParams = {
+  postId: string
+}
+
+type AddCommentRequestBody = {
+  author: User
+  comment: string
+}
+
+type AddCommentResponseBody = {
+  commentUrl: string
+}
+
+http.post<
+  AddCommentParams,
+  AddCommentRequestBody,
+  AddCommentResponseBody,
+  '/post/:postId'
+>('/post/:postId', async ({ params, request }) => {
+  // Request path parameters are narrowed to the
+  // provided "AddCommentParams" type.
+  const { postId } = params
+
+  // The request body JSON is narrowed to the
+  // provided "AddCommentRequestBody" type.
+  const commentData = await request.json()
+  commentData.comment
+
+  // The JSON response body type must satisfy
+  // the "AddCommentResponseBody" type.
+  return HttpResponse.json({
+    commentUrl: `/post/${postId}?commentId=${crypto.randomUUID()}`,
+  })
+})
+```
+
+### GraphQL handlers
+
+All request handlers created from a [GraphQL link](/api/graphql#graphql-link-url) support two generic arguments:
+
+```ts
+api.query<Query, Variables>(operationName, resolver)
+```
+
+| Argument name | Type     | Description                                                                             |
+| ------------- | -------- | --------------------------------------------------------------------------------------- |
+| `Query`       | `object` | GraphQL operation response query. Narrows the `HttpResponse.json()` response body type. |
+| `Variables`   | `object` | GraphQL operation variables. Narrows the `variables` response resolver argument type.   |
+
+```ts
+import { HttpResponse } from 'msw/http'
+import { graphql } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
+
+type AddCommentQuery = {
+  commentUrl: string
+}
+
+type AddCommentVariables = {
+  postId: string
+}
+
+api.mutation<AddCommentQuery, AddCommentVariables>(
+  'AddComment',
+  ({ variables }) => {
+    // GraphQL variables are narrowed to the provided
+    // "AddCommentVariables" type.
+    const { postId } = variables
+
+    // Response structure to this GraphQL mutation must
+    // satisfy the provided "AddCommentQuery" type.
+    // Note that the "data" key is implied.
+    return HttpResponse.json({
+      data: {
+        commentUrl: `/post/${postId}?commentId=${crypto.randomUUID()}`,
+      },
+    })
+  }
+)
+```
+
+> You can take advantage of tools like [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) to have type-safe mocks based on your GraphQL types!
+
+## Higher-order request handlers
+
+Annotating custom request handlers will depend on the call signature of your higher-order functions. Here are a few examples.
+
+First, let's see how you can abstract away a `resolver` function while locking its types within the higher-order handler, using the `HttpResponseResolver` type:
+
+```ts
+import { http, HttpResponseResolver, HttpResponse } from 'msw/http'
+
+type SdkRequest = {
+  transactionId: string
+}
+
+type SdkResponse = {
+  transactionId: string
+  data: { ok: boolean }
+}
+
+function handleSdkRequest(
+  resolver: HttpResponseResolver<never, SdkRequest, SdkResponse>
+) {
+  return http.post('https://some-sdk.com/internal/request', resolver)
+}
+
+export const handlers = [
+  handleSdkRequest(async ({ request }) => {
+    const data = await request.json()
+
+    // The response JSON body must satisfy the "SdkResponse"
+    // imposed by the "handleSdkRequest".
+    return HttpResponse.json({
+      // The request body is narrowed to the "SdkRequest"
+      // imposed by the "handleSdkRequest".
+      transactionId: data.transactionId,
+      data: { ok: true },
+    })
+  }),
+]
+```
+
+> Learn more about the [Higher-order response resolvers](#higher-order-response-resolvers) below.
+
+The library also exposes the `HttpRequestHandler` and `GraphQLRequestHandler` types to annotate custom functions that are meant to have the call signature identical to that of `http.*` request handlers and GraphQL link handlers (`api.query()`, `api.mutation()`):
+
+```ts
+import { http, HttpRequestHandler } from 'msw/http'
+import { graphql, GraphQLRequestHandler } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
+
+const myHttpHandler: HttpRequestHandler<Params, RequestBody, ResponseBody> = (
+  path,
+  resolver,
+  options
+) => {
+  return http.get(path, resolver, options)
+}
+
+const myGraphQLHandler: GraphQLRequestHandler<Query, Variables> = (
+  operationName,
+  resolver,
+  options
+) => {
+  return api.query(operationName, resolver, options)
+}
+```
+
+## Higher-order response resolvers
+
+Use the `HttpResponseResolver` and `GraphQLResponseResolver` types to annotate custom response resolvers.
+
+```ts
+import { HttpResponseResolver, http, HttpResponse } from 'msw/http'
+import { delay } from 'msw/utils/delay'
+import { PathParams, DefaultBodyType } from 'msw'
+
+function withDelay<
+  // Recreate the generic signature of the HTTP resolver
+  // so the arguments passed to "http.get" propagate here.
+  Params extends PathParams,
+  RequestBodyType extends DefaultBodyType,
+  ResponseBodyType extends DefaultBodyType
+>(durationMs: number, resolver: HttpResponseResolver<Params, RequestBodyType, ResponseBodyType>): HttpResponseResolver<Params, RequestBodyType, ResponseBodyType> {
+  return async (...args) => {
+    await delay(durationMs)
+    return resolver(...args)
+  }
+}
+
+export const handlers = [
+  http.get<never, never, 'hello world'>(
+    '/resource',
+    withDelay(250, ({ request }) => {
+      // The "ResponseBodyType" generic type provided
+      // to the "http.get()" request handler propagates
+      // through the custom "withDelay" response resolver.
+      return HttpResponse.text('hello world')
+    })
+  ),
+]
+```

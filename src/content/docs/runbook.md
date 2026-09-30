@@ -1,0 +1,278 @@
+---
+order: 5
+title: Debugging runbook
+description: Debug common issues with MSW.
+---
+
+Below you can find the most common issues that developers experience when integrating Mock Service Worker into their applications. Please read through this page before opening an issue on GitHub as there's a decent chance there is an answer to your issue below.
+
+## Before you begin
+
+### Check Node.js version
+
+Check the version of Node.js your project is using:
+
+```sh
+node -v
+```
+
+If it's lower than Node.js v22, [upgrade to the latest Node.js version](https://nodejs.org/). **We do not look into issues happening on unsupported versions of Node.js.**
+
+### Check MSW version
+
+First, check what version of the `msw` package you have installed:
+
+```sh
+npm ls msw
+```
+
+Then, check the latest published version:
+
+```sh
+npm view msw version
+```
+
+If these two differ, upgrade the `msw` version in your project and see if the issue persists.
+
+## Debugging runbook
+
+You've checked the environment and MSW versions but the issue still persists. It's time to do some debugging. Below, you can find a step-by-step debugging runbook to follow when experiencing any unexpected behavior with MSW.
+
+### Step 1: Verify setup
+
+First, verify that MSW is correctly set up. Take the `worker`/`server` instance and add a new `request:start` life-cycle event listener to it.
+
+```js {2}
+server.events.on('request:start', ({ request }) => {
+  console.log('Outgoing:', request.method, request.url)
+})
+```
+
+> You can learn more about the [Life-cycle events API](/api/life-cycle-events).
+
+With this listener in place, you should see the console message _on every outgoing request_ that MSW intercepts. The console message should look like this:
+
+```
+Outgoing: GET https://api.example.com/some/request
+Outgoing: POST http://localhost/post/abc-123
+```
+
+**You must see the request's method and the absolute request URL**. If the request method is different, adjust your request handler to reflect it. If you see a _relative request URL_, your request client or your testing environment are not configured correctly. You must configure the base URL option of your request client to produce absolute request URLs, and your test environment to have `location.href` set.
+
+Otherwise, **verify that the problematic request is printed.** If it is, continue to the next step.
+
+> If the problematic request is the only request your application makes, try adding a dummy fetch call anywhere after MSW setup to confirm this step. For example:
+>
+> ```js
+> fetch('https://example.com')
+> ```
+
+If there's no message printed for the problematic request (or any requests), MSW is likely not being set up correctly and cannot intercept the requests. Please refer to the appropriate Integrations page (browser, Node.js, or React Native) and make sure you are setting up the library as illustrated there.
+
+### Step 2: Verify handler
+
+Go to the request handler you've created for the problematic request and add a console statement in its resolver function.
+
+::: code-group
+
+```js [src/mocks/handlers.js] {5}
+import { http } from 'msw/http'
+
+export const handlers = [
+  http.get('/some/request', ({ request }) => {
+    console.log('Handler', request.method, request.url)
+
+    // The rest of the response resolver here.
+  }),
+]
+```
+
+:::
+
+You should see this console message when the problematic request happens on the page/tests. If you do, continue to the next step.
+
+If there's no message, MSW is able to intercept the request but _cannot match it against this handler_. This likely means your request handler's predicate doesn't match the actual request URL. **Verify that the predicate is correct**. Some of the common issues include:
+
+- Using an environment variable in the path, which is not set in tests/CI (e.g. `http.get(BASE_URL + '/path')`). Inspect any dynamic segments of the request path and make sure they have expected values;
+- Typos in the request path. Carefully examine the request printed in the previous step of this runbook and find any typos/mistakes in it.
+
+If unsure, please read through the documentation on intercepting requests with MSW:
+
+<PageCard
+  icon="NewspaperIcon"
+  url="/docs/http/intercepting-requests/"
+  title="Intercepting requests"
+  description="Learn about request interception and how to capture REST and GraphQL requests."
+/>
+
+### Step 3: Verify response
+
+If the handler is invoked but the request still doesn't get the mocked response, the next place to check is the mocked response itself. In the request handler, jump to the mock response(s) you define.
+
+::: code-group
+
+```js [src/mocks/handlers.js] {7}
+import { http, HttpResponse } from 'msw/http'
+
+export const handlers = [
+  http.get('/some/request', ({ request }) => {
+    console.log('Handler', request.method, request.url)
+
+    return HttpResponse.json({ mocked: true })
+  }),
+]
+```
+
+:::
+
+**Verify that you are constructing a valid response**. You can assign the response to a variable and print it out to inspect. You can also do an early return of a dummy mocked response and see if it's received by your application.
+
+If unsure, please read about mocking responses with MSW:
+
+<PageCard
+  icon="NewspaperIcon"
+  url="/docs/http/mocking-responses/"
+  title="Mocking responses"
+  description="Learn about response resolvers and the different ways to respond to a request."
+/>
+
+If you haven't uncovered any issues with the mocked response, proceed to the next step.
+
+### Step 4: Verify application
+
+If none of the previous steps have proven fruitful, it's likely the issue is in the request/response handling logic of your application. Go to the source code that performs the request and handles the response, and verify they are correct. Please follow the guidelines of your request framework carefully to make sure you are performing requests as intended.
+
+If the problem persists, [open a new issue on GitHub](https://github.com/mswjs/msw/issues/new/choose) and **provide a minimal reproduction repository**. Issues without the reproduction repository where the problem can be reliably reproduced will be automatically closed.
+
+## Common issues
+
+### ReferenceError: `fetch` is not defined
+
+This error indicates that the global `fetch` function is not defined in the current process. This may happen for two reasons:
+
+1. You are using an older version of Node.js (< v17);
+1. Your environment suppresses that global function.
+
+#### Upgrading Node.js
+
+First, check what version of Node.js you are using by running this command in the same terminal you received the `fetch` error:
+
+```sh
+node -v
+```
+
+::: tip
+  If the version printed is lower than v17, [upgrade to the latest Node.js
+  version](https://nodejs.org/)
+:::
+
+The newer Node.js versions ship with the global Fetch API, which includes the global `fetch` function.
+
+#### Fixing environment
+
+Some tools, like Jest, meddle with your Node.js environment, forcefully removing present globals. If you are using such tools, make sure you add those globals back in their configurations.
+
+::: tip
+Configure your tools to include the Fetch API globals
+:::
+
+Here's an example of how to configure Jest to work with the global Fetch API in Node.js.
+
+<!--@include: ./shared/jest-missing-globals.md-->
+
+---
+
+### Mock responses don't arrive at tests
+
+HTTP requests are asynchronous. When testing code that depends on the resolution of those requests, like a UI element that renders once the response is received, you need to account for that asynchronicity. This often means using the right tools of your testing framework to properly await UI elements.
+
+::: code-group
+
+```js [test/suite.test.ts] /await/ {10}
+import { render, screen } from '@testing-library/react'
+import { Welcome } from '../components/Welcome'
+
+it('renders the welcome text', async () => {
+  render(<Welcome />)
+
+  // Make sure to use "findBy*" methods that will attempt
+  // to look up an element multiple times before throwing.
+  // You can also use "waitFor" as an alternative.
+  await screen.findByText('Hello, Jack')
+})
+```
+
+:::
+
+::: tip
+  Use your testing framework's recommended way of awaiting asynchronous code
+:::
+
+Do not introduce arbitrary `setTimeout`/`sleep` functions because they subject your tests to race conditions! The only reliable way to await asynchronous code is to await the state that derives from it (i.e. that a certain UI element has appeared in the DOM).
+
+---
+
+### Receiving stale mock responses
+
+Modern request libraries, like SWR, React Query, or Apollo, often introduce cache to guarantee great user experience and optimal runtime performance. Note that caching is not automatically disabled while testing, which may lead to your tests receiving stale/wrong data across different test suites.
+
+::: tip
+Disable cache in your request library in tests
+:::
+
+> Please refer to your request library's documentation on how to correctly disable cache in tests.
+
+For example, here's how to disable cache using SWR:
+
+::: code-group
+
+```js [test/suite.test.ts] {1,6}
+import { cache } from 'swr'
+
+beforeEach(() => {
+  // Reset the cache before each new test so there are
+  // no stale responses when requesting same endpoints.
+  cache.clear()
+})
+```
+
+:::
+
+---
+
+### Requests are not resolving when using `jest.useFakeTimers`
+
+When using fake timers in Jest, all timer APIs are mocked, including `queueMicrotask`. The `queueMicrotask` API is used internally by the global fetch in Node.js to parse request/response bodies. Because of this, when using `jest.useFakeTimers()` with the default configuration, body reading methods like `await request.text()` and `await request.json()` will not resolve properly.
+
+::: tip
+Configure Jest not to mock calls to `queueMicrotask`
+:::
+
+For example, here's how to prevent Jest from faking the `queueMicrotask` calls when using `jest.useFakeTimers()`:
+
+```js {3}
+jest.useFakeTimers({
+  // Explicitly tell Jest not to affect the "queueMicrotask" calls.
+  doNotFake: ['queueMicrotask'],
+})
+```
+
+> Please refer to Jest's [documentation on fake timers](https://jestjs.io/docs/timer-mocks#selective-faking).
+
+---
+
+### RTK Query requests are not intercepted
+
+A common mistake when using RTK Query is not setting the `baseUrl` in the `baseQuery` configuration. Without this, the requests will have _relative URLs_, which is a no-op in Node.js (see [this issue](https://github.com/reduxjs/redux-toolkit/issues/3284) for more details).
+
+::: tip
+Set the `baseUrl` in your `baseQuery`:
+:::
+
+```js
+createApi({
+  baseQuery: fetchBaseQuery({
+    baseUrl: new URL('/your/api/endpoint', location.origin).href,
+  }),
+})
+```

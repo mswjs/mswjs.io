@@ -1,0 +1,157 @@
+---
+order: 2
+title: Intercepting operations
+displayTitle: Intercepting GraphQL operations
+---
+
+On the web, GraphQL APIs are often implemented over HTTP. This means that, technically, you can still use the `http` namespace to intercept your GraphQL operations as regular HTTP requests. However, **it is recommended** to use the designated `graphql` namespace instead, as it provides a better developer experience and a richer feature-set when it comes to working with GraphQL.
+
+This page will walk you through the possible ways to intercept a GraphQL operation with MSW.
+
+## Link-first mocking
+
+GraphQL mocking in MSW is _link-first_. You start by creating a [GraphQL link](/api/graphql#graphql-link-url) to the endpoint you wish to mock via `graphql.link()`, and then define handlers for the operations against that endpoint on the returned link:
+
+```ts {4,5,8,9} /graphql.link/
+import { graphql } from 'msw/graphql'
+
+const github = graphql.link('https://api.github.com/graphql')
+const stripe = graphql.link('https://api.stripe.com/graphql')
+
+export const handlers = [
+  github.query('GetUser', oneResolver),
+  stripe.query('GetUser', anotherResolver),
+]
+```
+
+By defining GraphQL links, you tell MSW to take the server endpoint into account when performing operation matching. The same `GetUser` operation will be handled differently depending on whether it's sent to `https://api.github.com/graphql` or `https://api.stripe.com/graphql`. The `url` argument of the link accepts the same predicates as the `http` handlers, so you can use relative URLs (e.g. `graphql.link('/api/graphql')`), wildcards, and regular expressions.
+
+## Operation kind
+
+The library supports intercepting GraphQL queries and mutations (subscriptions support coming soon). Learn more about intercepting the operation kind you need:
+
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
+  <PageCard
+    icon="GraphQLIcon"
+    url="/docs/graphql/intercepting-operations/queries"
+    title="Queries"
+    description="Learn about intercepting GraphQL queries"
+  />
+  <PageCard
+    icon="GraphQLIcon"
+    url="/docs/graphql/intercepting-operations/mutations"
+    title="Mutations"
+    description="Learn about intercepting GraphQL mutations"
+  />
+</div>
+
+You can also **intercept any GraphQL operation** regardless of its kind, which is handy in ambiguous contexts. Learn more about that approach on this page:
+
+<PageCard
+  icon="GraphQLIcon"
+  url="/docs/graphql/intercepting-operations/operations"
+  title="Operations"
+  description="Learn about intercepting any GraphQL operation"
+/>
+
+## Predicate
+
+### Named operations
+
+It is **not required but strongly recommended** to use **named GraphQL operations** when working with the library. Named operations will allow for easier interception since GraphQL mocking in MSW is operation-based and not field-based by default.
+
+```graphql {5} /GetUser/
+# The following GraphQL query can be handled
+# with a handler that looks like this:
+#
+# api.query('GetUser', resolver)
+query GetUser {
+  user {
+    id
+  }
+}
+```
+
+> You can opt to use field-based mocking by following the [Schema-first mocking](/docs/graphql/schema-first-mocking) recipe. Combining the two is also an option!
+
+### Operation name
+
+You can provide a _string_ as a request handler predicate that represents the name of the GraphQL operation you wish to intercept.
+
+```ts /'GetUser'/
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query('GetUser', () => {})
+```
+
+> This handler will match the following GraphQL query:
+>
+> ```graphql /GetUser/
+> query GetUser {
+>   user { ... }
+> }
+> ```
+
+The same is true for mutations, just don't forget to use `api.mutation()` instead.
+
+### Regular expression
+
+You can provide a _regular expression_ as a request handler predicate. MSW will test the outgoing operation names against that expression to determine if they match.
+
+```ts
+const api = graphql.link('https://api.example.com/graphql')
+
+api.mutation(/user/i, () => {})
+```
+
+> This handler will match both `CreateUser` and `UpdateUser` mutations.
+
+### Custom predicate function
+
+For more nuanced use cases, you can provide a function as the predicate. That function must return a `boolean` indicating whether the intercepted GraphQL query should match your request handler.
+
+```ts
+const api = graphql.link('https://api.example.com/graphql')
+
+api.query(
+  ({ operationType, operationName, query, variables, request, cookies }) => {
+    // Match all GraphQL queries whose name includes "user".
+    return operationName.toLowerCase().includes('user')
+  },
+  resolver,
+)
+```
+
+> Note that your custom predicate function is called _after_ MSW parses the outgoing request as a valid GraphQL query. That way, you can access the query's information, like `query` and `variables`, without having to manually ensure the query validity.
+
+## Response resolver
+
+The following properties are available on the response resolver object argument for GraphQL link handlers:
+
+| Property        | Type                     | Description                                                                                  |
+| --------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
+| `cookies`       | `Record<string, string>` | Parsed request cookies.                                                                      |
+| `query`         | `string`                 | Raw GraphQL [query string](/docs/graphql/intercepting-operations/queries#reading-raw-query). |
+| `variables`     | `Record<string, any>`    | Parsed [variables](/docs/graphql/intercepting-operations/variables) of this operation.       |
+| `operationName` | `string`                 | Operation name (e.g. `'GetUser'`).                                                           |
+| [`finalize`](/api/finalize)  | `Function` | A function to schedule cleanup after the handler completion. |
+
+```ts /cookies/#g /query/ /variables/#v /operationName/
+const api = graphql.link('https://api.example.com/graphql')
+
+api.mutation(
+  'UpdateUser',
+  ({ cookies, query, variables, operationName }) => {},
+)
+```
+
+## Next steps
+
+Now that you know how to intercept GraphQL operations, proceed by learning how to handle their responses:
+
+<PageCard
+  icon="GraphQLIcon"
+  url="/docs/graphql/mocking-responses/"
+  title="Mocking responses"
+  description="Different ways to handle an intercepted GraphQL operation."
+/>

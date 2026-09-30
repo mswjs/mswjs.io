@@ -1,0 +1,69 @@
+---
+order: 7
+title: bypass
+description: Perform an additional request outside of the interception algorithm.
+keywords:
+  - bypass
+  - as-is
+  - fetch
+  - request
+---
+
+## Call signature
+
+The same as the `globalThis.fetch()` function, the `bypass` function expects a request input and an optional request init. It returns a modified `Request` to then be provided to the regular `globalThis.fetch()` call.
+
+```ts
+import { bypass } from 'msw/utils/bypass'
+
+const response = await fetch(bypass('/user'))
+```
+
+## Usage
+
+This method is designed to perform HTTP requests outside of the library's interception algorithm. Requests performed via `bypass()` _will never be intercepted_, even if there are otherwise matching request handlers present in the network description. This special behavior enables more complex network scenarios, such as [Response patching](/docs/http/mocking-responses/response-patching):
+
+```js /bypass/1,3 {8}
+import { http, HttpResponse } from 'msw/http'
+import { bypass } from 'msw/utils/bypass'
+
+export const handlers = [
+  http.get('/user', async ({ request }) => {
+    // Perform the intercepted "GET /user" request as-is
+    // by passing its "request" reference to the "bypass" function.
+    const response = await fetch(bypass(request))
+    const realUser = await response.json()
+
+    // Return a mocked JSON response by patching the original response
+    // together with a mocked data.
+    return HttpResponse.json({
+      ...realUser,
+      lastName: 'Maverick',
+    })
+  }),
+]
+```
+
+::: info
+  You can use `bypass()` anywhere in your application/tests, it's not limited to
+  the response resolver.
+:::
+
+Unlike [`passthrough()`](/api/passthrough), the `bypass()` function _results in an additional request being made_. You can think of it as a server requesting additional resources while handling a request. Because of this, `bypass()` must not be used when all you wish is to perform the intercepted request as-is (use `passthrough()` in that case).
+
+## Related materials
+
+<div class="page-card-grid grid gap-5 md:grid-cols-2">
+  <PageCard
+    icon="CubeTransparentIcon"
+    url="/api/passthrough"
+    title="passthrough"
+    description="Perform an additional request outside of the interception algorithm."
+  />
+  <PageCard
+    icon="BeakerIcon"
+    url="/docs/http/mocking-responses/response-patching"
+    title="Response patching"
+    description="Combine original and mocked responses."
+  />
+</div>
