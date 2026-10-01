@@ -432,7 +432,7 @@ const sourceOfTruthScenes: Array<SourceOfTruthScene> = [
     <div class="-mb-px border-y border-neutral-800">
       <header class="px-6 pt-24 pb-16 text-center md:pt-32 md:pb-24">
         <h2 class="mb-0 capitalize max-w-lg mx-auto">
-          API mocking beloved by all who ships quality apps.
+          API mocking beloved by all who ship quality apps.
         </h2>
       </header>
 
