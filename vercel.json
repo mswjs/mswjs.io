@@ -353,6 +353,11 @@
       "statusCode": 301
     },
     {
+      "source": "/docs/integrations/:path*/",
+      "destination": "/guides/integrations/:path*",
+      "statusCode": 301
+    },
+    {
       "source": "/docs/integrations/:path*",
       "destination": "/guides/integrations/:path*",
       "statusCode": 301
