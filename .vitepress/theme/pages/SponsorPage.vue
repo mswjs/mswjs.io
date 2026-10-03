@@ -330,7 +330,7 @@ const ecosystem = [
           </p>
           <!-- GitHub's "Star" button, scaled up. Colors are GitHub's own. -->
           <a
-            href="https://github.com/mswjs/msw/stargazers"
+            href="https://github.com/mswjs/msw"
             target="_blank"
             rel="noopener noreferrer"
             class="mt-5 inline-flex h-10 select-none items-center gap-2 rounded-lg border border-[#d1d9e0] bg-[#f6f8fa] px-4 text-base font-medium leading-none text-[#25292e] no-underline transition-colors duration-75 [font-family:-apple-system,BlinkMacSystemFont,'Segoe_UI','Noto_Sans',Helvetica,Arial,sans-serif] hover:border-[#d1d9e0] hover:bg-[#eff2f5] [.dark_&]:border-[#3d444d] [.dark_&]:bg-[#212830] [.dark_&]:text-[#f0f6fc] [.dark_&]:hover:bg-[#262c36]"
