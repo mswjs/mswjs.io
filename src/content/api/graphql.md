@@ -62,11 +62,7 @@ export const handlers = [
 
 > Although the name of the `GetPayment` query is the same, it will be handled differently depending on the requested endpoint.
 
-The link contains keys that represent GraphQL operation types (e.g. "query", "mutation") as well as a special `.operation()` method to intercept any GraphQL operation.
-
-::: warning
-GraphQL subscriptions are currently not supported.
-:::
+The link contains keys that represent GraphQL operation types (e.g. "query", "mutation", "subscription") as well as a special `.operation()` method to intercept any GraphQL operation.
 
 ### `.query(queryName, resolver)`
 
@@ -177,6 +173,147 @@ api.mutation(CreateUserDocument, ({ variables }) => {
 })
 ```
 
+### `.subscription(subscriptionName, resolver)`
+
+```js /OnCommentAdded/ {3}
+import { graphql } from 'msw/graphql'
+
+const api = graphql.link('https://api.example.com/graphql')
+
+export const handlers = [
+  api.subscription('OnCommentAdded', ({ subscription }) => {
+    const { postId } = subscription.variables
+
+    subscription.publish({
+      data: {
+        commentAdded: {
+          text: 'Hello world!',
+        },
+      },
+    })
+  }),
+]
+```
+
+The handler above will intercept and publish the data to the following GraphQL subscription:
+
+```graphql /OnCommentAdded/1
+subscription OnCommentAdded($postId: ID!) {
+  commentAdded(postId: $postId) {
+    text
+  }
+}
+```
+
+> Only GraphQL subscriptions using the WebSocket protocol are supported.
+
+The `subscriptionName` argument can also be a [`TypedDocumentNode`](https://the-guild.dev/blog/typed-document-node) instance. This means you can pass the generated document types based on your GraphQL operations directly to MSW when using tools like [GraphQL Code Generator](https://the-guild.dev/graphql/codegen).
+
+```js /OnCommentAddedDocument/
+import { graphql } from 'msw/graphql'
+import { OnCommentAddedDocument } from './generated/types'
+
+const api = graphql.link('https://api.example.com/graphql')
+
+api.subscription(OnCommentAddedDocument, ({ subscription }) => {
+  subscription.publish({
+    data: {
+      commentAdded: {
+        text: 'Hello world!',
+      },
+    },
+  })
+})
+```
+
+Unlike the other link methods, the subscription resolver does not return a response. Instead, you handle the intercepted subscription imperatively through the `subscription` object. The subscription resolver has the following keys in its argument object:
+
+| Name            | Type                                                                  | Description                                                              |
+| --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `subscription`  | [`GraphQLSubscription`](#graphqlsubscription)                         | Intercepted GraphQL subscription.                                        |
+| `operationName` | `string`                                                              | Operation name (e.g. `OnCommentAdded`).                                  |
+| `request`       | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Request that established the WebSocket connection for this subscription. |
+| `params`        | `object`                                                              | Path parameters parsed from the WebSocket connection URL.                |
+| `finalize`      | `Function`                                                            | Schedules a cleanup to run once this subscription ends.                  |
+
+#### `GraphQLSubscription`
+
+The `GraphQLSubscription` object represents a single intercepted GraphQL subscription. A client can run multiple subscriptions over the same WebSocket connection, and each of them gets its own `GraphQLSubscription` instance. You use this object to read the details of the subscription sent by the client and to control it from the server's perspective: publish data, error, complete, or pass it through to the original server.
+
+It has the following properties:
+
+| Name         | Type                      | Description                               |
+| ------------ | ------------------------- | ----------------------------------------- |
+| `id`         | `string`                  | A unique ID of the subscription.          |
+| `query`      | `string`                  | Raw subscription query string.            |
+| `variables`  | `object`                  | Variables sent with this subscription.    |
+| `extensions` | `Record<string, unknown>` | Any extensions used by this subscription. |
+
+##### `.publish(payload)`
+
+Publishes the given execution result to the subscribed client. The `payload` argument is an object with the optional `data`, `errors`, and `extensions` keys.
+
+```js {2-8}
+api.subscription('OnCommentAdded', ({ subscription }) => {
+  subscription.publish({
+    data: {
+      commentAdded: {
+        text: 'Hello world!',
+      },
+    },
+  })
+})
+```
+
+##### `.from(source)`
+
+Uses the given `Iterable` or `AsyncIterable` as the source of data for this subscription. Every value yielded by the source is published to the subscription as the `data` of the payload.
+
+```js {2-5}
+api.subscription('OnCommentAdded', ({ subscription }) => {
+  subscription.from(async function* () {
+    yield { commentAdded: { text: 'First' } }
+    yield { commentAdded: { text: 'Second' } }
+  })
+})
+```
+
+##### `.error(errors)`
+
+Terminates this subscription with the given list of GraphQL errors.
+
+```js {2}
+api.subscription('OnCommentAdded', ({ subscription }) => {
+  subscription.error([{ message: 'Unprocessable entry' }])
+})
+```
+
+##### `.complete()`
+
+Marks this subscription as complete.
+
+```js {2}
+api.subscription('OnCommentAdded', ({ subscription }) => {
+  subscription.complete()
+})
+```
+
+##### `.passthrough()`
+
+Performs this subscription as-is against the original server and forwards the server payloads to the client. Returns a passthrough subscription object that you can use to listen to the original server events (`connection_ack`, `next`, `error`, `complete`) via `.addEventListener()`, and to stop the original subscription via `.unsubscribe()`.
+
+```js {2,4-8}
+api.subscription('OnCommentAdded', ({ subscription }) => {
+  const onCommentAddedSubscription = subscription.passthrough()
+
+  onCommentAddedSubscription.addEventListener('next', (event) => {
+    // Prevent the default server-to-client forwarding.
+    event.preventDefault()
+    subscription.publish(event.data.payload)
+  })
+})
+```
+
 ### `.operation(resolver)`
 
 The `.operation()` method intercepts all GraphQL operations against the linked endpoint regardless of their type and name. It's designed to cover the following scenarios:
@@ -203,14 +340,14 @@ export const handlers = [
 
 ## Resolver argument
 
-The response resolver function for every link method has the following keys in its argument object:
+The response resolver function for the `.query()`, `.mutation()`, and `.operation()` link methods has the following keys in its argument object:
 
-| Name            | Type                                                                  | Description                                              |
-| --------------- | --------------------------------------------------------------------- | -------------------------------------------------------- |
-| `query`         | `object`                                                              | GraphQL query sent from the client.                      |
-| `variables`     | `object`                                                              | Variables of this GraphQL query.                         |
-| `operationName` | `string`                                                              | Operation name (e.g. `GetUser`).                         |
-| `request`       | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                |
+| Name            | Type                                                                  | Description                                                    |
+| --------------- | --------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `query`         | `object`                                                              | GraphQL query sent from the client.                            |
+| `variables`     | `object`                                                              | Variables of this GraphQL query.                               |
+| `operationName` | `string`                                                              | Operation name (e.g. `GetUser`).                               |
+| `request`       | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | Entire request reference.                                      |
 | `cookies`       | `object`                                                              | Request's [cookies](/docs/http/intercepting-requests/cookies). |
 
 You access these arguments on the response resolver argument object.

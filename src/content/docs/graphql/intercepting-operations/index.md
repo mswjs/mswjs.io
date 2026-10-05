@@ -12,7 +12,7 @@ This page will walk you through the possible ways to intercept a GraphQL operati
 
 GraphQL mocking in MSW is _link-first_. You start by creating a [GraphQL link](/api/graphql#graphql-link-url) to the endpoint you wish to mock via `graphql.link()`, and then define handlers for the operations against that endpoint on the returned link:
 
-```ts {4,5,8,9} /graphql.link/
+```ts {3,4,7,8} /graphql.link/
 import { graphql } from 'msw/graphql'
 
 const github = graphql.link('https://api.github.com/graphql')
@@ -28,7 +28,7 @@ By defining GraphQL links, you tell MSW to take the server endpoint into account
 
 ## Operation kind
 
-The library supports intercepting GraphQL queries and mutations (subscriptions support coming soon). Learn more about intercepting the operation kind you need:
+The library supports intercepting GraphQL queries, mutations, and subscriptions. Learn more about intercepting the operation kind you need:
 
 <div class="page-card-grid grid gap-5 md:grid-cols-2">
   <PageCard
@@ -42,6 +42,12 @@ The library supports intercepting GraphQL queries and mutations (subscriptions s
     url="/docs/graphql/intercepting-operations/mutations"
     title="Mutations"
     description="Learn about intercepting GraphQL mutations"
+  />
+  <PageCard
+    icon="GraphQLIcon"
+    url="/docs/graphql/intercepting-operations/subscriptions"
+    title="Subscriptions"
+    description="Learn about intercepting GraphQL subscriptions"
   />
 </div>
 

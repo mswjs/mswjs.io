@@ -12,7 +12,7 @@ When [describing GraphQL APIs](/docs/graphql/), your mock responses are always s
 
 You can resolve intercepted GraphQL operations against a mocked GraphQL schema using the `graphql` package. In the example below, we will also use the [`.operation()`](/api/graphql#operation-resolver) handler of a GraphQL link to resolve them against the schema.
 
-```js {3,8-17,28-37}
+```js {3,7-16,27-36}
 import { HttpResponse } from 'msw/http'
 import { graphql } from 'msw/graphql'
 import { graphql as executeGraphql, buildSchema } from 'graphql'

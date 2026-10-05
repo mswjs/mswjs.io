@@ -21,7 +21,7 @@ import { graphql } from 'msw/graphql'
 
 ## GraphQL clients
 
-MSW supports intercepting any GraphQL operations that comply with the [GraphQL Specification](https://spec.graphql.org/October2021/). This includes **queries and mutations** (subscriptions are coming in the future) regardless of the GraphQL client that performed them. The library has you covered if you're exploring GraphQL via `graphql-request` or plain `fetch()` as well as if you're using a production-ready client like Apollo, Relay, or URQL.
+MSW supports intercepting any GraphQL operations that comply with the [GraphQL Specification](https://spec.graphql.org/October2021/). This includes **queries, mutations, and subscriptions** regardless of the GraphQL client that performed them. The library has you covered if you're exploring GraphQL via `graphql-request` or plain `fetch()` as well as if you're using a production-ready client like Apollo, Relay, or URQL.
 
 ## Benefits
 

@@ -105,6 +105,13 @@ export const handlers = [
 ]
 ```
 
+<PageCard
+  icon="GraphQLIcon"
+  url="/docs/graphql/intercepting-operations/subscriptions"
+  title="Subscriptions"
+  description="Learn about intercepting GraphQL subscriptions"
+/>
+
 ## Network API
 
 This major release has given us the perfect opportunity to rethink what the network interception actually is. What you want to do with any API mocking tool is, effectively, this:

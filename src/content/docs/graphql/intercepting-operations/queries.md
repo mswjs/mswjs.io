@@ -21,7 +21,7 @@ api.query('ListUsers', () => {
 })
 ```
 
-The request handler above will match the following GraphQL query made in your application:
+The handler above will match the following GraphQL query made in your application:
 
 ```graphql /query/ /ListUsers/#g
 query ListUsers {
