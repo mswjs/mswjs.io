@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BeehiivIcon from '../components/icons/beehiiv.svg?component'
 import CodeRabbitIcon from '../components/icons/coderabbit.svg?component'
 import ChromaticIcon from '../components/icons/chromatic.svg?component'
 import WorkleapIcon from '../components/icons/workleap.svg?component'
@@ -6,6 +7,17 @@ import WorkleapIcon from '../components/icons/workleap.svg?component'
 
 <template>
   <ul class="rounded-md overflow-hidden space-y-1">
+    <li>
+      <a
+        href="https://www.beehiiv.com/?ref=mswjs"
+        class="inline-flex flex-col items-center justify-center py-4 px-5 w-full grayscale hover:grayscale-0 bg-neutral-800 hover:bg-neutral-700 hover:bg-opacity-50"
+        target="_blank"
+        rel="noopener noreferer"
+        aria-label="Beehiiv"
+      >
+        <BeehiivIcon class="max-w-[140px] max-h-[24px] fill-current" />
+      </a>
+    </li>
     <li>
       <a
         href="https://coderabbit.link/mswjs"
