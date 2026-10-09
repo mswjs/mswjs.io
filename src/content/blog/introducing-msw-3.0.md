@@ -208,7 +208,7 @@ class HttpRequestInterceptor {
 }
 ```
 
-> Here's a pseudo-code example of what this architecture looks like in practice. You are free to [browser the actual source](https://github.com/mswjs/interceptors) on GitHub.
+> Here's a pseudo-code example of what this architecture looks like in practice. You are free to [browse the actual source](https://github.com/mswjs/interceptors) on GitHub.
 
 This means we can listen to raw connections as well as protocol-bound messages. This also means you can implement your own interceptors and route the raw bytes through whatever parser or machinery you want to expand on what gets intercepted and how.
 
