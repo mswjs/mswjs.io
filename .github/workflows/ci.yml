@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Project
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Node.js
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
+        with:
+          registry-url: "https://registry.npmjs.org"
+      - name: install dependencies
+        run: pnpm i
+      - name: Build project
+        run: pnpm -r build
+      - name: Run Gravity
+        run: pnpx @gravityci/cli "websites/mswjs.io/dist/**/*"
+        env:
+          GRAVITY_TOKEN: ${{ secrets.GRAVITY_TOKEN }}
+          GRAVITY_HOST: ${{ vars.GRAVITY_HOST }}
+        
