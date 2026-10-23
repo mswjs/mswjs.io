@@ -62,9 +62,11 @@ Provide a function to decide how to react to unhandled frames on a case-by-case 
 For HTTP frames, the intercepted request is available under `frame.data.request`. For WebSocket frames, the intercepted connection is available under `frame.data.connection`.
 
 ```js
+import { HttpNetworkFrame } from 'msw/experimental'
+
 server.listen({
   onUnhandledFrame({ frame }) {
-    if (frame.protocol === 'http') {
+    if (frame instanceof HttpNetworkFrame) {
       const { request } = frame.data
       console.log('Unhandled %s %s', request.method, request.url)
     }
@@ -75,9 +77,11 @@ server.listen({
 The predefined strategies are available under the `defaults` property of the callback argument so you could reuse them. Here's an example of how you can utilize that to bypass static assets but still warn on other unhandled frames:
 
 ```js
+import { HttpNetworkFrame } from 'msw/experimental'
+
 server.listen({
   onUnhandledFrame({ frame, defaults }) {
-    if (frame.protocol === 'http') {
+    if (frame instanceof HttpNetworkFrame) {
       const url = new URL(frame.data.request.url)
 
       // Ignore requests to fetch static assets.

@@ -97,11 +97,13 @@ const network = defineNetwork({
 ```
 
 ```js
+import { HttpNetworkFrame } from 'msw/experimental'
+
 const network = defineNetwork({
   sources: [...],
   onUnhandledFrame({ frame, defaults }) {
     // Ignore any requests containing "cdn.com" in their URL.
-    if (frame.protocol === 'http' && frame.data.request.url.includes('cdn.com')) {
+    if (frame instanceof HttpNetworkFrame && frame.data.request.url.includes('cdn.com')) {
       return
     }
 

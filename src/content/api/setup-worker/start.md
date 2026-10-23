@@ -131,10 +131,12 @@ Provide a function to decide how to react to unhandled frames on a case-by-case 
 For HTTP frames, the intercepted request is available under `frame.data.request`. For WebSocket frames, the intercepted connection is available under `frame.data.connection`.
 
 ```js
+import { HttpNetworkFrame } from 'msw/experimental'
+
 worker.start({
   onUnhandledFrame({ frame, defaults }) {
     // Ignore any requests containing "cdn.com" in their URL.
-    if (frame.protocol === 'http' && frame.data.request.url.includes('cdn.com')) {
+    if (frame instanceof HttpNetworkFrame && frame.data.request.url.includes('cdn.com')) {
       return
     }
 

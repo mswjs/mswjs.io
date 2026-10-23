@@ -39,13 +39,14 @@ One use case where you may want to use this function is when providing a custom 
 ```ts
 import { isCommonAssetRequest } from 'msw/utils/is-common-asset-request'
 import { setupWorker } from 'msw/browser'
+import { HttpNetworkFrame } from 'msw/experimental'
 
 const worker = setupWorker()
 
 worker.start({
   onUnhandledFrame({ frame, defaults }) {
     // Only HTTP frames represent requests.
-    if (frame.protocol !== 'http') {
+    if (!(frame.protocol instanceof HttpNetworkFrame)) {
       return defaults.warn()
     }
 
