@@ -15,7 +15,7 @@ import { setupWorker } from 'msw/browser'
 import { handlers } from './handlers'
 
 const worker = setupWorker(...handlers)
-await worker.start() // Promise<{ pending }>
+await worker.start() // Promise<ServiceWorkerRegistration | undefined>
 ```
 
 ::: warning
@@ -147,14 +147,3 @@ worker.start({
 ```
 
 > By default, MSW will ignore common static asset requests so they won't be considered unhandled. If you provide a custom callback to the `onUnhandledFrame` option, _you will opt out from that behavior_. You can tap into it at any time by manually calling the [`isCommonAssetRequest()`](/api/is-common-asset-request) function.
-
-### `waitUntilReady`
-
-- _Boolean_, default: `true`
-
-Defers any application requests that happen during the Service Worker registration.
-
-::: warning
-  Disabling this option is **not recommended** as this will create a race
-  condition between the worker registration and your application's runtime.
-:::

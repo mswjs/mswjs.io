@@ -7,9 +7,10 @@ description: Create a custom network instance.
 
 ```ts
 import { defineNetwork, InterceptorSource } from 'msw/experimental'
+import { FetchInterceptor } from '@mswjs/interceptors/fetch'
 
 const network = defineNetwork({
-  sources: [new InterceptorSource()],
+  sources: [new InterceptorSource({ interceptors: [new FetchInterceptor()] })],
 })
 ```
 

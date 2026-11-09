@@ -34,7 +34,7 @@ scoped()
 The `server.boundary()` API is designed to provide the network behavior isolation. Any modifications to the request interception made within a boundary will only affect that boundary and nothing else.
 
 ```js {10-20} /server.boundary/
-import { HttpResponse } from 'msw/http'
+import { http, HttpResponse } from 'msw/http'
 import { setupServer } from 'msw/node'
 
 const server = setupServer()
