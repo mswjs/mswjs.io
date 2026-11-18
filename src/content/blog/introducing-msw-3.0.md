@@ -242,10 +242,14 @@ While this post can make it seem like not much has changed for you in practice, 
 
 ## Special thanks
 
+<!-- external-links-disable -->
+
 This release is possible with the support of our incredible sponsors: [Cathal Mac Donnacha](https://github.com/cmacdonnacha), [Chromatic](https://github.com/Chromatic), [Eric Casthart](https://github.com/pushred), [Erik Rasmussen](https://github.com/erikras), [Jonathan Ortega](https://github.com/Jhony0311), [Khaled Mohamed](https://github.com/KhaledMohamedP), [Kraken Tech](https://github.com/kraken-tech), [Laststance.io](https://github.com/laststance), [Materialize, Inc.](https://github.com/MaterializeInc), [Matija Marohnić](https://github.com/silvenon), [Nicholas Decker](https://github.com/niccholaspage), [Replay](https://github.com/replayio), [Ryan Magoon](https://github.com/ryanmagoon), [Santosh Yadav](https://github.com/santoshyadavdev), [Sent](https://github.com/sentdm), [StackBlitz](https://github.com/stackblitz), [Todoist Inc](https://github.com/Doist), [Workleap IT](https://github.com/Infra-Workleap), as well as our partners:
 
 - [CodeRabbit](https://coderabbit.link/mswjs)
 - [Chromatic](https://www.chromatic.com/?ref=mswjs)
 - [Workleap](https://workleap.com/?ref=mswjs)
+
+<!-- external-links-enable -->
 
 Thank you for supporting the present and the future of API mocking on the web.
