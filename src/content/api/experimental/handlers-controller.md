@@ -19,7 +19,8 @@ import { InMemoryHandlersController } from 'msw/experimental'
 A controller that leverages [`AsyncLocalStorage`](https://nodejs.org/api/async_context.html#class-asynclocalstorage) to allow scoping handler changes to its asynchronous boundary.
 
 ```ts
-import { defineNetwork, AsyncHandlersController } from 'msw/experimental'
+import { defineNetwork, InterceptorSource } from 'msw/experimental'
+import { AsyncHandlersController } from 'msw/node'
 import { FetchInterceptor } from '@mswjs/interceptors/fetch'
 
 const controller = new AsyncHandlersController([...initialHandlers])
@@ -33,11 +34,11 @@ const network = defineNetwork({
 controller.boundary(async () => {
   // Changes to the controller, such as adding or removing handlers,
   // never leave the boundary in which they were performed.
-  controller.use(
+  controller.use([
     http.get('http://localhost/user', () => {
       return new Response()
     }),
-  )
+  ])
 
   // A request within the same boundary.
   const response = await fetch('http://localhost/user')
@@ -82,10 +83,10 @@ const wsOne = ws.link('*').addEventListener('connection', listener)
 controller.use([httpOne, httpTwo, graphqlOne, wsOne])
 
 controller.getHandlersByKind('request')
-// [httpOne, httpTwo, graphqlOne]
+// [httpOne, httpTwo, graphqlOne, <WebSocket upgrade handler of wsOne>]
 ```
 
-> Note that both `http` handlers and GraphQL link handlers are of the `request` kind.
+> Note that both `http` handlers and GraphQL link handlers are of the `request` kind. Like `.currentHandlers()`, this method includes the internal sibling handlers, such as the upgrade request handler that every `ws.link()` attaches to its event handlers.
 
 ### `.use(handlers)`
 
