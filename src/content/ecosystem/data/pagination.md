@@ -6,6 +6,8 @@ description: Limit and offset the results of bulk operations.
 
 The library supports offset-based and cursor-based pagination for bulk operations, like `.findMany()`, `.updateMany()`, or `.deleteMany()`.
 
+> Pagination is applied after [sorting](/ecosystem/data/sorting#pagination).
+
 ## Offset-based pagination
 
 Provide the `take` property on the options object of any bulk operation to limit the number of results returned by the query:

@@ -133,6 +133,43 @@ await test('leaves ignored URLs unvalidated regardless of hash or source', async
   assert.deepEqual(requests, ['https://example.com/checked'])
 })
 
+await test('leaves links between the disable and enable comments unvalidated', async () => {
+  const requests = []
+  const checker = createExternalLinkChecker({
+    request: async (url) => {
+      requests.push(url)
+      return new Response(null, { status: 200 })
+    },
+  })
+  const markdown = await createMarkdownRenderer(process.cwd(), { config: checker.markdown })
+  markdown.render(`
+[Before](https://example.com/before)
+
+<!-- external-links-disable -->
+[Skipped](https://example.com/skipped), [Skipped too](https://example.com/skipped-too)
+
+<PageCard url="https://example.com/skipped-card" />
+
+<!-- external-links-enable -->
+
+[After](https://example.com/after)
+Inline <!-- external-links-disable --> [skipped](https://example.com/inline-skipped) <!-- external-links-enable --> [checked](https://example.com/inline-checked)
+
+<!-- external-links-disable -->
+[Until the end](https://example.com/until-the-end)
+`, { relativePath: 'blog/post.md' })
+  // The directive does not leak into the next file.
+  markdown.render('[Next file](https://example.com/next-file)', { relativePath: 'blog/next.md' })
+  await finishClientBuild(checker)
+
+  assert.deepEqual(requests, [
+    'https://example.com/before',
+    'https://example.com/after',
+    'https://example.com/inline-checked',
+    'https://example.com/next-file',
+  ])
+})
+
 await test('skips URLs that passed within the cache max age and re-checks failed ones', async (context) => {
   const directory = await mkdtemp(path.join(tmpdir(), 'msw-external-links-'))
   context.after(async () => {

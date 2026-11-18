@@ -90,3 +90,16 @@ users.findMany(undefined, {
   orderBy: [{ age: 'asc' }, { name: 'desc' }],
 })
 ```
+
+## Pagination
+
+Sorting is applied before [pagination](/ecosystem/data/pagination):
+
+```ts {2-3}
+users.findMany(undefined, {
+  orderBy: { age: 'desc' },
+  take: 5,
+})
+```
+
+> This query returns the 5 oldest users.

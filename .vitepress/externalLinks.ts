@@ -21,6 +21,13 @@ interface ExternalLinkCheckerOptions {
 
 type PassedAt = Record<string, number>
 
+/**
+ * Comments that stop and resume link collection in a Markdown file:
+ * "<!-- external-links-disable -->" and "<!-- external-links-enable -->".
+ * Without the closing comment, links stay unvalidated until the end of the file.
+ */
+const directivePattern = /<!--\s*external-links-(disable|enable)\s*-->/g
+
 function readPassedAt(cache: ExternalLinkCacheOptions | undefined): PassedAt {
   if (!cache || !existsSync(cache.path)) {
     return {}
@@ -84,7 +91,20 @@ export function createExternalLinkChecker({
         ? environment.relativePath
         : 'Markdown content'
 
+      // Toggled by the directive comments; starts enabled in every file.
+      let isDisabled = false
+
       for (const token of state.tokens.flatMap((token) => token.children ?? [token])) {
+        if (token.type === 'html_block' || token.type === 'html_inline') {
+          for (const match of token.content.matchAll(directivePattern)) {
+            isDisabled = match[1] === 'disable'
+          }
+        }
+
+        if (isDisabled) {
+          continue
+        }
+
         if (token.type === 'link_open') {
           const href = token.attrGet('href')
           if (href) {
